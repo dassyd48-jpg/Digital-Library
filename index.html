@@ -9,26 +9,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
 
     <style>
-        /* 1. အခြေခံ Layout */
         html, body {
             margin: 0; padding: 0; width: 100%; height: 100%;
             overflow: hidden; background: #000; font-family: sans-serif;
         }
 
-        /* 2. Video Background */
+        /* Video Background */
         #bg-video {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover; z-index: 0; transition: opacity 1s;
         }
 
-        /* 3. Lock Screen UI */
+        /* Lock Screen */
         #lock {
             position: fixed; width: 100%; height: 100%;
             display: flex; justify-content: center; align-items: center;
-            flex-direction: column; z-index: 20; background: rgba(0,0,0,0.3);
+            flex-direction: column; z-index: 20; background: rgba(0,0,0,0.4);
             color: #fff; text-align: center;
         }
-        #lock h2 { letter-spacing: 5px; margin-bottom: 25px; }
+        #lock h2 { letter-spacing: 5px; margin-bottom: 25px; text-shadow: 0 0 10px #000; }
         #lock input {
             padding: 15px; width: 220px; border-radius: 30px; border: 1px solid #fff;
             background: rgba(0,0,0,0.6); color: #fff; text-align: center; outline: none;
@@ -38,7 +37,7 @@
             background: #fff; color: #000; font-weight: bold; cursor: pointer;
         }
 
-        /* 4. Book Section - Alignment ပြင်ဆင်ချက် */
+        /* Flipbook Container */
         #book-container {
             display: none; width: 100%; height: 100%; 
             position: fixed; top: 0; left: 0; z-index: 10; background: #000;
@@ -46,24 +45,23 @@
 
         #flipbook-wrapper {
             width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center; /* အလယ်တည့်တည့်ပို့ပေးသည် */
+            display: flex; justify-content: center; align-items: center;
         }
 
         #flipbook {
             width: 90vw; 
             height: calc(90vw * 1.414); 
-            max-height: 85vh; 
-            max-width: 480px; /* Mobile မှာ အနေတော် Size */
-            background: #000;
+            max-height: 80vh; 
+            max-width: 450px;
         }
 
-        #flipbook .page { background: #000; width: 100%; height: 100%; }
-        #flipbook img {
+        .page { background: #000; width: 100%; height: 100%; }
+        .page img {
             width: 100%; height: 100%; object-fit: contain;
-            backface-visibility: hidden; -webkit-backface-visibility: hidden;
+            /* GitHub ပေါ်မှာ ပုံမပေါ်တဲ့ ပြဿနာကို ကာကွယ်ရန် */
+            display: block;
         }
 
-        /* 5. Watermark */
         .watermark {
             position: fixed; bottom: 15px; width: 100%; text-align: center;
             font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 3px;
@@ -71,7 +69,7 @@
         }
     </style>
 </head>
-<body oncontextmenu="return false">
+<body>
 
     <video id="bg-video" autoplay muted loop playsinline>
         <source src="video.mp4" type="video/mp4">
@@ -94,7 +92,7 @@
 
     <script>
         const myPassword = "dassy123";
-        const maxPages = 15;
+        const maxPages = 17; // မင်းရဲ့ ပုံအရေအတွက်အတိုင်း ချိန်ပါ
 
         function unlock(){
             const entered = document.getElementById("pass").value;
@@ -112,15 +110,14 @@
         function loadAndInit(){
             const flipbook = $("#flipbook");
             
-            // စာမျက်နှာများ ထည့်သွင်းခြင်း
             for(let i=1; i<=maxPages; i++){
                 const pageDiv = $('<div class="page"></div>');
+                // GitHub အတွက် ပုံနာမည်တွေကို .jpg (စာလုံးအသေး) အဖြစ် သတ်မှတ်ထားသည်
                 const img = $('<img />').attr('src', `page${i}.jpg`);
                 pageDiv.append(img);
                 flipbook.append(pageDiv);
             }
 
-            // Turn.js စတင်ခြင်း
             setTimeout(() => {
                 flipbook.turn({
                     width: flipbook.width(),
@@ -130,11 +127,11 @@
                     acceleration: true,
                     gradients: true,
                     elevation: 50,
-                    duration: 800,
+                    duration: 1000,
                     when: { turning: function() { playSound(); } }
                 });
 
-                // Click/Touch to Flip
+                // Full Page Click to Flip Fix
                 flipbook.bind('touchstart click', function(e) {
                     const width = $(this).width();
                     const offset = $(this).offset();
@@ -146,7 +143,7 @@
                         else { $(this).turn('previous'); }
                     }
                 });
-            }, 200);
+            }, 500); // Browser က ပုံတွေကို load လုပ်ချိန်ရအောင် delay နည်းနည်းပေးထားသည်
         }
 
         function playSound(){ 
@@ -154,11 +151,10 @@
             if(s) { s.currentTime = 0; s.play().catch(e => {}); }
         }
 
-        // Resize Fix
         $(window).resize(function() {
             if($("#flipbook").turn("is")) {
                 const fb = $("#flipbook");
-                fb.turn("size", fb.parent().width() * 0.9, fb.parent().height() * 0.85);
+                fb.turn("size", fb.parent().width() * 0.9, fb.parent().height() * 0.8);
             }
         });
     </script>
