@@ -3,113 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DASSY BLOCK VAULT | UNKNOWN SECRETS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nosifer&family=Metal+Mania&family=Special+Elite&display=swap" rel="stylesheet">
+    <title>DASSY BLOCK VAULT | FORBIDDEN KNOWLEDGE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Special+Elite&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ghoul-red: #660000;
-            --toxic-gold: #8b7355;
-            --void-black: #030303;
+            --obsidian: #050505;
+            --antique-gold: #8b7355;
+            --deep-crimson: #660000;
+            --text-gray: #a0a0a0;
         }
 
         body {
             margin: 0; padding: 0;
-            background: radial-gradient(circle at center, #110000 0%, #030303 100%);
-            color: #888;
+            background-color: var(--obsidian);
+            color: var(--text-gray);
             font-family: 'Special Elite', cursive;
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* ခြောက်ခြားစရာ Header */
         header {
-            text-align: center; padding: 100px 20px;
-            border-bottom: 1px solid #220000;
+            text-align: center; padding: 80px 20px;
+            border-bottom: 1px solid rgba(139, 115, 85, 0.2);
             width: 100%;
+            background: linear-gradient(to bottom, #110000, var(--obsidian));
         }
 
         header h1 {
-            font-family: 'Nosifer', cursive; /* သွေးစက်ကျနေသောစာလုံး */
-            color: var(--ghoul-red);
-            font-size: 3.5rem; margin: 0;
-            text-shadow: 0 0 15px rgba(102, 0, 0, 0.8);
-            letter-spacing: 5px;
+            font-family: 'Cinzel Decorative', serif;
+            color: var(--antique-gold);
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            margin: 0;
+            letter-spacing: 8px;
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.8), 0 0 20px rgba(139, 115, 85, 0.3);
         }
 
         header p {
-            font-family: 'Metal Mania', cursive;
-            color: var(--toxic-gold);
-            font-size: 1.2rem; margin-top: 20px;
-            letter-spacing: 6px; text-transform: uppercase;
+            color: var(--deep-crimson);
+            font-size: 1rem;
+            margin-top: 15px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
         }
 
-        .container {
+        .shelf {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 50px; width: 90%; max-width: 1200px; padding: 60px 0;
+            gap: 40px; width: 90%; max-width: 1200px; padding: 60px 0;
         }
 
-        .vault-card {
-            background: rgba(10, 10, 10, 0.9);
+        .vault-item {
+            background: #0a0a0a;
             border: 1px solid #1a1a1a;
-            padding: 30px; text-align: center;
-            transition: 0.5s; position: relative;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            padding: 30px;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,1);
         }
 
-        .vault-card:hover {
-            border-color: var(--ghoul-red);
-            box-shadow: 0 0 30px rgba(102, 0, 0, 0.3);
-            transform: scale(1.03);
+        .vault-item:hover {
+            transform: translateY(-15px);
+            border-color: var(--antique-gold);
+            box-shadow: 0 0 30px rgba(139, 115, 85, 0.1);
         }
 
-        .vault-card img {
+        .vault-item img {
             width: 100%; height: 400px; object-fit: cover;
-            filter: sepia(50%) contrast(120%) brightness(70%);
-            border: 1px solid #222; margin-bottom: 25px;
+            filter: grayscale(40%) sepia(20%) brightness(80%);
+            border: 1px solid #222;
+            margin-bottom: 25px;
         }
 
-        .tag {
-            color: #444; font-size: 0.7rem; letter-spacing: 2px;
-            margin-bottom: 15px; text-transform: uppercase;
+        .category-tag {
+            color: var(--deep-crimson);
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
         }
 
         .title {
-            font-family: 'Metal Mania', cursive;
-            font-size: 1.5rem; color: #eee;
-            margin-bottom: 20px; min-height: 60px;
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 20px;
+            min-height: 60px;
+            display: flex; align-items: center; justify-content: center;
         }
 
         .price {
-            font-size: 1.4rem; color: var(--toxic-gold);
-            margin-bottom: 30px; font-weight: bold;
+            font-size: 1.4rem;
+            color: var(--antique-gold);
+            margin-bottom: 30px;
+            font-weight: bold;
         }
 
-        /* Horror Buttons */
         .btn-box { display: flex; flex-direction: column; gap: 15px; }
 
         .btn {
-            text-decoration: none; padding: 15px;
-            font-weight: bold; letter-spacing: 2px;
-            transition: 0.3s; text-transform: uppercase;
+            text-decoration: none; padding: 16px;
+            font-weight: bold; text-transform: uppercase;
+            letter-spacing: 2px; transition: 0.3s;
+            font-size: 0.9rem;
         }
 
         .btn-preview {
-            color: #555; border: 1px solid #222;
+            border: 1px solid #333; color: #666;
         }
-        .btn-preview:hover { color: #fff; border-color: #666; }
+
+        .btn-preview:hover { border-color: var(--antique-gold); color: var(--antique-gold); }
 
         .btn-buy {
-            background: #440000; color: #fff;
-            border: 1px solid var(--ghoul-red);
+            background: var(--deep-crimson);
+            color: #fff;
+            border: 1px solid #440000;
+            box-shadow: 0 0 15px rgba(102, 0, 0, 0.4);
         }
+
         .btn-buy:hover {
-            background: var(--ghoul-red);
-            box-shadow: 0 0 20px var(--ghoul-red);
+            background: #8b0000;
+            box-shadow: 0 0 25px rgba(139, 0, 0, 0.6);
+            transform: scale(1.02);
         }
 
         footer {
-            padding: 80px; color: #222; font-size: 0.8rem;
-            letter-spacing: 4px;
+            padding: 80px; color: #222; font-size: 0.7rem;
+            letter-spacing: 5px;
         }
     </style>
 </head>
@@ -117,47 +135,47 @@
 
 <header>
     <h1>DASSY BLOCK VAULT</h1>
-    <p>THE GATE TO FORBIDDEN KNOWLEDGE</p>
+    <p>THE GATE TO FORBIDDEN SECRETS</p>
 </header>
 
-<div class="container">
+<div class="shelf">
 
-    <div class="vault-card">
-        <div class="tag">Psychology & Dark Tips</div>
+    <div class="vault-item">
+        <div class="category-tag">DARK PSYCHOLOGY ARCHIVE</div>
         <img src="dream-woman/page1.jpg" alt="Dream Woman Cover">
         <div class="title">How A Man's Brain Picks His Dream Woman</div>
         <div class="price">5,490 MMK</div>
         <div class="btn-box">
-            <a href="dream-woman/index.html" class="btn btn-preview">Enter Preview</a>
-            <a href="https://wa.me/95948432100?text=I%20want%20the%20Psychology%20Vault%20Key." class="btn btn-buy">Buy Access Key</a>
+            <a href="dream-woman/index.html" class="btn btn-preview">Enter the Vault</a>
+            <a href="https://wa.me/95948432100?text=I%20want%20the%20Psychology%20Vault%20Key." class="btn btn-buy">Unlock Access</a>
         </div>
     </div>
 
-    <div class="vault-card">
-        <div class="tag">English Archive</div>
-        <img src="https://via.placeholder.com/350x500/000/330000?text=DARK+ROMANCE" alt="English Version">
+    <div class="vault-item">
+        <div class="category-tag">ROMANCE ARCHIVE (ENGLISH)</div>
+        <img src="https://via.placeholder.com/350x500/050505/8b7355?text=ENGLISH+ARCHIVE" alt="English Love Story">
         <div class="title">Love in the Shadows: English Edition</div>
         <div class="price">5,490 MMK</div>
         <div class="btn-box">
-            <a href="#" class="btn btn-preview">Enter Preview</a>
-            <a href="https://wa.me/95948432100?text=I%20want%20the%20English%20Love%20Story%20Key." class="btn btn-buy">Buy Access Key</a>
+            <a href="#" class="btn btn-preview">Enter the Vault</a>
+            <a href="https://wa.me/95948432100?text=I%20want%20the%20English%20Love%20Story%20Key." class="btn btn-buy">Unlock Access</a>
         </div>
     </div>
 
-    <div class="vault-card">
-        <div class="tag">Kids Archive</div>
-        <img src="https://via.placeholder.com/350x500/000/444?text=KIDS+STORY" alt="Kids Story">
-        <div class="title">ကလေးပုံပြင်များ (Interactive Book)</div>
+    <div class="vault-item">
+        <div class="category-tag">KIDS ARCHIVE (INTERACTIVE)</div>
+        <img src="https://via.placeholder.com/350x500/050505/8b7355?text=KIDS+ARCHIVE" alt="Kids Story">
+        <div class="title">ကလေးပုံပြင်များ (Digital Activity Book)</div>
         <div class="price">5,490 MMK</div>
         <div class="btn-box">
-            <a href="#" class="btn btn-preview">Enter Preview</a>
-            <a href="https://wa.me/95948432100?text=ကလေးပုံပြင်စာအုပ်အတွက်%20Key%20ဝယ်ချင်လို့ပါ။" class="btn btn-buy">Buy Access Key</a>
+            <a href="#" class="btn btn-preview">Enter the Vault</a>
+            <a href="https://wa.me/95948432100?text=ကလေးပုံပြင်စာအုပ်အတွက်%20Key%20ဝယ်ချင်လို့ပါ။" class="btn btn-buy">Unlock Access</a>
         </div>
     </div>
 
 </div>
 
-<footer>© DASSY BLOCK VAULT - ALL RIGHTS RESERVED</footer>
+<footer>UNCENSORED CONTENT BY DASSY</footer>
 
 </body>
 </html>
