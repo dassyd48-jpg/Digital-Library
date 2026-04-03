@@ -3,129 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DASSY BLOCK VAULT | FORBIDDEN KNOWLEDGE</title>
+    <title>DASSY BLOCK VAULT | PREMIUM ACCESS</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Special+Elite&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* သင်ပြထားသော Metallic Bronze Gold အရောင် */
-            --metallic-gold: #b38b59; 
-            --dark-bronze: #8a6d3b;
-            --header-crimson: #1a0000;
+            /* လင်းလက်သော Metallic Gold */
+            --bright-gold: #f7e1ad;
+            --main-gold: #d4af37;
+            --shadow-gold: #8a6d3b;
+            /* ပိုမိုမှောင်သော အနီနက်ရောင် */
+            --header-dark-crimson: #120000;
             --body-black: #050505;
-            --text-gray: #a0a0a0;
         }
 
         body {
             margin: 0; padding: 0;
             background-color: var(--body-black);
-            color: var(--text-gray);
+            color: #888;
             font-family: 'Special Elite', cursive;
             display: flex; flex-direction: column; align-items: center;
         }
 
         header {
-            text-align: center; padding: 100px 20px;
+            text-align: center; padding: 120px 20px;
             width: 100%;
-            background-color: var(--header-crimson);
-            border-bottom: 1px solid #2a0000;
+            background: radial-gradient(circle, #2a0000 0%, var(--header-dark-crimson) 100%);
+            border-bottom: 1px solid #330000;
+            overflow: hidden;
         }
 
-        /* Metallic Bronze Effect */
+        /* Animated Metallic Shine Effect */
         header h1 {
             font-family: 'Cinzel Decorative', serif;
-            /* Gradient သုံးပြီး Metallic အရောင် ဖန်တီးထားပါသည် */
-            background: linear-gradient(to bottom, #d4af37 0%, #b38b59 50%, #8a6d3b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: clamp(2.5rem, 8vw, 4.2rem);
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
             margin: 0;
-            letter-spacing: 10px;
+            letter-spacing: 12px;
             text-transform: uppercase;
             font-weight: 900;
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.8));
+            
+            /* Gold Gradient */
+            background: linear-gradient(
+                to right, 
+                var(--shadow-gold) 0%, 
+                var(--main-gold) 25%, 
+                var(--bright-gold) 50%, 
+                var(--main-gold) 75%, 
+                var(--shadow-gold) 100%
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            
+            /* Shining Animation */
+            animation: shine 4s linear infinite;
+            
+            /* စာလုံးကြွစေရန် Glow */
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
         }
 
         header p {
-            color: #660000;
+            color: #550000;
             font-size: 1rem;
-            margin-top: 20px;
-            letter-spacing: 6px;
+            margin-top: 25px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
             font-weight: bold;
+            opacity: 0.8;
         }
 
+        /* Content Container */
         .shelf {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px; width: 90%; max-width: 1200px; padding: 60px 0;
+            gap: 40px; width: 90%; max-width: 1200px; padding: 80px 0;
         }
 
         .vault-item {
-            background: #0a0a0a;
-            border: 1px solid #151515;
+            background: #080808;
+            border: 1px solid #1a1a1a;
             padding: 30px;
             transition: 0.5s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            box-shadow: 0 20px 50px rgba(0,0,0,1);
         }
 
         .vault-item:hover {
-            transform: translateY(-10px);
-            border-color: var(--metallic-gold);
+            transform: translateY(-15px);
+            border-color: var(--main-gold);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
         }
 
         .vault-item img {
             width: 100%; height: 400px; object-fit: cover;
-            border: 1px solid #222;
+            filter: grayscale(20%) brightness(80%);
+            border-bottom: 1px solid #222;
             margin-bottom: 25px;
         }
 
-        .tag {
-            color: #444; font-size: 0.7rem;
-            letter-spacing: 3px; margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .title {
-            font-family: 'Cinzel Decorative', serif;
-            font-size: 1.2rem; color: #fff;
-            margin-bottom: 20px; min-height: 60px;
-            display: flex; align-items: center; justify-content: center;
-        }
-
         .price {
-            font-size: 1.4rem; 
-            color: var(--metallic-gold);
-            margin-bottom: 30px;
+            font-size: 1.5rem; color: var(--main-gold);
+            margin: 20px 0 30px; font-weight: bold;
+            text-align: center;
         }
-
-        .btn-box { display: flex; flex-direction: column; gap: 12px; }
-
-        .btn {
-            text-decoration: none; padding: 15px;
-            font-weight: bold; text-transform: uppercase;
-            letter-spacing: 2px; transition: 0.3s;
-            font-size: 0.9rem; text-align: center;
-        }
-
-        .btn-preview {
-            border: 1px solid #222; color: #555;
-        }
-
-        .btn-preview:hover { border-color: var(--metallic-gold); color: #fff; }
 
         .btn-buy {
-            background: linear-gradient(145deg, #8b0000, #4a0000);
-            color: #fff;
-            border: 1px solid #300;
+            display: block; text-decoration: none; padding: 18px;
+            background: linear-gradient(135deg, #660000, #330000);
+            color: #fff; text-align: center; font-weight: bold;
+            letter-spacing: 3px; border: 1px solid #440000;
+            transition: 0.4s;
         }
 
         .btn-buy:hover {
-            background: #a00000;
+            background: #8b0000;
             box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+            transform: scale(1.02);
         }
 
         footer {
-            padding: 80px; color: #1a0000; font-size: 0.7rem;
-            letter-spacing: 5px;
+            padding: 100px; color: #150000; font-size: 0.8rem;
+            letter-spacing: 6px; text-transform: uppercase;
         }
     </style>
 </head>
@@ -138,40 +138,25 @@
 
 <div class="shelf">
     <div class="vault-item">
-        <div class="tag">Psychology Archive</div>
         <img src="dream-woman/page1.jpg" alt="Dream Woman">
-        <div class="title">How A Man's Brain Picks His Dream Woman</div>
         <div class="price">5,490 MMK</div>
-        <div class="btn-box">
-            <a href="dream-woman/index.html" class="btn btn-preview">Read Preview</a>
-            <a href="https://wa.me/95948432100" class="btn btn-buy">Unlock Access</a>
-        </div>
+        <a href="https://wa.me/95948432100" class="btn-buy">UNLOCK ACCESS</a>
     </div>
 
     <div class="vault-item">
-        <div class="tag">English Archive</div>
-        <img src="https://via.placeholder.com/350x500/000/1a0000?text=DARK+ROMANCE" alt="English Archive">
-        <div class="title">Love in the Shadows: English Edition</div>
+        <img src="https://via.placeholder.com/350x500/000/200?text=DARK+ROMANCE" alt="English Story">
         <div class="price">5,490 MMK</div>
-        <div class="btn-box">
-            <a href="#" class="btn btn-preview">Read Preview</a>
-            <a href="https://wa.me/95948432100" class="btn btn-buy">Unlock Access</a>
-        </div>
+        <a href="https://wa.me/95948432100" class="btn-buy">UNLOCK ACCESS</a>
     </div>
 
     <div class="vault-item">
-        <div class="tag">Kids Archive</div>
-        <img src="https://via.placeholder.com/350x500/000/333?text=KIDS+STORY" alt="Kids Archive">
-        <div class="title">ကလေးပုံပြင်များ (Digital Activity Book)</div>
+        <img src="https://via.placeholder.com/350x500/000/111?text=KIDS+STORY" alt="Kids Story">
         <div class="price">5,490 MMK</div>
-        <div class="btn-box">
-            <a href="#" class="btn btn-preview">Read Preview</a>
-            <a href="https://wa.me/95948432100" class="btn btn-buy">Unlock Access</a>
-        </div>
+        <a href="https://wa.me/95948432100" class="btn-buy">UNLOCK ACCESS</a>
     </div>
 </div>
 
-<footer>UNCENSORED CONTENT BY DASSY</footer>
+<footer>OFFICIAL DIGITAL VAULT</footer>
 
 </body>
 </html>
