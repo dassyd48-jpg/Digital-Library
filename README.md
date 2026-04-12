@@ -3,20 +3,23 @@ Welcome to the official repository of **DASSY Digital Library**. We specialize i
 
 ---
 
-## 📖 Featured Books
-Explore our collection of interactive flipping books designed for mobile and tablet devices:
+## 📖 Our Book Collection
+Explore our interactive flipping books. Click the links below to read:
 
-* **[How A Man's Brain Picks His Dream Woman](https://dassyd48-jpg.github.io/Digital-Library/dream-woman/)** - Understanding attraction psychology.
-* **[Stop Being a Soft Woman](https://dassyd48-jpg.github.io/Digital-Library/stop-being-a-soft-woman/)** - Empowerment and boundaries.
-* **[The Ghost in His Mind](https://dassyd48-jpg.github.io/Digital-Library/the-ghost-in-his-mind/)** - Deep dives into male psychology.
-* **[The Irreplaceable Queen](https://dassyd48-jpg.github.io/Digital-Library/the-replaceable-queen/)** - Relationship value and dynamics.
+* **[How A Man's Brain Picks His Dream Woman](https://dassyd48-jpg.github.io/Digital-Library/dream-woman/)**
+* **[The Ghost in His Mind](https://dassyd48-jpg.github.io/Digital-Library/the-ghost-in-his-mind/)**
+* **[Stop Being a Soft Woman](https://dassyd48-jpg.github.io/Digital-Library/stop-being-a-soft-woman/)**
+* **[The Irreplaceable Queen](https://dassyd48-jpg.github.io/Digital-Library/the-replaceable-queen/)**
+* **[The Unspoken Magnet](https://dassyd48-jpg.github.io/Digital-Library/the-unspoken-magnet/)**
+* **[The Unreadable Shadow](https://dassyd48-jpg.github.io/Digital-Library/the-unreadable-shadow/)**
+* **[Beyond the Mask](https://dassyd48-jpg.github.io/Digital-Library/Beyond-the-mask/)**
 
 ---
 
 ## 📱 Connect with Us
-Stay updated with our latest releases and content:
-* **TikTok:** [@dassy_psychology](https://www.tiktok.com/@your_tiktok_handle)
-* **Telegram:** [DASSY Official](https://t.me/your_telegram_handle)
+Stay updated with our latest releases and psychology content:
+* **TikTok:** [@www.tiktokdassy](https://www.tiktok.com/@www.tiktokdassy)
+* **Telegram:** [DASSY Official](https://t.me/DASSY_Digital_Library)
 
 ---
 *© 2026 DASSY Digital Library. All rights reserved.*
