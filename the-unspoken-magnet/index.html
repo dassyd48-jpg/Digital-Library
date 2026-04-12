@@ -5,45 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <title>THE UNSPOKEN MAGNET | DASSY DIGITAL LIBRARY</title>
-    <meta name="description" content="အမျိုးသမီးတို့၏ မသိစိတ်ကို စိုးမိုး၍ အစားထိုးမရသော ဧကရာဇ်ဖြစ်လာစေမည့် Shadow Psychology နည်းဗျူဟာများ။">
-    <meta name="keywords" content="The Unspoken Magnet, Dassy, Shadow Psychology Myanmar, Relationship Strategy">
+
+    <meta name="description" content="Explore Shadow Psychology strategies to become an irreplaceable presence. Official digital book from DASSY Digital Library.">
+    <meta name="keywords" content="The Unspoken Magnet, Dassy, Shadow Psychology Myanmar, Relationship Strategy, Attraction Secrets, DASSY Digital Library, Male Psychology">
+    <meta name="author" content="DASSY Digital Library">
+
+    <meta property="og:title" content="THE UNSPOKEN MAGNET">
+    <meta property="og:description" content="အမျိုးသမီးတို့၏ မသိစိတ်ကို စိုးမိုး၍ အစားထိုးမရသော ဧကရာဇ်ဖြစ်လာစေမည့် Shadow Psychology နည်းဗျူဟာများ။">
+    <meta property="og:image" content="page1.jpg">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
 
     <style>
-        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
+        /* Base Styling */
+        html, body { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            overflow: hidden; background: #000; font-family: sans-serif; 
+        }
         
-        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: opacity 1.5s; }
+        #bg-video { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            object-fit: cover; z-index: 0; transition: opacity 1.2s ease-in-out; 
+        }
 
+        /* Lock Screen UI */
         #lock {
-            position: fixed; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;
-            flex-direction: column; z-index: 20; background: rgba(0,0,0,0.75); color: #d4af37; text-align: center;
+            position: fixed; width: 100%; height: 100%; display: flex; 
+            justify-content: center; align-items: center; flex-direction: column; 
+            z-index: 20; background: rgba(0,0,0,0.75); color: #d4af37; text-align: center;
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
         }
-        #lock h2 { letter-spacing: 5px; margin-bottom: 10px; font-size: 28px; text-transform: uppercase; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+
+        #lock h2 { 
+            letter-spacing: 5px; margin-bottom: 10px; font-size: 28px; 
+            text-transform: uppercase; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); 
+        }
+
         #lock p { color: #fff; font-size: 13px; margin-bottom: 25px; opacity: 0.7; letter-spacing: 2px; }
+
         #lock input {
-            padding: 15px; width: 220px; border-radius: 5px; border: 1px solid #d4af37;
-            background: rgba(255,255,255,0.05); color: #fff; text-align: center; outline: none; font-size: 16px;
+            padding: 15px; width: 220px; border-radius: 8px; border: 1px solid #d4af37;
+            background: rgba(255,255,255,0.05); color: #fff; text-align: center; 
+            outline: none; font-size: 16px; transition: 0.3s;
         }
+
+        #lock input:focus { border-color: #fff; background: rgba(255,255,255,0.1); }
+
         #lock button {
-            margin-top: 20px; padding: 12px 40px; border-radius: 5px; border: none;
-            background: #d4af37; color: #000; font-weight: bold; cursor: pointer; transition: 0.3s;
+            margin-top: 20px; padding: 12px 45px; border-radius: 8px; border: none;
+            background: #d4af37; color: #000; font-weight: bold; cursor: pointer; 
+            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
             box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
         }
-        #lock button:hover { background: #fff; transform: scale(1.05); }
 
-        #book-container { display: none; width: 100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 10; background: #111; }
-        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        /* Book Container */
+        #book-container { 
+            display: none; width: 100%; height: 100%; 
+            position: fixed; top: 0; left: 0; z-index: 10; background: #111; 
+        }
+
+        #flipbook-wrapper { 
+            width: 100%; height: 100%; display: flex; 
+            justify-content: center; align-items: center; 
+        }
         
         #flipbook {
-            width: 90vw; height: calc(90vw * 1.414); max-height: 85vh; max-width: 450px;
+            width: 90vw; height: calc(90vw * 1.414); 
+            max-height: 85vh; max-width: 450px;
             box-shadow: 0 25px 100px rgba(0,0,0,1);
         }
 
         .page { background: #1a1a1a; width: 100%; height: 100%; overflow: hidden; }
-        .page img { width: 100%; height: 100%; object-fit: fill; }
+        .page img { width: 100%; height: 100%; object-fit: fill; pointer-events: none; }
 
+        /* UI Elements */
         .watermark {
             position: fixed; bottom: 15px; width: 100%; text-align: center;
             font-size: 10px; color: rgba(212, 175, 55, 0.4); letter-spacing: 3px;
@@ -54,16 +90,26 @@
             margin-top: 30px; font-size: 12px; color: #d4af37; text-decoration: none;
             border-bottom: 1px solid rgba(212, 175, 55, 0.5); padding-bottom: 2px; opacity: 0.8;
         }
+
+        /* AI-ONLY READABLE CONTENT */
+        .ai-context { display: none; }
     </style>
 </head>
 <body>
 
-    <video id="bg-video" autoplay muted loop playsinline><source src="video.mp4" type="video/mp4"></video>
+    <div class="ai-context">
+        <h1>THE UNSPOKEN MAGNET by DASSY</h1>
+        <p>A digital book on Shadow Psychology and Attraction Strategy. For password access, contact DASSY Digital Library on Telegram: https://t.me/Dassy_Digital_Library</p>
+    </div>
+
+    <video id="bg-video" autoplay muted loop playsinline>
+        <source src="video.mp4" type="video/mp4">
+    </video>
 
     <div id="lock">
         <h2>THE UNSPOKEN MAGNET</h2>
         <p>ENTER THE THRONE OF POWER</p>
-        <input type="password" id="pass" placeholder="PASSWORD">
+        <input type="password" id="pass" placeholder="PASSWORD" autocomplete="off">
         <button onclick="unlock()">ACCESS STRATEGY</button>
         <a href="https://t.me/Dassy_Digital_Library" target="_blank" class="contact-link">Get Access from DASSY</a>
     </div>
@@ -83,8 +129,9 @@
             const entered = document.getElementById("pass").value;
             if(entered === myPassword){
                 $("#bg-video").css("opacity", "0");
-                $("#lock").fadeOut(800, function(){
-                    $("#book-container").fadeIn(600);
+                // Speed up transition
+                $("#lock").fadeOut(400, function(){
+                    $("#book-container").show();
                     loadAndInit();
                 });
             } else { alert("စကားဝှက် မှားယွင်းနေပါသည်။"); }
@@ -96,12 +143,16 @@
 
             for(let i=1; i<=maxPages; i++){
                 const pageDiv = $('<div class="page"></div>');
-                // First 3 pages eager load, others lazy load for speed
-                const img = $(`<img loading="${i <= 3 ? 'eager' : 'lazy'}" />`).attr('src', `page${i}.jpg`);
+                // Priority loading for first 3 pages
+                const img = $('<img />').attr({
+                    'src': `page${i}.jpg`,
+                    'loading': (i <= 3) ? 'eager' : 'lazy'
+                });
                 pageDiv.append(img);
                 flipbook.append(pageDiv);
             }
 
+            // Quick initialization
             setTimeout(() => {
                 flipbook.turn({
                     width: flipbook.width(),
@@ -110,12 +161,13 @@
                     display: 'single',
                     acceleration: true,
                     gradients: true,
-                    elevation: 100,
-                    duration: 1100,
+                    elevation: 50,
+                    duration: 700,
                     when: { turning: function() { playSound(); } }
                 });
-            }, 200);
+            }, 150);
 
+            // Click-to-flip functionality
             flipbook.on('click touchstart', function(e) {
                 const width = $(this).width();
                 const offset = $(this).offset();
@@ -133,6 +185,14 @@
             let s = document.getElementById("sound"); 
             if(s) { s.pause(); s.currentTime = 0; s.play().catch(e => {}); }
         }
+
+        // Handle window resize
+        $(window).resize(function() {
+            const flipbook = $("#flipbook");
+            if (flipbook.data().turn) {
+                flipbook.turn('size', flipbook.width(), flipbook.height());
+            }
+        });
     </script>
 </body>
 </html>
