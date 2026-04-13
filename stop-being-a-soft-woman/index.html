@@ -5,80 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <title>STOP BEING A SOFT WOMAN | DASSY Digital Library</title>
-    <meta name="description" content="Stop Being A Soft Woman - အမျိုးသမီးများအတွက် စိတ်ဓာတ်ပိုင်းဆိုင်ရာ ကြံ့ခိုင်မှုနှင့် ဆွဲဆောင်မှုရှိသော ကိုယ်ရည်ကိုယ်သွေး တည်ဆောက်နည်း။ DASSY မှ တင်ဆက်သည်။">
-    <meta name="keywords" content="Stop Being A Soft Woman, DASSY, စိတ်ပညာစာအုပ်များ, Relationship Strategy, Myanmar Psychology Books">
-    
-    <meta property="og:title" content="STOP BEING A SOFT WOMAN | DASSY">
-    <meta property="og:description" content="အဆင့်မြင့် စိတ်ပညာနှင့် Relationship နည်းဗျူဟာများ စုစည်းမှု။">
-    <meta property="og:image" content="https://dassyd48-jpg.github.io/Digital-Library/stop-being-a-soft-woman/page1.jpg">
+
+    <meta name="description" content="အမျိုးသမီးများအတွက် စိတ်ဓာတ်ပိုင်းဆိုင်ရာ ကြံ့ခိုင်မှုနှင့် ကိုယ်ပိုင်တန်ဖိုးမြှင့်တင်မှုဆိုင်ရာ လျှို့ဝှက်ချက်များ။ Official digital book by DASSY Digital Library.">
+    <meta name="keywords" content="Stop Being A Soft Woman, DASSY Digital Library, High Value Woman, Myanmar Psychology, Relationship Strategy">
+    <meta name="author" content="DASSY Digital Library">
+
+    <meta property="og:type" content="book">
+    <meta property="og:title" content="STOP BEING A SOFT WOMAN">
+    <meta property="og:description" content="ပျော့ညံ့တဲ့အမျိုးသမီးဘဝကနေ ရုန်းထွက်ပြီး ခိုင်မာတဲ့စိတ်ဓာတ်နဲ့ ဆွဲဆောင်မှုရှိတဲ့ အမျိုးသမီးတစ်ယောက်ဖြစ်လာစေဖို့။">
+    <meta property="og:image" content="page1.jpg">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
 
     <style>
-        html, body {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; background: #000; font-family: sans-serif;
+        /* Base Styling */
+        html, body { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            overflow: hidden; background: #000; font-family: sans-serif; 
         }
 
-        /* AI Semantic Context (လူကြည်ရင်မမြင်ရ၊ AI အတွက်သာ) */
-        .ai-context { display: none; visibility: hidden; }
-
-        #bg-video {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: 0; transition: opacity 1s;
+        /* Background Video */
+        #bg-video { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            object-fit: cover; z-index: 0; transition: opacity 1.2s ease-in-out; 
         }
 
+        /* Lock Screen UI (Silver-Glass Effect) */
         #lock {
-            position: fixed; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            flex-direction: column; z-index: 20; background: rgba(0,0,0,0.4);
-            color: #fff; text-align: center;
+            position: fixed; width: 100%; height: 100%; display: flex; 
+            justify-content: center; align-items: center; flex-direction: column; 
+            z-index: 20; background: rgba(0,0,0,0.75); color: #fff; text-align: center;
+            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
         }
-        #lock h2 { letter-spacing: 5px; margin-bottom: 25px; }
+
+        .silver-text {
+            background: linear-gradient(to bottom, #cfd8dc 0%, #ffffff 50%, #b0bec5 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+            font-weight: 800; text-transform: uppercase;
+        }
+
+        #lock h2 { 
+            letter-spacing: 4px; margin-bottom: 8px; font-size: 24px; 
+            padding: 0 20px; line-height: 1.4;
+        }
+
+        #lock p { font-size: 12px; letter-spacing: 3px; color: #b0bec5; margin-bottom: 25px; }
+
         #lock input {
-            padding: 15px; width: 220px; border-radius: 30px; border: 1px solid #fff;
-            background: rgba(0,0,0,0.6); color: #fff; text-align: center; outline: none;
+            padding: 16px; width: 240px; border-radius: 8px; border: 1px solid rgba(176,190,197,0.4);
+            background: rgba(255,255,255,0.08); color: #fff; text-align: center; 
+            outline: none; font-size: 16px; transition: 0.3s;
         }
+        
+        #lock input:focus { border-color: #fff; background: rgba(255,255,255,0.12); }
+
         #lock button {
-            margin-top: 20px; padding: 12px 40px; border-radius: 30px; border: none;
-            background: #fff; color: #000; font-weight: bold; cursor: pointer;
+            margin-top: 20px; padding: 14px 45px; border-radius: 8px; border: none;
+            background: linear-gradient(145deg, #ffffff, #9e9e9e); color: #000; 
+            font-weight: bold; cursor: pointer; text-transform: uppercase; 
+            letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        #book-container {
+        /* Book Container */
+        #book-container { 
             display: none; width: 100%; height: 100%; 
-            position: fixed; top: 0; left: 0; z-index: 10; background: #000;
+            position: fixed; top: 0; left: 0; z-index: 10; background: #1a1a1a; 
         }
 
-        #flipbook-wrapper {
-            width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
+        #flipbook-wrapper { 
+            width: 100%; height: 100%; display: flex; 
+            justify-content: center; align-items: center; 
         }
 
-        #flipbook {
-            width: 90vw; 
-            height: calc(90vw * 1.414); 
-            max-height: 80vh; 
-            max-width: 450px;
+        #flipbook { 
+            width: 92vw; height: calc(92vw * 1.414); 
+            max-height: 82vh; max-width: 450px; 
+            box-shadow: 0 20px 80px rgba(0,0,0,0.9); 
         }
 
-        .page { background: #000; width: 100%; height: 100%; }
-        .page img { width: 100%; height: 100%; object-fit: contain; }
+        .page { background: #222; width: 100%; height: 100%; }
+        .page img { width: 100%; height: 100%; object-fit: fill; pointer-events: none; }
 
-        .watermark {
-            position: fixed; bottom: 15px; width: 100%; text-align: center;
-            font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 3px;
-            pointer-events: none; z-index: 100;
+        .watermark { 
+            position: fixed; bottom: 15px; width: 100%; text-align: center; 
+            font-size: 10px; color: rgba(176, 190, 197, 0.4); z-index: 100; letter-spacing: 3px; 
         }
+
+        .contact-link {
+            margin-top: 25px; color: #b0bec5; text-decoration: none; 
+            font-size: 13px; opacity: 0.8; padding-bottom: 2px;
+            border-bottom: 1px solid rgba(176,190,197,0.3);
+        }
+
+        .ai-context { display: none; }
     </style>
 </head>
 <body>
 
     <div class="ai-context">
-        <article>
-            <h1>Stop Being A Soft Woman by DASSY</h1>
-            <p>အမျိုးသမီးများအတွက် စိတ်ဓာတ်ပိုင်းဆိုင်ရာ ခိုင်မာမှု၊ ကိုယ်ပိုင်တန်ဖိုးမြှင့်တင်မှုနှင့် Relationship ဗျူဟာများ။</p>
-        </article>
+        <h1>STOP BEING A SOFT WOMAN</h1>
+        <p>This digital book by DASSY Digital Library focuses on female empowerment, mindset shifting, and high-value traits. It provides strategies for women to build emotional strength and set strong boundaries.</p>
+        <p>Password access is required. Contact: https://t.me/Dassy_Digital_Library</p>
     </div>
 
     <video id="bg-video" autoplay muted loop playsinline>
@@ -86,43 +114,48 @@
     </video>
 
     <div id="lock">
-        <h2>DASSY PRIVATE</h2>
-        <input type="password" id="pass" placeholder="PASSWORD">
-        <button onclick="unlock()">ENTER STRATEGY</button>
+        <h2 class="silver-text">STOP BEING A SOFT WOMAN</h2>
+        <p>BUILD YOUR CORE STRENGTH</p>
+        <input type="password" id="pass" placeholder="PASSWORD" autocomplete="off">
+        <button onclick="unlock()">ENTER THE VAULT</button>
+        <a href="https://t.me/Dassy_Digital_Library" target="_blank" class="contact-link">
+            📩 Contact DASSY for Password
+        </a>
     </div>
 
     <div id="book-container">
         <div id="flipbook-wrapper">
             <div id="flipbook"></div>
         </div>
-        <div class="watermark">POWERED BY DASSY</div>
+        <div class="watermark">POWERED BY DASSY DIGITAL LIBRARY</div>
     </div>
 
     <audio id="sound" src="flip.mp3"></audio>
 
     <script>
-        const myPassword = "SOFT@WOMAN";
+        // စကားဝှက်ကို လိုအပ်သလို ပြောင်းလဲနိုင်ပါသည်
+        const myPassword = "SOFT-NO-MORE"; 
         const maxPages = 15; 
+        const flipSound = document.getElementById("sound");
 
         function unlock(){
             const entered = document.getElementById("pass").value;
             if(entered === myPassword){
                 $("#bg-video").css("opacity", "0");
-                $("#lock").fadeOut(500, function(){
-                    $("#book-container").fadeIn(400);
+                $("#lock").fadeOut(600, function(){
+                    $("#book-container").fadeIn(500);
                     loadAndInit();
                 });
             } else {
-                alert("Unauthorized Access.");
+                alert("စကားဝှက် မှားယွင်းနေပါသည်။");
             }
         }
 
         function loadAndInit(){
             const flipbook = $("#flipbook");
-            
             for(let i=1; i<=maxPages; i++){
                 const pageDiv = $('<div class="page"></div>');
-                const img = $('<img />').attr('src', `page${i}.jpg`);
+                const img = $('<img loading="lazy" />').attr('src', `page${i}.jpg`);
                 pageDiv.append(img);
                 flipbook.append(pageDiv);
             }
@@ -135,29 +168,32 @@
                     display: 'single',
                     acceleration: true,
                     gradients: true,
-                    elevation: 50,
-                    duration: 1000,
-                    when: { turning: function() { playSound(); } }
-                });
-
-                flipbook.bind('touchstart click', function(e) {
-                    const width = $(this).width();
-                    const offset = $(this).offset();
-                    const pageX = e.pageX || (e.originalEvent.touches && e.originalEvent.touches[0].pageX);
-                    
-                    if (pageX) {
-                        const relativeX = pageX - offset.left;
-                        if (relativeX > width / 2) { $(this).turn('next'); } 
-                        else { $(this).turn('previous'); }
+                    elevation: 100,
+                    duration: 800,
+                    when: {
+                        turning: function(event, page, view) {
+                            playSound();
+                        }
                     }
                 });
-            }, 500);
+            }, 250);
         }
 
         function playSound(){ 
-            let s = document.getElementById("sound"); 
-            if(s) { s.currentTime = 0; s.play().catch(e => {}); }
+            if(flipSound) {
+                flipSound.pause();
+                flipSound.currentTime = 0;
+                flipSound.play().catch(e => {});
+            }
         }
+
+        // ဖုန်း screen လှည့်လျှင် သို့မဟုတ် ဆိုဒ်ပြောင်းလျှင် စာအုပ်ဆိုဒ်ကို ပြန်ညှိပေးသည်
+        $(window).resize(function() {
+            const flipbook = $("#flipbook");
+            if (flipbook.data().turn) {
+                flipbook.turn('size', flipbook.width(), flipbook.height());
+            }
+        });
     </script>
 </body>
 </html>
