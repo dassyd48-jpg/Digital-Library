@@ -4,28 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { background: #001a1d; color: #4ed9e6; font-family: sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
-        .quiz-container { width: 100%; max-width: 500px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(78, 217, 230, 0.3); border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .phase-label { font-size: 10px; color: #ffab40; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
-        h2 { font-size: 16px; line-height: 1.6; margin: 15px 0; color: #fff; }
-        .option { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); color: #4ed9e6; border-radius: 8px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; line-height: 1.4; }
-        .option:hover { background: #4ed9e6; color: #000; font-weight: bold; transform: translateX(5px); }
-        #result-box { display: none; margin-top: 15px; padding: 15px; border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.1); border-radius: 10px; animation: fadeInUp 0.5s ease; }
-        .res-title { font-size: 14px; font-weight: bold; color: #ffab40; margin-bottom: 8px; display: block; border-left: 3px solid #ffab40; padding-left: 8px; }
-        .res-desc { color: #fff; font-size: 13px; line-height: 1.6; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        body { 
+            background: #001a1d; color: #4ed9e6; font-family: sans-serif; 
+            margin: 0; padding: 20px; display: flex; justify-content: center; 
+            align-items: center; min-height: 100vh; box-sizing: border-box; 
+        }
+
+        .quiz-container { 
+            width: 100%; max-width: 500px; background: rgba(0, 0, 0, 0.5); 
+            border: 1px solid rgba(78, 217, 230, 0.2); border-radius: 12px; 
+            padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        .phase-label { 
+            font-size: 10px; color: #ffab40; letter-spacing: 3px; 
+            text-transform: uppercase; font-weight: bold; opacity: 0.8;
+        }
+
+        h2 { font-size: 17px; line-height: 1.6; margin: 15px 0; color: #fff; }
+
+        .option { 
+            display: block; width: 100%; padding: 14px; margin: 10px 0; 
+            background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); 
+            color: #4ed9e6; border-radius: 8px; cursor: pointer; text-align: left; 
+            transition: 0.3s ease; font-size: 13px; line-height: 1.5; 
+        }
+
+        .option:hover { 
+            background: #4ed9e6; color: #000; font-weight: bold; 
+            transform: translateX(8px); border-color: #fff;
+        }
+
+        #result-box { 
+            display: none; margin-top: 15px; padding: 20px; 
+            border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.08); 
+            border-radius: 10px; animation: fadeInUp 0.5s ease; 
+        }
+
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: #ffab40; 
+            margin-bottom: 10px; display: block; border-left: 4px solid #ffab40; 
+            padding-left: 10px; text-transform: uppercase;
+        }
+
+        .res-desc { color: #fff; font-size: 13px; line-height: 1.7; margin-bottom: 20px; }
+
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; background: #ffab40; 
+            color: #000; border: none; border-radius: 6px; font-weight: 900; 
+            cursor: pointer; text-align: center; text-transform: uppercase;
+            letter-spacing: 1px; transition: 0.3s;
+        }
+
+        .next-btn:hover { background: #fff; box-shadow: 0 5px 15px rgba(255,171,64,0.3); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
+
 <div class="quiz-container">
-    <span class="phase-label">စာမျက်နှာ ၄၄ - အပေါ်စီးကနေ တုံ့ပြန်ခြင်း</span>
+    <span class="phase-label">COUNTER-MEASURES: PAGE 44</span>
     <h2 id="q-text">တစ်ဖက်လူက သင့်ကို စိတ်ပိုင်းဆိုင်ရာ ကြိုးကိုင်ဖို့ ကြိုးစားလာရင် ဘယ်လို ရင်ဆိုင်မလဲ?</h2>
+    
     <div id="options-group">
-        <button class="option" onclick="showAnalysis('The Counter Striker', 'သူတို့ရဲ့ ကစားကွက်ကို အသုံးချပြီး ပြောင်းပြန် ပြန်လည် တိုက်ခိုက်ခြင်းက သင့်ရဲ့ အဆင့်မြင့် ဗျူဟာမြောက် စွမ်းရည်ကို ပြသတာပါ။')">၁။ သူတို့ရဲ့ ကစားကွက်ကို အသုံးချပြီး ပြောင်းပြန် ပြန်လည် တိုက်ခိုက်တယ်</button>
-        <button class="option" onclick="showAnalysis('The Stone Wall', 'လုံးဝ လျစ်လျူရှုလိုက်ပြီး သူတို့ရဲ့ ကြိုးစားမှုကို အချည်းနှီး ဖြစ်စေခြင်းက အေးစက်ပြီး အထိရောက်ဆုံး တုံ့ပြန်မှုပါ။')">၂။ လုံးဝ လျစ်လျူရှုလိုက်ပြီး သူတို့ရဲ့ ကြိုးစားမှုကို အချည်းနှီး ဖြစ်စေတယ်</button>
-        <button class="option" onclick="showAnalysis('The Questioner', 'မေးခွန်းထုတ်ပြီး သူတို့ရဲ့ ရည်ရွယ်ချက်ကို အရှက်ရအောင် ဖော်ထုတ်ခြင်းဖြင့် သူတို့ရဲ့ လှည့်ကွက်တွေကို ဖြိုခွဲနိုင်ပါတယ်။')">၃။ မေးခွန်းထုတ်ပြီး သူတို့ရဲ့ ရည်ရွယ်ချက်ကို အရှက်ရအောင် ဖော်ထုတ်တယ်</button>
-        <button class="option" onclick="showAnalysis('The Predator', 'တစ်ဖက်လူရဲ့ အားနည်းချက်ကို ရှာပြီး အသာစီး ရယူလိုက်ခြင်းက မုဆိုးတစ်ယောက်လို ပါးနပ်ပြီး ထက်မြက်တဲ့ လုပ်ရပ်ပါ။')">၄။ တစ်ဖက်လူရဲ့ အားနည်းချက်ကို ရှာပြီး အသာစီး ရယူလိုက်တယ်</button>
-        <button class="option" onclick="showAnalysis('The Logical King', 'ယုတ္တိဗေဒကိုပဲ သုံးပြီး သူတို့ရဲ့ လှည့်ကွက်တွေကို ချေဖျက်လိုက်ခြင်းဖြင့် သင့်ရဲ့ တည်ငြိမ်မှုနဲ့ အာဏာကို ထိန်းသိမ်းနိုင်ပါတယ်။')">၅။ ယုတ္တိဗေဒကိုပဲ သုံးပြီး သူတို့ရဲ့ လှည့်ကွက်တွေကို ချေဖျက်လိုက်တယ်</button>
+        <button class="option" onclick="showAnalysis('THE COUNTER STRIKER', 'သင်ဟာ ရန်သူ့မြှားကို ရန်သူ့ထံ ပြန်လည်စေလွှတ်နိုင်တဲ့ ဗျူဟာရှင်ပါ။ သူတို့ရဲ့ ကစားကွက်ကို အသုံးချပြီး ပြောင်းပြန် ပြန်လည် တိုက်ခိုက်ခြင်းက သင့်ရဲ့ အဆင့်မြင့် စိတ်ဓာတ်ရေးရာ လွှမ်းမိုးမှုကို သက်သေပြတာပါပဲ။')">၁။ သူတို့ရဲ့ ကစားကွက်ကို အသုံးချပြီး ပြောင်းပြန် ပြန်လည် တိုက်ခိုက်တယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE STONE WALL', 'သင်ဟာ လှုပ်ခတ်လို့မရတဲ့ ကျောက်ဆောင်တစ်ခုလိုပါပဲ။ သူတို့ရဲ့ ကြိုးစားမှုတွေကို လုံးဝ လျစ်လျူရှုလိုက်ခြင်းက တစ်ဖက်လူကို စိတ်ဓာတ်ကျဆင်းစေပြီး သူတို့ရဲ့ ကြိုးကိုင်မှုတွေကို အလိုအလျောက် ပျက်ပြယ်စေပါတယ်။')">၂။ လုံးဝ လျစ်လျူရှုလိုက်ပြီး သူတို့ရဲ့ ကြိုးစားမှုကို အချည်းနှီး ဖြစ်စေတယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE SOCRATIC INTERROGATOR', 'သင်ဟာ အမှန်တရားကို ဖော်ထုတ်တဲ့ စစ်ဆေးရေးမှူးတစ်ယောက်ပါ။ မေးခွန်းထုတ်ပြီး သူတို့ရဲ့ ရည်ရွယ်ချက်ကို အရှက်ရအောင် ဖော်ထုတ်ခြင်းဖြင့် လှည့်ကွက်တွေကို အမြစ်ကနေ ဆွဲနှုတ်ဖျက်ဆီးပစ်နိုင်ပါတယ်။')">၃။ မေးခွန်းထုတ်ပြီး သူတို့ရဲ့ ရည်ရွယ်ချက်ကို အရှက်ရအောင် ဖော်ထုတ်တယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE ALPHA PREDATOR', 'သင့်မှာ အနိုင်မခံတဲ့ စရိုက်ရှိပါတယ်။ တစ်ဖက်လူရဲ့ လှည့်ကွက်ထဲက အားနည်းချက်ကို ပြန်ရှာပြီး အသာစီး ရယူလိုက်ခြင်းက မုဆိုးတစ်ယောက်လို ပါးနပ်တဲ့ ရှင်သန်မှု ဗျူဟာတစ်ခုပါပဲ။')">၄။ တစ်ဖက်လူရဲ့ အားနည်းချက်ကို ရှာပြီး အသာစီး ရယူလိုက်တယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE LOGICAL MONARCH', 'သင်ဟာ ခံစားချက်ထက် ယုတ္တိဗေဒကို ဦးစားပေးတဲ့ ဘုရင်တစ်ပါးလိုပါပဲ။ တည်ငြိမ်တဲ့ Logic တွေနဲ့ သူတို့ရဲ့ လှည့်ကွက်တွေကို ချေဖျက်လိုက်ခြင်းက သင့်ရဲ့ အာဏာနဲ့ Identity ကို အခိုင်မာဆုံး ကာကွယ်လိုက်တာပါပဲ။')">၅။ ယုတ္တိဗေဒကိုပဲ သုံးပြီး သူတို့ရဲ့ လှည့်ကွက်တွေကို ချေဖျက်လိုက်တယ်</button>
     </div>
 
     <div id="result-box">
@@ -37,14 +89,16 @@
         </button>
     </div>
 </div>
+
 <script>
     function showAnalysis(title, desc) {
         document.getElementById('options-group').style.display = 'none';
-        document.getElementById('q-text').style.opacity = '0.5';
+        document.getElementById('q-text').style.opacity = '0.3';
         document.getElementById('res-title').innerText = title;
         document.getElementById('res-desc').innerText = desc;
         document.getElementById('result-box').style.display = 'block';
     }
 </script>
+
 </body>
 </html>
