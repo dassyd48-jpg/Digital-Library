@@ -4,88 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Book",
+      "name": "The Feminine Protocol",
+      "author": { "@type": "Person", "name": "DASSY", "url": "https://dassyd48-jpg.github.io/Digital-Library/" },
+      "publisher": { "@type": "Organization", "name": "DASSY Digital Library" }
+    }
+    </script>
+
     <title>THE FEMININE PROTOCOL | DASSY DIGITAL LIBRARY</title>
-
-    <meta name="description" content="The Feminine Protocol - အမျိုးသမီးတို့၏ စိတ်အလွှာများကို လေ့လာနိုင်မည့် ၆၁-စာမျက်နှာပါ ဒစ်ဂျစ်တယ်စာအုပ်။">
-    <meta property="og:title" content="THE FEMININE PROTOCOL">
-    <meta property="og:description" content="DASSY Digital Library မှ တင်ဆက်သော ၆၁-စာမျက်နှာပါ ဒစ်ဂျစ်တယ် စာအုပ်။">
-    <meta property="og:type" content="website">
-    <meta name="author" content="DASSY Digital Library">
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
 
     <style>
-        html, body { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            overflow: hidden; background: #000; font-family: 'Inter', sans-serif; 
-        }
-
+        * { box-sizing: border-box; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
+        
+        /* High-Definition Background Video */
         #bg-video { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            object-fit: cover; z-index: 0; filter: brightness(0.9);
+            object-fit: cover; z-index: 0; filter: brightness(0.8); /* ကြည်လင်အောင် Brightness တိုးထားသည် */
+            transition: opacity 1s ease;
         }
 
+        /* Centered UI Layout */
         #lock {
-            position: fixed; width: 100%; height: 100%; display: flex; 
+            position: fixed; inset: 0; display: flex; 
             justify-content: center; align-items: center; flex-direction: column; 
-            z-index: 20; background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            color: #fff; text-align: center;
+            z-index: 20; background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px); color: #fff; text-align: center;
         }
 
-        .book-theme-text {
-            color: #4ed9e6; font-weight: 800; text-transform: uppercase;
-            letter-spacing: 6px; text-shadow: 0 0 25px rgba(78, 217, 230, 0.5);
-            font-size: 32px; margin-bottom: 8px;
-        }
-
-        .bright-subtitle { 
-            font-size: 13px; letter-spacing: 5.5px; color: #ffffff; 
-            margin-bottom: 40px; text-transform: uppercase;
-            font-weight: 700; opacity: 0.9;
+        .book-title {
+            color: #fff; font-weight: 900; letter-spacing: 6px; 
+            font-size: clamp(20px, 5vw, 32px); margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(78, 217, 230, 0.8);
         }
 
         #lock input {
-            padding: 17px; width: 260px; border-radius: 8px; 
-            border: 3px solid #4ed9e6; background: rgba(0, 0, 0, 0.7); 
-            color: #fff; text-align: center; outline: none; font-size: 15px; 
-            letter-spacing: 6px; transition: 0.4s;
+            padding: 16px; width: 260px; border: 1px solid #4ed9e6; 
+            background: rgba(0,0,0,0.8); color: #fff; text-align: center; 
+            font-size: 16px; letter-spacing: 5px; border-radius: 4px;
         }
 
         #lock button {
-            margin-top: 30px; padding: 15px 65px; border-radius: 8px; border: none;
-            background: linear-gradient(135deg, #0b4d54 0%, #1a7b85 100%);
-            color: #ffffff; font-weight: bold; cursor: pointer; text-transform: uppercase;
-            letter-spacing: 3px; transition: 0.4s;
+            margin-top: 25px; padding: 12px 60px; background: #4ed9e6; 
+            color: #000; border: none; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; border-radius: 4px;
         }
 
-        #book-container { display: none; width: 100%; height: 100%; position: fixed; z-index: 10; background: #000; }
-        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        
+        /* Perfect Centering for All Devices */
+        #book-container { 
+            display: none; width: 100vw; height: 100vh; 
+            position: relative; z-index: 10;
+        }
+
+        #flipbook-wrapper {
+            width: 100%; height: 100%; display: flex;
+            justify-content: center; align-items: center;
+            background: #000;
+        }
+
         .watermark { 
-            position: fixed; bottom: 15px; width: 100%; text-align: center; 
-            font-size: 10px; color: rgba(78,217,230,0.5); z-index: 100; letter-spacing: 5px; 
-        }
-
-        .contact-link { 
-            margin-top: 45px; color: #fff; text-decoration: none; font-size: 11px; 
-            opacity: 0.7; border-bottom: 1px solid rgba(78,217,230,0.3); padding-bottom: 2px; 
+            position: absolute; bottom: 15px; width: 100%; 
+            text-align: center; font-size: 9px; color: #4ed9e6; 
+            opacity: 0.4; letter-spacing: 3px; pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <video id="bg-video" autoplay muted loop playsinline>
-        <source src="video.mp4" type="video/mp4">
-    </video>
+    <video id="bg-video" autoplay muted loop playsinline><source src="video.mp4" type="video/mp4"></video>
 
     <div id="lock">
-        <h2 class="book-theme-text">THE FEMININE PROTOCOL</h2>
-        <p class="bright-subtitle">REPROGRAM YOUR REALITY</p>
-        <input type="password" id="pass" placeholder="PRIVATE CODE" autocomplete="off">
-        <button onclick="unlock()">ACCESS PROTOCOL</button>
-        <a href="https://t.me/Dassy_Digital_Library" target="_blank" class="contact-link">CREDENTIALS VIA DASSY LIBRARY 📩</a>
+        <p style="font-size:10px; color:#4ed9e6; letter-spacing:4px; margin-bottom:10px;">DASSY DIGITAL LIBRARY PRESENTS</p>
+        <h1 class="book-title">THE FEMININE PROTOCOL</h1>
+        <input type="password" id="pass" placeholder="PRIVATE CODE">
+        <button onclick="unlock()">INITIALIZE</button>
     </div>
 
     <div id="book-container">
@@ -95,40 +92,42 @@
         <div class="watermark">© DASSY DIGITAL LIBRARY</div>
     </div>
 
-    <audio id="sound" src="flip.mp3"></audio>
+    <audio id="sound" src="flip.mp3" preload="auto"></audio>
 
     <script>
         const myPassword = "PROTOCOL_DASSY_2026"; 
         const maxPages = 61; 
         const quizPages = [10, 19, 25, 31, 37, 44, 50, 56]; 
-        const flipSound = document.getElementById("sound");
         let isQuizLocked = false; 
 
-        function unlock(){
-            const entered = document.getElementById("pass").value;
-            if(entered === myPassword){
-                $("#bg-video").fadeOut(800);
-                $("#lock").fadeOut(500, function(){
+        function unlock() {
+            if(document.getElementById("pass").value === myPassword) {
+                $("#bg-video").css("opacity", "0"); // Video ဖျောက်ပစ်ရန်
+                $("#lock").fadeOut(500, () => {
+                    setTimeout(() => { $("#bg-video").hide(); }, 1000);
                     $("#book-container").fadeIn(400);
                     loadAndInit();
                 });
-            } else {
-                alert("Private Code မှားယွင်းနေပါသည်။");
-            }
+            } else { alert("ACCESS DENIED: Code မှားယွင်းနေပါသည်။"); }
         }
 
-        function loadAndInit(){
+        function loadAndInit() {
             const flipbook = $("#flipbook");
-            const h = window.innerHeight * 0.90; // Mobile မှာ ပိုမြင်ရအောင် height မြှင့်ထားသည်
-            const w = h * 0.707;
+            // Screen Size အလိုက် စာအုပ်အရွယ်အစားကို ချိန်ညှိခြင်း
+            let h = window.innerHeight * 0.85;
+            let w = h * 0.707;
+            
+            if(window.innerWidth < 600) { // Mobile အတွက်
+                w = window.innerWidth * 0.9;
+                h = w / 0.707;
+            }
 
-            for(let i=1; i<=maxPages; i++){
+            for(let i=1; i<=maxPages; i++) {
                 const pageDiv = $('<div class="page" style="background:#001a1d;"></div>');
                 if(quizPages.includes(i)) {
-                    // Quiz page တွေအတွက် iframe သုံးထားသည်
-                    pageDiv.append(`<iframe id="quiz-${i}" src="page${i}.html" style="width:100%; height:100%; border:none;"></iframe>`);
+                    pageDiv.append(`<iframe data-src="page${i}.html" style="width:100%; height:100%; border:none;"></iframe>`);
                 } else {
-                    const img = $('<img loading="lazy" style="width:100%; height:100%; object-fit:contain;" />').attr('src', `page${i}.jpg`);
+                    const img = $('<img style="width:100%; height:100%; object-fit:contain;" />').attr('src', `page${i}.jpg`);
                     pageDiv.append(img);
                 }
                 flipbook.append(pageDiv);
@@ -136,52 +135,37 @@
 
             setTimeout(() => {
                 flipbook.turn({
-                    width: w, height: h, autoCenter: true, display: 'single', 
-                    acceleration: true, duration: 1000,
-                    when: { 
-                        turning: function(event, page) {
-                            // Quiz မဖြေရသေးဘဲ လှန်တာကို တားဆီးရန်
-                            if (isQuizLocked) {
-                                event.preventDefault();
-                                alert("ကျေးဇူးပြု၍ Quiz ကို အရင်ဆုံးဖြေဆိုပေးပါ။");
-                                return;
-                            }
-                            if(flipSound) { flipSound.currentTime = 0; flipSound.play().catch(e => {}); } 
+                    width: w, height: h, autoCenter: true, display: 'single', acceleration: true,
+                    when: {
+                        turning: function(e, page) {
+                            if (isQuizLocked) { e.preventDefault(); return; }
+                            const s = document.getElementById("sound");
+                            s.currentTime = 0; s.play().catch(e=>{});
                         },
-                        turned: function(event, page) {
-                            // Quiz Page ကို ရောက်တာနဲ့ Lock စတင်မည်
-                            if (quizPages.includes(page)) {
-                                isQuizLocked = true;
-                            } else {
-                                isQuizLocked = false;
+                        turned: function(e, page) {
+                            isQuizLocked = quizPages.includes(page);
+                            if(isQuizLocked) {
+                                const f = $(this).find('iframe');
+                                if(!f.attr('src')) f.attr('src', f.attr('data-src'));
                             }
                         }
                     }
                 });
-            }, 250);
+            }, 100);
         }
 
-        // Quiz file ကနေပို့လိုက်တဲ့ 'quizCompleted' message ကို လက်ခံမယ်
-window.addEventListener("message", (e) => {
-    if(e.data === "quizCompleted") {
-        isQuizLocked = false; // Lock ပြန်ဖွင့်ပေးလိုက်တယ်
-        
-        // စာမျက်နှာကို အလိုအလျောက် နောက်တစ်ရွက် လှန်ပေးလိုက်ပါမယ်
-        setTimeout(() => {
-            $("#flipbook").turn("next");
-        }, 300);
-        
-        // Alert ကို နောက်ဆုံးမှပြပါ
-        setTimeout(() => {
-            alert("ဂုဏ်ယူပါတယ်! နောက်စာမျက်နှာကို ဆက်လက်ဖတ်ရှုနိုင်ပါပြီ။");
-        }, 500);
-    }
-});
-        // Window resize ဖြစ်ရင် စာအုပ်အရွယ်အစား ပြန်ညှိရန်
-        $(window).resize(function() {
-            const h = window.innerHeight * 0.90;
-            const w = h * 0.707;
-            $("#flipbook").turn("size", w, h);
+        window.addEventListener("message", (e) => {
+            if(e.data === "quizCompleted") {
+                isQuizLocked = false;
+                setTimeout(() => { $("#flipbook").turn("next"); }, 100);
+            }
+        });
+
+        // Device ပြောင်းလဲမှုရှိပါက စာအုပ်ကို အလည်ပြန်ပို့ရန်
+        $(window).resize(() => {
+            const h = window.innerHeight * 0.85;
+            const w = (window.innerWidth < 600) ? window.innerWidth * 0.9 : h * 0.707;
+            $("#flipbook").turn("size", w, (window.innerWidth < 600) ? w/0.707 : h);
         });
     </script>
 </body>
