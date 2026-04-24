@@ -4,28 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { background: #001a1d; color: #4ed9e6; font-family: sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
-        .quiz-container { width: 100%; max-width: 500px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(78, 217, 230, 0.3); border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .phase-label { font-size: 10px; color: #ffab40; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
-        h2 { font-size: 16px; line-height: 1.6; margin: 15px 0; color: #fff; }
-        .option { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); color: #4ed9e6; border-radius: 8px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; line-height: 1.4; }
-        .option:hover { background: #4ed9e6; color: #000; font-weight: bold; transform: translateX(5px); }
-        #result-box { display: none; margin-top: 15px; padding: 15px; border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.1); border-radius: 10px; animation: fadeInUp 0.5s ease; }
-        .res-title { font-size: 14px; font-weight: bold; color: #ffab40; margin-bottom: 8px; display: block; border-left: 3px solid #ffab40; padding-left: 8px; }
-        .res-desc { color: #fff; font-size: 13px; line-height: 1.6; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        body { 
+            background: #001a1d; color: #4ed9e6; font-family: sans-serif; 
+            margin: 0; padding: 20px; display: flex; justify-content: center; 
+            align-items: center; min-height: 100vh; box-sizing: border-box; 
+        }
+
+        .quiz-container { 
+            width: 100%; max-width: 500px; background: rgba(0, 0, 0, 0.5); 
+            border: 1px solid rgba(78, 217, 230, 0.2); border-radius: 12px; 
+            padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        .phase-label { 
+            font-size: 10px; color: #ffab40; letter-spacing: 3px; 
+            text-transform: uppercase; font-weight: bold; opacity: 0.8;
+        }
+
+        h2 { font-size: 17px; line-height: 1.6; margin: 15px 0; color: #fff; }
+
+        .option { 
+            display: block; width: 100%; padding: 14px; margin: 10px 0; 
+            background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); 
+            color: #4ed9e6; border-radius: 8px; cursor: pointer; text-align: left; 
+            transition: 0.3s ease; font-size: 13px; line-height: 1.5; 
+        }
+
+        .option:hover { 
+            background: #4ed9e6; color: #000; font-weight: bold; 
+            transform: translateX(8px); border-color: #fff;
+        }
+
+        #result-box { 
+            display: none; margin-top: 15px; padding: 20px; 
+            border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.08); 
+            border-radius: 10px; animation: fadeInUp 0.5s ease; 
+        }
+
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: #ffab40; 
+            margin-bottom: 10px; display: block; border-left: 4px solid #ffab40; 
+            padding-left: 10px; text-transform: uppercase;
+        }
+
+        .res-desc { color: #fff; font-size: 13px; line-height: 1.7; margin-bottom: 20px; }
+
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; background: #ffab40; 
+            color: #000; border: none; border-radius: 6px; font-weight: 900; 
+            cursor: pointer; text-align: center; text-transform: uppercase;
+            letter-spacing: 1px; transition: 0.3s;
+        }
+
+        .next-btn:hover { background: #fff; box-shadow: 0 5px 15px rgba(255,171,64,0.3); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
+
 <div class="quiz-container">
-    <span class="phase-label">စာမျက်နှာ ၃၇ - ရေရှည်ဗျူဟာကို ဖတ်ရှုခြင်း</span>
+    <span class="phase-label">STRATEGIC ANALYSIS: PAGE 37</span>
     <h2 id="q-text">လူတစ်ယောက်ကို ယုံကြည်သင့် မယုံကြည်သင့် ဆုံးဖြတ်ဖို့ ဘယ်အချက်ကို အလေးထားမလဲ?</h2>
+    
     <div id="options-group">
-        <button class="option" onclick="showAnalysis('The Cold Judge', 'သူတို့ရဲ့ အတိတ်က လုပ်ဆောင်ချက်တွေအပေါ်မှာပဲ အခြေခံပြီး ဆုံးဖြတ်ခြင်းက အမှားအနည်းဆုံးနည်းလမ်းပါပဲ။')">၁။ သူတို့ရဲ့ အတိတ်က လုပ်ဆောင်ချက်တွေအပေါ်မှာပဲ အခြေခံပြီး ဆုံးဖြတ်တယ်</button>
-        <button class="option" onclick="showAnalysis('The Pressure Tester', 'ဖိအားပေးခံရတဲ့ အချိန်မှာ သူတို့ ဘယ်လို တုံ့ပြန်သလဲဆိုတာကို ကြည့်ခြင်းဖြင့် သူတို့ရဲ့ စရိုက်အမှန်ကို ဖော်ထုတ်နိုင်ပါတယ်။')">၂။ ဖိအားပေးခံရတဲ့ အချိန်မှာ သူတို့ ဘယ်လို တုံ့ပြန်သလဲဆိုတာကို ကြည့်တယ်</button>
-        <button class="option" onclick="showAnalysis('The Zero Trust', 'ဘယ်သူ့ကိုမှ မယုံကြည်ဘဲ အမြဲတမ်း သတိနဲ့ပဲ ဆက်ဆံခြင်းက သင့်ကို မလိုလားအပ်တဲ့ ထိခိုက်မှုတွေကနေ ကာကွယ်ပေးပါလိမ့်မယ်။')">၃။ ဘယ်သူ့ကိုမှ မယုံကြည်ဘဲ အမြဲတမ်း သတိနဲ့ပဲ ဆက်ဆံတယ်</button>
-        <button class="option" onclick="showAnalysis('The Result Seeker', 'သူတို့ ပေးနိုင်တဲ့ လက်တွေ့ ရလဒ်တွေကိုပဲ အဓိကထား ကြည့်ရှုခြင်းက အမျိုးသားတစ်ယောက်အတွက် အထိရောက်ဆုံး ဆုံးဖြတ်ချက်ပါ။')">၄။ သူတို့ ပေးနိုင်တဲ့ လက်တွေ့ ရလဒ်တွေကိုပဲ အဓိကထား ကြည့်ရှုတယ်</button>
-        <button class="option" onclick="showAnalysis('The Master Manipulator', 'ယုံကြည်မှုထက် သူတို့ကို ဘယ်လို ထိန်းချုပ်ထားရမလဲဆိုတာကိုပဲ စဉ်းစားခြင်းက အရာရာကို အသာစီးရယူနိုင်မယ့် လျှို့ဝှက်ချက်ပါ။')">၅။ ယုံကြည်မှုထက် သူတို့ကို ဘယ်လို ထိန်းချုပ်ထားရမလဲဆိုတာကိုပဲ စဉ်းစားတယ်</button>
+        <button class="option" onclick="showAnalysis('THE COLD JUDGE', 'သင်ဟာ ဒေတာကို အခြေခံတဲ့ ဆုံးဖြတ်ချက်သမားပါ။ စကားလုံးတွေက လိမ်ညာနိုင်ပေမယ့် လူတစ်ယောက်ရဲ့ အတိတ်က လုပ်ဆောင်ချက်တွေ (Track Record) ကတော့ အမှန်တရားကို ဖော်ပြနေတယ်ဆိုတာကို သင်ကောင်းကောင်း နားလည်ထားပါတယ်။')">၁။ သူတို့ရဲ့ အတိတ်က လုပ်ဆောင်ချက်တွေအပေါ်မှာပဲ အခြေခံပြီး ဆုံးဖြတ်တယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE PRESSURE TESTER', 'သင်ဟာ လူတွေရဲ့ အတွင်းသဏ္ဌာန်ကို ဖော်ထုတ်ရာမှာ ကျွမ်းကျင်ပါတယ်။ ပုံမှန်အချိန်ထက် ဖိအားပေးခံရတဲ့ အချိန်မှာ သူတို့ ဘယ်လို တုံ့ပြန်သလဲဆိုတာကို ကြည့်ခြင်းဖြင့် သူတို့ရဲ့ စရိုက်အမှန်နဲ့ ယုံကြည်ထိုက်မှုကို စမ်းသပ်တတ်သူ ဖြစ်ပါတယ်။')">၂။ ဖိအားပေးခံရတဲ့ အချိန်မှာ သူတို့ ဘယ်လို တုံ့ပြန်သလဲဆိုတာကို ကြည့်တယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE VIGILANT', 'သင်ဟာ အကာအကွယ် အကောင်းဆုံး ခံတပ်တစ်ခုလိုပါပဲ။ ဘယ်သူ့ကိုမှ အလွယ်တကူ မယုံကြည်ဘဲ အမြဲတမ်း သတိနဲ့ ဆက်ဆံခြင်းက သင့်ကို သစ္စာဖောက်မှုတွေနဲ့ မလိုလားအပ်တဲ့ ထိခိုက်မှုတွေကနေ ကာကွယ်ပေးထားပါတယ်။')">၃။ ဘယ်သူ့ကိုမှ မယုံကြည်ဘဲ အမြဲတမ်း သတိနဲ့ပဲ ဆက်ဆံတယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE RESULT SEEKER', 'သင်ဟာ လက်တွေ့ကျတဲ့ ရလဒ်တွေကိုပဲ ကြည့်တဲ့ ခေါင်းဆောင်တစ်ယောက်ပါ။ စိတ်ခံစားချက်တွေထက် သူတို့ ပေးနိုင်တဲ့ လက်တွေ့ရလဒ်နဲ့ တာဝန်ကျေပွန်မှုကိုပဲ အဓိကထား ဆုံးဖြတ်ခြင်းက သင့်အတွက် အထိရောက်ဆုံး နည်းလမ်းပါပဲ။')">၄။ သူတို့ ပေးနိုင်တဲ့ လက်တွေ့ ရလဒ်တွေကိုပဲ အဓိကထား ကြည့်ရှုတယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE MASTER CONTROLLER', 'သင်ဟာ ယုံကြည်မှုထက် ထိန်းချုပ်မှု (Control) ကို ပိုမိုယုံကြည်သူပါ။ လူတစ်ယောက်ကို ယုံကြည်ဖို့ ကြိုးစားမယ့်အစား သူတို့ကို ဘယ်လို အသာစီးယူ ထိန်းချုပ်ထားရမလဲဆိုတဲ့ ဗျူဟာကိုပဲ အမြဲ စဉ်းစားတတ်သူ ဖြစ်ပါတယ်။')">၅။ ယုံကြည်မှုထက် သူတို့ကို ဘယ်လို ထိန်းချုပ်ထားရမလဲဆိုတာကိုပဲ စဉ်းစားတယ်</button>
     </div>
 
     <div id="result-box">
@@ -37,14 +89,16 @@
         </button>
     </div>
 </div>
+
 <script>
     function showAnalysis(title, desc) {
         document.getElementById('options-group').style.display = 'none';
-        document.getElementById('q-text').style.opacity = '0.5';
+        document.getElementById('q-text').style.opacity = '0.3';
         document.getElementById('res-title').innerText = title;
         document.getElementById('res-desc').innerText = desc;
         document.getElementById('result-box').style.display = 'block';
     }
 </script>
+
 </body>
 </html>
