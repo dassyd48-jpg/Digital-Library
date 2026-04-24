@@ -2,42 +2,83 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { background: #001a1d; color: #4ed9e6; font-family: sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; box-sizing: border-box; }
-        .quiz-container { width: 100%; max-width: 480px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(78, 217, 230, 0.3); border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .phase-label { font-size: 10px; color: #ffab40; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
-        h2 { font-size: 16px; line-height: 1.6; margin: 15px 0; color: #fff; }
-        .option { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); color: #4ed9e6; border-radius: 8px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; }
-        .option:hover { background: #4ed9e6; color: #000; font-weight: bold; }
+        /* Device အားလုံးမှာ အလည်တည့်တည့်ကျအောင် ချိန်ညှိခြင်း */
+        body { 
+            background: #001a1d; color: #4ed9e6; font-family: sans-serif; 
+            margin: 0; padding: 15px; display: flex; justify-content: center; 
+            align-items: center; min-height: 100vh; box-sizing: border-box; 
+        }
         
-        /* Result Box Style */
-        #result-box { display: none; margin-top: 15px; padding: 15px; border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.1); border-radius: 10px; animation: fadeInUp 0.5s ease; }
-        .res-title { font-size: 14px; font-weight: bold; color: #ffab40; margin-bottom: 8px; display: block; border-left: 3px solid #ffab40; padding-left: 8px; }
-        .res-desc { color: #fff; font-size: 13px; line-height: 1.6; margin-bottom: 15px; }
+        .quiz-container { 
+            width: 100%; max-width: 480px; background: rgba(0, 0, 0, 0.6); 
+            border: 1px solid rgba(78, 217, 230, 0.2); border-radius: 12px; 
+            padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
 
-        /* Lock ဖွင့်မည့် ခလုတ်အသစ် */
+        .phase-label { 
+            font-size: 10px; color: #ffab40; letter-spacing: 2px; 
+            text-transform: uppercase; font-weight: bold; opacity: 0.8;
+        }
+
+        h2 { font-size: 16px; line-height: 1.5; margin: 15px 0; color: #fff; }
+
+        /* Option ခလုတ်များ - ဖုန်းမှာ နှိပ်ရလွယ်အောင် ပြင်ဆင်ခြင်း */
+        .option { 
+            display: block; width: 100%; padding: 14px; margin: 10px 0; 
+            background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); 
+            color: #4ed9e6; border-radius: 6px; cursor: pointer; text-align: left; 
+            transition: 0.2s; font-size: 13px; line-height: 1.4;
+        }
+
+        .option:active { transform: scale(0.98); background: rgba(78, 217, 230, 0.1); }
+        .option:hover { background: #4ed9e6; color: #000; font-weight: bold; border-color: #fff; }
+
+        /* Result Animation */
+        #result-box { 
+            display: none; margin-top: 5px; padding: 20px; 
+            border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.05); 
+            border-radius: 8px; animation: fadeInUp 0.4s ease-out; 
+        }
+
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: #ffab40; 
+            margin-bottom: 12px; display: block; border-left: 4px solid #ffab40; 
+            padding-left: 10px; text-transform: uppercase;
+        }
+
+        .res-desc { color: #fff; font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
+
         .next-btn { 
-            display: block; width: 100%; padding: 12px; background: #ffab40; 
-            color: #000; border: none; border-radius: 8px; font-weight: bold; 
+            display: block; width: 100%; padding: 15px; background: #ffab40; 
+            color: #000; border: none; border-radius: 6px; font-weight: 900; 
             cursor: pointer; text-align: center; text-transform: uppercase;
             letter-spacing: 1px; transition: 0.3s;
         }
-        .next-btn:hover { background: #fff; transform: translateY(-2px); }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .next-btn:hover { background: #fff; box-shadow: 0 0 15px rgba(255,171,64,0.4); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
+
 <div class="quiz-container">
-    <span class="phase-label">စာမျက်နှာ ၁၀ - အခြေအနေကို ဆန်းစစ်ခြင်း</span>
+    <span class="phase-label">SYSTEM ANALYSIS: PHASE 10</span>
     <h2 id="q-text">သင့်ရဲ့ ဆုံးဖြတ်ချက်တွေအပေါ် တစ်ဖက်လူရဲ့ လွှမ်းမိုးမှုကို ဘယ်လို တုံ့ပြန်မလဲ?</h2>
     
     <div id="options-group">
-        <button class="option" onclick="showAnalysis('အချုပ်အခြာအာဏာရှင်', 'သင်ဟာ သင့်ဘဝရဲ့ ဘုရင်ပါပဲ။ တစ်ဖက်လူ ဘာဖြစ်ဖြစ် ကိုယ့်စိတ်ဆန္ဒအတိုင်းပဲ ဘာကိုမှ ဂရုမစိုက်ဘဲ လုပ်ဆောင်နိုင်တဲ့ ပြတ်သားတဲ့ စိတ်ဓာတ်ရှိပါတယ်။')">၁။ တစ်ဖက်လူ ဘာဖြစ်ဖြစ် ကိုယ့်စိတ်ဆန္ဒအတိုင်းပဲ ဘာကိုမှ ဂရုမစိုက်ဘဲ လုပ်တယ်</button>
-        <button class="option" onclick="showAnalysis('ဗျူဟာမြောက်သူ', 'ကိုယ့်စိတ်ကြိုက်ဖြစ်ဖို့အတွက် တစ်ဖက်လူကိုပါ ဗျူဟာမြောက် အသုံးချနိုင်စွမ်းရှိပါတယ်။ ဒါဟာ ထက်မြက်တဲ့ အမျိုးသားတစ်ယောက်ရဲ့ လက္ခဏာပါ။')">၂။ ကိုယ့်စိတ်ကြိုက်ဖြစ်ဖို့အတွက် တစ်ဖက်လူကိုပါ ဗျူဟာမြောက် အသုံးချတယ်</button>
-        <button class="option" onclick="showAnalysis('လွတ်လပ်စွာ ဆုံးဖြတ်သူ', 'ကိုယ့်အမှားကို ကိုယ်တိုင်တာဝန်ယူရဲတဲ့ စိတ်ဓာတ်ရှိပါတယ်။ တစ်ဖက်လူရဲ့ ဝေဖန်မှုကို လုံးဝ နားမယောင်ဘဲ ကိုယ့်လမ်းကိုယ် သွားတတ်သူပါ။')">၃။ ကိုယ့်ရဲ့ ဆုံးဖြတ်ချက်တွေကို တစ်ဖက်လူ ဝေဖန်တာကို လုံးဝ နားမယောင်ဘူး</button>
-        <button class="option" onclick="showAnalysis('သံသယရှိသူ', 'ကိုယ့်လုပ်ဆောင်ချက်တွေကို ပြန်လည် သံသယဝင်နေခြင်းဟာ တစ်ဖက်လူရဲ့ ကြိုးကိုင်မှုကို စတင်ခံနေရတဲ့ လက္ခဏာဖြစ်လို့ သတိထားဖို့ လိုပါတယ်။')">၄။ ကိုယ့်ရဲ့ လုပ်ဆောင်ချက်တွေအပေါ် တစ်ခါတစ်ရံ သံသယဝင်မိတတ်တယ်</button>
-        <button class="option" onclick="showAnalysis('အလိုက်သင့် နေသူ', 'တစ်ဖက်လူ စိတ်ဆိုးမှာစိုးလို့ ကိုယ့်ရည်မှန်းချက်တွေကို လျှော့ချပေးမိခြင်းဟာ သင့်ရဲ့ Identity ကို ပျောက်ဆုံးစေနိုင်ပါတယ်။')">၅။ တစ်ဖက်လူ စိတ်ဆိုးမှာစိုးလို့ ကိုယ့်ရည်မှန်းချက်တွေကို လျှော့ချပေးမိတယ်</button>
+        <button class="option" onclick="showAnalysis('THE SOVEREIGN (အချုပ်အခြာအာဏာရှင်)', 'သင်ဟာ သင့်ဘဝရဲ့ တစ်ဦးတည်းသော အရှင်သခင်ပါ။ တစ်ဖက်လူရဲ့ အခြေအနေထက် ကိုယ့်ရဲ့ ပန်းတိုင်နဲ့ စိတ်ဆန္ဒကိုပဲ ရှေ့တန်းတင်ပြီး ပြတ်သားစွာ လုပ်ဆောင်နိုင်သူ ဖြစ်ပါတယ်။')">၁။ တစ်ဖက်လူ ဘာဖြစ်ဖြစ် ကိုယ့်စိတ်ဆန္ဒအတိုင်းပဲ ပြတ်ပြတ်သားသား လုပ်ဆောင်တယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE STRATEGIST (ဗျူဟာမြောက်သူ)', 'သင်ဟာ အခြေအနေကို အမြဲ အသာစီးရအောင် ဖန်တီးတတ်သူပါ။ ကိုယ့်စိတ်ကြိုက်ဖြစ်လာဖို့အတွက် ပတ်ဝန်းကျင်နဲ့ တစ်ဖက်လူကိုပါ ဗျူဟာမြောက် အသုံးချနိုင်တဲ့ ထက်မြက်သူ ဖြစ်ပါတယ်။')">၂။ ကိုယ့်ရည်မှန်းချက် အောင်မြင်ဖို့ တစ်ဖက်လူကိုပါ ဗျူဟာမြောက် အသုံးချတတ်တယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE INDEPENDENT (လွတ်လပ်စွာ ဆုံးဖြတ်သူ)', 'ကိုယ့်အမှားကို ကိုယ်တိုင်တာဝန်ယူရဲတဲ့ သတ္တိရှိပါတယ်။ တစ်ဖက်လူရဲ့ ဝေဖန်မှု ဒါမှမဟုတ် လှောင်ပြောင်မှုတွေကို လုံးဝ ဂရုမစိုက်ဘဲ ကိုယ့်လမ်းကိုယ် ယုံကြည်ချက်ရှိရှိ သွားတတ်သူပါ။')">၃။ ဝေဖန်တိုက်ခိုက်မှုတွေကို နားမယောင်ဘဲ ကိုယ့်ဆုံးဖြတ်ချက်အတိုင်းပဲ သွားတယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE SKEPTIC (သံသယရှိသူ)', 'ကိုယ့်လုပ်ဆောင်ချက်တွေကို ပြန်လည် သံသယဝင်နေခြင်းဟာ တစ်ဖက်လူရဲ့ စိတ်ပိုင်းဆိုင်ရာ ကြိုးကိုင်မှု (Manipulate) ကို စတင်ခံနေရတဲ့ လက္ခဏာ ဖြစ်ပါတယ်။ ပိုမို သတိထားဖို့ လိုအပ်ပါတယ်။')">၄။ ကိုယ့်လုပ်ရပ်တွေအပေါ် တစ်ခါတစ်ရံ သံသယဝင်ပြီး စိုးရိမ်စိတ် ရှိတတ်တယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE ADAPTOR (အလိုက်သင့် နေသူ)', 'တစ်ဖက်လူ စိတ်အနှောင့်အယှက် ဖြစ်မှာစိုးလို့ ကိုယ့်ရဲ့ အခွင့်အရေးနဲ့ ရည်မှန်းချက်တွေကို လျှော့ချပေးမိတတ်ပါတယ်။ ဒါဟာ သင့်ရဲ့ ကိုယ်ပိုင် Identity ကို တဖြည်းဖြည်း ပျောက်ဆုံးစေနိုင်ပါတယ်။')">၅။ တစ်ဖက်လူ စိတ်မဆိုးဖို့အတွက် ကိုယ့်ရဲ့ လိုအင်ဆန္ဒတွေကို လျှော့ချပေးမိတယ်</button>
     </div>
 
     <div id="result-box">
@@ -45,19 +86,24 @@
         <p class="res-desc" id="res-desc"></p>
         
         <button onclick="parent.postMessage('quizCompleted', '*')" class="next-btn">
-            နောက်တစ်ခန်းသို့သွားရန် Lock ဖွင့်ပါ →
+            ACCESS GRANTED: NEXT PHASE →
         </button>
     </div>
 </div>
 
 <script>
     function showAnalysis(title, desc) {
+        // Option အုပ်စုကို ဖျောက်ပြီး Result ကို ပြသခြင်း
         document.getElementById('options-group').style.display = 'none';
-        document.getElementById('q-text').style.opacity = '0.5';
+        document.getElementById('q-text').style.opacity = '0.3';
         document.getElementById('res-title').innerText = title;
         document.getElementById('res-desc').innerText = desc;
         document.getElementById('result-box').style.display = 'block';
+        
+        // စာမျက်နှာ ထိပ်ဆုံးသို့ အလိုအလျောက် ရွှေ့ပေးခြင်း (ဖုန်းများအတွက်)
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 </script>
+
 </body>
 </html>
