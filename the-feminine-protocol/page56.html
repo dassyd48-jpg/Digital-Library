@@ -4,29 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { background: #001a1d; color: #4ed9e6; font-family: sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
-        .quiz-container { width: 100%; max-width: 500px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(78, 217, 230, 0.3); border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .phase-label { font-size: 10px; color: #ffab40; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
-        h2 { font-size: 16px; line-height: 1.6; margin: 15px 0; color: #fff; }
-        .option { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); color: #4ed9e6; border-radius: 8px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; line-height: 1.4; }
-        .option:hover { background: #4ed9e6; color: #000; font-weight: bold; transform: translateX(5px); }
-        #result-box { display: none; margin-top: 15px; padding: 15px; border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.1); border-radius: 10px; animation: fadeInUp 0.5s ease; }
-        .res-title { font-size: 14px; font-weight: bold; color: #ffab40; margin-bottom: 8px; display: block; border-left: 3px solid #ffab40; padding-left: 8px; }
-        .res-desc { color: #fff; font-size: 13px; line-height: 1.6; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        body { 
+            background: #001a1d; color: #4ed9e6; font-family: sans-serif; 
+            margin: 0; padding: 20px; display: flex; justify-content: center; 
+            align-items: center; min-height: 100vh; box-sizing: border-box; 
+        }
+
+        .quiz-container { 
+            width: 100%; max-width: 500px; background: rgba(0, 0, 0, 0.6); 
+            border: 1px solid rgba(78, 217, 230, 0.3); border-radius: 16px; 
+            padding: 30px; box-shadow: 0 15px 50px rgba(0,0,0,0.8);
+            backdrop-filter: blur(12px);
+        }
+
+        .phase-label { 
+            font-size: 11px; color: #ffab40; letter-spacing: 4px; 
+            text-transform: uppercase; font-weight: bold; display: block;
+            margin-bottom: 5px; text-align: center;
+        }
+
+        h2 { font-size: 18px; line-height: 1.6; margin: 20px 0; color: #fff; text-align: center; }
+
+        .option { 
+            display: block; width: 100%; padding: 15px; margin: 12px 0; 
+            background: rgba(78, 217, 230, 0.08); border: 1px solid rgba(78, 217, 230, 0.2); 
+            color: #4ed9e6; border-radius: 10px; cursor: pointer; text-align: left; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); font-size: 14px; line-height: 1.5; 
+        }
+
+        .option:hover { 
+            background: #4ed9e6; color: #000; font-weight: bold; 
+            transform: translateY(-3px) scale(1.02); box-shadow: 0 5px 15px rgba(78, 217, 230, 0.4);
+        }
+
+        #result-box { 
+            display: none; margin-top: 20px; padding: 20px; 
+            border: 2px solid #ffab40; background: rgba(255, 171, 64, 0.1); 
+            border-radius: 12px; animation: glowPulse 2s infinite alternate, fadeInUp 0.6s ease;
+        }
+
+        .res-title { 
+            font-size: 16px; font-weight: bold; color: #ffab40; 
+            margin-bottom: 12px; display: block; text-transform: uppercase;
+            text-align: center; letter-spacing: 1px;
+        }
+
+        .res-desc { color: #fff; font-size: 14px; line-height: 1.8; margin-bottom: 25px; text-align: center; }
+
+        .next-btn { 
+            display: block; width: 100%; padding: 18px; background: linear-gradient(45deg, #ffab40, #ff9100); 
+            color: #000; border: none; border-radius: 8px; font-weight: 900; 
+            cursor: pointer; text-align: center; text-transform: uppercase;
+            letter-spacing: 2px; font-size: 14px; box-shadow: 0 4px 15px rgba(255,171,64,0.4);
+        }
+
+        .next-btn:hover { transform: scale(1.02); filter: brightness(1.2); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes glowPulse { from { border-color: #ffab40; } to { border-color: #fff; } }
     </style>
 </head>
 <body>
+
 <div class="quiz-container">
-    <span class="phase-label">စာမျက်နှာ ၅၆ - စိတ်ဓာတ်၏ အထွတ်အထိပ်</span>
+    <span class="phase-label">ZENITH: PAGE 56</span>
     <h2 id="q-text">ဒီသင်ခန်းစာတွေအပြီးမှာ သင်ဟာ ဘယ်လို အမျိုးသားတစ်ယောက် ဖြစ်သွားပြီလဲ?</h2>
+    
     <div id="options-group">
-        <button class="option" onclick="showAnalysis('The Ultimate Sovereign', 'သင်ဟာ သင့်ဘဝရဲ့ တစ်ဦးတည်းသော အရှင်သခင်ပါ။ ဘယ်သူ့ရဲ့ လွှမ်းမိုးမှုမှ မရှိဘဲ ကိုယ့်လမ်းကိုယ် ဖောက်နိုင်တဲ့ စွမ်းအား အပြည့်ရှိသွားပါပြီ။')">၁။ ဘယ်သူ့ကိုမှ ဂရုမစိုက်ဘဲ ကိုယ့်စိတ်ဆန္ဒအတိုင်း ဘဝကို အုပ်ချုပ်နိုင်သူ</button>
-        <button class="option" onclick="showAnalysis('The Grand Architect', 'အရာရာကို အပေါ်စီးကနေ မြင်ပြီး ဗျူဟာမြောက် ထိန်းချုပ်နိုင်သူ ဖြစ်လာခြင်းက သင့်ကို အောင်မြင်မှုဆီ ပို့ဆောင်ပေးပါလိမ့်မယ်။')">၂။ အရာရာကို အပေါ်စီးကနေ မြင်ပြီး ဗျူဟာမြောက် ထိန်းချုပ်နိုင်သူ</button>
-        <button class="option" onclick="showAnalysis('The Unbreakable Shield', 'စိတ်ဓာတ်ခိုင်မာလွန်းလို့ ဘယ်လို ကြိုးကိုင်မှုမျိုးမှ မခံရတော့သူ ဖြစ်လာခြင်းက သင့်ရဲ့ အကြီးမားဆုံးသော လုံခြုံမှုပါပဲ။')">၃။ စိတ်ဓာတ်ခိုင်မာလွန်းလို့ ဘယ်လို ကြိုးကိုင်မှုမျိုးမှ မခံရတော့သူ</button>
-        <button class="option" onclick="showAnalysis('The Dark Prince', 'လူတွေရဲ့ အတွင်းစိတ်ကို ဖတ်ရှုပြီး အသာစီး အမြဲရယူနိုင်သူ ဖြစ်လာခြင်းက သင့်အတွက် အရေးပါတဲ့ အားသာချက်တစ်ခု ဖြစ်လာမှာပါ။')">၄။ လူတွေရဲ့ အတွင်းစိတ်ကို ဖတ်ရှုပြီး အသာစီး အမြဲရယူနိုင်သူ</button>
-        <button class="option" onclick="showAnalysis('The Free Man', 'ဘယ်နှောင်ကြိုးရဲ့ ချုပ်ကိုင်မှုကိုမှ မခံရတော့တဲ့ လွတ်လပ်သူ ဖြစ်လာခြင်းက အစစ်အမှန် ရှင်သန်ခြင်းနဲ့ အာဏာပါပဲ။')">၅။ ဘယ်နှောင်ကြိုးရဲ့ ချုပ်ကိုင်မှုကိုမှ မခံရတော့တဲ့ လွတ်လပ်သူ</button>
-   </div>
+        <button class="option" onclick="showAnalysis('THE ULTIMATE SOVEREIGN', 'သင်ဟာ သင့်ကမ္ဘာရဲ့ တစ်ဦးတည်းသော ဥပဒေပြုသူပါ။ ပြင်ပလွှမ်းမိုးမှုတွေကြားမှာ ကိုယ့်ရဲ့ ဆုံးဖြတ်ချက်ကိုပဲ အမိန့်တော်အဖြစ် သတ်မှတ်ပြီး ဘဝကို စိတ်ကြိုက် ပုံဖော်နိုင်စွမ်း ရှိသွားပါပြီ။')">၁။ ဘယ်သူ့ကိုမှ ဂရုမစိုက်ဘဲ ကိုယ့်စိတ်ဆန္ဒအတိုင်း ဘဝကို အုပ်ချုပ်နိုင်သူ</button>
+        
+        <button class="option" onclick="showAnalysis('THE GRAND ARCHITECT', 'သင်ဟာ အတွေ့အကြုံတွေကို နည်းဗျူဟာအဖြစ် ပြောင်းလဲနိုင်သူပါ။ အရာရာကို အပေါ်စီးကနေ ခွဲခြမ်းစိတ်ဖြာပြီး ကိုယ့်အတွက် အမြဲတမ်း အကျိုးရှိမယ့် လမ်းကြောင်းကိုသာ ရွေးချယ်ဖန်တီးနိုင်သူ ဖြစ်လာပါပြီ။')">၂။ အရာရာကို အပေါ်စီးကနေ မြင်ပြီး ဗျူဟာမြောက် ထိန်းချုပ်နိုင်သူ</button>
+        
+        <button class="option" onclick="showAnalysis('THE UNBREAKABLE SHIELD', 'သင်ဟာ ဖောက်ထွင်းလို့မရတဲ့ ခံတပ်တစ်ခုလိုပါပဲ။ လူတွေရဲ့ ဘယ်လို စိတ်ပိုင်းဆိုင်ရာ ကြိုးကိုင်မှုမျိုးကိုမဆို ကြိုတင်သိမြင်ပြီး ကိုယ့်ရဲ့ စိတ်ဓာတ်ကို အောင်မြင်စွာ ကာကွယ်နိုင်တဲ့ အဆင့်ကို ရောက်ရှိသွားပါပြီ။')">၃။ စိတ်ဓာတ်ခိုင်မာလွန်းလို့ ဘယ်လို ကြိုးကိုင်မှုမျိုးမှ မခံရတော့သူ</button>
+        
+        <button class="option" onclick="showAnalysis('THE DARK PRINCE', 'သင်ဟာ လူတွေရဲ့ မျက်နှာဖုံးနောက်က အမှန်တရားကို မြင်နိုင်သူပါ။ တစ်ဖက်လူရဲ့ အတွင်းစိတ်နဲ့ လှည့်ကွက်တွေကို အချိန်မဆိုင်း ဖတ်ရှုနိုင်ခြင်းက သင့်ကို လူမှုဆက်ဆံရေးနယ်ပယ်မှာ အမြဲတမ်း အသာစီးရစေမှာပါ။')">၄။ လူတွေရဲ့ အတွင်းစိတ်ကို ဖတ်ရှုပြီး အသာစီး အမြဲရယူနိုင်သူ</button>
+        
+        <button class="option" onclick="showAnalysis('THE ABSOLUTE FREE MAN', 'သင်ဟာ မမြင်ရတဲ့ နှောင်ကြိုးတွေကို ဖြတ်တောက်ပစ်လိုက်ပါပြီ။ ဘယ်သူ့ရဲ့ ခွင့်ပြုချက်မှ မလိုဘဲ ကိုယ့်ရဲ့ လွတ်လပ်မှုနဲ့ အာဏာကို အစစ်အမှန် အသုံးချနိုင်တဲ့ အဆင့်မြင့် အမျိုးသားတစ်ယောက်အဖြစ် ရှင်သန်နိုင်ပါပြီ။')">၅။ ဘယ်နှောင်ကြိုးရဲ့ ချုပ်ကိုင်မှုကိုမှ မခံရတော့တဲ့ လွတ်လပ်သူ</button>
+    </div>
 
     <div id="result-box">
         <span class="res-title" id="res-title"></span>
@@ -37,14 +91,16 @@
         </button>
     </div>
 </div>
+
 <script>
     function showAnalysis(title, desc) {
         document.getElementById('options-group').style.display = 'none';
-        document.getElementById('q-text').style.opacity = '0.5';
+        document.getElementById('q-text').style.opacity = '0.2';
         document.getElementById('res-title').innerText = title;
         document.getElementById('res-desc').innerText = desc;
         document.getElementById('result-box').style.display = 'block';
     }
 </script>
+
 </body>
 </html>
