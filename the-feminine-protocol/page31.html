@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #001a1d; color: #4ed9e6; font-family: sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
+        .quiz-container { width: 100%; max-width: 500px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(78, 217, 230, 0.3); border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .phase-label { font-size: 10px; color: #ffab40; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
+        h2 { font-size: 16px; line-height: 1.6; margin: 15px 0; color: #fff; }
+        .option { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); color: #4ed9e6; border-radius: 8px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; line-height: 1.4; }
+        .option:hover { background: #4ed9e6; color: #000; font-weight: bold; transform: translateX(5px); }
+        #result-box { display: none; margin-top: 15px; padding: 15px; border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.1); border-radius: 10px; animation: fadeInUp 0.5s ease; }
+        .res-title { font-size: 14px; font-weight: bold; color: #ffab40; margin-bottom: 8px; display: block; border-left: 3px solid #ffab40; padding-left: 8px; }
+        .res-desc { color: #fff; font-size: 13px; line-height: 1.6; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<div class="quiz-container">
+    <span class="phase-label">စာမျက်နှာ ၃၁ - ကိုယ်ပိုင် စံနှုန်းကို ကာကွယ်ခြင်း</span>
+    <h2 id="q-text">တစ်ဖက်လူက သင့်ရဲ့ ကိုယ်ပိုင်စည်းကမ်းကို ကျော်နင်းဖို့ ကြိုးစားလာရင် ဘယ်လို ကိုင်တွယ်မလဲ?</h2>
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis('The Unshakable', 'စည်းကမ်းကို လုံးဝ အလျှော့မပေးဘဲ မလိုက်နာနိုင်ရင် ထွက်သွားဖို့ လမ်းပြလိုက်ခြင်းက သင့်ရဲ့ တန်ဖိုးကို မြှင့်တင်လိုက်တာပါပဲ။')">၁။ စည်းကမ်းကို လုံးဝ အလျှော့မပေးဘဲ မလိုက်နာနိုင်ရင် ထွက်သွားဖို့ လမ်းပြလိုက်တယ်</button>
+        <button class="option" onclick="showAnalysis('The Alpha Mind', 'ကိုယ့်စည်းကမ်းကို ကျော်နင်းရင် ပြင်းထန်တဲ့ အကျိုးဆက်ရှိမယ်ဆိုတာကို ပြသလိုက်ခြင်းဖြင့် နောင်ခါ မလုပ်ရဲအောင် တားဆီးနိုင်ပါတယ်။')">၂။ ကိုယ့်စည်းကမ်းကို ကျော်နင်းရင် ပြင်းထန်တဲ့ အကျိုးဆက်ရှိမယ်ဆိုတာကို ပြသလိုက်တယ်</button>
+        <button class="option" onclick="showAnalysis('The Ghost', 'စကားအရှည်ကြီး မပြောတော့ဘဲ အဲ့ဒီလူကို တိတ်တဆိတ် ဖယ်ထုတ်လိုက်ခြင်းဖြင့် သင့်ရဲ့ စွမ်းအင်နဲ့ အချိန်ကို ကာကွယ်နိုင်ပါတယ်။')">၃။ စကားအရှည်ကြီး မပြောတော့ဘဲ အဲ့ဒီလူကို တိတ်တဆိတ် ဖယ်ထုတ်လိုက်တယ်</button>
+        <button class="option" onclick="showAnalysis('The Teacher', 'စည်းကမ်းသတ်မှတ်ရခြင်းရဲ့ အကြောင်းရင်းကို ပြတ်သားစွာ ရှင်းပြခြင်းဖြင့် သင့်ရဲ့ စံနှုန်းကို ပိုပြီး ခိုင်မာစေပါတယ်။')">၄။ စည်းကမ်းသတ်မှတ်ရခြင်းရဲ့ အကြောင်းရင်းကို ပြတ်သားစွာ ရှင်းပြတယ်</button>
+        <button class="option" onclick="showAnalysis('The Negotiator', 'အခြေအနေကို ထိန်းချုပ်ပြီး ကိုယ့်ဘက်က အသာရမယ့် နည်းလမ်းကို ရှာဖွေခြင်းက ပါးနပ်တဲ့ ခေါင်းဆောင်တစ်ယောက်ရဲ့ လုပ်ရပ်ပါ။')">၅။ အခြေအနေကို ထိန်းချုပ်ပြီး ကိုယ့်ဘက်က အသာရမယ့် နည်းလမ်းကို ရှာဖွေတယ်</button>
+    </div>
+
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button onclick="parent.postMessage('quizCompleted', '*')" class="next-btn">
+            နောက်တစ်ခန်းသို့သွားရန် Lock ဖွင့်ပါ →
+        </button>
+    </div>
+</div>
+<script>
+    function showAnalysis(title, desc) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('q-text').style.opacity = '0.5';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+</script>
+</body>
+</html>

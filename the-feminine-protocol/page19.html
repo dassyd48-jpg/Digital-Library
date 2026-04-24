@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #001a1d; color: #4ed9e6; font-family: sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
+        .quiz-container { width: 100%; max-width: 500px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(78, 217, 230, 0.3); border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .phase-label { font-size: 10px; color: #ffab40; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
+        h2 { font-size: 16px; line-height: 1.6; margin: 15px 0; color: #fff; }
+        .option { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); color: #4ed9e6; border-radius: 8px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; line-height: 1.4; }
+        .option:hover { background: #4ed9e6; color: #000; font-weight: bold; transform: translateX(5px); }
+        #result-box { display: none; margin-top: 15px; padding: 15px; border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.1); border-radius: 10px; animation: fadeInUp 0.5s ease; }
+        .res-title { font-size: 14px; font-weight: bold; color: #ffab40; margin-bottom: 8px; display: block; border-left: 3px solid #ffab40; padding-left: 8px; }
+        .res-desc { color: #fff; font-size: 13px; line-height: 1.6; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<div class="quiz-container">
+    <span class="phase-label">စာမျက်နှာ ၁၉ - ရန်သူ့မျက်နှာဖုံးကို ခွာချခြင်း</span>
+    <h2 id="q-text">အမျိုးသားတစ်ယောက်အနေနဲ့ တစ်ဖက်လူရဲ့ ဟန်ဆောင်မျက်နှာဖုံးကို ဘယ်လို ခွဲခြားမလဲ?</h2>
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis('The Silent Observer', 'ဘာမှမသိသလို ဟန်ဆောင်ပြီး တစ်ဖက်လူရဲ့ ကစားကွက်ကို အဆုံးထိ ငြိမ်ကြည့်နေခြင်းက တစ်ဖက်လူရဲ့ အားနည်းချက်ကို ဖမ်းဆုပ်ဖို့ အကောင်းဆုံးနည်းလမ်းပါ။')">၁။ ဘာမှမသိသလို ဟန်ဆောင်ပြီး တစ်ဖက်လူရဲ့ ကစားကွက်ကို အဆုံးထိ ငြိမ်ကြည့်နေတယ်</button>
+        <button class="option" onclick="showAnalysis('The Dominator', 'မျက်လုံးချင်း စိုက်ကြည့်ပြီး သူတို့ရဲ့ တုံ့ပြန်မှုကို တိုက်ရိုက် စမ်းသပ်ခြင်းက မရိုးသားမှုကို ဖော်ထုတ်ဖို့ အမြန်ဆုံးနည်းလမ်းပါပဲ။')">၂။ မျက်လုံးချင်း စိုက်ကြည့်ပြီး သူတို့ရဲ့ တုံ့ပြန်မှုကို တိုက်ရိုက် စမ်းသပ်တယ်</button>
+        <button class="option" onclick="showAnalysis('The Pragmatist', 'တစ်ဖက်လူရဲ့ စကားလုံးတွေထက် သူတို့ ရနိုင်မယ့် အကျိုးအမြတ်ကိုပဲ တွက်ချက်ခြင်းက လက်တွေ့ကျတဲ့ အမျိုးသားတစ်ယောက်ရဲ့ ပုံစံပါ။')">၃။ တစ်ဖက်လူရဲ့ စကားလုံးတွေထက် သူတို့ ရနိုင်မယ့် အကျိုးအမြတ်ကိုပဲ တွက်ချက်တယ်</button>
+        <button class="option" onclick="showAnalysis('The Skeptic', 'အလွန်အမင်း ယဉ်ကျေးပြနေတာကို မရိုးသားမှုရဲ့ လက္ခဏာလို့ သတ်မှတ်ထားခြင်းက သင့်ကို ကြိုးကိုင်မှုတွေကနေ ကာကွယ်ပေးပါလိမ့်မယ်။')">၄။ အလွန်အမင်း ယဉ်ကျေးပြနေတာကို မရိုးသားမှုရဲ့ လက္ခဏာလို့ သတ်မှတ်တယ်</button>
+        <button class="option" onclick="showAnalysis('The Distant', 'တစ်ဖက်လူရဲ့ အပြုအမူတွေကို စိတ်မဝင်စားသလိုပဲ ခပ်စိမ်းစိမ်း နေလိုက်ခြင်းဖြင့် သင့်ရဲ့ အတွင်းစည်းကို ကာကွယ်ထားနိုင်ပါတယ်။')">၅။ တစ်ဖက်လူရဲ့ အပြုအမူတွေကို စိတ်မဝင်စားသလိုပဲ ခပ်စိမ်းစိမ်း နေလိုက်တယ်</button>
+    </div>
+
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button onclick="parent.postMessage('quizCompleted', '*')" class="next-btn">
+            နောက်တစ်ခန်းသို့သွားရန် Lock ဖွင့်ပါ →
+        </button>
+    </div>
+</div>
+<script>
+    function showAnalysis(title, desc) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('q-text').style.opacity = '0.5';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+</script>
+</body>
+</html>

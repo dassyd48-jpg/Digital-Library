@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #001a1d; color: #4ed9e6; font-family: sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
+        .quiz-container { width: 100%; max-width: 500px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(78, 217, 230, 0.3); border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .phase-label { font-size: 10px; color: #ffab40; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
+        h2 { font-size: 16px; line-height: 1.6; margin: 15px 0; color: #fff; }
+        .option { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); color: #4ed9e6; border-radius: 8px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; line-height: 1.4; }
+        .option:hover { background: #4ed9e6; color: #000; font-weight: bold; transform: translateX(5px); }
+        #result-box { display: none; margin-top: 15px; padding: 15px; border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.1); border-radius: 10px; animation: fadeInUp 0.5s ease; }
+        .res-title { font-size: 14px; font-weight: bold; color: #ffab40; margin-bottom: 8px; display: block; border-left: 3px solid #ffab40; padding-left: 8px; }
+        .res-desc { color: #fff; font-size: 13px; line-height: 1.6; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<div class="quiz-container">
+    <span class="phase-label">စာမျက်နှာ ၅၀ - စိတ်ဓာတ်ခိုင်မာမှု</span>
+    <h2 id="q-text">တစ်ဖက်လူက "အားနာတတ်တဲ့ စိတ်" ကို သုံးပြီး သင့်ကို တိုက်ခိုက်လာရင် ဘယ်လို လုပ်မလဲ?</h2>
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis('The Ruthless', 'အားနာမှုဆိုတာကို လုံးဝ ဖျောက်ပစ်ပြီး ကိုယ့်အကျိုးစီးပွားကိုပဲ ဦးစားပေးခြင်းက အောင်မြင်မယ့် အမျိုးသားတစ်ယောက်ရဲ့ မရှိမဖြစ် စိတ်ဓာတ်ပါ။')">၁။ အားနာမှုဆိုတာကို လုံးဝ ဖျောက်ပစ်ပြီး ကိုယ့်အကျိုးစီးပွားကိုပဲ ဦးစားပေးတယ်</button>
+        <button class="option" onclick="showAnalysis('The Stoic', 'ခံစားချက်နောက်ကို လုံးဝမလိုက်ဘဲ တည်ငြိမ်စွာနဲ့ ငြင်းဆိုခြင်းဖြင့် သင့်ရဲ့ စိတ်ခိုင်မာမှုနဲ့ ရင့်ကျက်မှုကို ပြသနိုင်ပါတယ်။')">၂။ ခံစားချက်နောက်ကို လုံးဝမလိုက်ဘဲ တည်ငြိမ်စွာနဲ့ ငြင်းဆိုတယ်</button>
+        <button class="option" onclick="showAnalysis('The Silence Master', 'ဘာမှပြန်မပြောဘဲ တိတ်ဆိတ်နေခြင်းဖြင့် တစ်ဖက်လူကို အကြပ်ရိုက်အောင်လုပ်ခြင်းက စိတ်ပညာအရ အကြီးမားဆုံး အာဏာကို ရယူခြင်းပါ။')">၃။ ဘာမှပြန်မပြောဘဲ တိတ်ဆိတ်နေခြင်းဖြင့် တစ်ဖက်လူကို အကြပ်ရိုက်အောင်လုပ်တယ်</button>
+        <button class="option" onclick="showAnalysis('The Boundary King', 'ကိုယ့်ရဲ့ စည်းကမ်းဟာ အရာအားလုံးထက် မြင့်မားတယ်ဆိုတာကို ပြသခြင်းဖြင့် သင့်ရဲ့ သိက္ခာနဲ့ အာဏာကို ခိုင်မာစေပါတယ်။')">၄။ ကိုယ့်ရဲ့ စည်းကမ်းဟာ အရာအားလုံးထက် မြင့်မားတယ်ဆိုတာကို ပြသတယ်</button>
+        <button class="option" onclick="showAnalysis('The High Value Man', 'သင့်ရဲ့ အချိန်နဲ့ စွမ်းအင်ကို မထိုက်တန်တဲ့သူအတွက် အသုံးမခံဘဲ လှည့်ထွက်သွားခြင်းက အဆင့်အတန်းမြင့်တဲ့ အမျိုးသားတစ်ယောက်ရဲ့ လုပ်ရပ်ပါ။')">၅။ သင့်ရဲ့ အချိန်နဲ့ စွမ်းအင်ကို မထိုက်တန်တဲ့သူအတွက် အသုံးမခံဘူး</button>
+   </div>
+
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button onclick="parent.postMessage('quizCompleted', '*')" class="next-btn">
+            နောက်တစ်ခန်းသို့သွားရန် Lock ဖွင့်ပါ →
+        </button>
+    </div>
+</div>
+<script>
+    function showAnalysis(title, desc) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('q-text').style.opacity = '0.5';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+</script>
+</body>
+</html>
