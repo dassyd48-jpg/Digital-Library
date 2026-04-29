@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>THE ALPHA'S SHADOW | DASSY DIGITAL LIBRARY</title>
+    
+    <meta name="description" content="Official Digital Library of DASSY. Psychological insights into relationship dynamics.">
+    <meta name="author" content="DASSY">
+    
+    <meta property="og:title" content="THE ALPHA'S SHADOW | DASSY">
+    <meta property="og:description" content="Master the psychology of relationships.">
+    <meta property="og:type" content="book">
+    <meta property="og:image" content="page1.jpg">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "DigitalDocument",
+      "name": "The Alpha's Shadow",
+      "author": { "@type": "Person", "name": "DASSY" }
+    }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+
+    <style>
+        :root { --gold: #D4AF37; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
+        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.3); }
+        #lock { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 20; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); color: #fff; text-align: center; padding: 20px; }
+        .brand-label { font-size: 10px; color: var(--gold); letter-spacing: 5px; margin-bottom: 15px; font-weight: bold; }
+        .book-title { color: #fff; font-weight: 900; letter-spacing: 8px; font-size: clamp(24px, 5vw, 38px); margin: 0 0 35px 0; text-shadow: 0 0 25px var(--gold); border-top: 1px solid rgba(212,175,55,0.2); border-bottom: 1px solid rgba(212,175,55,0.2); padding: 20px 0; width: 100%; max-width: 500px; }
+        #lock input { padding: 16px; width: 280px; border: none; border-bottom: 2px solid var(--gold); background: transparent; color: #fff; text-align: center; font-size: 18px; outline: none; margin-bottom: 30px; }
+        #lock button { padding: 14px 80px; background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); color: #000; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; border-radius: 2px; }
+        #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; }
+        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        .watermark { position: absolute; bottom: 20px; width: 100%; text-align: center; font-size: 10px; color: var(--gold); opacity: 0.5; letter-spacing: 4px; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+    <video id="bg-video" autoplay muted loop playsinline><source src="video.mp4" type="video/mp4"></video>
+
+    <div id="lock">
+        <span class="brand-label">DASSY DIGITAL LIBRARY PRESENTS</span>
+        <h1 class="book-title">THE ALPHA'S SHADOW</h1>
+        <input type="password" id="pass" placeholder="ACCESS KEY">
+        <button onclick="unlock()">ENTER THE SHADOW</button>
+        <div style="margin-top: 35px;">
+            <a href="https://t.me/Dassy_digital_Library" target="_blank" style="color: rgba(255,255,255,0.4); text-decoration: none; font-size: 11px;">
+                REQUEST PRIVATE ACCESS CODE FROM DASSY
+            </a>
+        </div>
+    </div>
+
+    <div id="book-container">
+        <div id="flipbook-wrapper"><div id="flipbook"></div></div>
+        <div class="watermark">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
+    </div>
+
+    <audio id="sound" src="flip.mp3" preload="auto"></audio>
+
+    <script>
+        const myPassword = "@ALPHA'S SHADOW"; 
+        const maxPages = 58; 
+        const quizPages = [2, 12, 18, 24, 30, 36, 41, 48, 55]; 
+        let isQuizLocked = false; 
+
+        window.addEventListener("message", function(event) {
+            if (event.data === "quizCompleted") {
+                isQuizLocked = false; 
+                setTimeout(() => { $("#flipbook").turn("next"); }, 300);
+            }
+        }, false);
+
+        function unlock() {
+            if(document.getElementById("pass").value === myPassword) {
+                $("#lock").fadeOut(500, () => {
+                    $("#bg-video").fadeOut(500);
+                    $("#book-container").show().animate({opacity: 1}, 800);
+                    loadAndInit();
+                });
+            } else { alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။"); }
+        }
+
+        function loadAndInit() {
+            const flipbook = $("#flipbook");
+            let h = window.innerHeight * 0.88;
+            let w = (window.innerWidth < 600) ? window.innerWidth * 0.95 : h * 0.707;
+
+            for(let i=1; i<=maxPages; i++) {
+                const pageDiv = $('<div class="page" style="background:#000;"></div>');
+                if(quizPages.includes(i)) {
+                    const fileName = (i === 2) ? "intro_quiz.html" : `page${i}.html`;
+                    pageDiv.append(`<iframe src="${fileName}" style="width:100%; height:100%; border:none; overflow:hidden;" scrolling="no"></iframe>`);
+                } else if (i <= 57) {
+                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:contain;" />').attr('src', `page${i}.jpg`));
+                } else {
+                    pageDiv.append('<div style="width:100%; height:100%; background:#000;"></div>');
+                }
+                flipbook.append(pageDiv);
+            }
+
+            setTimeout(() => {
+                flipbook.turn({
+                    width: w, height: h, autoCenter: true, display: 'single', acceleration: true,
+                    when: {
+                        turning: function(e, page) {
+                            if (isQuizLocked) { e.preventDefault(); return; }
+                            const s = document.getElementById("sound");
+                            if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
+                        },
+                        turned: function(e, page) {
+                            isQuizLocked = quizPages.includes(page);
+                        }
+                    }
+                });
+            }, 100);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #001a1d; color: #4ed9e6; font-family: sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
+        .quiz-container { width: 100%; max-width: 480px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(78, 217, 230, 0.2); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
+        .phase-label { font-size: 10px; color: #ffab40; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; opacity: 0.8; }
+        h2 { font-size: 16px; line-height: 1.5; margin: 15px 0; color: #fff; }
+        .option { display: block; width: 100%; padding: 14px; margin: 10px 0; background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); color: #4ed9e6; border-radius: 6px; cursor: pointer; text-align: left; transition: 0.2s; font-size: 13px; line-height: 1.4; }
+        .option:hover { background: #4ed9e6; color: #000; font-weight: bold; }
+        #result-box { display: none; margin-top: 5px; padding: 20px; border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.05); border-radius: 8px; animation: fadeInUp 0.4s ease-out; }
+        .res-title { font-size: 15px; font-weight: bold; color: #ffab40; margin-bottom: 12px; display: block; border-left: 4px solid #ffab40; padding-left: 10px; }
+        .res-desc { color: #fff; font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
+        .next-btn { display: block; width: 100%; padding: 15px; background: #ffab40; color: #000; border: none; border-radius: 6px; font-weight: 900; cursor: pointer; text-align: center; text-transform: uppercase; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<div class="quiz-container">
+    <span class="phase-label">ANALYSIS: PHASE 36 (THE VALIDATION)</span>
+    <h2 id="q-text">သူ အောင်မြင်မှုတစ်ခုခု ရလာတဲ့အခါ သင့်ဆီက ဘယ်လိုတုံ့ပြန်မှုကို သူ ပိုလိုချင်ပုံရသလဲ?</h2>
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis('THE HERO SEEKER', 'သူဟာ သင့်ရှေ့မှာ သူရဲကောင်းဖြစ်ချင်တာပါ။ ဗျူဟာ - သူ့ကို အံ့သြတကြီး ချီးမွမ်းပေးခြင်းက သူ့ကို သင့်ဆီ ပိုစွဲကပ်စေပါတယ်။')">၁။ သူ့ကို အံ့သြတကြီးနဲ့ အရမ်းချီးမွမ်းတာကို ခံချင်တယ်</button>
+        <button class="option" onclick="showAnalysis('THE AUTHORITY ALPHA', 'သူဟာ သူ့ရဲ့ အစွမ်းအစကို လေးစားခံချင်သူပါ။ ဗျူဟာ - သူ့ရဲ့ ကြိုးစားအားထုတ်မှုကို အသိအမှတ်ပြုပြီး လေးစားကြောင်း ပြပါ။')">၂။ သူ ဘယ်လောက် ပင်ပန်းခဲ့ရလဲဆိုတာကို နားထောင်ပေးစေချင်တယ်</button>
+        <button class="option" onclick="showAnalysis('THE COOL OPERATOR', 'သူဟာ ဟန်ဆောင်နေပေမဲ့ သင့်အသိအမှတ်ပြုမှုကို သေလုမတတ် လိုချင်သူပါ။ ဗျူဟာ - လက်ဆောင်ပေးတာမျိုးနဲ့ သူ့ကို အားပေးပါ။')">၃။ ဘာမှ မထူးခြားသလို နေပေမဲ့ သင့်အမူအရာကိုတော့ အကဲခတ်နေတတ်တယ်</button>
+        <button class="option" onclick="showAnalysis('THE MATERIAL PROVIDER', 'သူ့အတွက် အောင်မြင်မှုဟာ သင့်ကို ထောက်ပံ့ဖို့ပါ။ ဗျူဟာ - သူပေးတာတွေကို တန်ဖိုးထားကြောင်း ပြသပါ။')">၄။ သူ့အောင်မြင်မှုကြောင့် သင့်ကို ပစ္စည်းဝယ်ပေးတာ ဒါမှမဟုတ် အပြင်လိုက်ကျွေးတတ်တယ်</button>
+        <button class="option" onclick="showAnalysis('THE INSECURE ACHIEVER', 'သူဟာ အမြဲတမ်း တစ်ခုခု လိုအပ်နေသလို ခံစားရသူပါ။ ဗျူဟာ - သူ့ဖြစ်တည်မှုကိုပဲ ချစ်တာပါလို့ ပြောပေးပါ။')">၅။ သူ လုပ်နိုင်တာ ဒါလေးတင်လားဆိုပြီး သင့်ကို ပြန်မေးခွန်းထုတ်တတ်တယ်</button>
+        <button class="option" onclick="showAnalysis('THE SHARED PARTNER', 'ဒါဟာ ကျန်းမာတဲ့ အဆင့်ပါ။ ဗျူဟာ - အောင်မြင်မှုကို အတူတူ ပျော်ရွှင်စွာ ဆင်နွှဲပြီး သင့်ပံ့ပိုးမှုကိုပါ သတိပေးပါ။')">၆။ အောင်မြင်မှုဟာ သင့်ကြောင့်ပါလို့ ပြောပြီး သင့်ကိုပါ ဂုဏ်ပြုတတ်တယ်</button>
+    </div>
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        <button onclick="parent.postMessage('quizCompleted', '*')" class="next-btn">LOOP COMPLETED: NEXT →</button>
+    </div>
+</div>
+<script>
+    function showAnalysis(t, d) {
+        document.getElementById('options-group').style.display='none';
+        document.getElementById('q-text').style.opacity='0.3';
+        document.getElementById('res-title').innerText=t;
+        document.getElementById('res-desc').innerText=d;
+        document.getElementById('result-box').style.display='block';
+    }
+</script>
+</body>
+</html>

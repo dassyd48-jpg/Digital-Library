@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            background: #001a1d; color: #4ed9e6; font-family: sans-serif; 
+            margin: 0; padding: 15px; display: flex; justify-content: center; 
+            align-items: center; min-height: 100vh; box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; max-width: 480px; background: rgba(0, 0, 0, 0.6); 
+            border: 1px solid rgba(78, 217, 230, 0.2); border-radius: 12px; 
+            padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 10px; color: #ffab40; letter-spacing: 2px; 
+            text-transform: uppercase; font-weight: bold; opacity: 0.8;
+        }
+        h2 { font-size: 16px; line-height: 1.5; margin: 15px 0; color: #fff; }
+        .option { 
+            display: block; width: 100%; padding: 14px; margin: 10px 0; 
+            background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); 
+            color: #4ed9e6; border-radius: 6px; cursor: pointer; text-align: left; 
+            transition: 0.2s; font-size: 13px; line-height: 1.4;
+        }
+        .option:hover { background: #4ed9e6; color: #000; font-weight: bold; }
+        #result-box { 
+            display: none; margin-top: 5px; padding: 20px; 
+            border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.05); 
+            border-radius: 8px; animation: fadeInUp 0.4s ease-out; 
+        }
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: #ffab40; 
+            margin-bottom: 12px; display: block; border-left: 4px solid #ffab40; 
+            padding-left: 10px;
+        }
+        .res-desc { color: #fff; font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
+        .strategy-note { 
+            font-size: 12px; color: #4ed9e6; font-style: italic; 
+            background: rgba(78, 217, 230, 0.1); padding: 10px; border-radius: 4px;
+            margin-bottom: 15px; border-left: 2px solid #4ed9e6;
+        }
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; background: #ffab40; 
+            color: #000; border: none; border-radius: 6px; font-weight: 900; 
+            cursor: pointer; text-align: center; text-transform: uppercase;
+        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <span class="phase-label">SYSTEM ANALYSIS: PHASE 18 (THE PROVIDER)</span>
+    <h2 id="q-text">သူ့ရဲ့ ငွေကြေး သို့မဟုတ် အလုပ်အကိုင် အခြေအနေတစ်ခုခု အဆင်မပြေဖြစ်နေချိန်မှာ သူ ဘယ်လို ပြုမူတတ်သလဲ?</h2>
+    
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis('THE STOIC PROTECTOR', 'သူဟာ အခက်အခဲကို တစ်ယောက်တည်း ရင်ဆိုင်လိုသူပါ။ သူ့ရဲ့ Provider Instinct ကြောင့် သင့်ကို စိုးရိမ်ပူပန်မှု မပေးချင်တာ ဖြစ်ပါတယ်။', 'ဗျူဟာ: သူ့ကို အဖြေရှာဖို့ အတင်းမတိုက်တွန်းပါနဲ့။ သူ့ရဲ့ အစွမ်းအစကို ယုံကြည်ကြောင်း ပြသပေးရုံဖြင့် သူ့ကို ချုပ်ကိုင်နိုင်ပါတယ်။')">၁။ ဘာမှမဖြစ်သလို ဟန်ဆောင်ပြီး အရာအားလုံးကို တစ်ယောက်တည်း ဖြေရှင်းဖို့ ကြိုးစားတယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE DEFENSIVE ALPHA', 'သူ့ရဲ့ မလုံခြုံမှုကို ဒေါသနဲ့ ဖုံးကွယ်တတ်သူပါ။ အားနည်းသူအဖြစ် အမြင်မခံနိုင်တာက သူ့ရဲ့ Core Paradox ပါပဲ။', 'ဗျူဟာ: ဒေါသကို ဒေါသနဲ့ မတုံ့ပြန်ပါနဲ့။ သူဟာ သင့်အတွက် ဘယ်လောက် အရေးပါတယ်ဆိုတာကို အသိအမှတ်ပြုပေးလိုက်ရင် သူ ချက်ချင်း အေးကျသွားပါလိမ့်မယ်။')">၂။ စိတ်တိုလွယ်လာပြီး အသေးအမွှားကိစ္စကအစ ရန်ရှာတတ်လာတယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE GHOSTING PROVIDER', 'သူဟာ ရှုံးနိမ့်မှုကို ရင်မဆိုင်ရဲသူပါ။ သင့်ရှေ့မှာ အသုံးမကျသူဖြစ်မှာကို ကြောက်လို့ ရှောင်ဖယ်သွားခြင်း ဖြစ်ပါတယ်။', 'ဗျူဟာ: သူ့ကို အတင်းလိုက်မကပ်ပါနဲ့။ သူ့ဘာသာသူ ပြန်လာပါလိမ့်မယ်။ သူပြန်လာတဲ့အခါမှာလည်း အတိတ်ကကိစ္စကို မေးခွန်းထုတ်တာမျိုး ရှောင်ကြဉ်ပါ။')">၃။ စကားပြောနည်းသွားပြီး သင့်အနားကနေ တဖြည်းဖြည်း ဝေးကွာသွားတတ်တယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE COMPENSATOR', 'သူ့ရဲ့ စိုးရိမ်စိတ်ကို ပစ္စည်းဝယ်ပေးခြင်း ဒါမှမဟုတ် ငွေသုံးပြခြင်းဖြင့် ဖုံးကွယ်တတ်သူပါ။', 'ဗျူဟာ: သူပေးတာတွေကို ဝမ်းသာအားရ လက်ခံပြပါ။ ဒါဟာ သူ့ကို သင့်အပေါ် ပိုပြီး တာဝန်ယူလိုစိတ် (Invest လုပ်လိုစိတ်) ဖြစ်ပေါ်စေပါတယ်။')">၄။ ပိုပြီး အသုံးအစွဲ ကြီးလာတယ် (သို့မဟုတ်) သင့်ကို တန်ဖိုးကြီးပစ္စည်းတွေ ပိုဝယ်ပေးတတ်လာတယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE WORKAHOLIC', 'သူ့ရဲ့ တန်ဖိုးဟာ အောင်မြင်မှုအပေါ်မှာပဲ မူတည်တယ်လို့ ယူဆထားသူပါ။ ဒါဟာ အန္တရာယ်ရှိတဲ့ Dopamine Protocol တစ်ခုဖြစ်ပါတယ်။', 'ဗျူဟာ: သူ့ကို အလုပ်ကနေ ခဏနားဖို့ မပြောပါနဲ့။ သူ့ရဲ့ ကြိုးစားမှုကို အံ့သြချီးမွမ်းပြပါ။ ဒါက သင့်ကို သူ ပိုပြီး အားကိုးလာစေပါတယ်။')">၅။ အလုပ်ထဲမှာပဲ အချိန်ပြည့် နစ်မွန်းနေပြီး တခြား ဘာကိုမှ စိတ်မဝင်စားတော့ဘူး</button>
+        
+        <button class="option" onclick="showAnalysis('THE RELIANT PARTNER', 'သူဟာ သင့်ကို စိတ်ပိုင်းဆိုင်ရာရော၊ ငွေကြေးအရပါ အားကိုးလိုသူပါ။ ဒါဟာ Provider Instinct အားနည်းတဲ့ လက္ခဏာ ဖြစ်ပါတယ်။', 'ဗျူဟာ: သူ့ကို အရမ်း အလိုမလိုက်ပါနဲ့။ သူ့ရဲ့ တာဝန်ယူမှုကို ပြန်လည် နိုးကြားလာအောင် ပန်းတိုင်လေးတွေ ချပေးဖို့ လိုအပ်ပါတယ်။')">၆။ သင့်ဆီကနေ အကူအညီနဲ့ အားပေးမှုကို ပွင့်ပွင့်လင်းလင်း တောင်းဆိုတတ်တယ်</button>
+    </div>
+
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        <div class="strategy-note" id="res-strat"></div>
+        
+        <button onclick="parent.postMessage('quizCompleted', '*')" class="next-btn">
+            ACCESS GRANTED: NEXT PHASE →
+        </button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc, strat) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('q-text').style.opacity = '0.3';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('res-strat').innerText = strat;
+        document.getElementById('result-box').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #001a1d; color: #4ed9e6; font-family: sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
+        .quiz-container { width: 100%; max-width: 480px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(78, 217, 230, 0.2); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
+        .phase-label { font-size: 10px; color: #ffab40; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; opacity: 0.8; }
+        h2 { font-size: 16px; line-height: 1.5; margin: 15px 0; color: #fff; }
+        .option { display: block; width: 100%; padding: 14px; margin: 10px 0; background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); color: #4ed9e6; border-radius: 6px; cursor: pointer; text-align: left; transition: 0.2s; font-size: 13px; line-height: 1.4; }
+        .option:hover { background: #4ed9e6; color: #000; font-weight: bold; }
+        #result-box { display: none; margin-top: 5px; padding: 20px; border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.05); border-radius: 8px; animation: fadeInUp 0.4s ease-out; }
+        .res-title { font-size: 15px; font-weight: bold; color: #ffab40; margin-bottom: 12px; display: block; border-left: 4px solid #ffab40; padding-left: 10px; }
+        .res-desc { color: #fff; font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
+        .next-btn { display: block; width: 100%; padding: 15px; background: #ffab40; color: #000; border: none; border-radius: 6px; font-weight: 900; cursor: pointer; text-align: center; text-transform: uppercase; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<div class="quiz-container">
+    <span class="phase-label">ANALYSIS: PHASE 30 (THE FORTRESS)</span>
+    <h2 id="q-text">သူ အရမ်းစိတ်ဖိစီးနေချိန်မှာ သင်က "ဘာဖြစ်လို့လဲ" လို့ မေးလိုက်ရင် သူ ဘယ်လို တုံ့ပြန်တတ်သလဲ?</h2>
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis('THE SILENT WALL', 'သူ့အတွက် တိတ်ဆိတ်နေခြင်းက အလုံခြုံဆုံးပါ။ ဗျူဟာ - သူ့ကို အတင်းမမေးပါနဲ့၊ သူအဆင်သင့်ဖြစ်မှ ပြောပြဖို့ Message ပေးထားပါ။')">၁။ \"ဘာမှမဖြစ်ဘူး\" လို့ပဲ တိုတိုတုတ်တုတ် ပြောပြီး စကားလမ်းကြောင်း လွှဲပစ်တယ်</button>
+        <button class="option" onclick="showAnalysis('THE LOGIC DEFENDER', 'သူဟာ ခံစားချက်ကို Logic နဲ့ ဖုံးကွယ်တတ်သူပါ။ ဗျူဟာ - သူ့ရဲ့ Logic ကို အသိအမှတ်ပြုပေးရင်း စာနာမှုအနည်းငယ် ပြသပါ။')">၂။ ခံစားချက်အကြောင်း မပြောဘဲ ပြဿနာရဲ့ အဖြေတွေကိုပဲ စက်ရုပ်လို ရှင်းပြတယ်</button>
+        <button class="option" onclick="showAnalysis('THE ANGRY SHIELD', 'ဒေါသဟာ သူ့ရဲ့ အကာအကွယ်ပါ။ ဗျူဟာ - သူ့ဒေါသကို ရင်မဆိုင်ပါနဲ့၊ ခဏ ဖယ်ပေးလိုက်ခြင်းက အကောင်းဆုံးပါ။')">၃။ \"ဘာမှမဖြစ်ဘူးလို့ ပြောနေတယ်လေ\" ဆိုပြီး စိတ်တိုတိုနဲ့ ပြန်ပြောတတ်တယ်</button>
+        <button class="option" onclick="showAnalysis('THE JOKER', 'ဟာသလုပ်ခြင်းက စိတ်ဒဏ်ရာကို ဖုံးကွယ်တဲ့ နည်းလမ်းပါ။ ဗျူဟာ - သူ့ဟာသကို လိုက်ရယ်ပေးရင်း အခွင့်အရေးရရင် လေးနက်တဲ့ ဂရုစိုက်မှု ပြပါ။')">၄။ နောက်ပြောင်ကျီစယ်ပြီး အခြေအနေကို ပေါ့သွားအောင် လုပ်ပစ်လိုက်တယ်</button>
+        <button class="option" onclick="showAnalysis('THE ISOLATOR', 'သူဟာ တစ်ယောက်တည်းနေပြီး Recharge လုပ်ချင်သူပါ။ ဗျူဟာ - သူ့ကို ကိုယ်ပိုင်အချိန် (Space) ပေးလိုက်ပါ။ သူပြန်ထွက်လာမှ ချဉ်းကပ်ပါ။')">၅။ ဘာမှမပြောဘဲ ဖုန်းပဲကြည့်နေတာ ဒါမှမဟုတ် တခြားအခန်းထဲ ထွက်သွားတတ်တယ်</button>
+        <button class="option" onclick="showAnalysis('THE OPEN PARTNER', 'ဒါဟာ ရှားပါးတဲ့ ယုံကြည်မှုပါ။ ဗျူဟာ - သူ့ကို အဆုံးထိ နားထောင်ပေးပါ၊ အကြံဉာဏ်ထက် နားထောင်ပေးသူ ရှိနေဖို့ပဲ လိုပါတယ်။')">၆။ သူ့ရဲ့ ခံစားချက်ကို ပွင့်ပွင့်လင်းလင်းနဲ့ အားကိုးတကြီး ပြောပြတတ်တယ်</button>
+    </div>
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        <button onclick="parent.postMessage('quizCompleted', '*')" class="next-btn">FORTRESS DECODED: NEXT →</button>
+    </div>
+</div>
+<script>
+    function showAnalysis(t, d) {
+        document.getElementById('options-group').style.display='none';
+        document.getElementById('q-text').style.opacity='0.3';
+        document.getElementById('res-title').innerText=t;
+        document.getElementById('res-desc').innerText=d;
+        document.getElementById('result-box').style.display='block';
+    }
+</script>
+</body>
+</html>

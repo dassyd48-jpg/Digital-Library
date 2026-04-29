@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            background: #001a1d; /* Index.html နဲ့ အရောင်တူအောင် ညှိထားသည် */
+            color: #d4af37; 
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 450px; 
+            background: rgba(0, 0, 0, 0.6); 
+            border: 1px solid #4ed9e6; 
+            border-radius: 12px; 
+            padding: 25px; 
+            text-align: center;
+        }
+        .intro-label { font-size: 10px; color: #4ed9e6; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px; display: block; }
+        h2 { font-size: 18px; line-height: 1.6; color: #fff; margin-bottom: 20px; font-weight: normal; }
+        
+        .option { 
+            display: block; width: 100%; padding: 14px; margin: 10px 0; 
+            background: rgba(78, 217, 230, 0.05); 
+            border: 1px solid rgba(78, 217, 230, 0.3); 
+            color: #4ed9e6; border-radius: 6px; cursor: pointer; 
+            text-align: left; transition: 0.3s; font-size: 14px;
+        }
+        .option:hover { background: #4ed9e6; color: #000; }
+
+        #result-box { display: none; animation: fadeIn 0.8s ease; }
+        .res-type { font-size: 20px; font-weight: bold; color: #000; background: #4ed9e6; padding: 10px 20px; border-radius: 4px; display: inline-block; margin-bottom: 15px; }
+        .res-desc { color: #eee; font-size: 14px; line-height: 1.8; margin-bottom: 25px; }
+        
+        .next-btn { 
+            background: transparent; border: 1px solid #4ed9e6; color: #4ed9e6; 
+            padding: 12px 30px; border-radius: 4px; cursor: pointer; font-size: 14px;
+            text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        }
+        .next-btn:hover { background: #4ed9e6; color: #000; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="intro-label">THE ALPHA'S SHADOW</span>
+        <h2>စာမဖတ်ခင် သင့်ရဲ့ Relationship Style ကို အရင်ဆန်းစစ်ပါ။</h2>
+        <p style="font-size: 13px; color: #ccc; margin-bottom: 20px;">သင့်ချစ်သူက သင့်ကို ပစ်ထားတဲ့အခါ သင် ဘယ်လိုတုံ့ပြန်သလဲ?</p>
+        
+        <div id="options-group">
+            <button class="option" onclick="showResult('THE GIVER', 'သင်ဟာ အနစ်နာခံသူပါ။ သူ ဂရုမစိုက်လေ သင်က ပိုပြီး ဂရုစိုက်ပြလေ ဖြစ်နေတတ်ပါတယ်။ ဒါဟာ သူ့ကို သင့်ဆီကနေ ပိုဝေးသွားစေတဲ့ အချက်ပဲ ဖြစ်ပါတယ်။')">၁။ သူ့ကို ပိုပြီး ဂရုစိုက်ပြတယ်</button>
+            <button class="option" onclick="showResult('THE CHASER', 'သင်ဟာ အမြဲတမ်း အဖြေရှာနေသူပါ။ သူ တိတ်ဆိတ်နေရင် သင်က လိုက်မေးပြီး ရှင်းလင်းချက်တောင်းတတ်ပါတယ်။')">၂။ သူ ဘာဖြစ်နေတာလဲဆိုတာ သိရအောင် တောက်လျှောက် လိုက်မေးတယ်</button>
+            <button class="option" onclick="showResult('THE PROVOKER', 'သင်ဟာ ဒေါသကို သုံးပြီး သူ့ရဲ့ အာရုံစိုက်မှုကို ရယူတတ်သူပါ။ ဒါဟာ ရေရှည်မှာ ဆက်ဆံရေးကို အက်ကြောင်းထင်စေပါတယ်။')">၃။ စိတ်တိုပြီး ရန်ခဏခဏ ရှာတယ်</button>
+            <button class="option" onclick="showResult('THE SOVEREIGN', 'သင်ဟာ ကိုယ့်တန်ဖိုးကိုယ် သိသူပါ။ ဒါပေမဲ့ နည်းဗျူဟာ (Tactics) အချို့ လိုအပ်နေပါသေးတယ်။')">၄။ ကိုယ့်အလုပ်ကိုယ်လုပ်ပြီး အေးဆေးနေတယ်</button>
+        </div>
+    </div>
+
+    <div id="result-box">
+        <span class="intro-label">YOUR IDENTITY</span>
+        <div class="res-type" id="res-type"></div>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button class="next-btn" onclick="completeQuiz()">စာအုပ်ကို စတင်ဖတ်ရှုရန် နှိပ်ပါ</button>
+    </div>
+</div>
+
+<script>
+    function showResult(type, desc) {
+        document.getElementById('quiz-flow').style.display = 'none';
+        document.getElementById('res-type').innerText = type;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        // Main Flip Book (index.html) ဆီသို့ message ပို့ခြင်း
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

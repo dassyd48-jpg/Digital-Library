@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #001a1d; color: #4ed9e6; font-family: sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
+        .quiz-container { width: 100%; max-width: 480px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(78, 217, 230, 0.2); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
+        .phase-label { font-size: 10px; color: #ffab40; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; opacity: 0.8; }
+        h2 { font-size: 16px; line-height: 1.5; margin: 15px 0; color: #fff; }
+        .option { display: block; width: 100%; padding: 14px; margin: 10px 0; background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); color: #4ed9e6; border-radius: 6px; cursor: pointer; text-align: left; transition: 0.2s; font-size: 13px; line-height: 1.4; }
+        .option:hover { background: #4ed9e6; color: #000; font-weight: bold; }
+        #result-box { display: none; margin-top: 5px; padding: 20px; border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.05); border-radius: 8px; animation: fadeInUp 0.4s ease-out; }
+        .res-title { font-size: 15px; font-weight: bold; color: #ffab40; margin-bottom: 12px; display: block; border-left: 4px solid #ffab40; padding-left: 10px; }
+        .res-desc { color: #fff; font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
+        .next-btn { display: block; width: 100%; padding: 15px; background: #ffab40; color: #000; border: none; border-radius: 6px; font-weight: 900; cursor: pointer; text-align: center; text-transform: uppercase; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <span class="phase-label">ANALYSIS: PHASE 24 (THE HUNTER)</span>
+    <h2 id="q-text">သင်က သူ့ကို အရင်ကထက် ပိုပြီး ဂရုစိုက်ပြလိုက်တဲ့အခါ (ဥပမာ- ဖုန်းတွေအမြဲခေါ်တာ၊ အမြဲလိုက်ကပ်တာ) သူ ဘယ်လို တုံ့ပြန်တတ်သလဲ?</h2>
+    
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis('THE PREDATOR (အမဲလိုက်သူ)', 'သူဟာ ခက်ခဲတဲ့ အရာတွေကိုပဲ လိုက်လံရယူလိုသူပါ။ သင်က အလွယ်တကူ ရရှိနိုင်သူဖြစ်သွားတဲ့အခါ သူ့ရဲ့ စိတ်လှုပ်ရှားမှုတွေ ရပ်တန့်သွားတာ ဖြစ်ပါတယ်။', 'ဗျူဟာ: ချက်ချင်း နောက်ဆုတ်လိုက်ပါ။ သူ့ကို ခဏတာ ဥပေက္ခာပြုထားခြင်းက သူ့ရဲ့ Hunter Instinct ကို ပြန်လည် နိုးကြားစေပါတယ်။')">၁။ စိတ်ဝင်စားမှု လျော့နည်းသွားသလိုမျိုး အေးစက်စက် ပြုမူလာတယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE CHASE-ADDICT (လိုက်ရခြင်းကို စွဲလမ်းသူ)', 'သူဟာ သင့်ကို ချစ်တာထက် သင့်ကို ရအောင်လိုက်နေရတဲ့ "ခံစားချက်" ကိုပဲ ပိုစွဲလမ်းတာ ဖြစ်နိုင်ပါတယ်။', 'ဗျူဟာ: သူ့ကို အကုန်လုံး ပုံမပေးပါနဲ့။ ပဟေဠိ (Mystery) တစ်ခုကို အမြဲ ချန်ထားပါ။')">၂။ သင်က သူ့အနားက ထွက်သွားမယ့် ပုံစံမျိုးပြမှသာ သင့်ကို အရမ်းပြန်ကပ်လာတယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE TERRITORIAL MALE', 'သူဟာ သင့်ကို ပိုင်ဆိုင်ရပြီလို့ ယူဆသွားတဲ့အတွက် အားထုတ်မှုတွေ လျှော့ချလိုက်တာ ဖြစ်ပါတယ်။', 'ဗျူဟာ: သင့်မှာ ကိုယ်ပိုင်ဘဝနဲ့ တခြားသူငယ်ချင်းတွေ ရှိကြောင်း ပြသပါ။ သူ့ရဲ့ ပိုင်စိုးပိုင်နင်းစိတ်ကို ပြန်နှိုးဆွပါ။')">၃။ သင်က အမြဲရှိနေမယ်လို့ ယုံကြည်သွားပြီး သင့်အပေါ် ကြိုးစားအားထုတ်မှုတွေ လျှော့ချလိုက်တယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE DISTANCE-SEEKER', 'သူဟာ အရမ်းနီးကပ်တဲ့ ဆက်ဆံရေးကို ကြောက်ရွံ့သူ (Avoidant Attachment) ဖြစ်နိုင်ပါတယ်။', 'ဗျူဟာ: သူ့ကို Space ပေးလိုက်ပါ။ သင်က သူ့ကို ချုပ်ကိုင်မှာ မဟုတ်ဘူးဆိုတာ သိသွားရင် သူပြန်လာပါလိမ့်မယ်။')">၄။ သင်က ပိုကပ်လေလေ သူက ပိုပြီး ဝေးရာကို ထွက်ပြေးဖို့ ကြိုးစားလေလေ ဖြစ်တယ်</button>
+        
+        <button class="option" onclick="showAnalysis('THE VALIDATION SEEKER', 'သူဟာ သင့်ဆီက ဂရုစိုက်မှုကို ခံယူပြီး သူ့ရဲ့ Ego ကို ဖြည့်တင်းနေတာ ဖြစ်ပါတယ်။', 'ဗျူဟာ: ဂရုစိုက်မှုကို အချိန်တိုင်း မပေးပါနဲ့။ သူကောင်းမှ သင်က ပြန်ကောင်းပြတဲ့ စနစ်ကို သုံးပါ။')">၅။ သင့်ရဲ့ ဂရုစိုက်မှုကို သာသာယာယာပဲ လက်ခံပေမဲ့ သူကတော့ ပြန်ပြီး ဂရုမစိုက်တတ်ဘူး</button>
+        
+        <button class="option" onclick="showAnalysis('THE LOYAL PROTECTOR', 'ဒါဟာ ကျန်းမာတဲ့ ဆက်ဆံရေးတစ်ခုပါ။ ဒါပေမဲ့ သတိထားရမှာက ငြီးငွေ့စရာ မဖြစ်သွားဖို့ လိုပါတယ်။', 'ဗျူဟာ: ပျော်ရွှင်စရာ အတွေ့အကြုံသစ်တွေကို အတူတူ ဖန်တီးပြီး Dopamine ပမာဏကို ထိန်းညှိပေးပါ။')">၆။ သင်က ပိုဂရုစိုက်ပြလေ သူကလည်း သင့်အပေါ် ပိုပြီး အလေးထားလာလေပဲ</button>
+    </div>
+
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        <button onclick="parent.postMessage('quizCompleted', '*')" class="next-btn">CORE UNLOCKED: NEXT PHASE →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc, strat) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerHTML = desc + "<br><br><b>" + strat + "</b>";
+        document.getElementById('result-box').style.display = 'block';
+    }
+</script>
+</body>
+</html>

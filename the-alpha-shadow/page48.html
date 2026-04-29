@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #001a1d; color: #4ed9e6; font-family: sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
+        .quiz-container { width: 100%; max-width: 480px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(78, 217, 230, 0.2); border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
+        .phase-label { font-size: 10px; color: #ffab40; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; opacity: 0.8; }
+        h2 { font-size: 16px; line-height: 1.5; margin: 15px 0; color: #fff; }
+        .option { display: block; width: 100%; padding: 14px; margin: 10px 0; background: rgba(78, 217, 230, 0.05); border: 1px solid rgba(78, 217, 230, 0.2); color: #4ed9e6; border-radius: 6px; cursor: pointer; text-align: left; transition: 0.2s; font-size: 13px; line-height: 1.4; }
+        .option:hover { background: #4ed9e6; color: #000; font-weight: bold; }
+        #result-box { display: none; margin-top: 5px; padding: 20px; border: 1px solid #ffab40; background: rgba(255, 171, 64, 0.05); border-radius: 8px; animation: fadeInUp 0.4s ease-out; }
+        .res-title { font-size: 15px; font-weight: bold; color: #ffab40; margin-bottom: 12px; display: block; border-left: 4px solid #ffab40; padding-left: 10px; }
+        .res-desc { color: #fff; font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
+        .next-btn { display: block; width: 100%; padding: 15px; background: #ffab40; color: #000; border: none; border-radius: 6px; font-weight: 900; cursor: pointer; text-align: center; text-transform: uppercase; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<div class="quiz-container">
+    <span class="phase-label">ANALYSIS: PHASE 48 (BETRAYAL)</span>
+    <h2 id="q-text">မကြာသေးမီက သူ့ရဲ့ ပြုမူပုံတွေမှာ ဘယ်အချက်က သိသိသာသာ ပြောင်းလဲလာသလဲ?</h2>
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis('THE GASLIGHTER', 'သူကိုယ်တိုင် မှားနေတာကို သင့်အပေါ် အပြစ်ပုံချခြင်းဖြင့် သူ့ရဲ့ စိတ်မလုံခြုံမှုကို ဖုံးကွယ်နေတာပါ။ ဗျူဟာ - သူ့ရဲ့ စွပ်စွဲချက်တွေကို အတည်မယူပါနဲ့၊ အေးအေးဆေးဆေးနဲ့ အချက်အလက်ကိုပဲ ကိုင်စွဲပါ။')">၁။ အရင်က ပြဿနာမရှိတဲ့ ကိစ္စတွေကို အကြောင်းရှာပြီး သင့်ကိုပဲ အပြစ်တင်လာတယ်</button>
+        <button class="option" onclick="showAnalysis('THE DISTANT GHOST', 'သူ့ရဲ့ စိတ်အာရုံက တခြားနေရာ ရောက်နေတာပါ။ ဒါဟာ သစ္စာဖောက်မှုရဲ့ ပထမဆုံး ခြေလှမ်း ဖြစ်နိုင်ပါတယ်။ ဗျူဟာ - သူ့ကို အတင်းမလိုက်ပါနဲ့၊ သင့်ရဲ့ ကိုယ်ပိုင်တန်ဖိုးကို မြှင့်တင်ပြီး သူ့ကို စောင့်ကြည့်ပါ။')">၂။ စကားပြောတာ အရမ်းနည်းသွားပြီး သင့်အနားမှာ ရှိနေရင်တောင် အဝေးရောက်နေသလို ခံစားရတယ်</button>
+        <button class="option" onclick="showAnalysis('THE SECRETIVE KEEPER', 'သူ့မှာ ဖုံးကွယ်ထားတဲ့ အရာတစ်ခု ရှိနေပါပြီ။ ဗျူဟာ - Privacy ကို လေးစားသလိုနဲ့ သူ့ရဲ့ အမူအရာကို သတိထားပါ။ ယုံကြည်မှုက ပထမပါ။')">၃။ ဖုန်းကို အရမ်း လုံခြုံရေးချလာပြီး သင့်ရှေ့မှာ ဖုန်းသုံးရမှာကို ဝန်လေးလာတယ်</button>
+        <button class="option" onclick="showAnalysis('THE GUILT-TRIPPER', 'သူ့ရဲ့ အမှားကို ဖုံးကွယ်ဖို့ သင့်ကို အလွန်အမင်း ဂရုစိုက်ပြနေတာ ဖြစ်နိုင်ပါတယ်။ ဗျူဟာ - ဒီဂရုစိုက်မှုတွေရဲ့ နောက်ကွယ်က ရည်ရွယ်ချက်ကို သေချာ စဉ်းစားပါ။')">၄။ အကြောင်းရင်းမရှိဘဲ သင့်အပေါ် ပုံမှန်ထက်ပိုပြီး ဂရုစိုက်ပြလာတယ် (အမှားတစ်ခုခု ဖုံးထားသလိုမျိုး)</button>
+        <button class="option" onclick="showAnalysis('THE DEFENSIVE ALPHA', 'အမှားရှိသူဟာ အမြဲတမ်း ခုခံဖို့ အဆင်သင့် ဖြစ်နေတတ်ပါတယ်။ ဗျူဟာ - မေးခွန်းထုတ်တာထက် သူ့ရဲ့ ပြုမူပုံကို ငြိမ်ပြီး အကဲခတ်တာက ပိုထိရောက်ပါတယ်။')">၅။ သာမန်မေးခွန်းလေးတွေ မေးတာကိုတောင် အရမ်း ဒေါသထွက်ပြီး ပြန်တုံ့ပြန်လာတယ်</button>
+        <button class="option" onclick="showAnalysis('THE LOYAL STEADY', 'ဒါဟာ သာမန် စိတ်ဖိစီးမှုကြောင့် ဖြစ်နိုင်ပါတယ်။ ဗျူဟာ - သူ့ကို ပံ့ပိုးပေးပါ၊ ဒါပေမဲ့ သင့်ရဲ့ Instinct (ပင်ကိုယ်သိစိတ်) ကိုတော့ အမြဲ ယုံကြည်ပါ။')">၆။ ဘာမှ မထူးခြားပေမဲ့ အလုပ်ထဲမှာပဲ စိတ်မောနေပုံရတယ်</button>
+    </div>
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        <button onclick="parent.postMessage('quizCompleted', '*')" class="next-btn">BETRAYAL DECODED: NEXT →</button>
+    </div>
+</div>
+<script>
+    function showAnalysis(t, d) {
+        document.getElementById('options-group').style.display='none';
+        document.getElementById('q-text').style.opacity='0.3';
+        document.getElementById('res-title').innerText=t;
+        document.getElementById('res-desc').innerText=d;
+        document.getElementById('result-box').style.display='block';
+    }
+</script>
+</body>
+</html>
