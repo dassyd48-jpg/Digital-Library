@@ -93,6 +93,26 @@
         margin-bottom: 40px; /* အောက်ခြေနဲ့ အရမ်းမကပ်စေရန် */
     }
 }
+        .footer-copyright {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 10px;
+            color: #D4AF37;
+            opacity: 0.6;
+            z-index: 5000;
+            letter-spacing: 2px;
+            pointer-events: none;
+            text-transform: uppercase;
+        }
+
+        @media screen and (max-width: 600px) {
+            .footer-copyright {
+                bottom: 80px; /* ဖုန်းမှာ အပေါ်ကို တွန်းတင်ရန် */
+                font-size: 9px;
+            }
+        }
 
         /* Book Container: Design မူလအတိုင်းထားပြီး Rendering Error ကာကွယ်ထားသည် */
         #book-container {
