@@ -75,7 +75,24 @@
             text-transform: uppercase; border-radius: 4px; letter-spacing: 1px;
         }
 
-        .request-link { margin-top: 30px; color: var(--gold); text-decoration: none; font-size: 11px; font-weight: bold; opacity: 0.8; }
+        .request-link {
+    margin-top: 20px; /* Computer မှာ တခြားဟာနဲ့ မကပ်အောင် နေရာချန်သည် */
+    color: #BF00FF; /* Bright Purple */
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(191, 0, 255, 0.4);
+    transition: 0.3s;
+}
+
+/* ဖုန်းအတွက် သီးသန့်ပြင်ဆင်ချက် */
+@media screen and (max-width: 600px) {
+    .request-link {
+        margin-top: 10px; /* ဖုန်းမှာ အပေါ်ကို နည်းနည်း ပိုတက်လာစေရန် */
+        margin-bottom: 40px; /* အောက်ခြေနဲ့ အရမ်းမကပ်စေရန် */
+    }
+}
 
         /* Book Container: Design မူလအတိုင်းထားပြီး Rendering Error ကာကွယ်ထားသည် */
         #book-container {
