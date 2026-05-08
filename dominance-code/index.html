@@ -129,7 +129,15 @@
             backface-visibility: hidden;
         }
 
-        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        #flipbook-wrapper { 
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    padding-top: 40px; /* အပေါ်ကနေ နည်းနည်းပိုချပေးသည် */
+    padding-bottom: 80px; /* အောက်ခြေနဲ့ နေရာလွတ်ပိုထားသည် */
+}
         #flipbook .page { background-color: #000; background-size: 100% 100%; }
         
         /* Quiz Styles */
@@ -191,11 +199,17 @@
     const myPassword = "DC@MIRROR";
 
     function getBookSize() {
-        const padding = 10;
-        let w = window.innerWidth - padding;
-        let h = window.innerHeight - padding;
-        const ratio = 3 / 4;
-        if (w / h > ratio) { w = h * ratio; } else { h = w / ratio; }
+        let w = window.innerWidth * 0.96; // ဘေးဘောင်ကို အနည်းငယ်ပိုချဲ့သည်
+        let h = window.innerHeight * 0.88; // အမြင့်ကို ပိုရှည်လာစေရန် 0.88 အထိတိုးထားသည်
+        
+        // ဖုန်းအတွက် အချိုးအစားကို ပိုရှည်အောင် ညှိပေးခြင်း
+        const ratio = (window.innerWidth < 600) ? 0.62 : 0.75; 
+        
+        if (w / h > ratio) { 
+            w = h * ratio; 
+        } else { 
+            h = w / ratio; 
+        }
         return { w, h };
     }
 
