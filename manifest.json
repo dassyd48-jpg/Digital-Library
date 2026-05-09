@@ -1,0 +1,15 @@
+{
+  "name": "Dassy Digital Library",
+  "short_name": "Dassy Lib",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "https://dassyd48-jpg.github.io/Digital-Library/the-mind/thumb.png", 
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
