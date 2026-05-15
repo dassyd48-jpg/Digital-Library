@@ -17,45 +17,47 @@
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://dassyd48-jpg.github.io/Digital-Library/the-irreplaceable-queen/page1.jpg">
 
+    <link rel="manifest" href="manifest.json">
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+      }
+    </script>
+
     <script type="application/ld+json">
-<link rel="manifest" href="manifest.json">
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
-  }
-</script>
     {
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "name": "DASSY BLOCK VAULT",
-  "description": "The primary digital repository for psychological strategy and relationship dynamics by the expert DASSY.",
-  "publisher": {
-    "@type": "Organization",
-    "name": "DASSY Digital Library",
-    "alternateName": "DASSY"
-  },
-  "mainEntity": {
-    "@type": "ItemList",
-    "numberOfItems": 12,
-    "itemListElement": [
-  { "@type": "ListItem", "position": 1, "item": { "@type": "Book", "name": "The Architect Of Influence" }},
-  { "@type": "ListItem", "position": 2, "item": { "@type": "Book", "name": "The Alpha's Shadow" }},
-  { "@type": "ListItem", "position": 3, "item": { "@type": "Book", "name": "The Feminine Protocol" }},  
-  { "@type": "ListItem", "position": 4, "item": { "@type": "Book", "name": "The Modern Gentleman" }}     
-  { "@type": "ListItem", "position": 5, "item": { "@type": "Book", "name": "How A Man's Brain Picks His Dream Woman" }},
-  { "@type": "ListItem", "position": 6, "item": { "@type": "Book", "name": "The Irreplaceable Queen" }},
-  { "@type": "ListItem", "position": 7, "item": { "@type": "Book", "name": "The Unreadable Shadow" }},
-  { "@type": "ListItem", "position": 8, "item": { "@type": "Book", "name": "The Unspoken Magnet" }},
-  { "@type": "ListItem", "position": 9, "item": { "@type": "Book", "name": "The Ghost In His Mind" }},
-  { "@type": "ListItem", "position": 10, "item": { "@type": "Book", "name": "Beyond The Mask" }},
-  { "@type": "ListItem", "position": 11, "item": { "@type": "Book", "name": "The Dominance Code" }},
-  { "@type": "ListItem", "position": 12, "item": { "@type": "Book", "name": "The Mind" }}  
-]
-  }
-}
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "DASSY BLOCK VAULT",
+      "description": "The primary digital repository for psychological strategy and relationship dynamics by the expert DASSY.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "DASSY Digital Library",
+        "alternateName": "DASSY"
+      },
+      "mainEntity": {
+        "@type": "ItemList",
+        "numberOfItems": 12,
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "item": { "@type": "Book", "name": "The Architect Of Influence" }},
+          { "@type": "ListItem", "position": 2, "item": { "@type": "Book", "name": "The Alpha's Shadow" }},
+          { "@type": "ListItem", "position": 3, "item": { "@type": "Book", "name": "The Feminine Protocol" }},  
+          { "@type": "ListItem", "position": 4, "item": { "@type": "Book", "name": "The Modern Gentleman" }},      
+          { "@type": "ListItem", "position": 5, "item": { "@type": "Book", "name": "How A Man's Brain Picks His Dream Woman" }},
+          { "@type": "ListItem", "position": 6, "item": { "@type": "Book", "name": "The Irreplaceable Queen" }},
+          { "@type": "ListItem", "position": 7, "item": { "@type": "Book", "name": "The Unreadable Shadow" }},
+          { "@type": "ListItem", "position": 8, "item": { "@type": "Book", "name": "The Unspoken Magnet" }},
+          { "@type": "ListItem", "position": 9, "item": { "@type": "Book", "name": "The Ghost In His Mind" }},
+          { "@type": "ListItem", "position": 10, "item": { "@type": "Book", "name": "Beyond The Mask" }},
+          { "@type": "ListItem", "position": 11, "item": { "@type": "Book", "name": "The Dominance Code" }},
+          { "@type": "ListItem", "position": 12, "item": { "@type": "Book", "name": "The Mind" }}  
+        ]
+      }
+    }
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Special+Elite&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --metallic-gold: #b38b59; 
@@ -64,7 +66,6 @@
             --body-black: #050505;
             --text-gray: #a0a0a0;
         }
-
         body {
             margin: 0; padding: 0;
             background-color: var(--body-black);
