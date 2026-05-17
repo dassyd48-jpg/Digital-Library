@@ -46,9 +46,11 @@
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        /* FIX: ပြောင်းလဲလဲသမျှ Mobile Browser မျက်နှာပြင်အစစ်အမှန်အတိုင်း အမြင့်ရရှိစေရန် Fix ချခြင်း */
         body, html { 
             margin: 0; padding: 0; width: 100%; 
-            height: 100vh; height: 100dvh; /* Mobile Browser Fit */
+            height: 100vh; height: 100dvh; 
             overflow: hidden; background: #000; 
             font-family: 'Segoe UI', sans-serif; 
         }
@@ -152,21 +154,39 @@
         }
         .request-link:hover { opacity: 1; text-shadow: 0 0 10px rgba(255, 51, 255, 0.5); }
 
-        /* Book Structure UI */
+        /* FIX: Book Container ကို မျက်နှာပြင်အစစ်အတိုင်း ဒေါင်လိုက်အပြည့် နေရာယူစေခြင်း */
         #book-container { 
-            display: none; width: 100vw; height: 100vh; height: 100dvh; position: relative; 
+            display: none; width: 100vw; 
+            height: 100vh; height: 100dvh; 
+            position: relative; 
             z-index: 10; opacity: 0; transform: scale(1.05);
             transition: opacity 1s ease, transform 1s ease;
             background: var(--emerald-bg);
         }
         
+        /* FIX: Flipbook နဲ့ Watermark ကို ဆန့်ထွက်မသွားစေဘဲ သေသပ်စွာ ဗဟိုချက်ထိန်းပေးခြင်း */
         #flipbook-wrapper { 
-            width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            position: relative;
         }
         
+        /* FIX: Watermark ကို Dynamic Screen ရဲ့ အောက်ခြေအစစ်မှာ လုံးဝမပျောက်ဘဲ ကပ်နေအောင် နေရာချခြင်း */
         .watermark { 
-            position: absolute; bottom: 15px; width: 100%; text-align: center; 
-            font-size: 10px; color: var(--gold); opacity: 0.35; letter-spacing: 4px; pointer-events: none; 
+            position: absolute; 
+            bottom: 20px; 
+            width: 100%; 
+            text-align: center; 
+            font-size: 10px; 
+            color: var(--gold); 
+            opacity: 0.35; 
+            letter-spacing: 4px; 
+            pointer-events: none; 
+            z-index: 5;
         }
 
         /* Quiz Container */
@@ -218,8 +238,8 @@
     <div id="book-container">
         <div id="flipbook-wrapper">
             <div id="flipbook"></div>
+            <div class="watermark">© DASSY DIGITAL LIBRARY | ALL RIGHTS RESERVED</div>
         </div>
-        <div class="watermark">© DASSY DIGITAL LIBRARY | ALL RIGHTS RESERVED</div>
     </div>
 
     <audio id="sound-flip" src="flip.mp3" preload="auto"></audio>
@@ -283,7 +303,7 @@
         // Render Frame Elements
         function loadAndInit() {
             const flipbook = $("#flipbook");
-            let h = window.innerHeight * 0.90;
+            let h = window.innerHeight * 0.85; // FIX: Watermark အတွက် Space ချန်ရန် စာအုပ်အမြင့်ကို 85% သို့ အနည်းငယ်ညှိခြင်း
             let w = (window.innerWidth < 600) ? window.innerWidth * 0.95 : h * 0.707;
 
             for(let i = 1; i <= totalPages; i++) {
@@ -308,7 +328,6 @@
                     elevation: 0,
                     when: {
                         turning: function(e, page) {
-                            // Mobile Race-Condition Fix: ကြိုတင်ပြီး Quiz စာမျက်နှာလား စစ်ဆေးပြီး lock ချခြင်း
                             if (isQuizLocked && page !== currentActivePage) { 
                                 e.preventDefault(); 
                                 return; 
@@ -323,7 +342,6 @@
                         }
                     }
                 });
-                // ကနဦး စာမျက်နှာ ၁ အတွက် သီချင်းစဖွင့်ခြင်း
                 controlMusic(1);
             }, 150);
         }
@@ -350,7 +368,7 @@
 
         // Engine Auto Resizer
         $(window).resize(function() {
-            let h = window.innerHeight * 0.90;
+            let h = window.innerHeight * 0.85; // FIX: Resizing ဖြစ်လျှင်လည်း 85% စည်းမျဉ်းအတိုင်း တည်ငြိမ်စေခြင်း
             let w = (window.innerWidth < 600) ? window.innerWidth * 0.95 : h * 0.707;
             if ($("#flipbook").turn("is")) {
                 $("#flipbook").turn("size", w, h);
