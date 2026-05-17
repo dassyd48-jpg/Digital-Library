@@ -2,7 +2,7 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>The Irreplaceable Queen - Page 30 Quiz</title>
     <style>
         body { 
@@ -10,24 +10,49 @@
             color: #d4af37;
             font-family: sans-serif; 
             margin: 0; 
-            padding: 15px; 
+            padding: 10px; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             min-height: 100vh; 
+            height: 100vh;
             box-sizing: border-box;
+            overflow: hidden;
         }
+        
         .quiz-container { 
             width: 100%;
             max-width: 480px; 
-            background: rgba(0, 0, 0, 0.75); 
+            max-height: 95vh; /* ဖုန်းမျက်နှာပြင်အမြင့်ထက် မကျော်စေရန် */
+            background: rgba(0, 0, 0, 0.85); 
             border: 1px solid #d4af37; 
             border-radius: 12px; 
-            padding: 25px; 
-            text-align: center;
+            padding: 15px 20px; 
+            display: flex;
+            flex-direction: column;
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
+
+        /* စာသားရှည်လျားပါက အတွင်းထဲတွင်တင် အပေါ်အောက် လှိမ့်ဖတ်နိုင်မည့် စနစ် */
+        .scrollable-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+            margin-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Scrollbar အား ပါးပါးလျလျနှင့် လှပအောင် ပြုပြင်ခြင်း */
+        .scrollable-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .scrollable-content::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.3);
+            border-radius: 4px;
+        }
+
         .phase-label { 
             font-size: 11px; 
             color: #d4af37; 
@@ -35,91 +60,111 @@
             text-transform: uppercase; 
             font-weight: bold;
             display: block; 
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            text-align: center;
         }
+        
         h2 { 
-            font-size: 16px; 
+            font-size: 14.5px; 
             line-height: 1.6; 
             color: #fff; 
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             font-weight: normal; 
             text-align: left;
         }
+        
         .options-group {
             display: block;
         }
+        
         .option { 
             display: block;
             width: 100%; 
-            padding: 15px; 
-            margin: 12px 0; 
+            padding: 13px 15px; 
+            margin: 8px 0; 
             background: rgba(212, 175, 55, 0.03); 
             border: 1px solid rgba(212, 175, 55, 0.2);
             color: #eee; 
             border-radius: 6px; 
             cursor: pointer; 
             text-align: left; 
-            transition: 0.3s; 
-            font-size: 14px;
+            transition: 0.2s; 
+            font-size: 13.5px;
             line-height: 1.5;
         }
-        .option:hover { 
+        
+        .option:hover, .option:active { 
             background: #d4af37; 
             color: #000;
             font-weight: bold;
+            border-color: #d4af37;
         }
+        
         #result-box { 
             display: none; 
-            animation: fadeIn 0.8s ease;
+            animation: fadeIn 0.5s ease;
             text-align: left;
         }
+        
         .res-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
+        
         .res-type { 
-            font-size: 15px; 
+            font-size: 14px; 
             font-weight: bold; 
             color: #000; 
             background: #d4af37;
-            padding: 10px 15px; 
+            padding: 10px 12px; 
             border-radius: 4px; 
-            display: inline-block; 
-            margin-bottom: 15px; 
+            display: block; 
+            margin-bottom: 12px; 
             text-align: left;
             line-height: 1.5;
             width: 100%;
             box-sizing: border-box;
         }
+        
         .res-section-title {
             font-weight: bold;
             color: #d4af37;
-            margin-top: 15px;
-            font-size: 14.5px;
+            margin-top: 12px;
+            font-size: 14px;
             display: block;
         }
+        
         .res-desc { 
             color: #ddd;
-            font-size: 14px; 
-            line-height: 1.7; 
-            margin-bottom: 15px; 
+            font-size: 13.5px; 
+            line-height: 1.6; 
+            margin-bottom: 10px; 
         }
+        
         .warn-box {
             background: rgba(212, 175, 55, 0.05);
             border-left: 4px solid #d4af37;
-            padding: 12px;
-            font-size: 13.5px;
+            padding: 10px 12px;
+            font-size: 13px;
             line-height: 1.6;
             color: #eee;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
+
+        /* အောက်ခြေခလုတ်အကွက် - မျက်နှာပြင်တွင် ကပ်နေစေပြီး လုံးဝနစ်မသွားစေရန် */
+        .action-container {
+            width: 100%;
+            padding-top: 5px;
+            flex-shrink: 0;
+        }
+        
         .next-btn { 
             display: block;
             width: 100%;
             background: transparent;
             border: 1px solid #d4af37; 
             color: #d4af37; 
-            padding: 15px; 
+            padding: 14px; 
             border-radius: 6px; 
             cursor: pointer; 
             font-size: 13px;
@@ -129,12 +174,14 @@
             font-weight: bold;
             text-align: center;
         }
-        .next-btn:hover { 
+        
+        .next-btn:hover, .next-btn:active { 
             background: #d4af37; 
             color: #000;
         }
+        
         @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(10px); } 
+            from { opacity: 0; transform: translateY(8px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
     </style>
@@ -142,31 +189,38 @@
 <body>
 
 <div class="quiz-container">
-    <div id="quiz-flow">
-        <span class="phase-label">အခန်း (၅) ၏ စမ်းသပ်ချက်ကျမ်း (Interactive Test V)</span>
-        <h2 id="q-text">မေးခွန်း - သင့်လက်တွဲဖော်သည် စီးပွားရေး သို့မဟုတ် အလုပ်အကိုင်တွင် လမ်းပျောက်ပြီး စိတ်ဓာတ်ကျနေပါက သင် မည်သို့ ပြုလုပ်မည်နည်း။</h2>
+    
+    <div class="scrollable-content">
         
-        <div class="options-group" id="options-group">
-            <button class="option" onclick="showAnalysis('ka')">(က) 'နင်ကတော့ ဘာလုပ်လုပ် ဒီလိုပဲ ညံ့တာ' ဟု ဆိုကာ ၎င်း၏ ညံ့ဖျင်းမှုကို ထပ်ဆင့် နှိပ်ကွပ်ပြောဆိုသည်။</button>
-            <button class="option" onclick="showAnalysis('kha')">(ခ) ငါနှင့်မဆိုင်သကဲ့သို့ နေပြီး၊ ၎င်းက မိမိအား အရင်လို ဂုဏ်မတင်နိုင်ခြင်း (သို့မဟုတ်) ပိုက်ဆံမပေးနိုင်ခြင်းကိုသာ စိတ်ဆိုးနေမိသည်။</button>
-            <button class="option" onclick="showAnalysis('ga')">(ဂ) ၎င်း၏ ပင်ကိုယ်အရည်အသွေးကို ပြန်လည်သတိရစေပြီး၊ ဘဝကို အဆင့်မြှင့်တင်ရန် ဉာဏ်ပညာနှင့် အကြံဉာဏ်ကောင်းများဖြင့် လမ်းပြပေးသည်။</button>
+        <div id="quiz-flow">
+            <span class="phase-label">အခန်း (၅) ၏ စမ်းသပ်ချက်ကျမ်း (Interactive Test V)</span>
+            <h2 id="q-text">မေးခွန်း - သင့်လက်တွဲဖော်သည် စီးပွားရေး သို့မဟုတ် အလုပ်အကိုင်တွင် လမ်းပျောက်ပြီး စိတ်ဓာတ်ကျနေပါက သင် မည်သို့ ပြုလုပ်မည်နည်း။</h2>
+            
+            <div class="options-group" id="options-group">
+                <button class="option" onclick="showAnalysis('ka')">(က) 'နင်ကတော့ ဘာလုပ်လုပ် ဒီလိုပဲ ညံ့တာ' ဟု ဆိုကာ ၎င်း၏ ညံ့ဖျင်းမှုကို ထပ်ဆင့် နှိပ်ကွပ်ပြောဆိုသည်။</button>
+                <button class="option" onclick="showAnalysis('kha')">(ခ) ငါနှင့်မဆိုင်သကဲ့သို့ နေပြီး၊ ၎င်းက မိမိအား အရင်လို ဂုဏ်မတင်နိုင်ခြင်း (သို့မဟုတ်) ပိုက်ဆံမပေးနိုင်ခြင်းကိုသာ စိတ်ဆိုးနေမိသည်။</button>
+                <button class="option" onclick="showAnalysis('ga')">(ဂ) ၎င်း၏ ပင်ကိုယ်အရည်အသွေးကို ပြန်လည်သတိရစေပြီး၊ ဘဝကို အဆင့်မြှင့်တင်ရန် ဉာဏ်ပညာနှင့် အကြံဉာဏ်ကောင်းများဖြင့် လမ်းပြပေးသည်။</button>
+            </div>
         </div>
-    </div>
 
-    <div id="result-box">
-        <div class="res-header">
-            <span class="phase-label">ANALYSIS RESULT</span>
+        <div id="result-box">
+            <div class="res-header">
+                <span class="phase-label">ANALYSIS RESULT</span>
+            </div>
+            
             <div class="res-type" id="res-choice"></div>
+            
+            <span class="res-section-title">🧐 သင်သည် မည်သို့သောသူမျိုးလဲ? -</span>
+            <p class="res-desc" id="res-desc"></p>
+            
+            <span class="res-section-title">⚠️ လက်တွေ့အကျိုးဆက် -</span>
+            <div class="warn-box" id="res-warn"></div>
         </div>
-        
-        <span class="res-section-title">🧐 သင်သည် မည်သို့သောသူမျိုးလဲ? -</span>
-        <p class="res-desc" id="res-desc"></p>
-        
-        <span class="res-section-title">⚠️ လက်တွေ့အကျိုးဆက် -</span>
-        <div class="warn-box" id="res-warn"></div>
-        
+
+    </div> <div class="action-container" id="action-wrapper" style="display: none;">
         <button onclick="completeQuiz()" class="next-btn">နောက်တစ်မျက်နှာသို့ သွားရန် →</button>
     </div>
+    
 </div>
 
 <script>
@@ -178,7 +232,7 @@
         },
         kha: {
             choice: "(ခ) ငါနှင့်မဆိုင်သကဲ့သို့ နေပြီး၊ ၎င်းက မိမိအား အရင်လို ဂုဏ်မတင်နိုင်ခြင်း (သို့မဟုတ်) ပိုက်ဆံမပေးနိုင်ခြင်းကိုသာ စိတ်ဆိုးနေမိသည်။",
-            desc: "သင်သည် အချစ်ရေးတွင် ရယူလိုမှုသက်သက်ကိုသာ အခြေခံပြီး တာဝန်ယူမှုမရှိသော မှီခိုသူ ဖြစ်၏။",
+            desc: "သင်သည် အချစ်ရေးတွင် ရယူလိုမှုသက်သက်ကိုသာ အခြေခံပြီး တတာဝန်ယူမှုမရှိသော မှီခိုသူ ဖြစ်၏။",
             warn: "သာယာမှုသက်သက်ပဲ ပေးနိုင်ပြီး ဘာမှ အသုံးမဝင်တဲ့ ဖြစ်တည်မှုမျိုးကို ယောက်ျားတွေဟာ အချိန်မရွေး အစားထိုးပစ်တတ်ကြစမြဲ ဖြစ်သည်။"
         },
         ga: {
@@ -198,8 +252,12 @@
         document.getElementById('res-desc').innerText = data.desc;
         document.getElementById('res-warn').innerText = data.warn;
         
-        // Show Result UI
+        // Show Result UI and Next Button
         document.getElementById('result-box').style.display = 'block';
+        document.getElementById('action-wrapper').style.display = 'block';
+        
+        // Scroll back to top smoothly to read results
+        document.querySelector('.scrollable-content').scrollTop = 0;
     }
 
     function completeQuiz() {
