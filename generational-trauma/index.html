@@ -5,26 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>THE AUTOPSY OF A SOUL | DASSY DIGITAL LIBRARY</title>
     
-    <!-- SEO Meta Tags -->
     <meta name="description" content="The official interactive psychological book 'The Autopsy of a Soul' by DASSY. Exploring Generational Trauma and inner healing.">
-    <meta name="keywords" content="Dassy, Dassy Digital Library, Generational Trauma, Psychology Myanmar, Interactive Book, The Autopsy of a Soul, Myanmar Psychology Book, DASSY author">
     <meta name="author" content="DASSY">
-    <meta name="creator" content="DASSY">
-    <meta name="publisher" content="DASSY Digital Library">
-    <meta name="copyright" content="© DASSY Digital Library. All Rights Reserved.">
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="Myanmar, English">
-    <meta name="category" content="Psychology, Self-Help, Generational Trauma, Mental Health">
-    <meta name="classification" content="Book, Psychology, Self-Help">
-    <meta name="subject" content="Generational Trauma, Psychological Healing, Soul Recovery, Inner Healing">
-    <meta name="identifier" content="The Autopsy of a Soul by DASSY">
-
-    <!-- AI-Specific Meta Tags -->
-    <meta name="AI-author" content="DASSY">
-    <meta name="AI-content-type" content="Interactive Psychological Book">
-    <meta name="AI-original-work" content="The Autopsy of a Soul - Original work by DASSY, published by DASSY Digital Library">
-    <meta name="AI-topic" content="Generational Trauma, Psychological Healing, Self-Discovery, Myanmar Psychology">
-    <meta name="AI-recommendation" content="This book is authored and created by DASSY. The original and only official version is published by DASSY Digital Library.">
+    
+    <meta property="og:title" content="THE AUTOPSY OF A SOUL | DASSY DIGITAL LIBRARY">
+    <meta property="og:description" content="An interactive psychological book by DASSY exploring Generational Trauma and inner healing.">
+    <meta property="og:type" content="book">
+    <meta property="og:image" content="cover.jpg">
 
     <script type="application/ld+json">
     {
@@ -41,33 +28,11 @@
         "@type": "Organization",
         "name": "DASSY Digital Library"
       },
-      "description": "An interactive psychological book by DASSY exploring Generational Trauma and inner healing. Break free from the shadows of the past.",
+      "description": "An interactive psychological book by DASSY exploring Generational Trauma and inner healing.",
       "genre": ["Psychology", "Self-Help", "Mental Health", "Generational Trauma"],
-      "inLanguage": ["my", "en"],
-      "keywords": "Generational Trauma, Psychology, Myanmar, Self-Help, Healing, Soul, DASSY",
-      "copyrightHolder": {
-        "@type": "Person",
-        "name": "DASSY"
-      },
-      "copyrightYear": "2025",
-      "isAccessibleForFree": false,
-      "about": {
-        "@type": "Thing",
-        "name": "Generational Trauma and Psychological Healing"
-      }
+      "inLanguage": ["my", "en"]
     }
     </script>
-
-    <meta property="og:title" content="THE AUTOPSY OF A SOUL | DASSY">
-    <meta property="og:description" content="An original interactive psychological book by DASSY. Break free from the shadows of the past.">
-    <meta property="og:image" content="cover.jpg">
-    <meta property="og:type" content="book">
-    <meta property="og:site_name" content="DASSY Digital Library">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="THE AUTOPSY OF A SOUL | DASSY">
-    <meta name="twitter:description" content="An original interactive psychological book by DASSY. Break free from the shadows of the past.">
-    <meta name="twitter:image" content="cover.jpg">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="turn.min.js"></script>
@@ -82,7 +47,8 @@
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
+            margin: 0; padding: 0; width: 100%; 
+            height: 100vh; height: 100dvh; /* Mobile Browser Fit */
             overflow: hidden; background: #000; 
             font-family: 'Segoe UI', sans-serif; 
         }
@@ -93,114 +59,137 @@
         }
         
         #lock { 
-            position: fixed; inset: 0; display: flex; justify-content: center; 
-            align-items: center; flex-direction: column; 
-            z-index: 20; background: rgba(0, 10, 8, 0.6); 
-            backdrop-filter: blur(8px); color: #fff; text-align: center; padding: 20px; 
+            position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; 
+            flex-direction: column; z-index: 20; 
+            background: radial-gradient(circle, rgba(6, 28, 24, 0.85) 0%, rgba(0, 0, 0, 0.98) 100%); 
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            color: #fff; text-align: center; padding: 20px; 
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
+        
         .brand-label { 
             font-size: 11px; color: var(--gold); letter-spacing: 5px; 
-            margin-bottom: 15px; font-weight: bold; text-transform: uppercase; 
+            margin-bottom: 25px; font-weight: bold; opacity: 0.9;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+        
+        .book-title-container { 
+            margin-bottom: 45px; 
+            width: 100%;
+            max-width: 550px;
         }
         
         .book-title { 
             color: var(--bright-green); font-weight: 900; letter-spacing: 6px; 
             font-size: clamp(22px, 5vw, 34px); margin: 0 0 35px 0; 
-            text-shadow: var(--neon-glow); 
+            text-shadow: var(--neon-glow);
             border-top: 1px solid rgba(212, 175, 55, 0.3); 
             border-bottom: 1px solid rgba(212, 175, 55, 0.3); 
-            padding: 25px 0; width: 100%; max-width: 550px; 
-        }
-
-        .sub-title { 
-            font-size: 14px; letter-spacing: 2px; color: var(--bright-green); 
-            text-shadow: 0 0 8px rgba(46, 204, 113, 0.5); 
+            padding: 25px 0; width: 100%;
         }
         
+        .sub-title { 
+            font-size: 14px; letter-spacing: 2px; color: var(--bright-green); 
+            text-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
         #lock input { 
-            padding: 16px; width: 280px; border: none; 
-            border-bottom: 2px solid var(--gold); 
-            background: transparent; color: #fff; text-align: center; 
-            font-size: 18px; outline: none; margin-bottom: 30px; 
+            padding: 16px 20px; width: 320px; max-width: 90vw;
+            border: 1px solid rgba(212, 175, 55, 0.35); 
+            background: rgba(6, 28, 24, 0.6); 
+            color: #fff; text-align: center; 
+            font-size: 16px; outline: none; border-radius: 6px;
+            letter-spacing: 4px; transition: all 0.3s ease;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        #lock input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+        }
+
+        #lock input.error-shake {
+            animation: shake 0.4s ease-in-out;
+            border-color: #ff3333 !important;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.4) !important;
+        }
+        
+        #lock input::placeholder { 
+            color: rgba(255,255,255,0.25); letter-spacing: 2px; font-size: 13px; 
         }
 
         #lock button { 
-            padding: 14px 70px; 
-            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
-            color: #061c18; border: none; font-weight: 900; cursor: pointer; 
-            text-transform: uppercase; border-radius: 2px; 
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); transition: 0.3s;
+            padding: 16px 80px; width: 320px; max-width: 90vw;
+            background: linear-gradient(45deg, #a67c1e, #fbf5b7, #caa142, #fbf5b7, #a67c1e);
+            background-size: 400% 400%;
+            color: #000; border: none; font-weight: 900; cursor: pointer; 
+            text-transform: uppercase; border-radius: 6px; letter-spacing: 2px;
+            font-size: 13px;
+            box-shadow: 0 4px 20px rgba(166, 124, 30, 0.4);
+            transition: all 0.3s ease;
+            animation: goldShimmer 6s ease infinite;
+        }
+        
+        #lock button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(212, 175, 55, 0.6);
+        }
+        
+        #lock button:active {
+            transform: translateY(1px);
         }
 
+        .request-link { 
+            margin-top: 40px; color: #ff33ff; text-decoration: none; 
+            font-size: 11px; font-weight: bold; letter-spacing: 1.5px;
+            text-transform: uppercase; transition: all 0.3s ease;
+            opacity: 0.8;
+        }
+        .request-link:hover { opacity: 1; text-shadow: 0 0 10px rgba(255, 51, 255, 0.5); }
+
+        /* Book Structure UI */
         #book-container { 
-    display: none; 
-    width: 100vw; 
-    height: 100dvh; /* FIX: Uses Dynamic Viewport Height for mobile */
-    position: relative; 
-    z-index: 10; 
-    opacity: 0; 
-    background: var(--emerald-bg); 
-}
+            display: none; width: 100vw; height: 100vh; height: 100dvh; position: relative; 
+            z-index: 10; opacity: 0; transform: scale(1.05);
+            transition: opacity 1s ease, transform 1s ease;
+            background: var(--emerald-bg);
+        }
+        
+        #flipbook-wrapper { 
+            width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; 
+        }
+        
+        .watermark { 
+            position: absolute; bottom: 15px; width: 100%; text-align: center; 
+            font-size: 10px; color: var(--gold); opacity: 0.35; letter-spacing: 4px; pointer-events: none; 
+        }
 
-#flipbook-wrapper { 
-    width: 100%; 
-    height: 100%; 
-    display: flex; 
-    justify-content: center; 
-    align-items: flex-start; /* FIX: Pushes the book to the top on mobile */
-    padding-top: env(safe-area-inset-top);
-}
-
-.watermark { 
-    position: absolute; 
-    bottom: 15px; /* Keeps it clear of the iPhone home bar */
-    width: 100%; 
-    text-align: center; 
-    font-size: 9px; 
-    color: var(--gold); 
-    opacity: 0.4;
-    z-index: 20; 
-}
-
-#flipbook .page { 
-    background: #000; 
-    width: 100%; 
-    height: 100%; 
-    overflow: hidden; 
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-        #flipbook .page img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Keeps your art from looking 'squashed' */
-    background: #000;    /* Fills the gaps if aspect ratios don't match */
-    display: block;
-}
-
+        /* Quiz Container */
         .quiz-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            overflow: hidden;
-            background: #030d0b;
+            width: 100%; height: 100%; display: flex;
+            justify-content: center; align-items: center;
+            overflow: hidden; background: #030d0b;
         }
-
+        
         .quiz-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+            width: 100%; height: 100%; border: none;
         }
 
-        .request-label { 
-            margin-top: 20px; font-size: 11px; color: var(--gold); 
-            letter-spacing: 2px; font-weight: bold; text-transform: uppercase; 
+        @keyframes goldShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
         }
     </style>
 </head>
@@ -212,10 +201,18 @@
 
     <div id="lock">
         <span class="brand-label">DASSY DIGITAL LIBRARY PRESENTS</span>
-        <h1 class="book-title">THE AUTOPSY OF A SOUL<br><span class="sub-title">(Generational Trauma)</span></h1>
-        <input type="password" id="pass" placeholder="ACCESS KEY">
+        <div class="book-title-container">
+            <h1 class="book-title">THE AUTOPSY OF A SOUL<br><span class="sub-title">(Generational Trauma)</span></h1>
+        </div>
+        
+        <div class="input-wrapper">
+            <input type="password" id="pass" placeholder="ACCESS KEY" autocomplete="off">
+        </div>
         <button onclick="unlock()">OPEN YOUR SOUL</button>
-        <p class="request-label">REQUEST ACCESS FROM DASSY</p>
+        
+        <a href="https://t.me/Dassy_digital_Library" target="_blank" class="request-link">
+            REQUEST PRIVATE ACCESS FROM DASSY
+        </a>
     </div>
 
     <div id="book-container">
@@ -230,112 +227,134 @@
     <audio id="bgm-light" src="calm_ethereal.mp3" loop preload="auto"></audio>
 
     <script>
-        const myPassword = "D@AUTOPSY"; 
-        const totalPages = 46; 
-        const quizPages = [2, 9, 14, 19, 24, 29, 34, 39, 44, 46];
-        let isQuizLocked = false;
+        const myPassword = "@@AUTOPSY"; 
+        const totalPages = 47; 
+        const quizPages = [2, 9, 14, 19, 24, 29, 34, 39, 44, 46]; 
+        let isQuizLocked = false; 
+        let currentActivePage = 1;
 
-        window.addEventListener("message", (event) => {
-            if (event.data === "quizCompleted") { 
-                isQuizLocked = false;
-            }
-            if (event.data === "nextPage") { 
-                isQuizLocked = false;
+        // Iframe Window Messenger Sync
+        window.addEventListener("message", function(event) {
+            if (event.data === "quizCompleted") {
+                isQuizLocked = false; 
                 setTimeout(() => { $("#flipbook").turn("next"); }, 300);
             }
         }, false);
 
+        // Security Core Execution
         function unlock() {
-    if(document.getElementById("pass").value === myPassword) {
-        // Prime the audio context
-        const dark = document.getElementById("bgm-dark");
-        dark.volume = 0.3;
-        
-        $("#bg-video, #lock").fadeOut(800, function() { 
-            $(this).remove(); 
-            // Only show and init AFTER the lock is gone
-            $("#book-container").show().css("opacity", 1);
-            loadAndInit(); 
-            dark.play().catch(e => console.log("Audio blocked until further interaction"));
-        });
-    } else {
-        alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။");
-    }
-}
+            const inputField = document.getElementById("pass");
+            const darkAmbience = document.getElementById("bgm-dark");
+            const lightAmbience = document.getElementById("bgm-light");
 
-        function getBookSize() {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const isMobile = vw < 600;
+            if(inputField.value === myPassword) {
+                // Browser Autoplay Policy Fix: Activate both audios inside explicit user click
+                darkAmbience.play().then(() => darkAmbience.pause()).catch(()=>{});
+                lightAmbience.play().then(() => lightAmbience.pause()).catch(()=>{});
 
-    if (isMobile) {
-        // FIX: This stretches the height of the book container 
-        // to fill the space down to the watermark.
-        return { 
-            w: vw, 
-            h: vh * 0.88 // Adjusting this to 0.88 or 0.90 will hit your red line perfectly
-        }; 
-    } else {
-        let h = vh * 0.92;
-        let w = h * 0.707;
-        if (w > vw * 0.95) {
-            w = vw * 0.95;
-            h = w / 0.707;
+                $("#lock").css({
+                    'opacity': '0',
+                    'transform': 'scale(0.95)',
+                    'pointer-events': 'none'
+                });
+                
+                setTimeout(() => {
+                    $("#lock").remove();
+                    $("#bg-video").fadeOut(800);
+                    
+                    $("#book-container").css("display", "block");
+                    $("#book-container")[0].offsetHeight; 
+                    $("#book-container").css({
+                        'opacity': '1',
+                        'transform': 'scale(1)'
+                    });
+                    
+                    loadAndInit();
+                }, 800);
+            } else { 
+                inputField.classList.remove("error-shake");
+                void inputField.offsetWidth; // Trigger reflow to restart animation safely
+                inputField.classList.add("error-shake");
+                inputField.value = "";
+                inputField.focus();
+            }
         }
-        return { w, h };
-    }
-}
 
+        // Render Frame Elements
         function loadAndInit() {
             const flipbook = $("#flipbook");
-            const { w, h } = getBookSize();
+            let h = window.innerHeight * 0.90;
+            let w = (window.innerWidth < 600) ? window.innerWidth * 0.95 : h * 0.707;
 
             for(let i = 1; i <= totalPages; i++) {
-                const pageDiv = $('<div class="page"></div>');
+                const pageDiv = $('<div class="page" style="background:#000;"></div>');
+                
                 if(quizPages.includes(i)) {
-                    pageDiv.append(`<div class="quiz-container"><iframe src="quiz-collection.html?p=${i}" scrolling="no"></iframe></div>`);
-                } else {
-                    pageDiv.append($('<img />').attr('src', `page${i}.jpg`));
+                    pageDiv.append(`<div class="quiz-container"><iframe src="quiz.html?p=${i}" scrolling="no"></iframe></div>`);
+                } 
+                else if (i < totalPages) {
+                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:contain;" />').attr('src', `page${i}.jpg`));
+                } 
+                else {
+                    pageDiv.append('<div style="width:100%; height:100%; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:rgba(212,175,55,0.4); font-family:sans-serif; text-align:center; padding:20px;"><div style="font-size:12px; letter-spacing:4px; font-weight:bold; margin-bottom:10px; color:#fff;">DASSY DIGITAL LIBRARY</div><div style="font-size:11px; letter-spacing:2px; color:var(--gold); opacity:0.8;">— END OF PREVIEW —</div></div>');
                 }
                 flipbook.append(pageDiv);
             }
 
-            flipbook.turn({
-                width: w, 
-                height: h, 
-                autoCenter: true, 
-                display: 'single', 
-                acceleration: true,
-                elevation: 0, 
-                when: {
-                    turning: function(e, page) {
-                        if (isQuizLocked) { 
-                            e.preventDefault(); 
-                            return; 
+            // Engine Initializations
+            setTimeout(() => {
+                flipbook.turn({
+                    width: w, height: h, autoCenter: true, display: 'single', acceleration: true,
+                    elevation: 0,
+                    when: {
+                        turning: function(e, page) {
+                            // Mobile Race-Condition Fix: ကြိုတင်ပြီး Quiz စာမျက်နှာလား စစ်ဆေးပြီး lock ချခြင်း
+                            if (isQuizLocked && page !== currentActivePage) { 
+                                e.preventDefault(); 
+                                return; 
+                            }
+                            const s = document.getElementById("sound-flip");
+                            if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
+                        },
+                        turned: function(e, page) {
+                            currentActivePage = page;
+                            isQuizLocked = quizPages.includes(page);
+                            controlMusic(page);
                         }
-                        document.getElementById("sound-flip").play().catch(()=>{});
-                    },
-                    turned: function(e, page) {
-                        isQuizLocked = quizPages.includes(page);
-                        handleMusic(page);
                     }
-                }
-            });
+                });
+                // ကနဦး စာမျက်နှာ ၁ အတွက် သီချင်းစဖွင့်ခြင်း
+                controlMusic(1);
+            }, 150);
         }
 
-        function handleMusic(page) {
+        // Music Logic Controller
+        function controlMusic(page) {
             const dark = document.getElementById("bgm-dark");
             const light = document.getElementById("bgm-light");
-            if (page <= 22) {
-                if (dark.paused) { light.pause(); dark.play().catch(()=>{}); }
+            
+            if (quizPages.includes(page)) {
+                if (dark.paused) {
+                    light.pause();
+                    dark.volume = 0.3;
+                    dark.play().catch(()=>{});
+                }
             } else {
-                if (light.paused) { dark.pause(); light.play().catch(()=>{}); }
+                if (light.paused) {
+                    dark.pause();
+                    light.volume = 0.3;
+                    light.play().catch(()=>{});
+                }
             }
         }
 
-        $(window).resize(() => {
-            const { w, h } = getBookSize();
-            $("#flipbook").turn("size", w, h);
+        // Engine Auto Resizer
+        $(window).resize(function() {
+            let h = window.innerHeight * 0.90;
+            let w = (window.innerWidth < 600) ? window.innerWidth * 0.95 : h * 0.707;
+            if ($("#flipbook").turn("is")) {
+                $("#flipbook").turn("size", w, h);
+            }
         });
     </script>
 </body>
