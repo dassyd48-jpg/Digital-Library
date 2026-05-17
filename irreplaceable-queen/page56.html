@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Irreplaceable Queen - Page Quiz</title>
+    <style>
+        body { 
+            background: #12011b; /* Royal Dark Purple Theme */
+            color: #d4af37;
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box;
+        }
+        .quiz-container { 
+            width: 100%;
+            max-width: 480px; 
+            background: rgba(0, 0, 0, 0.75); 
+            border: 1px solid #d4af37; 
+            border-radius: 12px; 
+            padding: 25px; 
+            text-align: center;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: #d4af37; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold;
+            display: block; 
+            margin-bottom: 15px;
+        }
+        h2 { 
+            font-size: 16px; 
+            line-height: 1.6; 
+            color: #fff; 
+            margin-bottom: 25px;
+            font-weight: normal; 
+            text-align: left;
+        }
+        .options-group {
+            display: block;
+        }
+        .option { 
+            display: block;
+            width: 100%; 
+            padding: 15px; 
+            margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: #eee; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-align: left; 
+            transition: 0.3s; 
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .option:hover { 
+            background: #d4af37; 
+            color: #000;
+            font-weight: bold;
+        }
+        #result-box { 
+            display: none; 
+            animation: fadeIn 0.8s ease;
+            text-align: left;
+        }
+        .res-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .res-type { 
+            font-size: 15px; 
+            font-weight: bold; 
+            color: #000; 
+            background: #d4af37;
+            padding: 10px 15px; 
+            border-radius: 4px; 
+            display: inline-block; 
+            margin-bottom: 15px; 
+            text-align: left;
+            line-height: 1.5;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .res-section-title {
+            font-weight: bold;
+            color: #d4af37;
+            margin-top: 15px;
+            font-size: 14.5px;
+            display: block;
+        }
+        .res-desc { 
+            color: #ddd;
+            font-size: 14px; 
+            line-height: 1.7; 
+            margin-bottom: 15px; 
+        }
+        .warn-box {
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 4px solid #d4af37;
+            padding: 12px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #eee;
+            margin-bottom: 25px;
+        }
+        .next-btn { 
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: 1px solid #d4af37; 
+            color: #d4af37; 
+            padding: 15px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 13px;
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            transition: 0.3s;
+            font-weight: bold;
+            text-align: center;
+        }
+        .next-btn:hover { 
+            background: #d4af37; 
+            color: #000;
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">အခန်း (၁၀) ၏ စမ်းသပ်ချက်ကျမ်း (Interactive Test X)</span>
+        <h2 id="q-text">မေးခွန်း - လက်တွဲဖော်သည် သူ၏ အားနည်းချက် သို့မဟုတ် ဘယ်သူ့ကိုမျှ ထုတ်မပြရဲသော အတိတ်က အမှားတစ်ခုကို သင့်အား ယုံကြည်စွာ ရင်ဖွင့်လာသောအခါ သင် မည်သို့ ပြုမူမည်နည်း။</h2>
+        
+        <div class="options-group" id="options-group">
+            <button class="option" onclick="showAnalysis('ka')">(က) 'နင်ကလည်း အသုံးကိုမကျဘူး' ဟု ဆိုကာ ၎င်း၏ အားနည်းချက်ကို နှိမ်ချပြောဆိုပြီး နောက်နောင်တွင် ရန်ဖြစ်လျှင် လက်နက်အဖြစ် ပြန်လည်အသုံးချသည်။</button>
+            <button class="option" onclick="showAnalysis('kha')">(ခ) စိတ်မပါသကဲ့သို့ နားထောင်ပြီး 'အော်... ဟုတ်လား' ဟု ဆိုကာ ဥပေက္ခာပြုထားလိုက်သည်။</button>
+            <button class="option" onclick="showAnalysis('ga')">(ဂ) ၎င်း၏ လျှို့ဝှက်ချက်ကို အမြင့်ဆုံး လုံခြုံစွာ ထိန်းသိမ်းပေးလျက်၊ စိတ်ပိုင်းဆိုင်ရာ ခွန်အားနှင့် တည်ငြိမ်လှသော လမ်းပြမှုကို ပေးကာ စိတ်ကို သိမ်းပိုက်လိုက်သည်။</button>
+        </div>
+    </div>
+
+    <div id="result-box">
+        <div class="res-header">
+            <span class="phase-label">ANALYSIS RESULT</span>
+            <div class="res-type" id="res-choice"></div>
+        </div>
+        
+        <span class="res-section-title">🧐 သင်သည် မည်သို့သောသူမျိုးလဲ? -</span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <span class="res-section-title">⚠️ လက်တွေ့အကျိုးဆက် -</span>
+        <div class="warn-box" id="res-warn"></div>
+        
+        <button onclick="completeQuiz()" class="next-btn">နောက်တစ်မျက်နှာသို့ သွားရန် →</button>
+    </div>
+</div>
+
+<script>
+    const analysisData = {
+        ka: {
+            choice: "(က) 'နင်ကလည်း အသုံးကိုမကျဘူး' ဟု ဆိုကာ ၎င်း၏ အားနည်းချက်ကို နှိမ်ချပြောဆိုပြီး နောက်နောင်တွင် ရန်ဖြစ်လျှင် လက်နက်အဖြစ် ပြန်လည်အသုံးချသည်။",
+            desc: "သင်သည် တစ်ဖက်လူရဲ့ ယုံကြည်မှုကို ဖျက်ဆီးတတ်ပြီး၊ စိတ်ဆိုးလာလျှင် တစ်ဖက်လူရဲ့ အားနည်းချက်ကို ထိုးနှက်တတ်သည့် ဘေးကင်းမှုမရှိသော အန္တရာယ်ရှိသူ ဖြစ်၏။",
+            warn: "ယောက်ျားတစ်ယောက်သည် သင့်ရှေ့မှာ စိတ်တံခါးကို ထာဝရ ပိတ်ပစ်လိုက်မည်ဖြစ်ပြီး၊ သင့်ကို ရန်သူတစ်ယောက်လို သတ်မှတ်ကာ စိတ်ပိုင်းဆိုင်ရာအရ လုံးဝ ဝေးကွာသွားပါလိမ့်မည်။"
+        },
+        kha: {
+            choice: "(ခ) စိတ်မပါသကဲ့သို့ နားထောင်ပြီး 'အော်... ဟုတ်လား' ဟု ဆိုကာ ဥပေက္ခာပြုထားလိုက်သည်။",
+            desc: "သင်သည် လက်တွဲဖော်ရဲ့ စိတ်ဝိညာဉ်အနက်ရှိုင်းဆုံး အလွှာကို နားလည်ဖို့ စိတ်မဝင်စားဘဲ အပေါ်ယံရင်းနှီးမှုလောက်သာ လိုလားသူ ဖြစ်၏။",
+            warn: "သင့်ထံမှ စိတ်ပိုင်းဆိုင်ရာ နားလည်မှုကို မရသောအခါ၊ ၎င်းအား စာနာနားလည်ပေးမည့် အခြားသော နေရာ သို့မဟုတ် အခြားသူထံသို့ စိတ်ဝိညာဉ် ပုံအပ်သွားတတ်သည်။"
+        },
+        ga: {
+            choice: "(ဂ) ၎င်း၏ လျှို့ဝှက်ချက်ကို အမြင့်ဆုံး လုံခြုံစွာ ထိန်းသိမ်းပေးလျက်၊ စိတ်ပိုင်းဆိုင်ရာ ခွန်အားနှင့် တည်ငြိမ်လှသော လမ်းပြမှုကို ပေးကာ စိတ်ကို သိမ်းပိုက်လိုက်သည်။",
+            desc: "သင်သည် ယောက်ျားတစ်ယောက်ရဲ့ စိတ်ဝိညာဉ်ထဲသို့ စိတ်ပိုင်းဆိုင်ရာ ကျောက်ဆူး (Absolute Emotional Anchor) ခိုင်မာစွာ ချထားနိုင်သည့် စစ်မှန်သော ဝိညာဉ်အစိုးရသူ ဖြစ်၏။",
+            warn: "'ဒီကမ္ဘာပေါ်မှာ ငါ့ကို အနက်ရှိုင်းဆုံး နားလည်ပြီး လုံခြုံမှုပေးနိုင်တာ သူမတစ်ဦးတည်းပဲ ရှိတယ်' ဆိုတဲ့ အသိကြောင့်၊ ထိုယောက်ျားသည် သင့်အနားကနေ ဘယ်တော့မှ ခွဲခွာသွားနိုင်စွမ်း မရှိတော့ချေ။"
+        }
+    };
+
+    function showAnalysis(answerKey) {
+        // Hide Question UI
+        document.getElementById('quiz-flow').style.display = 'none';
+        
+        // Load Selected Data
+        const data = analysisData[answerKey];
+        document.getElementById('res-choice').innerText = data.choice;
+        document.getElementById('res-desc').innerText = data.desc;
+        document.getElementById('res-warn').innerText = data.warn;
+        
+        // Show Result UI
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        // Send unlock message to index.html parent frame
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

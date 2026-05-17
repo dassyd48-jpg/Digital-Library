@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Irreplaceable Queen - Page 40 Quiz</title>
+    <style>
+        body { 
+            background: #12011b; /* Royal Dark Purple Theme */
+            color: #d4af37;
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box;
+        }
+        .quiz-container { 
+            width: 100%;
+            max-width: 480px; 
+            background: rgba(0, 0, 0, 0.75); 
+            border: 1px solid #d4af37; 
+            border-radius: 12px; 
+            padding: 25px; 
+            text-align: center;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: #d4af37; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold;
+            display: block; 
+            margin-bottom: 15px;
+        }
+        h2 { 
+            font-size: 16px; 
+            line-height: 1.6; 
+            color: #fff; 
+            margin-bottom: 25px;
+            font-weight: normal; 
+            text-align: left;
+        }
+        .options-group {
+            display: block;
+        }
+        .option { 
+            display: block;
+            width: 100%; 
+            padding: 15px; 
+            margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: #eee; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-align: left; 
+            transition: 0.3s; 
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .option:hover { 
+            background: #d4af37; 
+            color: #000;
+            font-weight: bold;
+        }
+        #result-box { 
+            display: none; 
+            animation: fadeIn 0.8s ease;
+            text-align: left;
+        }
+        .res-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .res-type { 
+            font-size: 15px; 
+            font-weight: bold; 
+            color: #000; 
+            background: #d4af37;
+            padding: 10px 15px; 
+            border-radius: 4px; 
+            display: inline-block; 
+            margin-bottom: 15px; 
+            text-align: left;
+            line-height: 1.5;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .res-section-title {
+            font-weight: bold;
+            color: #d4af37;
+            margin-top: 15px;
+            font-size: 14.5px;
+            display: block;
+        }
+        .res-desc { 
+            color: #ddd;
+            font-size: 14px; 
+            line-height: 1.7; 
+            margin-bottom: 15px; 
+        }
+        .warn-box {
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 4px solid #d4af37;
+            padding: 12px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #eee;
+            margin-bottom: 25px;
+        }
+        .next-btn { 
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: 1px solid #d4af37; 
+            color: #d4af37; 
+            padding: 15px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 13px;
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            transition: 0.3s;
+            font-weight: bold;
+            text-align: center;
+        }
+        .next-btn:hover { 
+            background: #d4af37; 
+            color: #000;
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">အခန်း (၇) ၏ စမ်းသပ်ချက်ကျမ်း (Interactive Test VII)</span>
+        <h2 id="q-text">မေးခွန်း - အကယ်၍ လက်တွဲဖော်သည် သင့်အပေါ်၌ အာရုံစိုက်မှု နည်းပါးလာပြီး ပျစ်စလတ်ခတ် ပြုမူလာပါက သင် မည်သို့ တုံ့ပြန်မည်နည်း။</h2>
+        
+        <div class="options-group" id="options-group">
+            <button class="option" onclick="showAnalysis('ka')">(က) 'ဘာလို့ ငါ့ကို ဂရုမစိုက်တာလဲ' ဟု ဆိုကာ ငိုယိုတောင်းပန်၍ ၎င်း၏ အာရုံစိုက်မှုကို အတင်းအကျပ် လိုက်လံတောင်းခံသည်။</button>
+            <button class="option" onclick="showAnalysis('kha')">(ခ) စိတ်ဆိုးမာန်ဆိုးဖြင့် ၎င်းနှင့် စကားအကြီးအကျယ် ရန်ဖြစ်ကာ၊ ဖုန်းများ ဆက်တိုက်ခေါ်ပြီး ၎င်း၏ အမှားကို ထောက်ပြသည်။</button>
+            <button class="option" onclick="showAnalysis('ga')">(ဂ) မည်သည့်ရန်ပွဲမျှ မဖန်တီးဘဲ၊ မိမိ၏ အာရုံစိုက်မှုကို အေးချမ်းစွာ ရုပ်သိမ်းလိုက်ပြီး မိမိ၏ လှပသော ကိုယ်ပိုင်ဘဝထဲသို့ တည်ငြိမ်စွာ ဆုတ်ခွာပြလိုက်သည်။</button>
+        </div>
+    </div>
+
+    <div id="result-box">
+        <div class="res-header">
+            <span class="phase-label">ANALYSIS RESULT</span>
+            <div class="res-type" id="res-choice"></div>
+        </div>
+        
+        <span class="res-section-title">🧐 သင်သည် မည်သို့သောသူမျိုးလဲ? -</span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <span class="res-section-title">⚠️ လက်တွေ့အကျိုးဆက် -</span>
+        <div class="warn-box" id="res-warn"></div>
+        
+        <button onclick="completeQuiz()" class="next-btn">နောက်တစ်မျက်နှာသို့ သွားရန် →</button>
+    </div>
+</div>
+
+<script>
+    const analysisData = {
+        ka: {
+            choice: "(က) 'ဘာလို့ ငါ့ကို ဂရုမစိုက်တာလဲ' ဟု ဆိုကာ ငိုယိုတောင်းပန်၍ ၎င်း၏ အာရုံစိုက်မှုကို အတင်းအကျပ် လိုက်လံတောင်းခံသည်။",
+            desc: "သင်သည် မိမိကိုယ်ကိုယ် ယုံကြည်မှုကင်းမဲ့ပြီး သူတစ်ပါးရဲ့ အာရုံစိုက်မှုအပေါ်မှာပဲ ဘဝကို ပုံအပ်ထားသည့် မှီခိုသူ ဖြစ်၏။",
+            warn: "အချိန်ပြည့် ရနိုင်လွန်းပြီး လိုက်ကပ်နေတဲ့ မိန်းမသားကို ယောက်ျားတွေဟာ တန်ဖိုးမထားတတ်ကြချေ။ သင့်ကို ပို၍ ပစ်ပယ်ထားပါလိမ့်မည်။"
+        },
+        kha: {
+            choice: "(ခ) စိတ်ဆိုးမာန်ဆိုးဖြင့် ၎င်းနှင့် စကားအကြီးအကျယ် ရန်ဖြစ်ကာ၊ ဖုန်းများ ဆက်တိုက်ခေါ်ပြီး ၎င်း၏ အမှားကို ထောက်ပြသည်။",
+            desc: "သင်သည် စိတ်တိုလွယ်ပြီး ဒေါသဖြင့် တစ်ဖက်လူကို တုံ့ပြန်အနိုင်ယူချင်သူ ဖြစ်၏။",
+            warn: "ဤသို့ တကောက်ကောက် လိုက်လံစောင့်ကြည့် ရန်လုပ်ခြင်းသည် သင့်အား ဆွဲဆောင်မှု လုံးဝကင်းမဲ့သွားစေပြီး သင့်ထံမှ ဝေးရာသို့ ပိုမိုပြေးထွက်သွားစေပါလိမ့်မည်။"
+        },
+        ga: {
+            choice: "(ဂ) မည်သည့်ရန်ပွဲမျှ မဖန်တီးဘဲ၊ မိမိ၏ အာရုံစိုက်မှုကို အေးချမ်းစွာ ရုပ်သိမ်းလိုက်ပြီး မိမိ၏ လှပသော ကိုယ်ပိုင်ဘဝထဲသို့ တည်ငြိမ်စွာ ဆုတ်ခွာပြလိုက်သည်။",
+            desc: "သင်သည် စိတ်ခံစားချက်ကို စနစ်တကျ ရုပ်သိမ်းတတ်ပြီး 'မဟာဗျူဟာမြောက် ပစ်ပယ်ခြင်း (Strategic Absence)' အတတ်ကို သုံးစွဲနိုင်သော ပါးနပ်သူ ဖြစ်၏။",
+            warn: "သင်၏ ရုတ်ချည်း ဆိတ်ငြိမ်သွားမှုသည် ၎င်း၏ရင်ထဲတွင် ကြီးမားလှတဲ့ 'ကွာဟချက်' ကို ဖြစ်ပေါ်စေပြီး၊ 'ငါ့ကို သူမ စွန့်ခွာသွားပြီလား' ဆိုတဲ့ စိုးရိမ်စိတ်ဖြင့် သင့်ထံသို့ အသည်းအသန် ပြန်လည်လိုက်လံ တမ်းတလာစေရမည်။"
+        }
+    };
+
+    function showAnalysis(answerKey) {
+        // Hide Question UI
+        document.getElementById('quiz-flow').style.display = 'none';
+        
+        // Load Selected Data
+        const data = analysisData[answerKey];
+        document.getElementById('res-choice').innerText = data.choice;
+        document.getElementById('res-desc').innerText = data.desc;
+        document.getElementById('res-warn').innerText = data.warn;
+        
+        // Show Result UI
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        // Send unlock message to index.html parent frame
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

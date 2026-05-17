@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Irreplaceable Queen - Intro Quiz</title>
+    <style>
+        body { 
+            background: #12011b; /* Royal Dark Purple Theme */
+            color: #d4af37;
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box;
+        }
+        .quiz-container { 
+            width: 100%;
+            max-width: 460px; 
+            background: rgba(0, 0, 0, 0.75); 
+            border: 1px solid #d4af37; 
+            border-radius: 12px; 
+            padding: 25px; 
+            text-align: center;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+        .intro-label { 
+            font-size: 11px; 
+            color: #d4af37; 
+            letter-spacing: 3px; 
+            text-transform: uppercase; 
+            margin-bottom: 10px;
+            display: block; 
+            font-weight: bold;
+        }
+        .progress-bar {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        h2 { 
+            font-size: 16px; 
+            line-height: 1.6; 
+            color: #fff; 
+            margin-bottom: 25px;
+            font-weight: normal; 
+            text-align: left;
+        }
+        .option { 
+            display: block;
+            width: 100%; 
+            padding: 15px; 
+            margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: #eee; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-align: left; 
+            transition: 0.3s; 
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .option:hover { 
+            background: #d4af37; 
+            color: #000;
+            font-weight: bold;
+        }
+        #result-box { 
+            display: none; 
+            animation: fadeIn 0.8s ease;
+            text-align: left;
+        }
+        .res-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .res-type { 
+            font-size: 16px; 
+            font-weight: bold; 
+            color: #000; 
+            background: #d4af37;
+            padding: 12px 15px; 
+            border-radius: 4px; 
+            display: inline-block; 
+            margin-bottom: 15px; 
+            text-align: center;
+            line-height: 1.4;
+        }
+        .res-section-title {
+            font-weight: bold;
+            color: #d4af37;
+            margin-top: 15px;
+            font-size: 15px;
+            display: block;
+        }
+        .res-desc { 
+            color: #ddd;
+            font-size: 14px; 
+            line-height: 1.7; 
+            margin-bottom: 15px; 
+        }
+        .warn-box {
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 4px solid #d4af37;
+            padding: 12px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #eee;
+            margin-bottom: 25px;
+        }
+        .next-btn { 
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: 1px solid #d4af37; 
+            color: #d4af37; 
+            padding: 15px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 14px;
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            transition: 0.3s;
+            font-weight: bold;
+            text-align: center;
+        }
+        .next-btn:hover { 
+            background: #d4af37; 
+            color: #000;
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="intro-label">The Irreplaceable Queen - Intro Quiz</span>
+        <div class="progress-bar" id="progress">မေးခွန်း (၁ / ၅)</div>
+        <h2 id="question-text">ချစ်သူယောကျာ်းက သင့်အပေါ် လေးစားမှုမရှိဘဲ စကားလုံးရိုင်းစိုင်းစွာ တုံ့ပြန်လာသည့်အခါ သင် ပထမဦးဆုံး ဘာလုပ်မိသနည်း။</h2>
+        
+        <div id="options-group">
+            <button class="option" id="opt-a" onclick="submitAnswer('ka')"></button>
+            <button class="option" id="opt-b" onclick="submitAnswer('kha')"></button>
+            <button class="option" id="opt-c" onclick="submitAnswer('ga')"></button>
+        </div>
+    </div>
+
+    <div id="result-box">
+        <div class="res-header">
+            <span class="intro-label">🔎 Quiz ၏ ရလဒ်များ (သင်သည် မည်သို့သော ကိုင်တွယ်တတ်သူမျိုးလဲ)</span>
+            <div class="res-type" id="res-type"></div>
+        </div>
+        
+        <span class="res-section-title">🧐 သင့်ပင်ကိုယ်စရိုက် -</span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <span class="res-section-title">⚠️ လက်တွေ့အကျိုးဆက် -</span>
+        <div class="warn-box" id="res-warn"></div>
+        
+        <button class="next-btn" onclick="completeQuiz()">စာအုပ်ကို စတင်ဖတ်ရှုရန် နှိပ်ပါ</button>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            q: "ချစ်သူယောကျာ်းက သင့်အပေါ် လေးစားမှုမရှိဘဲ စကားလုံးရိုင်းစိုင်းစွာ တုံ့ပြန်လာသည့်အခါ သင် ပထမဦးဆုံး ဘာလုပ်မိသနည်း။",
+            ka: "(က) 'ငါ့ကို ဒီလိုပြောရမလား' ဟု ဆိုကာ ဒေါသတကြီးဖြင့် ပို၍ ကြမ်းတမ်းသော စကားလုံးများ သုံး၍ ပြန်လည်အော်ဟစ် ရန်တွေ့မိသည်။",
+            kha: "(ခ) စိတ်မကောင်းဖြစ်ကာ ငိုယိုပြီး 'သူ ငါ့ကို မချစ်တော့ဘူးလား' ဆိုသည့် စိုးရိမ်စိတ်ဖြင့် ၎င်း၏ အလိုကျဖြစ်အောင် ပိုပြီး လိုက်လျောမိသည်။",
+            ga: "(ဂ) မည်သည့်ဒေါသသံမျှ မပါဘဲ တည်ငြိမ်အေးစက်စွာဖြင့် မိမိ၏ စည်းဘောင်ကို အသိပေးကာ၊ ၎င်း တောင်းပန်ခြင်းမရှိမချင်း အာရုံစိုက်မှုကို ရုပ်သိမ်းလိုက်သည်။"
+        },
+        {
+            q: "ချစ်သူယောကျာ်းက သူ့လုပ်ငန်းခွင် သို့မဟုတ် သူငယ်ချင်းများနှင့် အလုပ်ရှုပ်နေ၍ သင့်ကို ဖုန်းမဆက်၊ စာမပို့ဘဲ တစ်နေ့ကုန် ပစ်ထားသည့်အခါ သင့်စိတ်ထဲ မည်သို့ ခံစားရသနည်း။",
+            ka: "(က) 'သူ ငါ့ကို ပစ်ထားတယ်' ဟု ခခံစားရသဖြင့် စိတ်တိုကာ ဖုန်းများ ဆက်တိုက်ခေါ်ပြီး ၎င်းကို အပြစ်တင် စောဒကတက်သည်။",
+            kha: "(ခ) စိတ်ထဲတွင် တောက်လျှောက် ပူပန်နေပြီး ဖုန်းမျက်နှာပြင်ကို အမြဲကြည့်ကာ ၎င်းထံမှ စာပြန်လာသည်အထိ ဘာအလုပ်မှ မလုပ်နိုင်ဘဲ ထိုင်စောင့်နေမိသည်။",
+            ga: "(ဂ) 'သူလည်း သူ့အလုပ်နဲ့သူ ရှိမှာပဲ' ဟု တွေးကာ စိတ်မပူဘဲ မိမိ၏ ကိုယ်ပိုင်အလုပ်များ၊ သူငယ်ချင်းများနှင့် ကိုယ်ပိုင်ကမ္ဘာထဲတွင် ပျော်ရွှင်စွာ နေထိုင်ပြသည်။"
+        },
+        {
+            q: "သင့်ထံတွင် ငွေကြေး သို့မဟုတ် အရေးကြီးသော ကိစ္စရပ်တစ်ခုကို လက်တွဲဖော်က လာရောက်တောင်းဆိုသည့်အခါ သင့်ဘက်က မည်သို့ တုံ့ပြန်တတ်သနည်း။",
+            ka: "(က) ၎င်းကို အယုံအကြည်မရှိသဖြင့် ပြင်းပြင်းထန်ထန် ငြင်းဆိုကာ ၎င်း၏ တာဝန်မကျေပုံများကို အစကတည်းက ပြန်လည်လှန်လှော ဆဲဆိုမိသည်။",
+            kha: "(ခ) မိမိဘက်က အဆင်မပြေလျှင်ပင် ၎င်းစိတ်ဆိုးသွားမည် သို့မဟုတ် လမ်းခွဲသွားမည်ကို ကြောက်သဖြင့် အတင်းအကျပ် ရှာဖွေဖြည့်ဆည်းပေးမိသည်။",
+            ga: "(ဂ) အခြေအနေကို တည်ငြိမ်စွာ ဆန်းစစ်ပြီး၊ ၎င်းဘက်က တာဝန်ယူမှု တာဝန်ခံမှု မရှိပါက မိမိ၏ စည်းဘောင်အတိုင်း ပြတ်သားစွာ ငြင်းပယ်သည်။"
+        },
+        {
+            q: "ချစ်သူယောကျာ်းနှင့် စကားပြောဆိုသည့်အခါ သင့်အကြောင်းကို ၎င်းအား မည်မျှအထိ ထုတ်ဖော်ပြသလေ့ ရှိသနည်း။",
+            ka: "(က) မိမိ၏ မကျေနပ်ချက်များ၊ စိတ်ကူးများ၊ သူတစ်ပါးအပေါ် အမြင်များကို ဒေါသတကြီးဖြင့် တောက်လျှောက် ရင်ဖွင့်ပြောပြပစ်သည်။",
+            kha: "(ခ) မိမိ၏ အားနည်းချက်များ၊ ဝမ်းနည်းမှုများနှင့် လျှို့ဝှက်ချက် အားလုံးကို ၎င်းအား အကြွင်းမဲ့ ယုံကြည်ကာ အကုန်အစင် ဗလာကျင်းပြထားသည်။",
+            ga: "(ဂ) အရေးကြီးသောအချက်အချို့ကိုသာ မျှဝေပြီး မိမိ၏ စိတ်ကူးနှင့် အနာဂတ်အစီအစဉ် အချို့ကိုမူ ပဟေဠိဆန်စွာဖြင့် လျှို့ဝှက်ထားတတ်သည်။"
+        },
+        {
+            q: "အချစ်ရေးတွင် ပြဿနာတစ်ခုခု သို့မဟုတ် သဘောထားကွဲလွဲမှုတစ်ခု ကြုံလာရလျှင် သင်သည် မည်သည့်အရာကို အဓိက အားကိုး၍ ဖြေရှင်းတတ်သနည်း။",
+            ka: "(က) အော်ဟစ်ခြင်း၊ ရန်ဖြစ်ခြင်းနှင့် တစ်ဖက်လူကို အပြစ်ရှိသည်ဟု ခံစားရအောင် ဖိအားပေးခြင်းကို အားကိုးသည်။",
+            kha: "(ခ) ငိုယိုခြင်း၊ စိတ်ကောက်ခြင်းနှင့် ၎င်းစိတ်ကျေနပ်အောင် မိမိဘက်က အောက်ကျို့ လိုက်လျောခြင်းကို အားကိုးသည်။",
+            ga: "(ဂ) မိမိ၏ စိတ်ခံစားချက်ကို အပြည့်အဝ အုပ်စိုးလျက် တည်ငြိမ်လှသော အရှိန်အဝါ (Aura) နှင့် ဉာဏ်ပညာကို အားကိုးသည်။"
+        }
+    ];
+
+    let currentQuestion = 0;
+    let scores = { ka: 0, kha: 0, ga: 0 };
+
+    function loadQuestion() {
+        if (currentQuestion < quizData.length) {
+            document.getElementById('progress').innerText = `မေးခွန်း (${currentQuestion + 1} / ၅)`;
+            document.getElementById('question-text').innerText = quizData[currentQuestion].q;
+            document.getElementById('opt-a').innerText = quizData[currentQuestion].ka;
+            document.getElementById('opt-b').innerText = quizData[currentQuestion].kha;
+            document.getElementById('opt-c').innerText = quizData[currentQuestion].ga;
+        } else {
+            showFinalResult();
+        }
+    }
+
+    function submitAnswer(type) {
+        scores[type]++;
+        currentQuestion++;
+        loadQuestion();
+    }
+
+    function showFinalResult() {
+        document.getElementById('quiz-flow').style.display = 'none';
+        
+        let finalResult = 'ga'; 
+        if (scores.ka >= scores.kha && scores.ka >= scores.ga) {
+            finalResult = 'ka';
+        } else if (scores.kha >= scores.ka && scores.kha >= scores.ga) {
+            finalResult = 'kha';
+        }
+
+        let title = "", desc = "", warn = "";
+
+        if (finalResult === 'ka') {
+            title = 'အဖြေ (က) အများဆုံး ရရှိသူ - "အတ္တရှေ့တန်းတင်ပြီး ဖိအားပေး ထိန်းချုပ်သူ"';
+            desc = "သင်သည် ပြဿနာတစ်ခု ကြုံလာလျှင် စိတ်ခံစားချက်နှင့် ဒေါသကို ရှေ့တန်းတင်ကာ အတင်းအကျပ် ဖိအားပေးပြီး အနိုင်ယူလိုတတ်သူ ဖြစ်၏။ အရာရာကို အော်ဟစ်ရန်တွေ့ခြင်း၊ စကားနိုင်လုခြင်းတို့ဖြင့် အောက်စီးကနေ ထိန်းချုပ်နိုင်လိမ့်မည်ဟု မှားယွင်းစွာ ယူဆထားတတ်သည်။";
+            warn = "ဤသို့ တုံ့ပြန်ခြင်းသည် ယောက်ျားတစ်ယောက်အား ပို၍ ခေါင်းမာလာစေရန်နှင့် သင့်အပေါ် ခုခံကာကွယ်လိုစိတ် (သို့မဟုတ်) သင့်အနားကနေ ဝေးရာသို့ ရုန်းထွက်ပြေးချင်စိတ်ကိုသာ ပိုမိုတောက်လောင်စေသဖြင့် ရေရှည်တွင် ဆွဲဆောင်မှု လုံးဝကင်းမဲ့သွားတတ်သည်။";
+        } else if (finalResult === 'kha') {
+            title = 'အဖြေ (ခ) အများဆုံး ရရှိသူ - "ကိုယ်ပိုင်တန်ဖိုးမသိဘဲ အကြောက်တရားဖြင့် မှီခိုသူ"';
+            desc = "သင်သည် အချစ်ရေးတွင် မိမိ၏ ကိုယ်ပိုင်တန်ဖိုးနှင့် စည်းဘောင်များကို မေ့လျော့ပြီး၊ တစ်ဖက်လူ စိတ်ဆိုးမည် သို့မဟုတ် စွန့်ခွာသွားမည်ကို အမြဲတမ်း စိုးရိမ်ပူပန်နေတတ်သူ ဖြစ်၏။ ချစ်ခြင်းမေတ္တာဟူသည် အရာရာကို ပုံအောပေးဆပ်ပြီး အောက်ကျို့ခြင်းဟု မှားယွင်းစွာ ယူဆထားတတ်သည်။";
+            warn = "ဤသို့ တောက်လျှောက် လိုက်လျောပေးဆပ်ခြင်းသည် တစ်ဖက်ယောက်ျားအား ပို၍ တာဝန်မဲ့လာစေရန် လမ်းဖွင့်ပေးလိုက်သကဲ့သို့ ဖြစ်ပြီး၊ သင့်အား လေးစားစရာမလိုဘဲ အချိန်မရွေး အလွယ်တကူ အစားထိုးလို့ရသည့် အောက်ခြေအဆင့် သားကောင်ဘဝမှာပဲ ထားရှိပါလိမ့်မည်။";
+        } else {
+            title = 'အဖြေ (ဂ) အများဆုံး ရရှိသူ - "စိတ်ကို အုပ်စိုးနိုင်သော စစ်မှန်သော ဧကရီ"';
+            desc = "ဂုဏ်ယူပါလေ။ သင်သည် ကိုယ်ပိုင်စိတ်ခံစားချက်ကို ကောင်းစွာ အုပ်စိုးနိုင်ပြီး ပြဿနာထက် အဖြေကိုသာ အာရုံစိုက်တတ်သည့် ပါးနပ်သော အမျိုးသမီး ဖြစ်၏။ စိတ်ပိုင်းဆိုင်ရာအရ သော်လည်းကောင်း၊ ရပ်တည်မှုအရ သော်လည်းကောင်း ပြတ်သားလှသော 'စည်းဘောင်များ' ရှိပြီး မိမိကိုယ်ကိုယ် အမြင့်ဆုံး တန်ဖိုးထားနိုင်သူ ဖြစ်သည်။";
+            warn = "သင်၏ ဤတည်ငြိမ်မှုနှင့် ပြတ်သားမှု Aura သည် ပုရိသယောကျာ်းတို့အား မိမိတို့၏ အမှားကို မိမိတို့ကိုယ်တိုင် ပြန်လည်သိမြင်လာစေပြီး၊ သင့်ရှေ့မှောက်၌ မလေးမစားမပြုဝံ့အောင် တားဆီးပေးကာ သင့်အား ရာသက်ပန် ထိန်းသိမ်းမြတ်နိုးလာစေမည့် စွမ်းပကား ဖြစ်၏။";
+        }
+
+        document.getElementById('res-type').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('res-warn').innerText = warn;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        window.parent.postMessage("quizCompleted", "*");
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>

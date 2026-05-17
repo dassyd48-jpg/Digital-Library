@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Irreplaceable Queen - Page 35 Quiz</title>
+    <style>
+        body { 
+            background: #12011b; /* Royal Dark Purple Theme */
+            color: #d4af37;
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box;
+        }
+        .quiz-container { 
+            width: 100%;
+            max-width: 480px; 
+            background: rgba(0, 0, 0, 0.75); 
+            border: 1px solid #d4af37; 
+            border-radius: 12px; 
+            padding: 25px; 
+            text-align: center;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: #d4af37; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold;
+            display: block; 
+            margin-bottom: 15px;
+        }
+        h2 { 
+            font-size: 16px; 
+            line-height: 1.6; 
+            color: #fff; 
+            margin-bottom: 25px;
+            font-weight: normal; 
+            text-align: left;
+        }
+        .options-group {
+            display: block;
+        }
+        .option { 
+            display: block;
+            width: 100%; 
+            padding: 15px; 
+            margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: #eee; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-align: left; 
+            transition: 0.3s; 
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .option:hover { 
+            background: #d4af37; 
+            color: #000;
+            font-weight: bold;
+        }
+        #result-box { 
+            display: none; 
+            animation: fadeIn 0.8s ease;
+            text-align: left;
+        }
+        .res-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .res-type { 
+            font-size: 15px; 
+            font-weight: bold; 
+            color: #000; 
+            background: #d4af37;
+            padding: 10px 15px; 
+            border-radius: 4px; 
+            display: inline-block; 
+            margin-bottom: 15px; 
+            text-align: left;
+            line-height: 1.5;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .res-section-title {
+            font-weight: bold;
+            color: #d4af37;
+            margin-top: 15px;
+            font-size: 14.5px;
+            display: block;
+        }
+        .res-desc { 
+            color: #ddd;
+            font-size: 14px; 
+            line-height: 1.7; 
+            margin-bottom: 15px; 
+        }
+        .warn-box {
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 4px solid #d4af37;
+            padding: 12px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #eee;
+            margin-bottom: 25px;
+        }
+        .next-btn { 
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: 1px solid #d4af37; 
+            color: #d4af37; 
+            padding: 15px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 13px;
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            transition: 0.3s;
+            font-weight: bold;
+            text-align: center;
+        }
+        .next-btn:hover { 
+            background: #d4af37; 
+            color: #000;
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">အခန်း (၆) ၏ စမ်းသပ်ချက်ကျမ်း (Interactive Test VI)</span>
+        <h2 id="q-text">မေးခွန်း - မိမိ အလိုရှိသော ကိစ္စရပ်တစ်ခုကို လက်တွဲဖော်အား ပြုလုပ်ပေးစေချင်သောအခါ သင် မည်သို့ အမိန့်ပေးစေခိုင်းတတ်သနည်း။</h2>
+        
+        <div class="options-group" id="options-group">
+            <button class="option" onclick="showAnalysis('ka')">(က) 'ဒါကို အခုချက်ချင်းလုပ်ပေး' ဟု ဆိုကာ ပြင်းထန်သော အမိန့်ပေးသံ၊ အော်ဟစ်ငြင်းခုံသံများဖြင့် အတင်းအကျပ် တောင်းဆိုသည်။</button>
+            <button class="option" onclick="showAnalysis('kha')">(ခ) မပြောရဲဘဲ စိတ်ထဲကပဲ မျှော်လင့်နေပြီး၊ သူက မလုပ်ပေးပါက အလိုလို စိတ်ကောက်ကာ မျက်နှာပျက်ပြသည်။</button>
+            <button class="option" onclick="showAnalysis('ga')">(ဂ) နူးညံ့သိမ်မွေ့သော စကားလုံး၊ စာနာတတ်သော အမူအရာတို့ဖြင့် ၎င်းကိုယ်တိုင် စိတ်အားထက်သန်စွာ လုပ်ချင်လာအောင် မသိမသာ ရင်ထဲ ထည့်သွင်းပေးလိုက်သည်။</button>
+        </div>
+    </div>
+
+    <div id="result-box">
+        <div class="res-header">
+            <span class="phase-label">ANALYSIS RESULT</span>
+            <div class="res-type" id="res-choice"></div>
+        </div>
+        
+        <span class="res-section-title">🧐 သင်သည် မည်သို့သောသူမျိုးလဲ? -</span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <span class="res-section-title">⚠️ လက်တွေ့အကျိုးဆက် -</span>
+        <div class="warn-box" id="res-warn"></div>
+        
+        <button onclick="completeQuiz()" class="next-btn">နောက်တစ်မျက်နှာသို့ သွားရန် →</button>
+    </div>
+</div>
+
+<script>
+    const analysisData = {
+        ka: {
+            choice: "(က) 'ဒါကို အခုချက်ချင်းလုပ်ပေး' ဟု ဆိုကာ ပြင်းထန်သော အမိန့်ပေးသံ၊ အော်ဟစ်ငြင်းခုံသံများဖြင့် အတင်းအကျပ် တောင်းဆိုသည်။",
+            desc: "သင်သည် အတင်းအကျပ် ဖိအားပေးပြီး ထိန်းချုပ်လိုတတ်သူ ဖြစ်၏။ မာကျောခြင်းဖြင့် စေခိုင်းနိုင်လိမ့်မည်ဟု ယူဆထားတတ်သည်။",
+            warn: "ယောက်ျားတို့၏ အတ္တသည် မာလျှင် ပို၍ ခေါင်းမာတတ်သဖြင့်၊ သင် ဤသို့ ပြုမူခြင်းသည် တော်လှန်ပုန်ကန်လိုစိတ်နှင့် သင့်အမိန့်ကို တမင်ဆန့်ကျင်လိုစိတ်ကိုသာ ထွက်ပေါ်စေလိမ့်မည်။"
+        },
+        kha: {
+            choice: "(ခ) မပြောရဲဘဲ စိတ်ထဲကပဲ မျှော်လင့်နေပြီး၊ သူက မလုပ်ပေးပါက အလိုလို စိတ်ကောက်ကာ မျက်နှာပျက်ပြသည်။",
+            desc: "သင်သည် မိမိအလိုရှိရာကို ရိုးသားစွာ မပြောဝံ့ဘဲ မသိမသာ မာယာဖြင့် စိတ်ကောက်ခြင်းဖြင့် တစ်ဖက်လူက အလိုလို သိပေးလာအောင် အောက်ခြေကနေ စောင့်စားတတ်သူ ဖြစ်၏။",
+            warn: "ရေရှည်တွင် စိတ်အနှောင့်အယှက် ဖြစ်စရာ ကလေးကလားဆန်သော လုပ်ရပ်အဖြစ်သာ သတ်မှတ်ခြင်း ခံရပါလိမ့်မည်။"
+        },
+        ga: {
+            choice: "(ဂ) နူးညံ့သိမ်မွေ့သော စကားလုံး၊ စာနာတတ်သော အမူအရာတို့ဖြင့် ၎င်းကိုယ်တိုင် စိတ်အားထက်သန်စွာ လုပ်ချင်လာအောင် မသိမသာ ရင်ထဲ ထည့်သွင်းပေးလိုက်သည်။",
+            desc: "သင်သည် မာကျောခြင်းကို နူးညံ့ခြင်းဖြင့် အောင်နိုင်သည့် 'နူးညံ့သောအမိန့်တော် (The Soft Command)' အတတ်ကို ကျွမ်းကျင်သော စစ်မှန်သော လွှမ်းမိုးသူ ဖြစ်၏။",
+            warn: "ထိုယောက်ျားသည် သင့်စကားကို နားထောင်နေရမှန်း ကိုယ်တိုင်မသိဘဲ 'ဒါဟာ ငါ့အစီအစဉ်နဲ့ ငါလုပ်တာ' ဟု ထင်မှတ်ကာ သင့်ကို စိတ်ကျေနပ်အောင် ထားရခြင်းကိုပင် ၎င်းဘက်က ကြီးမားတဲ့ အောင်မြင်မှုအဖြစ် ပျော်ရွှင်စွာ လုပ်ဆောင်ပေးပါလိမ့်မည်။"
+        }
+    };
+
+    function showAnalysis(answerKey) {
+        // Hide Question UI
+        document.getElementById('quiz-flow').style.display = 'none';
+        
+        // Load Selected Data
+        const data = analysisData[answerKey];
+        document.getElementById('res-choice').innerText = data.choice;
+        document.getElementById('res-desc').innerText = data.desc;
+        document.getElementById('res-warn').innerText = data.warn;
+        
+        // Show Result UI
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        // Send unlock message to index.html parent frame
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

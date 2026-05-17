@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>THE IRREPLACEABLE QUEEN | DASSY DIGITAL LIBRARY</title>
+    
+    <meta name="description" content="Official Digital Library of DASSY. Psychological insights into 'The Irreplaceable Queen' - Mastering relationship dynamics.">
+    <meta name="author" content="DASSY">
+    
+    <meta property="og:title" content="THE IRREPLACEABLE QUEEN | DASSY">
+    <meta property="og:description" content="Master the psychology of high-value choices.">
+    <meta property="og:type" content="book">
+    <meta property="og:image" content="cover.jpg">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "DigitalDocument",
+      "name": "The Irreplaceable Queen",
+      "author": { "@type": "Person", "name": "DASSY" },
+      "publisher": "DASSY DIGITAL LIBRARY"
+    }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+
+    <style>
+        :root { 
+            --gold: #D4AF37; 
+            --royal-purple: #12011b;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
+        
+        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.4); }
+        
+        /* Lock Screen Style - Purple/Gold Theme */
+        #lock { 
+            position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; 
+            flex-direction: column; z-index: 20; 
+            background: radial-gradient(circle, rgba(18, 1, 27, 0.8) 0%, rgba(0, 0, 0, 0.95) 100%); 
+            backdrop-filter: blur(8px); color: #fff; text-align: center; padding: 20px; 
+        }
+        
+        .brand-label { font-size: 11px; color: var(--gold); letter-spacing: 5px; margin-bottom: 25px; font-weight: bold; opacity: 0.9; }
+        
+        .book-title-container { margin-bottom: 45px; }
+        .book-title-my { color: #fff; font-size: clamp(28px, 6vw, 45px); font-weight: 900; letter-spacing: 2px; margin: 0; }
+        .book-title-en { color: var(--gold); font-size: 14px; letter-spacing: 3px; font-weight: bold; margin-top: 10px; text-transform: uppercase; }
+
+        #lock input { 
+            padding: 16px; width: 300px; border: 1px solid rgba(212, 175, 55, 0.4); 
+            background: rgba(255, 255, 255, 0.05); color: #fff; text-align: center; 
+            font-size: 16px; outline: none; margin-bottom: 25px; border-radius: 4px;
+            letter-spacing: 2px;
+        }
+        #lock input::placeholder { color: rgba(255,255,255,0.3); }
+
+        #lock button { 
+            padding: 15px 80px; 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; border: none; font-weight: 900; cursor: pointer; 
+            text-transform: uppercase; border-radius: 4px; letter-spacing: 2px;
+            box-shadow: 0 4px 15px rgba(191, 149, 63, 0.3);
+            transition: 0.3s;
+        }
+        #lock button:hover { transform: scale(1.05); opacity: 0.9; }
+
+        .request-link { 
+            margin-top: 35px; color: #ff00ff; text-decoration: none; 
+            font-size: 12px; font-weight: bold; letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; }
+        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        
+        .watermark { 
+            position: absolute; bottom: 20px; width: 100%; text-align: center; 
+            font-size: 10px; color: var(--gold); opacity: 0.4; letter-spacing: 4px; pointer-events: none; 
+        }
+    </style>
+</head>
+<body>
+
+    <video id="bg-video" autoplay muted loop playsinline><source src="video.mp4" type="video/mp4"></video>
+
+    <div id="lock">
+        <span class="brand-label">DASSY DIGITAL LIBRARY PRESENTS</span>
+        <div class="book-title-container">
+            <h1 class="book-title-my">မစွန့်လွှတ်နိုင်သော ဧကရီ</h1>
+            <div class="book-title-en">(THE IRREPLACEABLE QUEEN)</div>
+        </div>
+        
+        <input type="password" id="pass" placeholder="ACCESS KEY">
+        <button onclick="unlock()">ENTER THE MIRROR</button>
+        
+        <a href="https://t.me/Dassy_digital_Library" target="_blank" class="request-link">
+            REQUEST PRIVATE ACCESS FROM DASSY
+        </a>
+    </div>
+
+    <div id="book-container">
+        <div id="flipbook-wrapper"><div id="flipbook"></div></div>
+        <div class="watermark">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
+    </div>
+
+    <audio id="sound" src="flip.mp3" preload="auto"></audio>
+
+    <script>
+        // စာအုပ်အသစ်အတွက် အချက်အလက်များ
+        const myPassword = "D2026@QUEEN"; 
+        const maxPages = 59; // စာမျက်နှာ စုစုပေါင်း
+        const quizPages = [2, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56]; // Quiz ရှိသော စာမျက်နှာများ
+        let isQuizLocked = false; 
+
+        // Quiz ဖြေပြီးသွားလျှင် Lock ဖွင့်ပေးရန် Message လက်ခံခြင်း
+        window.addEventListener("message", function(event) {
+            if (event.data === "quizCompleted") {
+                isQuizLocked = false; 
+                setTimeout(() => { $("#flipbook").turn("next"); }, 300);
+            }
+        }, false);
+
+        function unlock() {
+            if(document.getElementById("pass").value === myPassword) {
+                $("#lock").fadeOut(600, () => {
+                    $("#bg-video").fadeOut(600);
+                    $("#book-container").css("display", "block").animate({opacity: 1}, 1000);
+                    loadAndInit();
+                });
+            } else { 
+                alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။ DASSY ထံမှ ကုဒ်ရယူပါ။"); 
+            }
+        }
+
+        function loadAndInit() {
+            const flipbook = $("#flipbook");
+            let h = window.innerHeight * 0.90;
+            let w = (window.innerWidth < 600) ? window.innerWidth * 0.95 : h * 0.707;
+
+            for(let i=1; i<=maxPages; i++) {
+                const pageDiv = $('<div class="page" style="background:#000;"></div>');
+                
+                // Quiz စာမျက်နှာများအတွက် iframe ထည့်ခြင်း
+                if(quizPages.includes(i)) {
+                    const fileName = (i === 2) ? "intro_quiz.html" : `page${i}.html`;
+                    pageDiv.append(`<iframe src="${fileName}" style="width:100%; height:100%; border:none; overflow:hidden;" scrolling="no"></iframe>`);
+                } 
+                // ပုံမှန်စာမျက်နှာများ (Page.jpg)
+                else if (i < maxPages) {
+                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:contain;" />').attr('src', `page${i}.jpg`));
+                } 
+                // နောက်ဆုံးစာမျက်နှာ
+                else {
+                    pageDiv.append('<div style="width:100%; height:100%; background:#000; display:flex; align-items:center; justify-content:center; color:#555; font-size:12px;">END OF PREVIEW</div>');
+                }
+                flipbook.append(pageDiv);
+            }
+
+            // Turn.js စတင်ခြင်း
+            setTimeout(() => {
+                flipbook.turn({
+                    width: w, height: h, autoCenter: true, display: 'single', acceleration: true,
+                    when: {
+                        turning: function(e, page) {
+                            if (isQuizLocked) { e.preventDefault(); return; }
+                            const s = document.getElementById("sound");
+                            if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
+                        },
+                        turned: function(e, page) {
+                            // Quiz စာမျက်နှာဆိုလျှင် နောက်တစ်ရွက်လှန်မရအောင် Lock ချခြင်း
+                            isQuizLocked = quizPages.includes(page);
+                        }
+                    }
+                });
+            }, 150);
+        }
+
+        // Screen Size ပြောင်းလဲလျှင် Flipbook Size လိုက်ညှိရန်
+        $(window).resize(function() {
+            let h = window.innerHeight * 0.90;
+            let w = (window.innerWidth < 600) ? window.innerWidth * 0.95 : h * 0.707;
+            if ($("#flipbook").turn("is")) {
+                $("#flipbook").turn("size", w, h);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Irreplaceable Queen - Page 15 Quiz</title>
+    <style>
+        body { 
+            background: #12011b; /* Royal Dark Purple Theme */
+            color: #d4af37;
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box;
+        }
+        .quiz-container { 
+            width: 100%;
+            max-width: 480px; 
+            background: rgba(0, 0, 0, 0.75); 
+            border: 1px solid #d4af37; 
+            border-radius: 12px; 
+            padding: 25px; 
+            text-align: center;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: #d4af37; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold;
+            display: block; 
+            margin-bottom: 15px;
+        }
+        h2 { 
+            font-size: 16px; 
+            line-height: 1.6; 
+            color: #fff; 
+            margin-bottom: 25px;
+            font-weight: normal; 
+            text-align: left;
+        }
+        .options-group {
+            display: block;
+        }
+        .option { 
+            display: block;
+            width: 100%; 
+            padding: 15px; 
+            margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: #eee; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-align: left; 
+            transition: 0.3s; 
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .option:hover { 
+            background: #d4af37; 
+            color: #000;
+            font-weight: bold;
+        }
+        #result-box { 
+            display: none; 
+            animation: fadeIn 0.8s ease;
+            text-align: left;
+        }
+        .res-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .res-type { 
+            font-size: 15px; 
+            font-weight: bold; 
+            color: #000; 
+            background: #d4af37;
+            padding: 10px 15px; 
+            border-radius: 4px; 
+            display: inline-block; 
+            margin-bottom: 15px; 
+            text-align: left;
+            line-height: 1.5;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .res-section-title {
+            font-weight: bold;
+            color: #d4af37;
+            margin-top: 15px;
+            font-size: 14.5px;
+            display: block;
+        }
+        .res-desc { 
+            color: #ddd;
+            font-size: 14px; 
+            line-height: 1.7; 
+            margin-bottom: 15px; 
+        }
+        .warn-box {
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 4px solid #d4af37;
+            padding: 12px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #eee;
+            margin-bottom: 25px;
+        }
+        .next-btn { 
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: 1px solid #d4af37; 
+            color: #d4af37; 
+            padding: 15px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 13px;
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            transition: 0.3s;
+            font-weight: bold;
+            text-align: center;
+        }
+        .next-btn:hover { 
+            background: #d4af37; 
+            color: #000;
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">အခန်း (၂) ၏ စမ်းသပ်ချက်ကျမ်း (Interactive Test II)</span>
+        <h2 id="q-text">မေးခွန်း - သင်၏ လက်တွဲဖော်သည် တာဝန်ယူမှု တာဝန်ခံမှု ကင်းမဲ့သော အပြုအမူမျိုး ပြုလုပ်လာလျှင် သို့မဟုတ် သင့်ထံမှ ငွေကြေး စသည်တို့ကို လွယ်လင့်တကူ လာရောက်တောင်းခံလာလျှင် သင် မည်သို့ တုံ့ပြန်မည်နည်း။</h2>
+        
+        <div class="options-group" id="options-group">
+            <button class="option" onclick="showAnalysis('ka')">(က) စိတ်ဆိုးမည် သို့မဟုတ် လမ်းခွဲသွားမည်ကို ကြောက်ရွံ့သဖြင့် ၎င်းတောင်းဆိုသမျှကို လိုက်လံဖြည့်ဆည်းပေးပြီး မိမိ၏ စည်းဘောင်ကို အလိုလို ဖျက်ဆီးပစ်သည်။</button>
+            <button class="option" onclick="showAnalysis('kha')">(ခ) ပြင်းထန်စွာ ဆဲဆိုအော်ဟစ်၍ ရန်ဖြစ်ကာ၊ ၎င်းအား ပညာပေးသည့်အနေဖြင့် စိတ်ဆိုးမာန်ဆိုး တုံ့ပြန်သည်။</button>
+            <button class="option" onclick="showAnalysis('ga')">(ဂ) မိမိ၏ စည်းဘောင်ကို အေးချမ်းစွာ သတိပေးလျက်၊ တာဝန်ယူမှုမရှိမချင်း ၎င်း၏ တောင်းဆိုချက်ကို ပြတ်သားစွာ ငြင်းပယ်ပြီး တည်ငြိမ်စွာ နေပြသည်။</button>
+        </div>
+    </div>
+
+    <div id="result-box">
+        <div class="res-header">
+            <span class="phase-label">ANALYSIS RESULT</span>
+            <div class="res-type" id="res-choice"></div>
+        </div>
+        
+        <span class="res-section-title">🧐 သင်သည် မည်သို့သောသူမျိုးလဲ? -</span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <span class="res-section-title">⚠️ လက်တွေ့အကျိုးဆက် -</span>
+        <div class="warn-box" id="res-warn"></div>
+        
+        <button onclick="completeQuiz()" class="next-btn">နောက်တစ်မျက်နှာသို့ သွားရန် →</button>
+    </div>
+</div>
+
+<script>
+    const analysisData = {
+        ka: {
+            choice: "(က) စိတ်ဆိုးမည် သို့မဟုတ် လမ်းခွဲသွားမည်ကို ကြောက်ရွံ့သဖြင့် ၎င်းတောင်းဆိုသမျှကို လိုက်လံဖြည့်ဆည်းပေးပြီး မိမိ၏ စည်းဘောင်ကို အလိုလို ဖျက်ဆီးပစ်သည်။",
+            desc: "သင်သည် အချစ်ရေးတွင် ကိုယ်ပိုင်တန်ဖိုးကို မေ့လျော့ပြီး တစ်ဖက်လူ စိတ်ကြိုက်ခြယ်လှယ်တာကို ခံနေရသူ ဖြစ်၏။ ဆုံးရှုံးရမှာကို ကြောက်တဲ့စိတ်က မိမိရဲ့ ဂုဏ်သိက္ခာထက် ပိုကြီးစိုးနေတတ်သည်။",
+            warn: "ဤသို့ ပြုလုပ်ခြင်းသည် တစ်ဖက်ယောက်ျားအား ပို၍ တာဝန်မဲ့လာစေရန် လမ်းဖွင့်ပေးလိုက်သကဲ့သို့ ဖြစ်ပြီး၊ သင့်အား လေးစားစရာမလိုဘဲ အချိန်မရွေး အသုံးချလို့ရသည့် အောက်ခြေအဆင့်မှာပဲ ထားရှိပါလိမ့်မည်။"
+        },
+        kha: {
+            choice: "(ခ) ပြင်းထန်စွာ ဆဲဆိုအော်ဟစ်၍ ရန်ဖြစ်ကာ၊ ၎င်းအား ပညာပေးသည့်အနေဖြင့် စိတ်ဆိုးမာန်ဆိုး တုံ့ပြန်သည်။",
+            desc: "သင်သည် အတ္တနှင့် စိတ်တိုဒေါသကို ရှေ့တန်းတင်တတ်သူ ဖြစ်၏။ အရာရာကို အော်ဟစ်ရန်တွေ့ခြင်းဖြင့် အနိုင်ယူနိုင်လိမ့်မည်ဟု မှားယွင်းစွာ ထင်မှတ်နေတတ်သည်။",
+            warn: "အော်ဟစ်ရန်ဖြစ်ခြင်းသည် ယောက်ျားတစ်ယောက်ကို ပိုပြီး ခေါင်းမာသွားစေရုံသာမက၊ သင့်ကိုလည်း စရိုက်မကောင်းသော၊ အဆင်မပြေသော မိန်းမတစ်ဦးအဖြစ် မြင်ကာ စိတ်ကုန်သွားစေပါလိမ့်မည်။"
+        },
+        ga: {
+            choice: "(ဂ) မိမိ၏ စည်းဘောင်ကို အေးချမ်းစွာ သတိပေးလျက်၊ တာဝန်ယူမှုမရှိမချင်း ၎င်း၏ တောင်းဆိုချက်ကို ပြတ်သားစွာ ငြင်းပယ်ပြီး တည်ငြိမ်စွာ နေပြသည်။",
+            desc: "သင်သည် ကိုယ်ပိုင်ရပ်တည်မှု ခိုင်မာပြီး ဂုဏ်သိက္ခာရှိသော လွတ်လပ်မှုကို အပြည့်အဝ ပိုင်ဆိုင်ထားသည့် အမျိုးသမီး ဖြစ်၏။ အချစ်ကို ဘဝရဲ့ အဖြည့်ခံအဖြစ်သာ ထားပြီး သိက္ခာကို ကျောရိုးတိုင်အဖြစ် ကိုင်စွဲထားနိုင်သူ ဖြစ်သည်။",
+            warn: "ဤပြတ်သားမှုသည် ပုရိသတို့အား သင့်ကို(မလေးမစား) မပြုမူဝံ့အောင် တားဆီးပေးလိုက်သကဲ့သို့ ဖြစ်ပြီး၊ သင့်အနားမှာ ရှိချင်ရင် တာဝန်ယူတတ်ရမယ်ဆိုတဲ့ အသိကို မသိစိတ်ထဲ ရိုက်သွင်းပေးလိုက်ခြင်းပင် ဖြစ်၏။"
+        }
+    };
+
+    function showAnalysis(answerKey) {
+        // Hide Question UI
+        document.getElementById('quiz-flow').style.display = 'none';
+        
+        // Load Selected Data
+        const data = analysisData[answerKey];
+        document.getElementById('res-choice').innerText = data.choice;
+        document.getElementById('res-desc').innerText = data.desc;
+        document.getElementById('res-warn').innerText = data.warn;
+        
+        // Show Result UI
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        // Send unlock message to index.html parent frame
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

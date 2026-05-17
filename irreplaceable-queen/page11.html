@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Irreplaceable Queen - Page 10 Quiz</title>
+    <style>
+        body { 
+            background: #12011b; /* Royal Dark Purple Theme */
+            color: #d4af37;
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box;
+        }
+        .quiz-container { 
+            width: 100%;
+            max-width: 480px; 
+            background: rgba(0, 0, 0, 0.75); 
+            border: 1px solid #d4af37; 
+            border-radius: 12px; 
+            padding: 25px; 
+            text-align: center;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: #d4af37; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold;
+            display: block; 
+            margin-bottom: 15px;
+        }
+        h2 { 
+            font-size: 16px; 
+            line-height: 1.6; 
+            color: #fff; 
+            margin-bottom: 25px;
+            font-weight: normal; 
+            text-align: left;
+        }
+        .options-group {
+            display: block;
+        }
+        .option { 
+            display: block;
+            width: 100%; 
+            padding: 15px; 
+            margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: #eee; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-align: left; 
+            transition: 0.3s; 
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .option:hover { 
+            background: #d4af37; 
+            color: #000;
+            font-weight: bold;
+        }
+        #result-box { 
+            display: none; 
+            animation: fadeIn 0.8s ease;
+            text-align: left;
+        }
+        .res-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .res-type { 
+            font-size: 15px; 
+            font-weight: bold; 
+            color: #000; 
+            background: #d4af37;
+            padding: 10px 15px; 
+            border-radius: 4px; 
+            display: inline-block; 
+            margin-bottom: 15px; 
+            text-align: left;
+            line-height: 1.5;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .res-section-title {
+            font-weight: bold;
+            color: #d4af37;
+            margin-top: 15px;
+            font-size: 14.5px;
+            display: block;
+        }
+        .res-desc { 
+            color: #ddd;
+            font-size: 14px; 
+            line-height: 1.7; 
+            margin-bottom: 15px; 
+        }
+        .warn-box {
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 4px solid #d4af37;
+            padding: 12px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #eee;
+            margin-bottom: 25px;
+        }
+        .next-btn { 
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: 1px solid #d4af37; 
+            color: #d4af37; 
+            padding: 15px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 13px;
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            transition: 0.3s;
+            font-weight: bold;
+            text-align: center;
+        }
+        .next-btn:hover { 
+            background: #d4af37; 
+            color: #000;
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">အခန်း (၁) ၏ စမ်းသပ်ချက်ကျမ်း (Interactive Test I)</span>
+        <h2 id="q-text">မေးခွန်း - အချစ်ရေးတွင် လက်တွဲဖော်နှင့် အဆင်မပြေမှုတစ်ခု သို့မဟုတ် ပြင်းထန်သော အငြင်းပွားစရာတစ်ခု ကြုံလာရလျှင် သင်သည် မည်ကဲ့သို့ တုံ့ပြန်ကိုင်တွယ်တတ်သနည်း။</h2>
+        
+        <div class="options-group" id="options-group">
+            <button class="option" onclick="showAnalysis('ka')">(က) အမျက်ဒေါသဖြင့် ချက်ချင်း စောဒကတက်ကာ အော်ဟစ်ငြင်းခုံပြီး မိမိဘက်က အနိုင်ပိုင်းရန် ကြိုးစားသည်။</button>
+            <button class="option" onclick="showAnalysis('kha')">(ခ) စကားမပြောဘဲ မျက်နှာပျက်ကာ စိတ်ကောက်ပြီး၊ သူက မိမိအား လာရောက်ချော့မော့ ဂရုစိုက်လာသည်အထိ စောင့်ဆိုင်းနေတတ်သည်။</button>
+            <button class="option" onclick="showAnalysis('ga')">(ဂ) စိတ်ခံစားချက်နောက်သို့ မျောပါမသွားဘဲ၊ အခြေအနေကို ဘေးကနေ တည်ငြိမ်စွာ စောင့်ကြည့်ပြီးမှ ခန့်ညားပြတ်သားစွာ ကိုယ်တွယ်သည်။</button>
+        </div>
+    </div>
+
+    <div id="result-box">
+        <div class="res-header">
+            <span class="phase-label">ANALYSIS RESULT</span>
+            <div class="res-type" id="res-choice"></div>
+        </div>
+        
+        <span class="res-section-title">🧐 သင်သည် မည်သို့သောသူမျိုးလဲ? -</span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <span class="res-section-title">⚠️ လက်တွေ့အကျိုးဆက် -</span>
+        <div class="warn-box" id="res-warn"></div>
+        
+        <button onclick="completeQuiz()" class="next-btn">နောက်တစ်မျက်နှာသို့ သွားရန် →</button>
+    </div>
+</div>
+
+<script>
+    const analysisData = {
+        ka: {
+            choice: "(က) အမျက်ဒေါသဖြင့် ချက်ချင်း စောဒကတက်ကာ အော်ဟစ်ငြင်းခုံပြီး မိမိဘက်က အနိုင်ပိုင်းရန် ကြိုးစားသည်။",
+            desc: "သင်သည် ပြဿနာတစ်ခု ကြုံလာလျှင် စိတ်ခံစားချက်ကို ရှေ့တန်းတင်ပြီး အတင်းအကျပ် ဖိအားပေးကာ အနိုင်ယူလိုတတ်သူ ဖြစ်၏။ မိမိအလိုကျဖြစ်စေရန် ဒေါသနှင့် စကားလုံးကြမ်းကြမ်းများဖြင့် အောက်စီးကနေ ထိန်းချုပ်ရန် ကြိုးစားတတ်သည်။",
+            warn: "ဤသို့ တုံ့ပြန်ခြင်းသည် ယောက်ျားတစ်ယောက်အား ခေါင်းမာလာစေရန်နှင့် သင့်အပေါ် ခုခံကာကွယ်လိုစိတ် (သို့မဟုတ်) သင့်အနားကနေ ဝေးရာသို့ ရုန်းထွက်ပြေးချင်စိတ်ကိုသာ ပိုမိုတောက်လောင်စေလိမ့်မည်။"
+        },
+        kha: {
+            choice: "(ခ) စကားမပြောဘဲ မျက်နှာပျက်ကာ စိတ်ကောက်ပြီး၊ သူက မိမိအား လာရောက်ချော့မော့ ဂရုစိုက်လာသည်အထိ စောင့်ဆိုင်းနေတတ်သည်။",
+            desc: "သင်သည် မိမိ၏ စိတ်ဒဏ်ရာနှင့် စိတ်မကျေနပ်မှုကို တိုက်ရိုက်မပြောဘဲ သွယ်ဝိုက်သောနည်းဖြင့် အာရုံစိုက်မှု တောင်းခံတတ်သူ ဖြစ်၏။ အခြေအနေတစ်ခုကို ရိုးသားပြတ်သားစွာ မရင်ဆိုင်ဝံ့ဘဲ ဆိတ်ဆိတ်နေခြင်းဖြင့် တစ်ဖက်လူအား အပြစ်ရှိသလို ခံစားရအောင် ဖန်တီးတတ်သည်။",
+            warn: "ဤသို့ တုံ့ပြန်ခြင်းသည် ရေတိုတွင် အလုပ်ဖြစ်နိုင်သော်လည်း၊ ရေရှည်တွင်မူ ပုရိသတို့အား စိတ်ပျက်ငြီးငွေ့စေပြီး သင့်အား ကလေးကလားဆန်ကာ အချိန်ပြည့် လိုက်ချော့နေရသည့် ဝန်ထုပ်ဝန်ပိုးတစ်ခုကဲ့သို့ မြင်လာစေတတ်၏။"
+        },
+        ga: {
+            choice: "(ဂ) စိတ်ခံစားချက်နောက်သို့ မျောပါမသွားဘဲ၊ အခြေအနေကို ဘေးကနေ တည်ငြိမ်စွာ စောင့်ကြည့်ပြီးမှ ခန့်ညားပြတ်သားစွာ ကိုယ်တွယ်သည်။",
+            desc: "သင်သည် ကိုယ်ပိုင်စိတ်ခံစားချက်ကို ကောင်းစွာ အုပ်စိုးနိုင်ပြီး ပြဿနာထက် အဖြေကိုသာ အာရုံစိုက်တတ်သည့် ပါးနပ်သော အမျိုးသမီး ဖြစ်၏။ တစ်ဖက်လူ ဒေါသထွက်နေချိန်တွင် မီးလောင်ရာ လေပင့်ခြင်း မပြုဘဲ အေးမြသော ရိပ်မြုံတစ်ခုအဖြစ် တည်ငြိမ်စွာ ရပ်တည်ပြနိုင်သူ ဖြစ်သည်။",
+            warn: "ဤတည်ငြိမ်မှု Aura သည် ပုရိသယောကျာ်းတို့အား မိမိတို့၏ အမှားကို မိမိတို့ကိုယ်တိုင် ပြန်လည်သိမြင်လာစေပြီး၊ သင့်ရှေ့မှောက်၌ ဒူးထောက်ကာ သင့်အား ပိုမိုခန့်ညား ရိုသေလာစေမည့် ဧကရီတစ်ပါး၏ စွမ်းပကားပင် ဖြစ်တော့သည်။"
+        }
+    };
+
+    function showAnalysis(answerKey) {
+        // Hide Question UI
+        document.getElementById('quiz-flow').style.display = 'none';
+        
+        // Load Selected Data
+        const data = analysisData[answerKey];
+        document.getElementById('res-choice').innerText = data.choice;
+        document.getElementById('res-desc').innerText = data.desc;
+        document.getElementById('res-warn').innerText = data.warn;
+        
+        // Show Result UI
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        // Send unlock message to index.html parent frame
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

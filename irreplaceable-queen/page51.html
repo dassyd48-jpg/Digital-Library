@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Irreplaceable Queen - Page Quiz</title>
+    <style>
+        body { 
+            background: #12011b; /* Royal Dark Purple Theme */
+            color: #d4af37;
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box;
+        }
+        .quiz-container { 
+            width: 100%;
+            max-width: 480px; 
+            background: rgba(0, 0, 0, 0.75); 
+            border: 1px solid #d4af37; 
+            border-radius: 12px; 
+            padding: 25px; 
+            text-align: center;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: #d4af37; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold;
+            display: block; 
+            margin-bottom: 15px;
+        }
+        h2 { 
+            font-size: 16px; 
+            line-height: 1.6; 
+            color: #fff; 
+            margin-bottom: 25px;
+            font-weight: normal; 
+            text-align: left;
+        }
+        .options-group {
+            display: block;
+        }
+        .option { 
+            display: block;
+            width: 100%; 
+            padding: 15px; 
+            margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            color: #eee; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-align: left; 
+            transition: 0.3s; 
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .option:hover { 
+            background: #d4af37; 
+            color: #000;
+            font-weight: bold;
+        }
+        #result-box { 
+            display: none; 
+            animation: fadeIn 0.8s ease;
+            text-align: left;
+        }
+        .res-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .res-type { 
+            font-size: 15px; 
+            font-weight: bold; 
+            color: #000; 
+            background: #d4af37;
+            padding: 10px 15px; 
+            border-radius: 4px; 
+            display: inline-block; 
+            margin-bottom: 15px; 
+            text-align: left;
+            line-height: 1.5;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .res-section-title {
+            font-weight: bold;
+            color: #d4af37;
+            margin-top: 15px;
+            font-size: 14.5px;
+            display: block;
+        }
+        .res-desc { 
+            color: #ddd;
+            font-size: 14px; 
+            line-height: 1.7; 
+            margin-bottom: 15px; 
+        }
+        .warn-box {
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 4px solid #d4af37;
+            padding: 12px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            color: #eee;
+            margin-bottom: 25px;
+        }
+        .next-btn { 
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: 1px solid #d4af37; 
+            color: #d4af37; 
+            padding: 15px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 13px;
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+            transition: 0.3s;
+            font-weight: bold;
+            text-align: center;
+        }
+        .next-btn:hover { 
+            background: #d4af37; 
+            color: #000;
+        }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">အခန်း (၉) ၏ စမ်းသပ်ချက်ကျမ်း (Interactive Test IX)</span>
+        <h2 id="q-text">မေးခွန်း - အကယ်၍ လက်တွဲဖော်သည် သင့်အပေါ်၌ လေးစားမှုကင်းမဲ့သော စကားလုံး သို့မဟုတ် အပြုအမူမျိုး ပြုလုပ်လာပါက သင် မည်သို့ စီရင်မည်နည်း။</h2>
+        
+        <div class="options-group" id="options-group">
+            <button class="option" onclick="showAnalysis('ka')">(က) စိတ်မကောင်းဖြစ်သော်လည်း ၎င်း မိမိအား စွန့်ခွာသွားမည်ကို ကြောက်သဖြင့် ဘာမှမပြောဘဲ ကြိတ်မှိတ်သည်းခံသည်။</button>
+            <button class="option" onclick="showAnalysis('kha')">(ခ) အမျက်ဒေါသပြင်းစွာဖြင့် အော်ဟစ်ဆဲဆိုကာ အပြန်အလှန် စကားနိုင်လု၍ ရန်ပွဲကို အဆုံးမရှိ ဖန်တီးသည်။</button>
+            <button class="option" onclick="showAnalysis('ga')">(ဂ) မည်သည့်ဒေါသသံမျှ မပါဘဲ တည်ငြိမ်အေးစက်စွာဖြင့် မိမိ၏ စည်းဘောင်ကို အသိပေးကာ၊ ၎င်း တောင်းပန်ခြင်းနှင့် တာဝန်ယူမှု မပြမချင်း မိမိ၏ အာရုံစိုက်မှုကို လုံးဝရုပ်သိမ်း၍ ခပ်ခွာခွာ နေပြလိုက်သည်။</button>
+        </div>
+    </div>
+
+    <div id="result-box">
+        <div class="res-header">
+            <span class="phase-label">ANALYSIS RESULT</span>
+            <div class="res-type" id="res-choice"></div>
+        </div>
+        
+        <span class="res-section-title">🧐 သင်သည် မည်သို့သောသူမျိုးလဲ? -</span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <span class="res-section-title">⚠️ လက်တွေ့အကျိုးဆက် -</span>
+        <div class="warn-box" id="res-warn"></div>
+        
+        <button onclick="completeQuiz()" class="next-btn">နောက်တစ်မျက်နှာသို့ သွားရန် →</button>
+    </div>
+</div>
+
+<script>
+    const analysisData = {
+        ka: {
+            choice: "(က) စိတ်မကောင်းဖြစ်သော်လည်း ၎င်း မိမိအား စွန့်ခွာသွားမည်ကို ကြောက်သဖြင့် ဘာမှမပြောဘဲ ကြိတ်မှိတ်သည်းခံသည်။",
+            desc: "သင်သည် မိမိကိုယ်ကိုယ် တန်ဖိုးမထားဘဲ သူတစ်ပါးရဲ့ စိတ်တိုင်းကျ အနိုင်ကျင့်မှုကို ခံယူနေသည့် အားနွဲ့သူ ဖြစ်၏။",
+            warn: "ဤသို့ သည်းခံခြင်းသည် 'ငါ ဘာလုပ်လုပ် ဒီမိန်းမက ငါ့ကို စွန့်ခွာမှာ မဟုတ်ဘူး' ဆိုတဲ့ အတ္တကို ၎င်းရင်ထဲ မွေးဖွားပေးလိုက်တာကြောင့်၊ သင့်အပေါ် ပိုမို လေးစားမှု ကင်းမဲ့လာပါလိမ့်မည်။"
+        },
+        kha: {
+            choice: "(ခ) အမျက်ဒေါသပြင်းစွာဖြင့် အော်ဟစ်ဆဲဆိုကာ အပြန်အလှန် စကားနိုင်လု၍ ရန်ပွဲကို အဆုံးမရှိ ဖန်တီးသည်။",
+            desc: "သင်သည် ပြဿနာကို ဒေါသထွက်ခြင်းဖြင့် ကိုင်တွယ်တတ်ပြီး အော်ဟစ်ခြင်းဖြင့် အရှိန်အဝါပြချင်သူ ဖြစ်၏။",
+            warn: "ရန်ပွဲများ အဆုံးမရှိ ဖြစ်လာခြင်းသည် သင့်ရဲ့ တန်ဖိုးကို ပုရိသတို့မျက်စိထဲမှာ သိမ်ဖျင်းကျဆင်းသွားစေရုံသာ ရှိလိမ့်မည်။"
+        },
+        ga: {
+            choice: "(ဂ) မည်သည့်ဒေါသသံမျှ မပါဘဲ တည်ငြိမ်အေးစက်စွာဖြင့် မိမိ၏ စည်းဘောင်ကို အသိပေးကာ၊ ၎င်း တောင်းပန်ခြင်းနှင့် တာဝန်ယူမှု မပြမချင်း မိမိ၏ အာရုံစိုက်မှုကို လုံးဝရုပ်သိမ်း၍ ခပ်ခွာခွာ နေပြလိုက်သည်။",
+            desc: "သင်သည် မိမိရဲ့ ဂုဏ်သိက္ခာကို ထိပါးလာပါက ပြတ်သားစွာ ကျောခိုင်းဝံ့သော သတ္တိ (The Power to Walk Away) ရှိသည့် အချုပ်အခြာအာဏာပိုင် ဧကရီ ဖြစ်၏။",
+            warn: "သင့်အား 'ဆုံးရှုံးရမလဲ' ဆိုတဲ့ မဟာဗျူဟာမြောက် စိုးရိမ်စိတ် (Fear of Loss) ၎င်းရင်ထဲ ဝင်သွားတာကြောင့်၊ သင့်ရှေ့မှောက်၌ ဘယ်သောအခါမျှ မလေးမစား ထပ်မံ မပြုလုပ်ဝံ့တော့ချေ။"
+        }
+    };
+
+    function showAnalysis(answerKey) {
+        // Hide Question UI
+        document.getElementById('quiz-flow').style.display = 'none';
+        
+        // Load Selected Data
+        const data = analysisData[answerKey];
+        document.getElementById('res-choice').innerText = data.choice;
+        document.getElementById('res-desc').innerText = data.desc;
+        document.getElementById('res-warn').innerText = data.warn;
+        
+        // Show Result UI
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        // Send unlock message to index.html parent frame
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>
