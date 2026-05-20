@@ -55,14 +55,13 @@
       }
     }
     </script>
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Special+Elite&family=Arimo:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --metallic-gold: #b38b59; 
             --bright-gold: #e5b869;
-            --dark-bronze: #8a6d3b;
             --header-crimson: #1a0000;
             --body-black: #050505;
             --text-gray: #a0a0a0;
@@ -78,18 +77,25 @@
             overflow-x: hidden;
         }
 
-        /* 1. GATEWAY SCREEN */
+        /* 1. VISUAL GATEWAY SCREEN (Dassy ပေးထားတဲ့ ပုံအတိုင်း တစ်ထပ်တည်းပြင်ဆင်မှု) */
         #gateway-screen {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100vh;
-            background: #000;
+            /* မင်းဆီကရရှိထားတဲ့ မူရင်း Gateway ပုံစံပုံကြီးကို ဤနေရာတွင် တိုက်ရိုက်ချိတ်ဆက်ပေးရပါမယ် */
+            background: url('gateway-bg.jpg') no-repeat center center;
+            background-size: cover;
             z-index: 9999;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             transition: opacity 0.8s ease-in-out, visibility 0.8s;
+        }
+
+        /* ပုံမတက်ခင် အမည်းရောင်မပြအောင် အရန်သင့် ထားရှိခြင်း */
+        #gateway-screen::before {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(0, 0, 0, 0.2); z-index: 1; pointer-events: none;
         }
 
         #gateway-screen.fade-out {
@@ -97,64 +103,40 @@
             visibility: hidden;
         }
 
-        .gateway-title {
-            font-family: 'Cinzel Decorative', serif;
-            color: var(--metallic-gold);
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
-            margin-bottom: 50px;
-            letter-spacing: 5px;
-            text-align: center;
-        }
-
-        .door-container {
-            display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
-            width: 90%;
-        }
-
-        .door-card {
-            width: 300px;
-            height: 450px;
+        /* တံခါးနှစ်ချပ်ကို ကလစ်နှိပ်နိုင်အောင် နေရာချထားတဲ့ Container */
+        .door-click-zones {
             position: relative;
+            width: 100%; max-width: 1200px;
+            height: 100%; max-height: 700px;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            padding-bottom: 5vh;
+            z-index: 2;
+        }
+
+        /* တံခါးတစ်ခုချင်းစီရဲ့ အပေါ်က အုပ်မယ့် နေရာလွတ်ဇုန် (Transparent Hitbox) */
+        .click-zone {
+            width: 25%; height: 65vh;
             cursor: pointer;
-            border: 1px solid #222;
-            overflow: hidden;
-            transition: 0.5s;
+            border-radius: 150px 150px 0 0; /* အကွေးတံခါးပုံစံအတိုင်း နှိပ်လို့ရအောင် */
+            transition: all 0.4s ease;
+            position: relative;
+            box-shadow: inset 0 0 0px rgba(255,255,255,0);
         }
 
-        .door-card.psychology { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1519074063912-ad2f6622410a?q=80&w=300&h=450&auto=format&fit=cover'); background-size: cover; }
-        .door-card.kids { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=300&h=450&auto=format&fit=cover'); background-size: cover; }
-
-        .door-card:hover { border-color: var(--metallic-gold); transform: scale(1.05); }
-        .door-card::before {
-            content: "OPEN DOOR";
-            position: absolute;
-            bottom: 20px; left: 50%;
-            transform: translateX(-50%);
-            color: #fff; letter-spacing: 3px; font-size: 0.8rem;
-            opacity: 0; transition: 0.5s;
-        }
-        .door-card:hover::before { opacity: 1; }
-
-        .door-label {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            width: 100%;
+        /* Hover လုပ်လိုက်ရင် တံခါးအကွေးတွေထဲမှာ အလင်းဖျော့ဖျော့ လင်းလာစေဖို့ */
+        .zone-psychology:hover {
+            background: rgba(139, 0, 0, 0.15);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.2), inset 0 0 30px rgba(255, 0, 0, 0.3);
         }
 
-        .door-label h3 {
-            font-family: 'Cinzel Decorative', serif;
-            color: var(--metallic-gold);
-            font-size: 1.5rem; margin: 0;
+        .zone-kids:hover {
+            background: rgba(212, 175, 55, 0.15);
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.2), inset 0 0 30px rgba(212, 175, 55, 0.3);
         }
 
-        .door-label p { font-size: 0.7rem; color: #888; margin-top: 10px; }
-
-        /* 2. HEADER & LAYOUT */
+        /* 2. HEADER & MAIN CONTENT */
         header {
             text-align: center; padding: 100px 20px;
             background-color: var(--header-crimson);
@@ -174,7 +156,6 @@
         header p { color: #660000; font-size: 1rem; margin-top: 20px; letter-spacing: 6px; font-weight: bold; }
 
         .category-container { width: 90%; max-width: 1200px; margin: 60px auto; }
-
         .category-title {
             font-family: 'Cinzel Decorative', serif;
             color: var(--metallic-gold);
@@ -196,7 +177,6 @@
         }
 
         .vault-item:hover { transform: translateY(-10px); border-color: var(--metallic-gold); }
-
         .vault-item img { width: 100%; height: 400px; object-fit: cover; border: 1px solid #222; margin-bottom: 25px; }
 
         .tag { color: #444; font-size: 0.7rem; letter-spacing: 3px; margin-bottom: 10px; text-transform: uppercase; }
@@ -226,22 +206,22 @@
 
         .divider { border: 0; height: 1px; background: linear-gradient(to right, transparent, #333, transparent); margin: 60px 0; }
 
-        /* 3. FEEDBACK SECTION */
+        /* FEEDBACK SECTION */
         .feedback-container { width: 90%; max-width: 1200px; margin: 0 auto 80px; }
         .feedback-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .feedback-card { background: #0c0c0c; border: 1px dashed #222; padding: 25px; transition: 0.3s; }
+        .feedback-card { background: #0c0c0c; border: 1px dashed #222; padding: 25px; }
         .stars { color: var(--metallic-gold); margin-bottom: 15px; }
         .feedback-text { color: #888; font-size: 0.9rem; line-height: 1.6; font-style: italic; }
         .reviewer-name { color: #555; font-size: 0.8rem; text-align: right; margin-top: 15px; }
 
-        /* 4. KIDS SECTION LAYOUT */
-        .kids-section { margin-top: 80px; padding: 60px 20px; background: #080806; border: 1px solid #1a150c; border-radius: 10px; }
+        /* KIDS SECTION LAYOUT */
+        .kids-section { margin-top: 80px; padding: 60px 20px; background: #080806; border: 1px solid #1a150c; }
         .kids-title { color: var(--bright-gold); border-left-color: var(--bright-gold); }
         .kids-item { background: #141310; border-color: #2a241a; }
         .kids-btn-buy { background-color: var(--kids-warm); }
         .kids-btn-buy:hover { background: #e69900; box-shadow: 0 0 20px rgba(204, 136, 0, 0.3); }
 
-        /* 5. REVIEW MODAL */
+        /* REVIEW MODAL */
         .review-modal {
             display: none; position: fixed; z-index: 10000; left: 0; top: 0;
             width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.95);
@@ -260,25 +240,19 @@
         .review-text { color: #ccc; font-size: 0.95rem; line-height: 1.8; white-space: pre-line; background: #0f0f0f; padding: 20px; border-left: 2px solid #333; }
 
         footer { padding: 80px 20px; color: #d4af37; font-size: 0.8rem; letter-spacing: 5px; text-transform: uppercase; text-align: center; width: 100%; }
+        
+        /* Mobile responsive check for click zones */
+        @media (max-width: 768px) {
+            .click-zone { width: 40%; height: 50vh; }
+        }
     </style>
 </head>
 <body>
 
     <div id="gateway-screen">
-        <h2 class="gateway-title">CHOOSE YOUR VAULT</h2>
-        <div class="door-container">
-            <div class="door-card psychology" onclick="enterVault('psychology')">
-                <div class="door-label">
-                    <h3>PSYCHOLOGY</h3>
-                    <p>FORBIDDEN SECRETS & STRATEGY</p>
-                </div>
-            </div>
-            <div class="door-card kids" onclick="enterVault('kids')">
-                <div class="door-label">
-                    <h3>KIDS ACADEMY</h3>
-                    <p>GROWTH & FUTURE LEADERS</p>
-                </div>
-            </div>
+        <div class="door-click-zones">
+            <div class="click-zone zone-psychology" onclick="enterVault('psychology')" title="Open Psychology Vault"></div>
+            <div class="click-zone zone-kids" onclick="enterVault('kids')" title="Open Kids Academy"></div>
         </div>
     </div>
 
@@ -438,11 +412,6 @@
                 <p class="feedback-text">"Beyond the Mask ကတော့ လုံးဝ လက်စွဲပါပဲ။ ပတ်ဝန်းကျင်က လူတွေရဲ့ မျက်နှာဖုံးတွေကို ကြိုမြင်ရတော့ သားကောင်မဖြစ်တော့ဘူး။ High-Value ဖြစ်ချင်သူတွေ ဖတ်သင့်ပါတယ်။"</p>
                 <div class="reviewer-name">- Anonymous Reader</div>
             </div>
-            <div class="feedback-card">
-                <div class="stars">★★★★★</div>
-                <p class="feedback-text">"DASSY ရဲ့ စာအုပ်တွေက သာမန်စာအုပ်တွေနဲ့မတူဘူး။ Interactive ဖြစ်ပြီး ကိုယ့်အခြေအနေကိုပါ ဆန်းစစ်နိုင်တာ တကယ်မိုက်တယ်။"</p>
-                <div class="reviewer-name">- Strategic Thinker</div>
-            </div>
         </div>
     </section>
 
@@ -483,10 +452,10 @@
     </div>
 
     <script>
-        // Gateway Functionality
+        // Gateway Page Actions
         function enterVault(vaultType) {
             const gateway = document.getElementById('gateway-screen');
-            gateway.classList.add('fade-out');
+            gateway.classList.add('fade-out'); // အပေါ်က Gateway ပုံကြီးကို ဖျောက်လိုက်မယ်
             
             setTimeout(() => {
                 if(vaultType === 'kids') {
@@ -497,7 +466,7 @@
             }, 800);
         }
 
-        // Modal Functionality
+        // Modal Functions
         const modal = document.getElementById("reviewModal");
         const modalTitle = document.getElementById("modalBookTitle");
         const modalTarget = document.getElementById("modalTargetText");
@@ -521,5 +490,4 @@
         }
     </script>
 </body>
-</html>
 </html>
