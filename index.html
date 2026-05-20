@@ -76,7 +76,7 @@
             overflow-x: hidden;
         }
 
-        /* 1. VISUAL GATEWAY SCREEN */
+        /* --- 1. VISUAL GATEWAY SCREEN (အလင်းရောင် ကွက်တိပြင်ဆင်ချက်) --- */
         #gateway-screen {
             position: fixed;
             top: 0; left: 0;
@@ -92,7 +92,7 @@
         .gateway-bg-wrapper {
             position: relative;
             width: 100%;
-            height: 100%;
+            height: 100vh;
             max-width: 1200px;
             max-height: 700px;
             background: url('gateway-bg.jpg') no-repeat center center;
@@ -114,34 +114,50 @@
         }
 
         .door-click-zones {
-            position: relative;
+            position: absolute;
+            top: 0; left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-end;
-            padding-bottom: 5vh;
             z-index: 2;
         }
 
         .click-zone {
-            width: 25%;
-            height: 65vh;
+            position: absolute;
+            bottom: 12%;       
+            width: 22.5%;      
+            height: 52%;       
             cursor: pointer;
             border-radius: 150px 150px 0 0;
             transition: all 0.4s ease;
-            position: relative;
-            box-shadow: inset 0 0 0px rgba(255,255,255,0);
         }
 
+        .zone-psychology {
+            left: 20%;         
+        }
         .zone-psychology:hover {
             background: rgba(139, 0, 0, 0.15);
-            box-shadow: 0 0 40px rgba(255, 0, 0, 0.2), inset 0 0 30px rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.6), inset 0 0 30px rgba(255, 0, 0, 0.4);
         }
 
+        .zone-kids {
+            left: 56.5%;       
+        }
         .zone-kids:hover {
             background: rgba(212, 175, 55, 0.15);
-            box-shadow: 0 0 40px rgba(212, 175, 55, 0.2), inset 0 0 30px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.6), inset 0 0 30px rgba(212, 175, 55, 0.4);
+        }
+
+        @media (max-width: 1200px) {
+            .gateway-bg-wrapper {
+                width: 100vw;
+                height: calc(100vw * (700 / 1200)); 
+                max-height: 100vh;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .back-to-gateway-btn { bottom: 20px; right: 20px; padding: 10px 15px; font-size: 0.7rem; }
+            .shelf { grid-template-columns: 1fr; gap: 25px; }
         }
 
         /* 2. HEADER & MAIN CONTENT */
