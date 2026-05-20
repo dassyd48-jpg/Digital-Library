@@ -37,7 +37,7 @@
       },
       "mainEntity": {
         "@type": "ItemList",
-        "numberOfItems": 12,
+        "numberOfItems": 11,
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "item": { "@type": "Book", "name": "The Architect Of Influence" }},
           { "@type": "ListItem", "position": 2, "item": { "@type": "Book", "name": "The Alpha's Shadow" }},
@@ -49,8 +49,7 @@
           { "@type": "ListItem", "position": 8, "item": { "@type": "Book", "name": "The Unspoken Magnet" }},
           { "@type": "ListItem", "position": 9, "item": { "@type": "Book", "name": "The Ghost In His Mind" }},
           { "@type": "ListItem", "position": 10, "item": { "@type": "Book", "name": "Beyond The Mask" }},
-          { "@type": "ListItem", "position": 11, "item": { "@type": "Book", "name": "The Dominance Code" }},
-          { "@type": "ListItem", "position": 12, "item": { "@type": "Book", "name": "The Mind" }}  
+          { "@type": "ListItem", "position": 11, "item": { "@type": "Book", "name": "The Dominance Code" }}  
         ]
       }
     }
@@ -60,16 +59,16 @@
     
     <style>
         :root {
-            --metallic-gold: #b38b59; 
+            --metallic-gold: #b38b59;
             --bright-gold: #e5b869;
             --header-crimson: #1a0000;
             --body-black: #050505;
             --text-gray: #a0a0a0;
-            --kids-warm: #cc8800;
         }
 
         body, html {
-            margin: 0; padding: 0;
+            margin: 0;
+            padding: 0;
             background-color: var(--body-black);
             color: var(--text-gray);
             font-family: 'Special Elite', cursive;
@@ -90,22 +89,22 @@
             transition: opacity 0.8s ease-in-out, visibility 0.8s;
         }
 
-        /* Gateway Background Container ကို ပေါင်းထည့်ပြီး အရွယ်အစားကို ထိန်းညှိခြင်း */
         .gateway-bg-wrapper {
             position: relative;
             width: 100%;
             height: 100%;
-            max-width: 1200px; /* PC ပေါ်မှာ သတ်မှတ်ထားတဲ့ အကျယ် */
+            max-width: 1200px;
             max-height: 700px;
             background: url('gateway-bg.jpg') no-repeat center center;
-            background-size: contain; /* ပုံမပြတ်ဘဲ အချိုးကျ အပြည့်ပေါ်စေရန် */
+            background-size: contain;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         #gateway-screen::before {
-            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
+            content: '';
+            position: absolute; top:0; left:0; width:100%; height:100%;
             background: rgba(0, 0, 0, 0.2); z-index: 1; pointer-events: none;
         }
 
@@ -126,7 +125,8 @@
         }
 
         .click-zone {
-            width: 25%; height: 65vh;
+            width: 25%;
+            height: 65vh;
             cursor: pointer;
             border-radius: 150px 150px 0 0;
             transition: all 0.4s ease;
@@ -146,7 +146,8 @@
 
         /* 2. HEADER & MAIN CONTENT */
         header {
-            text-align: center; padding: 100px 20px;
+            text-align: center;
+            padding: 100px 20px;
             background-color: var(--header-crimson);
             border-bottom: 1px solid #2a0000;
         }
@@ -157,13 +158,16 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-size: clamp(2.5rem, 8vw, 4.2rem);
-            margin: 0; letter-spacing: 10px;
+            margin: 0;
+            letter-spacing: 10px;
             text-transform: uppercase; font-weight: 900;
         }
 
-        header p { color: #660000; font-size: 1rem; margin-top: 20px; letter-spacing: 6px; font-weight: bold; }
+        header p { color: #660000;
+            font-size: 1rem; margin-top: 20px; letter-spacing: 6px; font-weight: bold; }
 
-        .category-container { width: 90%; max-width: 1200px; margin: 60px auto; }
+        .category-container { width: 90%;
+            max-width: 1200px; margin: 60px auto; }
         .category-title {
             font-family: 'Cinzel Decorative', serif;
             color: var(--metallic-gold);
@@ -179,15 +183,18 @@
         }
 
         .vault-item {
-            background: #0a0a0a; border: 1px solid #151515;
+            background: #0a0a0a;
+            border: 1px solid #151515;
             padding: 30px; transition: 0.5s;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
         .vault-item:hover { transform: translateY(-10px); border-color: var(--metallic-gold); }
-        .vault-item img { width: 100%; height: 400px; object-fit: cover; border: 1px solid #222; margin-bottom: 25px; }
+        .vault-item img { width: 100%; height: 400px; object-fit: cover;
+            border: 1px solid #222; margin-bottom: 25px; }
 
-        .tag { color: #444; font-size: 0.7rem; letter-spacing: 3px; margin-bottom: 10px; text-transform: uppercase; }
+        .tag { color: #444; font-size: 0.7rem;
+            letter-spacing: 3px; margin-bottom: 10px; text-transform: uppercase; }
 
         .title {
             font-family: 'Cinzel Decorative', serif;
@@ -200,7 +207,8 @@
         .btn-box { display: flex; flex-direction: column; gap: 12px; }
 
         .btn {
-            text-decoration: none; padding: 15px;
+            text-decoration: none;
+            padding: 15px;
             font-weight: bold; text-transform: uppercase;
             letter-spacing: 2px; transition: 0.3s;
             font-size: 0.9rem; text-align: center; cursor: pointer;
@@ -212,42 +220,49 @@
         .btn-buy { background-color: #0088cc; color: #fff; border: none; }
         .btn-buy:hover { background: #00a2f0; box-shadow: 0 0 20px rgba(0, 136, 204, 0.4); }
 
-        .divider { border: 0; height: 1px; background: linear-gradient(to right, transparent, #333, transparent); margin: 60px 0; }
+        .divider { border: 0; height: 1px; background: linear-gradient(to right, transparent, #333, transparent);
+            margin: 60px 0; }
 
         /* FEEDBACK SECTION */
-        .feedback-container { width: 90%; max-width: 1200px; margin: 0 auto 80px; }
-        .feedback-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .feedback-card { background: #0c0c0c; border: 1px dashed #222; padding: 25px; }
+        .feedback-container { width: 90%;
+            max-width: 1200px; margin: 0 auto 80px; }
+        .feedback-grid { display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .feedback-card { background: #0c0c0c;
+            border: 1px dashed #222; padding: 25px; }
         .stars { color: var(--metallic-gold); margin-bottom: 15px; }
         .feedback-text { color: #888; font-size: 0.9rem; line-height: 1.6; font-style: italic; }
         .reviewer-name { color: #555; font-size: 0.8rem; text-align: right; margin-top: 15px; }
 
-        /* KIDS SECTION LAYOUT */
-        .kids-section { margin-top: 80px; padding: 60px 20px; background: #080806; border: 1px solid #1a150c; }
-        .kids-title { color: var(--bright-gold); border-left-color: var(--bright-gold); }
-        .kids-item { background: #141310; border-color: #2a241a; }
-        .kids-btn-buy { background-color: var(--kids-warm); }
-        .kids-btn-buy:hover { background: #e69900; box-shadow: 0 0 20px rgba(204, 136, 0, 0.3); }
-
         /* REVIEW MODAL */
         .review-modal {
-            display: none; position: fixed; z-index: 10000; left: 0; top: 0;
+            display: none;
+            position: fixed; z-index: 10000; left: 0; top: 0;
             width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px;
+            backdrop-filter: blur(8px);
+            align-items: center; justify-content: center; padding: 20px;
         }
         .modal-content {
-            background-color: #0a0a0a; border: 1px solid var(--metallic-gold);
+            background-color: #0a0a0a;
+            border: 1px solid var(--metallic-gold);
             padding: 40px; width: 100%; max-width: 650px;
             animation: fadeIn 0.4s ease; position: relative; max-height: 85vh; overflow-y: auto;
         }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .close-modal { position: absolute; top: 15px; right: 20px; color: #555; font-size: 30px; cursor: pointer; }
-        .modal-book-title { font-family: 'Cinzel Decorative', serif; color: #fff; font-size: 1.3rem; text-align: center; margin-bottom: 30px; border-bottom: 1px solid #1c1c1c; padding-bottom: 15px; }
+        .close-modal { position: absolute;
+            top: 15px; right: 20px; color: #555; font-size: 30px; cursor: pointer;
+        }
+        .modal-book-title { font-family: 'Cinzel Decorative', serif; color: #fff; font-size: 1.3rem; text-align: center;
+            margin-bottom: 30px; border-bottom: 1px solid #1c1c1c; padding-bottom: 15px; }
         .review-section { margin-bottom: 25px; }
-        .review-section-title { color: var(--metallic-gold); font-size: 1rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
-        .review-text { color: #ccc; font-size: 0.95rem; line-height: 1.8; white-space: pre-line; background: #0f0f0f; padding: 20px; border-left: 2px solid #333; }
+        .review-section-title { color: var(--metallic-gold); font-size: 1rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase;
+            display: flex; align-items: center; gap: 10px; }
+        .review-text { color: #ccc; font-size: 0.95rem;
+            line-height: 1.8; white-space: pre-line; background: #0f0f0f; padding: 20px; border-left: 2px solid #333;
+        }
 
-        footer { padding: 80px 20px; color: #d4af37; font-size: 0.8rem; letter-spacing: 5px; text-transform: uppercase; text-align: center; width: 100%; }
+        footer { padding: 80px 20px; color: #d4af37; font-size: 0.8rem; letter-spacing: 5px;
+            text-transform: uppercase; text-align: center; width: 100%; }
         
         /* STICKY BACK TO GATEWAY BUTTON STYLE */
         .back-to-gateway-btn {
@@ -276,23 +291,19 @@
             transform: translateY(-3px);
         }
 
-        /* [MOBILE RESPONSIVE CORRECTION] - ဖုန်းနဲ့ကြည့်ရင် အမှားအယွင်းမရှိစေဖို့ ပြင်ဆင်ချက် */
+        /* [MOBILE RESPONSIVE CORRECTION] */
         @media (max-width: 768px) {
-            /* ဖုန်း Screen မှာ ပုံက လုံးဝမပြတ်ဘဲ ဗဟိုမှာ အချိုးကျ ကျုံ့ဝင်သွားစေရန် */
             .gateway-bg-wrapper {
                 width: 100%;
                 height: auto;
-                aspect-ratio: 1200 / 700; /* ပုံရဲ့ မူရင်း Dimension အချိုးအတိုင်း ကွက်တိ ထိန်းပေးခြင်း */
+                aspect-ratio: 1200 / 700;
             }
-            
-            /* ပုံကျုံ့သွားတာနဲ့အမျှ နှိပ်ရမယ့် Click Zones တံခါးတွေပါ လိုက်ကျုံ့ပြီး တည့်နေစေရန် */
             .click-zone { 
-                width: 25%; 
-                height: 65%; /* vh မဟုတ်တော့ဘဲ wrapper ရဲ့ 65% အချိုးအတိုင်း ယူစေခြင်း */
+                width: 25%;
+                height: 65%;
             }
-            
             .back-to-gateway-btn { bottom: 20px; right: 20px; padding: 10px 15px; font-size: 0.7rem; }
-            .shelf { grid-template-columns: 1fr; gap: 25px; } /* ဖုန်းပေါ်မှာ စာအုပ်ကတ်တွေ တစ်ခုစီ ဒေါင်လိုက် လှပစွာစီရန် */
+            .shelf { grid-template-columns: 1fr; gap: 25px; }
         }
     </style>
 </head>
@@ -466,25 +477,6 @@
         </div>
     </section>
 
-    <hr class="divider">
-
-    <section id="kids-academy" class="category-container kids-section">
-        <h2 class="category-title kids-title">Kids' Growth & Education</h2>
-        <div class="shelf">
-            <div class="vault-item kids-item">
-                <div class="tag">Habit Building</div>
-                <img src="kids-notebook/page1.jpg" alt="Kids Notebook" loading="lazy">
-                <div class="title">Kids' Daily Notebook (Habit Tracker)</div>
-                <div class="price">5,000 MMK</div>
-                <div class="btn-box">
-                    <button class="btn btn-preview" onclick="openReview('Kids\' Daily Notebook','၁။ ကလေးငယ်များကို နေ့စဉ် အလေ့အထကောင်းများ (Good Habits) စနစ်တကျ မွေးမြူပေးလိုသည့် မိဘများ။\n၂။ စာရေး၊ စာဖတ်ခြင်းနှင့် တာဝန်ယူလိုစိတ်ကို ငယ်စဉ်ကတည်းက ပျော်ရွှင်စွာ လေ့ကျင့်ပေးချင်သူများ။','၁။ ၄၀ หน้า ပါဝင်သော ပျော်ရွှင်စရာ လေ့ကျင့်ခန်းများကြောင့် ကလေးငယ်များ စာအုပ်၌ အာရုံစိုက်လာမည်။\n၂။ နေ့စဉ် လုပ်ဆောင်ရမည့် အလုပ်များကို ကိုယ်တိုင် မှတ်တမ်းတင်ရင်း တာဝန်သိတတ်သည့် စရိုက်ကို ရရှိလာမည်။')">Read Review</button>
-                    <a href="kids-notebook/index.html" class="btn btn-preview">Read Preview</a>
-                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy kids-btn-buy">Telegram မှာ ဝယ်ယူမယ်</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <footer>© DASSY DIGITAL LIBRARY | ALL RIGHTS RESERVED</footer>
 
     <button id="backToGatewayBtn" class="back-to-gateway-btn" onclick="returnToGateway()">🏛️ Back to Gateway</button>
@@ -505,18 +497,17 @@
     </div>
 
     <script>
-        // Gateway Page Actions 
-        // (အောက်က ကျန်နေတဲ့ script အပိတ်အပိုင်းတွေကို ဆက်လက်သုံးစွဲနိုင်ပါတယ်)
         function enterVault(vaultType) {
             const gateway = document.getElementById('gateway-screen');
             const backBtn = document.getElementById('backToGatewayBtn');
-            gateway.classList.add('fade-out');
-            if (backBtn) backBtn.style.display = 'block';
             
             if (vaultType === 'psychology') {
+                gateway.classList.add('fade-out');
+                if (backBtn) backBtn.style.display = 'block';
                 document.getElementById('psychology-vault').scrollIntoView({ behavior: 'smooth' });
             } else if (vaultType === 'kids') {
-                document.getElementById('kids-academy').scrollIntoView({ behavior: 'smooth' });
+                // ကလေးနဲ့ ပတ်သက်တာနှိပ်ရင် သီးသန့် Gateway စာမျက်နှာအသစ်သို့ တိုက်ရိုက်သွားမည်
+                window.location.href = 'kids-landing.html';
             }
         }
 
