@@ -291,17 +291,32 @@
             transform: translateY(-3px);
         }
 
-        /* [MOBILE RESPONSIVE CORRECTION] */
+        /* ၂။ TABLET မျက်နှာပြင်အတွက် သီးသန့်ညှိချက် (Screen အကျယ် 1024px အောက်) */
+        @media (max-width: 1024px) {
+            .click-zone {
+                bottom: 12vh;
+                width: 22%;
+                height: 45vh;
+            }
+            .zone-psychology { left: 22%; }
+            .zone-kids { left: 56%; }
+        }
+
+        /* ၃။ PHONE မျက်နှာပြင်အတွက် သီးသန့်ညှိချက် (Screen အကျယ် 768px အောက်) */
         @media (max-width: 768px) {
             .gateway-bg-wrapper {
                 width: 100%;
                 height: auto;
                 aspect-ratio: 1200 / 700;
             }
-            .click-zone { 
-                width: 25%;
-                height: 65%;
+            .click-zone {
+                bottom: 5vh;    /* ဖုန်းပေါ်က တံခါး အနိမ့်အမြင့်ကို ဒီ % နဲ့ ညှိပါ */
+                width: 23%;     /* ဖုန်းပေါ်က အလင်းရောင်အကျယ် */
+                height: 55%;    /* ဖုန်းပေါ်က အလင်းရောင်အမြင့် */
             }
+            .zone-psychology { left: 21%; } /* ဖုန်းပေါ်က ဘယ်ဘက်တံခါးနေရာ */
+            .zone-kids { left: 55%; }       /* ဖုန်းပေါ်က ညာဘက်တံခါးနေရာ */
+            
             .back-to-gateway-btn { bottom: 20px; right: 20px; padding: 10px 15px; font-size: 0.7rem; }
             .shelf { grid-template-columns: 1fr; gap: 25px; }
         }
