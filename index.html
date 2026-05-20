@@ -82,13 +82,26 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100vh;
-            background: url('gateway-bg.jpg') no-repeat center center;
-            background-size: cover;
+            background-color: var(--body-black);
             z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: opacity 0.8s ease-in-out, visibility 0.8s;
+        }
+
+        /* Gateway Background Container ကို ပေါင်းထည့်ပြီး အရွယ်အစားကို ထိန်းညှိခြင်း */
+        .gateway-bg-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 1200px; /* PC ပေါ်မှာ သတ်မှတ်ထားတဲ့ အကျယ် */
+            max-height: 700px;
+            background: url('gateway-bg.jpg') no-repeat center center;
+            background-size: contain; /* ပုံမပြတ်ဘဲ အချိုးကျ အပြည့်ပေါ်စေရန် */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #gateway-screen::before {
@@ -103,8 +116,8 @@
 
         .door-click-zones {
             position: relative;
-            width: 100%; max-width: 1200px;
-            height: 100%; max-height: 700px;
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: space-around;
             align-items: flex-end;
@@ -236,7 +249,7 @@
 
         footer { padding: 80px 20px; color: #d4af37; font-size: 0.8rem; letter-spacing: 5px; text-transform: uppercase; text-align: center; width: 100%; }
         
-        /* [NEW FEATURE] STICKY BACK TO GATEWAY BUTTON STYLE */
+        /* STICKY BACK TO GATEWAY BUTTON STYLE */
         .back-to-gateway-btn {
             position: fixed;
             bottom: 30px;
@@ -253,7 +266,7 @@
             z-index: 999;
             box-shadow: 0 4px 15px rgba(0,0,0,0.6);
             transition: all 0.3s ease;
-            display: none; /* စဖွင့်ဖွင့်ချင်း Gateway စခရင်ပေါ်မှာ ဖျောက်ထားမယ် */
+            display: none;
         }
 
         .back-to-gateway-btn:hover {
@@ -263,19 +276,34 @@
             transform: translateY(-3px);
         }
 
-        /* Mobile responsive check for click zones */
+        /* [MOBILE RESPONSIVE CORRECTION] - ဖုန်းနဲ့ကြည့်ရင် အမှားအယွင်းမရှိစေဖို့ ပြင်ဆင်ချက် */
         @media (max-width: 768px) {
-            .click-zone { width: 40%; height: 50vh; }
+            /* ဖုန်း Screen မှာ ပုံက လုံးဝမပြတ်ဘဲ ဗဟိုမှာ အချိုးကျ ကျုံ့ဝင်သွားစေရန် */
+            .gateway-bg-wrapper {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1200 / 700; /* ပုံရဲ့ မူရင်း Dimension အချိုးအတိုင်း ကွက်တိ ထိန်းပေးခြင်း */
+            }
+            
+            /* ပုံကျုံ့သွားတာနဲ့အမျှ နှိပ်ရမယ့် Click Zones တံခါးတွေပါ လိုက်ကျုံ့ပြီး တည့်နေစေရန် */
+            .click-zone { 
+                width: 25%; 
+                height: 65%; /* vh မဟုတ်တော့ဘဲ wrapper ရဲ့ 65% အချိုးအတိုင်း ယူစေခြင်း */
+            }
+            
             .back-to-gateway-btn { bottom: 20px; right: 20px; padding: 10px 15px; font-size: 0.7rem; }
+            .shelf { grid-template-columns: 1fr; gap: 25px; } /* ဖုန်းပေါ်မှာ စာအုပ်ကတ်တွေ တစ်ခုစီ ဒေါင်လိုက် လှပစွာစီရန် */
         }
     </style>
 </head>
 <body>
 
     <div id="gateway-screen">
-        <div class="door-click-zones">
-            <div class="click-zone zone-psychology" onclick="enterVault('psychology')" title="Open Psychology Vault"></div>
-            <div class="click-zone zone-kids" onclick="enterVault('kids')" title="Open Kids Academy"></div>
+        <div class="gateway-bg-wrapper">
+            <div class="door-click-zones">
+                <div class="click-zone zone-psychology" onclick="enterVault('psychology')" title="Open Psychology Vault"></div>
+                <div class="click-zone zone-kids" onclick="enterVault('kids')" title="Open Kids Academy"></div>
+            </div>
         </div>
     </div>
 
@@ -290,7 +318,7 @@
             
             <div class="vault-item">
                 <div class="tag">Masculinity & Authority</div>
-                <img src="morden-gentleman/page1.jpg" alt="The Modern Gentleman">
+                <img src="morden-gentleman/page1.jpg" alt="The Modern Gentleman" loading="lazy">
                 <div class="title">The Modern Gentleman</div>
                 <div class="price">15,500 MMK</div>
                 <div class="btn-box">
@@ -302,7 +330,7 @@
 
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
-                <img src="the-feminine-protocol/page1.jpg" alt="The Feminine Protocol">
+                <img src="the-feminine-protocol/page1.jpg" alt="The Feminine Protocol" loading="lazy">
                 <div class="title">The Feminine Protocol</div>
                 <div class="price">16,500 MMK</div>
                 <div class="btn-box">
@@ -314,7 +342,7 @@
 
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
-                <img src="the-alpha-shadow/page1.jpg" alt="The Alpha's Shadow">
+                <img src="the-alpha-shadow/page1.jpg" alt="The Alpha's Shadow" loading="lazy">
                 <div class="title">The Alpha's Shadow</div>
                 <div class="price">16,500 MMK</div>
                 <div class="btn-box">
@@ -326,7 +354,7 @@
 
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
-                <img src="the-architect-of-influence/page1.jpg" alt="The Architect Of Influence">
+                <img src="the-architect-of-influence/page1.jpg" alt="The Architect Of Influence" loading="lazy">
                 <div class="title">The Architect Of Influence</div>
                 <div class="price">6,690 MMK</div>
                 <div class="btn-box">
@@ -338,7 +366,7 @@
 
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
-                <img src="beyond-the-mask/page1.jpg" alt="Beyond the Mask">
+                <img src="beyond-the-mask/page1.jpg" alt="Beyond the Mask" loading="lazy">
                 <div class="title">Beyond the Mask</div>
                 <div class="price">7,690 MMK</div>
                 <div class="btn-box">
@@ -350,7 +378,7 @@
 
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
-                <img src="the-ghost-in-his-mind/page1.jpg" alt="Ghost">
+                <img src="the-ghost-in-his-mind/page1.jpg" alt="Ghost" loading="lazy">
                 <div class="title">The Ghost In His Mind</div>
                 <div class="price">5,590 MMK</div>
                 <div class="btn-box">
@@ -362,7 +390,7 @@
 
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
-                <img src="dream-woman/page1.jpg" alt="Dream Woman">
+                <img src="dream-woman/page1.jpg" alt="Dream Woman" loading="lazy">
                 <div class="title">How A Man's Brain Picks His Dream Woman</div>
                 <div class="price">5,490 MMK</div>
                 <div class="btn-box">
@@ -374,11 +402,11 @@
 
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
-                <img src="the-irreplaceable-queen/page1.jpg" alt="Queen">
+                <img src="the-irreplaceable-queen/page1.jpg" alt="Queen" loading="lazy">
                 <div class="title">The Irreplaceable Queen</div>
                 <div class="price">16,700 MMK</div>
                 <div class="btn-box">
-                    <button class="btn btn-preview" onclick="openReview('The Irreplaceable Queen','၁။ အချစ်ရေးနှင့် ဆက်ဆံရေးတွင် အမြဲတမ်း အားနည်းပြီး တစ်ဖက်လူ၏အလိုကျ လိုက်လျောအောက်ကျို့နေရသူများ။\n၂။ ဆက်ဆံရေးတစ်ခုအတွင်း မိမိကိုယ်ကို အကာအကွယ်မပေးနိုင်ဘဲ သားကောင် (Victim) ဘဝသို့ ရောက်ရှိနေသူများ။\n၃။ အပေါ်ယံအချစ်ရေး လမ်းညွှန်ချက်များထက် မိမိ၏စိတ်ခံစားချက်ကို စနစ်တကျ ထိန်းချုပ်အုပ်စိုးလိုသူများ။','၁။ သာမန်စာအုပ်များကဲ့သို့ သည်းခံခွင့်လွှတ်ရုံမျှမဟုတ်ဘဲ မိမိကိုယ်ပိုင်တန်ဖိုးကို မြှင့်တင်ပေးမည့် High-Value စွမ်းအင်များကို နားလည်လာမည်။\n၂။ စာအုပ်တွင်ပါဝင်သော Intro Quiz နှင့် Interactive Test များကြောင့် ဆက်ဆံရေးအတွင်း မိမိ၌ရှိနေသည့် အားနည်းချက်များကို ထိုးထွင်းသိမြင်ပြီး ဉာဏ်ပွင့်သွားမည်။\n၃။ မည်သည့်အခြေအနေမျိုးတွင်မဆို စိတ်ပိုင်းဆိုင်ရာ တုန်လှုပ်ခြင်းမရှိဘဲ ဘုရင်မတစ်ပါးကဲ့သို့ ခိုင်မာပြတ်သားစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
+                    <button class="btn btn-preview" onclick="openReview('The Irreplaceable Queen','၁။ အချစ်ရေးနှင့် ဆက်ဆံရေးတွင် အမြဲတမ်း အားနည်းပြီး တစ်ဖက်လူ၏အလိုကျ လိုက်လျောအောက်ကျို့နေရသူများ။\n၂။ ဆက်ဆံရေးတစ်ခုအတွင်း မိမိကိုယ်ကို အကာအကွယ်မပေးနိုင်ဘဲ သားကောင် (Victim) ဘဝသို့ ရောက်ရှိနေသူများ။\n၃။ အပေါ်ယံအချစ်ရေး လမ်းညွှန်ချက်များထက် မိမိ၏စိတ်ခံစားချက်ကို စနစ်တကျ ထိန်းချုပ်အုပ်စိုးလိုသူများ။','၁။ သာမန်စာအုပ်များကဲ့သို့ သည်းခံခွင့်လွှတ်ရုံမျှမဟုတ်ဘဲ မိမိကိုယ်ပိုင်တန်ဖိုးကို မြှင့်တင်ပေးမည့် High-Value စွမ်းအင်များကို နားလည်လာမည်။\n၂။ စာအုပ်တွင်ပါဝင်သော Intro Quiz နှင့် Interactive Test များကြောင့် ဆက်ဆံရေးအတွင်း မိမိ၌ရှိနေသည့် အားနည်းချက်များကို ထိုးထွင်းသိမြင်ပြီး ဉာဏ်ပွင့်သွားမည်။\n၃။ မည်သည့်အခြေအနေမျိုးတွင်မဆို สိတ်ပိုင်းဆိုင်ရာ တုန်လှုပ်ခြင်းမရှိဘဲ ဘုရင်မတစ်ပါးကဲ့သို့ ခိုင်မာပြတ်သားစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
                     <a href="the-irreplaceable-queen/index.html" class="btn btn-preview">Read Preview</a>
                     <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
                 </div>
@@ -386,7 +414,7 @@
 
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
-                <img src="the-unreadable-shadow/page1.jpg" alt="Shadow">
+                <img src="the-unreadable-shadow/page1.jpg" alt="Shadow" loading="lazy">
                 <div class="title">The Unreadable Shadow</div>
                 <div class="price">5,490 MMK</div>
                 <div class="btn-box">
@@ -398,7 +426,7 @@
 
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
-                <img src="the-unspoken-magnet/page1.jpg" alt="Magnet">
+                <img src="the-unspoken-magnet/page1.jpg" alt="Magnet" loading="lazy">
                 <div class="title">The Unspoken Magnet</div>
                 <div class="price">5,490 MMK</div>
                 <div class="btn-box">
@@ -410,7 +438,7 @@
 
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
-                <img src="dominance-code/pages/page2.jpg" alt="The Dominance Code">
+                <img src="dominance-code/pages/page2.jpg" alt="The Dominance Code" loading="lazy">
                 <div class="title">The Dominance Code</div>
                 <div class="price">18,500 MMK</div>
                 <div class="btn-box">
@@ -445,7 +473,7 @@
         <div class="shelf">
             <div class="vault-item kids-item">
                 <div class="tag">Habit Building</div>
-                <img src="kids-notebook/page1.jpg" alt="Kids Notebook">
+                <img src="kids-notebook/page1.jpg" alt="Kids Notebook" loading="lazy">
                 <div class="title">Kids' Daily Notebook (Habit Tracker)</div>
                 <div class="price">5,000 MMK</div>
                 <div class="btn-box">
@@ -477,53 +505,44 @@
     </div>
 
     <script>
-        // Gateway Page Actions
+        // Gateway Page Actions 
+        // (အောက်က ကျန်နေတဲ့ script အပိတ်အပိုင်းတွေကို ဆက်လက်သုံးစွဲနိုင်ပါတယ်)
         function enterVault(vaultType) {
             const gateway = document.getElementById('gateway-screen');
             const backBtn = document.getElementById('backToGatewayBtn');
+            gateway.classList.add('fade-out');
+            if (backBtn) backBtn.style.display = 'block';
             
-            gateway.classList.add('fade-out'); // အပေါ်က Gateway ပုံကြီးကို ဖျောက်လိုက်မယ်
-            
-            setTimeout(() => {
-                backBtn.style.display = "block"; // Gateway ပျောက်သွားမှ ခလုတ်ကို ဖော်ပေးမယ်
-                if(vaultType === 'kids') {
-                    document.getElementById('kids-academy').scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-            }, 800);
+            if (vaultType === 'psychology') {
+                document.getElementById('psychology-vault').scrollIntoView({ behavior: 'smooth' });
+            } else if (vaultType === 'kids') {
+                document.getElementById('kids-academy').scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
-        // [NEW FUNCTION] Return to Gateway Action
         function returnToGateway() {
             const gateway = document.getElementById('gateway-screen');
             const backBtn = document.getElementById('backToGatewayBtn');
-            
-            backBtn.style.display = "none"; // Gateway ပြန်ပွင့်ချိန်မှာ ခလုတ်ကို ပြန်ဖျောက်မယ်
-            gateway.classList.remove('fade-out'); // Gateway မျက်နှာပြင်ကို ပြန်ဖော်မယ်
-            window.scrollTo({ top: 0, behavior: 'auto' }); // စာမျက်နှာကို အပေါ်ဆုံး ပြန်တင်မယ်
+            gateway.classList.remove('fade-out');
+            if (backBtn) backBtn.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Modal Functions
-        const modal = document.getElementById("reviewModal");
-        const modalTitle = document.getElementById("modalBookTitle");
-        const modalTarget = document.getElementById("modalTargetText");
-        const modalBenefit = document.getElementById("modalBenefitText");
-
         function openReview(title, target, benefit) {
-            modalTitle.innerText = title;
-            modalTarget.innerText = target;
-            modalBenefit.innerText = benefit;
-            modal.style.display = "flex";
+            document.getElementById('modalBookTitle').innerText = title;
+            document.getElementById('modalTargetText').innerText = target;
+            document.getElementById('modalBenefitText').innerText = benefit;
+            document.getElementById('reviewModal').style.display = 'flex';
         }
 
         function closeReview() {
-            modal.style.display = "none";
+            document.getElementById('reviewModal').style.display = 'none';
         }
 
         window.onclick = function(event) {
+            const modal = document.getElementById('reviewModal');
             if (event.target == modal) {
-                modal.style.display = "none";
+                modal.style.display = 'none';
             }
         }
     </script>
