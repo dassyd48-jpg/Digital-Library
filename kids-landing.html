@@ -255,4 +255,80 @@
                 <div class="book-specs">
                     <i class="fa-regular fa-file-pdf"></i> &nbsp; စုစုပေါင်းစာမျက်နှာ - (၁၇၀) မျက်နှာ
                 </div>
-                <div class="price-tag">8,500
+                <div class="price-tag">8,500 MMK</div>
+                
+                <div class="cta-container">
+                    <a href="https://t.me/Dassy_Digital_Library" target="_blank" class="btn-buy">
+                        <i class="fa-brands fa-telegram"></i> Telegram မှ ဝယ်ယူမယ်
+                    </a>
+                </div>
+            </div>
+
+            <div class="slider-section">
+                <span class="preview-label">✦ Inside Pages Preview ✦</span>
+                <div class="slider-wrapper">
+                    <div class="slides-container" id="bookSlider">
+                        <div class="slide"><img src="kids-alphabet/page1.png" alt="Page 1"><div class="page-num">PREVIEW 01</div></div>
+                        <div class="slide"><img src="kids-alphabet/page2.png" alt="Page 2"><div class="page-num">PREVIEW 02</div></div>
+                        <div class="slide"><img src="kids-alphabet/page3.png" alt="Page 3"><div class="page-num">PREVIEW 03</div></div>
+                        <div class="slide"><img src="kids-alphabet/page4.png" alt="Page 4"><div class="page-num">PREVIEW 04</div></div>
+                        <div class="slide"><img src="kids-alphabet/page5.png" alt="Page 5"><div class="page-num">PREVIEW 05</div></div>
+                        <div class="slide"><img src="kids-alphabet/page6.png" alt="Page 6"><div class="page-num">PREVIEW 06</div></div>
+                        <div class="slide"><img src="kids-alphabet/page7.png" alt="Page 7"><div class="page-num">PREVIEW 07</div></div>
+                        <div class="slide"><img src="kids-alphabet/page8.png" alt="Page 8"><div class="page-num">PREVIEW 08</div></div>
+                        <div class="slide"><img src="kids-alphabet/page9.png" alt="Page 9"><div class="page-num">PREVIEW 09</div></div>
+                        <div class="slide"><img src="kids-alphabet/page10.png" alt="Page 10"><div class="page-num">PREVIEW 10</div></div>
+                    </div>
+                    <button class="nav-btn prev" onclick="changeSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="nav-btn next" onclick="changeSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <a href="index.html" class="back-link">🏛️ Back to Dassy Digital Library</a>
+        </div>
+
+    </main>
+
+    <footer>
+        &copy; DASSY DIGITAL LIBRARY | EST. 2024
+    </footer>
+
+    <script>
+        let currentIdx = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const container = document.getElementById('bookSlider');
+
+        function changeSlide(direction) {
+            currentIdx += direction;
+
+            if (currentIdx >= totalSlides) {
+                currentIdx = 0;
+            } else if (currentIdx < 0) {
+                currentIdx = totalSlides - 1;
+            }
+
+            const offset = -(currentIdx * 100);
+            container.style.transform = `translateX(${offset}%)`;
+        }
+
+        // --- Touch Support for Mobile Swipe ---
+        let startX = 0;
+        const wrapper = document.querySelector('.slider-wrapper');
+
+        wrapper.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        });
+
+        wrapper.addEventListener('touchend', (e) => {
+            let endX = e.changedTouches[0].clientX;
+            let diff = startX - endX;
+
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) changeSlide(1);  // Swipe Left -> Next
+                else changeSlide(-1);         // Swipe Right -> Prev
+            }
+        });
+    </script>
+</body>
+</html>
