@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DASSY KIDS ACADEMY | ကလေးများအတွက် အလေ့အထကောင်းမွေးမြူရေး စာအုပ်များ</title>
+    <title>DASSY KIDS ACADEMY | ကလေးများအတွက် အရည်အသွေးမြင့် Digital စာအုပ်များ</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Special+Elite&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,7 +12,6 @@
             --body-black: #050505;
             --text-gray: #a0a0a0;
             --kids-warm: #cc8800;
-            --link-blue: #0088cc;
         }
         body, html {
             margin: 0; padding: 0;
@@ -34,6 +33,7 @@
 
         .category-container { width: 95%; max-width: 1100px; margin: 50px auto; }
         
+        /* စာအုပ်ပြသမည့် ဘောင်ပုံစံ */
         .book-showcase-block {
             background: #141310; border: 1px solid #2a241a; padding: 40px 20px;
             margin-bottom: 80px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); border-radius: 8px;
@@ -41,20 +41,16 @@
 
         .book-details { text-align: center; max-width: 500px; margin: 0 auto 30px; }
         .tag { color: var(--kids-warm); font-size: 0.75rem; letter-spacing: 3px; margin-bottom: 10px; text-transform: uppercase; }
-        .title { font-family: 'Cinzel Decorative', serif; font-size: 1.6rem; color: #fff; margin-bottom: 15px; }
+        .title { font-size: 1.8rem; color: #fff; margin-bottom: 15px; font-weight: bold; font-family: sans-serif; }
         .price { font-size: 1.6rem; color: var(--bright-gold); margin-bottom: 25px; font-weight: bold; }
         
-        /* ခလုတ်များ Style */
         .btn-group { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
         .btn {
             display: inline-block; text-decoration: none; padding: 15px 35px; font-weight: bold; 
             text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; border: none; transition: 0.3s;
         }
-        .btn-buy { background-color: var(--kids-warm); color: #fff; }
+        .btn-buy { background-color: var(--kids-warm); color: #fff; cursor: pointer; }
         .btn-buy:hover { background: #e69900; box-shadow: 0 0 20px rgba(204, 136, 0, 0.4); }
-        
-        .btn-link { background-color: #222; color: var(--bright-gold); border: 1px solid var(--bright-gold); }
-        .btn-link:hover { background: var(--bright-gold); color: #000; box-shadow: 0 0 20px rgba(229, 184, 105, 0.4); }
 
         /* Slider Styling */
         .book-preview-container { width: 100%; max-width: 750px; margin: 0 auto; text-align: center; }
@@ -104,7 +100,39 @@
 
         <div class="book-showcase-block">
             <div class="book-details">
-                <div class="tag">PDF Digital Product</div>
+                <div class="tag">Language & Learning</div>
+                <div class="title">မြန်မာအက္ခရာ လေ့လာကြမယ် စာအုပ်</div>
+                <div class="price">5,000 MMK</div>
+                <div class="btn-group">
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ ဝယ်ယူမယ်</a>
+                </div>
+            </div>
+
+            <div class="book-preview-container">
+                <div class="preview-heading">✦ Inside Pages Preview (စာအုပ်အတွင်းပိုင်း နမူနာ ၁၀ မျက်နှာ) ✦</div>
+                <div class="slider-wrapper">
+                    <div class="slides-container" id="myanmar-book">
+                        <div class="book-slide"><img src="kids-alphabet/page1.png" alt="Page 1"><div class="page-number">Page 1</div></div>
+                        <div class="book-slide"><img src="kids-alphabet/page2.png" alt="Page 2"><div class="page-number">Page 2</div></div>
+                        <div class="book-slide"><img src="kids-alphabet/page3.png" alt="Page 3"><div class="page-number">Page 3</div></div>
+                        <div class="book-slide"><img src="kids-alphabet/page4.png" alt="Page 4"><div class="page-number">Page 4</div></div>
+                        <div class="book-slide"><img src="kids-alphabet/page5.png" alt="Page 5"><div class="page-number">Page 5</div></div>
+                        <div class="book-slide"><img src="kids-alphabet/page6.png" alt="Page 6"><div class="page-number">Page 6</div></div>
+                        <div class="book-slide"><img src="kids-alphabet/page7.png" alt="Page 7"><div class="page-number">Page 7</div></div>
+                        <div class="book-slide"><img src="kids-alphabet/page8.png" alt="Page 8"><div class="page-number">Page 8</div></div>
+                        <div class="book-slide"><img src="kids-alphabet/page9.png" alt="Page 9"><div class="page-number">Page 9</div></div>
+                        <div class="book-slide"><img src="kids-alphabet/page10.png" alt="Page 10"><div class="page-number">Page 10</div></div>
+                    </div>
+                    <button class="slider-btn prev-btn" onclick="moveSlider('myanmar-book', -1)">❮</button>
+                    <button class="slider-btn next-btn" onclick="moveSlider('myanmar-book', 1)">❯</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="book-showcase-block">
+            <div class="book-details">
+                <div class="tag">Habit Building & Growth</div>
                 <div class="title">Kids' Daily Notebook (Habit Tracker)</div>
                 <div class="price">5,000 MMK</div>
                 <div class="btn-group">
@@ -113,9 +141,9 @@
             </div>
 
             <div class="book-preview-container">
-                <div class="preview-heading">✦ Inside Pages Preview ✦</div>
+                <div class="preview-heading">✦ Inside Pages Preview (စာအုပ်အတွင်းပိုင်း နမူနာ ၁၀ မျက်နှာ) ✦</div>
                 <div class="slider-wrapper">
-                    <div class="slides-container" id="slider1">
+                    <div class="slides-container" id="kids-notebook">
                         <div class="book-slide"><img src="kids-notebook/page1.png" alt="Page 1"><div class="page-number">Page 1</div></div>
                         <div class="book-slide"><img src="kids-notebook/page2.png" alt="Page 2"><div class="page-number">Page 2</div></div>
                         <div class="book-slide"><img src="kids-notebook/page3.png" alt="Page 3"><div class="page-number">Page 3</div></div>
@@ -127,33 +155,8 @@
                         <div class="book-slide"><img src="kids-notebook/page9.png" alt="Page 9"><div class="page-number">Page 9</div></div>
                         <div class="book-slide"><img src="kids-notebook/page10.png" alt="Page 10"><div class="page-number">Page 10</div></div>
                     </div>
-                    <button class="slider-btn prev-btn" onclick="moveSlider('slider1', -1)">❮</button>
-                    <button class="slider-btn next-btn" onclick="moveSlider('slider1', 1)">❯</button>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="book-showcase-block">
-            <div class="book-details">
-                <div class="tag">Interactive Flipping Book</div>
-                <div class="title">Kids' Mind Stories (ကလေးစိတ်ပညာ ပုံပြင်များ)</div>
-                <div class="price">Exclusive Access</div>
-                <div class="btn-group">
-                    <a href="https://dassyd48-jpg.github.io/Kids-Flipping-Book/" target="_blank" class="btn btn-link">📖 စာအုပ်ဖွင့်ဖတ်မည်</a>
-                </div>
-            </div>
-
-            <div class="book-preview-container">
-                <div class="preview-heading">✦ Inside Pages Preview ✦</div>
-                <div class="slider-wrapper">
-                    <div class="slides-container" id="slider2">
-                        <div class="book-slide"><img src="kids-notebook/page1.png" alt="Page 1"><div class="page-number">Page 1</div></div>
-                        <div class="book-slide"><img src="kids-notebook/page2.png" alt="Page 2"><div class="page-number">Page 2</div></div>
-                        <div class="book-slide"><img src="kids-notebook/page3.png" alt="Page 3"><div class="page-number">Page 3</div></div>
-                    </div>
-                    <button class="slider-btn prev-btn" onclick="moveSlider('slider2', -1)">❮</button>
-                    <button class="slider-btn next-btn" onclick="moveSlider('slider2', 1)">❯</button>
+                    <button class="slider-btn prev-btn" onclick="moveSlider('kids-notebook', -1)">❮</button>
+                    <button class="slider-btn next-btn" onclick="moveSlider('kids-notebook', 1)">❯</button>
                 </div>
             </div>
         </div>
@@ -164,9 +167,10 @@
     <footer>© DASSY DIGITAL LIBRARY | ALL RIGHTS RESERVED</footer>
 
     <script>
+        // စာအုပ်နှစ်အုပ်စလုံးရဲ့ Slider အခြေအနေကို ပုံသေမှတ်ထားခြင်း
         const sliderStates = {
-            slider1: { current: 0, total: 10 },
-            slider2: { current: 0, total: 3 }
+            'myanmar-book': { current: 0, total: 10 },
+            'kids-notebook': { current: 0, total: 10 }
         };
 
         function moveSlider(sliderId, direction) {
@@ -181,7 +185,7 @@
             container.style.transform = `translateX(${-state.current * 100}%)`;
         }
 
-        // Touch Swipe
+        // Mobile Touch Swipe Support
         document.querySelectorAll('.slider-wrapper').forEach(wrapper => {
             let touchStartX = 0;
             const container = wrapper.querySelector('.slides-container');
