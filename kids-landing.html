@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASSY KIDS ACADEMY | ကလေးများအတွက် အလေ့အထကောင်းမွေးမြူရေး စာအုပ်များ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bright-gold: #e5b869;
+            --metallic-gold: #b38b59;
+            --body-black: #050505;
+            --text-gray: #a0a0a0;
+            --kids-warm: #cc8800;
+            --link-blue: #0088cc;
+        }
+        body, html {
+            margin: 0; padding: 0;
+            background-color: var(--body-black);
+            color: var(--text-gray);
+            font-family: 'Special Elite', cursive;
+        }
+        header {
+            text-align: center; padding: 60px 20px;
+            background-color: #14110c; border-bottom: 1px solid #2a1f0a;
+        }
+        header h1 {
+            font-family: 'Cinzel Decorative', serif;
+            background: linear-gradient(to bottom, #e5b869 0%, #b38b59 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-size: clamp(2rem, 6vw, 3.5rem); margin: 0; letter-spacing: 6px;
+        }
+        header p { color: var(--kids-warm); font-size: 1rem; margin-top: 15px; letter-spacing: 4px; font-weight: bold; }
+
+        .category-container { width: 95%; max-width: 1100px; margin: 50px auto; }
+        
+        .book-showcase-block {
+            background: #141310; border: 1px solid #2a241a; padding: 40px 20px;
+            margin-bottom: 80px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); border-radius: 8px;
+        }
+
+        .book-details { text-align: center; max-width: 500px; margin: 0 auto 30px; }
+        .tag { color: var(--kids-warm); font-size: 0.75rem; letter-spacing: 3px; margin-bottom: 10px; text-transform: uppercase; }
+        .title { font-family: 'Cinzel Decorative', serif; font-size: 1.6rem; color: #fff; margin-bottom: 15px; }
+        .price { font-size: 1.6rem; color: var(--bright-gold); margin-bottom: 25px; font-weight: bold; }
+        
+        /* ခလုတ်များ Style */
+        .btn-group { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .btn {
+            display: inline-block; text-decoration: none; padding: 15px 35px; font-weight: bold; 
+            text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; border: none; transition: 0.3s;
+        }
+        .btn-buy { background-color: var(--kids-warm); color: #fff; }
+        .btn-buy:hover { background: #e69900; box-shadow: 0 0 20px rgba(204, 136, 0, 0.4); }
+        
+        .btn-link { background-color: #222; color: var(--bright-gold); border: 1px solid var(--bright-gold); }
+        .btn-link:hover { background: var(--bright-gold); color: #000; box-shadow: 0 0 20px rgba(229, 184, 105, 0.4); }
+
+        /* Slider Styling */
+        .book-preview-container { width: 100%; max-width: 750px; margin: 0 auto; text-align: center; }
+        .preview-heading { font-size: 1rem; color: #888; margin-bottom: 20px; letter-spacing: 1px; }
+        
+        .slider-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 4px; background: #0c0b09; padding: 20px 0; }
+        .slides-container { display: flex; transition: transform 0.4s ease-in-out; width: 100%; }
+        .book-slide { min-width: 100%; box-sizing: border-box; padding: 0 50px; }
+        .book-slide img {
+            width: 100%; max-width: 380px; height: auto;
+            border: 1px solid #2a241a; box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        }
+        .page-number { margin-top: 15px; color: #e5b869; font-size: 0.8rem; letter-spacing: 2px; }
+        
+        .slider-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8); color: #e5b869; border: 1px solid #b38b59;
+            font-size: 20px; padding: 10px 14px; cursor: pointer; z-index: 10; border-radius: 50%;
+        }
+        .slider-btn:hover { background: #e5b869; color: #000; }
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
+
+        .back-home {
+            display: inline-block; margin: 40px 0; color: var(--bright-gold);
+            text-decoration: none; font-size: 0.9rem; letter-spacing: 2px;
+            border: 1px solid var(--bright-gold); padding: 12px 25px; transition: 0.3s;
+        }
+        .back-home:hover { background: var(--bright-gold); color: #000; }
+        footer { padding: 60px 20px; color: var(--bright-gold); font-size: 0.8rem; letter-spacing: 5px; text-align: center; border-top: 1px solid #14110c; }
+        
+        @media (max-width: 600px) {
+            .book-slide { padding: 0 15px; }
+            .slider-btn { padding: 8px 12px; font-size: 16px; }
+            .book-showcase-block { padding: 30px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>DASSY KIDS ACADEMY</h1>
+        <p>BUILDING BRILLIANT FUTURES</p>
+    </header>
+
+    <main class="category-container">
+
+        <div class="book-showcase-block">
+            <div class="book-details">
+                <div class="tag">PDF Digital Product</div>
+                <div class="title">Kids' Daily Notebook (Habit Tracker)</div>
+                <div class="price">5,000 MMK</div>
+                <div class="btn-group">
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ ဝယ်ယူမယ်</a>
+                </div>
+            </div>
+
+            <div class="book-preview-container">
+                <div class="preview-heading">✦ Inside Pages Preview ✦</div>
+                <div class="slider-wrapper">
+                    <div class="slides-container" id="slider1">
+                        <div class="book-slide"><img src="kids-notebook/page1.png" alt="Page 1"><div class="page-number">Page 1</div></div>
+                        <div class="book-slide"><img src="kids-notebook/page2.png" alt="Page 2"><div class="page-number">Page 2</div></div>
+                        <div class="book-slide"><img src="kids-notebook/page3.png" alt="Page 3"><div class="page-number">Page 3</div></div>
+                        <div class="book-slide"><img src="kids-notebook/page4.png" alt="Page 4"><div class="page-number">Page 4</div></div>
+                        <div class="book-slide"><img src="kids-notebook/page5.png" alt="Page 5"><div class="page-number">Page 5</div></div>
+                        <div class="book-slide"><img src="kids-notebook/page6.png" alt="Page 6"><div class="page-number">Page 6</div></div>
+                        <div class="book-slide"><img src="kids-notebook/page7.png" alt="Page 7"><div class="page-number">Page 7</div></div>
+                        <div class="book-slide"><img src="kids-notebook/page8.png" alt="Page 8"><div class="page-number">Page 8</div></div>
+                        <div class="book-slide"><img src="kids-notebook/page9.png" alt="Page 9"><div class="page-number">Page 9</div></div>
+                        <div class="book-slide"><img src="kids-notebook/page10.png" alt="Page 10"><div class="page-number">Page 10</div></div>
+                    </div>
+                    <button class="slider-btn prev-btn" onclick="moveSlider('slider1', -1)">❮</button>
+                    <button class="slider-btn next-btn" onclick="moveSlider('slider1', 1)">❯</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="book-showcase-block">
+            <div class="book-details">
+                <div class="tag">Interactive Flipping Book</div>
+                <div class="title">Kids' Mind Stories (ကလေးစိတ်ပညာ ပုံပြင်များ)</div>
+                <div class="price">Exclusive Access</div>
+                <div class="btn-group">
+                    <a href="https://dassyd48-jpg.github.io/Kids-Flipping-Book/" target="_blank" class="btn btn-link">📖 စာအုပ်ဖွင့်ဖတ်မည်</a>
+                </div>
+            </div>
+
+            <div class="book-preview-container">
+                <div class="preview-heading">✦ Inside Pages Preview ✦</div>
+                <div class="slider-wrapper">
+                    <div class="slides-container" id="slider2">
+                        <div class="book-slide"><img src="kids-notebook/page1.png" alt="Page 1"><div class="page-number">Page 1</div></div>
+                        <div class="book-slide"><img src="kids-notebook/page2.png" alt="Page 2"><div class="page-number">Page 2</div></div>
+                        <div class="book-slide"><img src="kids-notebook/page3.png" alt="Page 3"><div class="page-number">Page 3</div></div>
+                    </div>
+                    <button class="slider-btn prev-btn" onclick="moveSlider('slider2', -1)">❮</button>
+                    <button class="slider-btn next-btn" onclick="moveSlider('slider2', 1)">❯</button>
+                </div>
+            </div>
+        </div>
+
+        <center><a href="index.html" class="back-home">🏛️ Back to Main Gateway</a></center>
+    </main>
+
+    <footer>© DASSY DIGITAL LIBRARY | ALL RIGHTS RESERVED</footer>
+
+    <script>
+        const sliderStates = {
+            slider1: { current: 0, total: 10 },
+            slider2: { current: 0, total: 3 }
+        };
+
+        function moveSlider(sliderId, direction) {
+            const state = sliderStates[sliderId];
+            const container = document.getElementById(sliderId);
+            
+            state.current += direction;
+
+            if (state.current >= state.total) state.current = 0;
+            else if (state.current < 0) state.current = state.total - 1;
+
+            container.style.transform = `translateX(${-state.current * 100}%)`;
+        }
+
+        // Touch Swipe
+        document.querySelectorAll('.slider-wrapper').forEach(wrapper => {
+            let touchStartX = 0;
+            const container = wrapper.querySelector('.slides-container');
+            const sliderId = container.id;
+
+            wrapper.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
+            wrapper.addEventListener('touchend', e => {
+                let touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 50) moveSlider(sliderId, 1);
+                if (touchEndX - touchStartX > 50) moveSlider(sliderId, -1);
+            });
+        });
+    </script>
+</body>
+</html>
