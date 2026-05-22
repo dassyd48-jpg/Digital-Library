@@ -92,27 +92,32 @@
             }
         }
 
+        /* 🚨 ပြင်ဆင်ပြီးသား Copyright Style (Desktop နှင့် အထွေထွေသုံးအတွက်) */
         .footer-copyright {
             position: fixed;
-            bottom: 20px;
+            bottom: 15px;
             width: 100%;
             text-align: center;
-            font-size: 10px;
-            color: #D4AF37;
-            opacity: 0.6;
+            font-size: 9px;
+            color: var(--gold);
+            opacity: 0.5;
             z-index: 5000;
             letter-spacing: 2px;
             pointer-events: none;
             text-transform: uppercase;
         }
 
-        @media screen and (max-width: 600px) {
+        /* 🚨 ဖုန်းနှင့် Tablet များအတွက် သီးသန့် Layout ညှိချက် (Responsive Fix) */
+        @media screen and (max-width: 768px) {
             .footer-copyright {
-                bottom: 130px;
-                font-size: 12px;
+                bottom: env(safe-area-inset-bottom, 12px); /* Notch ပါသော ဖုန်းများအတွက်ပါ နေရာလွတ် ချန်ပေးသည် */
+                font-size: 8px; /* စာလုံးအရွယ်အစားကို ပိုမိုသေးငယ် သပ်ရပ်အောင် ပြောင်းလဲသည် */
+                letter-spacing: 1px;
+                opacity: 0.4;
             }
         }
 
+        /* Book Container */
         #book-container {
             display: none;
             width: 100vw; 
@@ -125,7 +130,16 @@
             backface-visibility: hidden;
         }
 
-        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        /* 🚨 စာအုပ် Render ဖြစ်တဲ့အခါ အောက်က စာသားတွေနဲ့ သွားမထပ်အောင် အောက်ခြေ Padding တိုးမြှင့်ထားသည် */
+        #flipbook-wrapper { 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding-bottom: 40px; 
+        }
+        
         #flipbook .page { background-color: #000; background-size: 100% 100%; }
         
         /* Quiz Styles */
@@ -187,7 +201,7 @@
     const myPassword = "DC@MIRROR";
 
     function getBookSize() {
-        const padding = 10;
+        const padding = 20; // 🚨 ဘေးဘောင် နေရာလွတ် ပိုရအောင် padding အနည်းငယ် တိုးထားသည်
         let w = window.innerWidth - padding;
         let h = window.innerHeight - padding;
         const ratio = 3 / 4;
@@ -278,7 +292,6 @@
             }
         });
 
-        // Intro Quiz ပြီးတာနဲ့ Page 1 (မျက်နှာဖုံး) ကို တိုက်ရိုက် Jump လုပ်ခိုင်းခြင်းဖြင့် Plain page မခံတော့ပါ
         flipbook.turn("page", 1);
     }
 
@@ -305,8 +318,6 @@
     function closeQuiz() { 
         $("#quiz-overlay").fadeOut(() => { 
             isQuizLocked = false; 
-            
-            // Quiz overlay ပိတ်ပြီးတာနဲ့ အမည်းရောင် Plain စာမျက်နှာမှာ ရပ်မနေဘဲ နောက်တစ်မျက်နှာသို့ Auto လှန်ပေးခြင်း
             const currentPage = $("#flipbook").turn("page");
             if (currentPage < totalPages) {
                 $("#flipbook").turn("next"); 
