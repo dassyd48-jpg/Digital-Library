@@ -92,10 +92,10 @@
             }
         }
 
-        /* 🚨 ပြင်ဆင်ပြီးသား Copyright Style (Desktop နှင့် အထွေထွေသုံးအတွက်) */
+        /* 🚨 ပြင်ဆင်ပြီးသား Copyright Style: မပျောက်သွားစေရန်နှင့် စာအုပ်အောက်နားလေးတွင် တိတိကျကျပေါ်စေရန် */
         .footer-copyright {
             position: fixed;
-            bottom: 15px;
+            bottom: 35px; /* နေရာကို အပေါ်သို့ အနည်းငယ် ပြန်တင်ပေးထားပါသည် */
             width: 100%;
             text-align: center;
             font-size: 9px;
@@ -107,11 +107,11 @@
             text-transform: uppercase;
         }
 
-        /* 🚨 ဖုန်းနှင့် Tablet များအတွက် သီးသန့် Layout ညှိချက် (Responsive Fix) */
+        /* 🚨 ဖုန်းနှင့် Tablet များအတွက် အောက်ခြေနားလေးတွင် ကွက်တိပေါ်မည့် သီးသန့် ညှိချက် */
         @media screen and (max-width: 768px) {
             .footer-copyright {
-                bottom: env(safe-area-inset-bottom, 12px); /* Notch ပါသော ဖုန်းများအတွက်ပါ နေရာလွတ် ချန်ပေးသည် */
-                font-size: 8px; /* စာလုံးအရွယ်အစားကို ပိုမိုသေးငယ် သပ်ရပ်အောင် ပြောင်းလဲသည် */
+                bottom: 25px; /* ဖုန်း screen များပေါ်တွင် အောက်ခြေနားလေး၌ သပ်သပ်ရပ်ရပ် မြင်သာစေရန် */
+                font-size: 8px;
                 letter-spacing: 1px;
                 opacity: 0.4;
             }
@@ -130,14 +130,14 @@
             backface-visibility: hidden;
         }
 
-        /* 🚨 စာအုပ် Render ဖြစ်တဲ့အခါ အောက်က စာသားတွေနဲ့ သွားမထပ်အောင် အောက်ခြေ Padding တိုးမြှင့်ထားသည် */
+        /* စာအုပ်နှင့် အောက်ခြေစာသားအကြား သင့်တော်သော နေရာလွတ် ချန်ထားခြင်း */
         #flipbook-wrapper { 
             width: 100%; 
             height: 100%; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            padding-bottom: 40px; 
+            padding-bottom: 55px; 
         }
         
         #flipbook .page { background-color: #000; background-size: 100% 100%; }
@@ -201,7 +201,7 @@
     const myPassword = "DC@MIRROR";
 
     function getBookSize() {
-        const padding = 20; // 🚨 ဘေးဘောင် နေရာလွတ် ပိုရအောင် padding အနည်းငယ် တိုးထားသည်
+        const padding = 20; 
         let w = window.innerWidth - padding;
         let h = window.innerHeight - padding;
         const ratio = 3 / 4;
