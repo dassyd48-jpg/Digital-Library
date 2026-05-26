@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DASSY DIGITAL LIBRARY | PREMIUM EDITION</title>
     
-    <!-- AI SEO & Discovery Meta Tags -->
     <meta name="description" content="Official Digital Library of DASSY. Premium Interactive Psychology Books including 'The Irreplaceable Queen' and 'The Ghost in His Mind'. Insights into human nature and emotional intelligence written by Dassy.">
     <meta name="author" content="Dassy (Dassy Digital Library)">
     <meta name="keywords" content="Dassy, Dassy Digital Library, The Irreplaceable Queen, The Ghost in His Mind, Human Nature, Psychology Book Myanmar, Interactive Quiz Book, Relationship Psychology, Dassy Book, Human Laws of Life">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 
-    <!-- Open Graph for Social Media -->
     <meta property="og:title" content="DASSY DIGITAL LIBRARY | PREMIUM EDITION">
     <meta property="og:description" content="Explore interactive psychological insights into human nature. Written by Dassy.">
     <meta property="og:type" content="book">
 
-    <!-- jQuery & Turn.js -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
 
@@ -53,15 +50,42 @@
         .tg-link:hover { color: #fff; border-bottom: 1px solid var(--gold); text-shadow: 0 0 8px rgba(212,175,55,0.6); }
         .tg-link:hover span.icon { transform: scale(1.2) translateX(2px); }
 
+        /* Book Framework Layout Fix */
         #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; overflow: hidden; }
-        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding: 10px; }
+        
+        /* Flex Column သုံးပြီး စာအုပ်နှင့် Watermark ကို အမြဲတမ်းတစ်ဆက်တည်းဖြစ်စေရန် ညှိခြင်း */
+        #flipbook-wrapper { 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            padding: 10px; 
+        }
         #flipbook { box-shadow: 0 0 40px rgba(0,0,0,0.8); }
         
         .iframe-wrapper { width: 100%; height: 100%; position: relative; }
         .iframe-pointer-fix { position: absolute; top: 0; left: 0; width: 45px; height: 100%; z-index: 5; background: transparent; }
         .iframe-pointer-fix.right { left: auto; right: 0; }
 
-        .watermark { position: absolute; bottom: 15px; width: 100%; text-align: center; font-size: 9px; color: var(--gold); opacity: 0.4; letter-spacing: 4px; pointer-events: none; }
+        /* Mobile Screens မှာပါ သေချာပေါက် ပေါ်နေမည့် Watermark Styling အသစ် */
+        .watermark { 
+            margin-top: 12px;
+            width: 100%; 
+            text-align: center; 
+            font-size: clamp(9px, 2vw, 11px); 
+            color: var(--gold); 
+            opacity: 0.4; 
+            letter-spacing: 3px; 
+            pointer-events: none; 
+            z-index: 12;
+        }
+        
+        /* Quiz လော့ခ်ကျနေစဉ်အတွင်း iframe နှိပ်လို့ရသော်လည်း Swipe လုပ်၍ မကျော်နိုင်ရန် */
+        .quiz-active-iframe { pointer-events: auto; }
+        .quiz-disabled-swipe { pointer-events: none !important; }
+
         .ai-crawler-data { display: none; visibility: hidden; height: 0; width: 0; overflow: hidden; }
     </style>
 </head>
@@ -84,8 +108,8 @@
     <div id="book-container">
         <div id="flipbook-wrapper">
             <div id="flipbook"></div>
+            <div class="watermark">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
         </div>
-        <div class="watermark">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
     </div>
 
     <audio id="sound" src="flip.mp3" preload="auto"></audio>
@@ -101,6 +125,7 @@
         const maxPages = 130; 
         const quizPages = [2, 15, 24, 33, 45, 56, 65, 74, 84, 93, 102, 111, 120, 129]; 
         
+        let isQuizLocked = false; // Turn.js ၏ disable စနစ်ကြောင့် အမှားမဖြစ်စေရန် Logic Flag ပြောင်းသုံးခြင်း
         const storageKeyPage = "dassy_book_current_page";
         const storageKeyAuth = "dassy_book_authenticated";
 
@@ -113,20 +138,22 @@
             }
         };
 
-        // Quiz အောင်မြင်စွာ ဖြေဆိုပြီးပါက ခလုတ်နှိပ်လျှင် သော့ဖွင့်ပြီး အလိုအလျောက် လှန်ပေးမည့် စနစ်
+        // Window Message Receiver စနစ်အသစ် (နောက်ပြန်ကန်ကျခြင်းမှ ရာနှုန်းပြည့် ကာကွယ်ပေးသည်)
         window.addEventListener("message", function(event) {
             if (event.data === "quizCompleted") {
-                // Lock ဖြုတ်ရန် စာအုပ်ကို ပုံမှန်အတိုင်း Enable ပြန်လုပ်ပေးသည်
-                $("#flipbook").turn("disable", false);
+                isQuizLocked = false; // လော့ခ်ကို အရင်ဖြုတ်သည်
                 
                 let currentPage = $("#flipbook").turn("page");
                 let nextPage = currentPage + 1;
                 
                 localStorage.setItem(storageKeyPage, nextPage);
                 
+                // Iframe Event ငြိပြီး နောက်ပြန်ကန်ခြင်းကို ကာကွယ်ရန် iframe touch ကို ယာယီပိတ်ပြီးမှ လှန်သည်
+                $(".iframe-wrapper iframe").addClass("quiz-disabled-swipe");
+                
                 setTimeout(() => {
                     $("#flipbook").turn("page", nextPage);
-                }, 50);
+                }, 80);
             }
         }, false);
 
@@ -146,7 +173,7 @@
 
         function loadAndInit() {
             const flipbook = $("#flipbook");
-            let h = window.innerHeight * 0.90;
+            let h = window.innerHeight * 0.84; // Watermark နေရာချန်ရန် အမြင့်ကို 84% သို့ ညှိလိုက်ခြင်း
             let w = (window.innerWidth < 600) ? window.innerWidth * 0.95 : h * 0.707;
             let savedPage = parseInt(localStorage.getItem(storageKeyPage)) || 1;
 
@@ -163,7 +190,7 @@
                     const fileName = `page${i}.html`;
                     const wrapper = $('<div class="iframe-wrapper"></div>');
                     wrapper.append('<div class="iframe-pointer-fix"></div>');
-                    wrapper.append(`<iframe src="${fileName}" style="width:100%; height:100%; border:none; overflow-y:auto; -webkit-overflow-scrolling:touch;"></iframe>`);
+                    wrapper.append(`<iframe src="${fileName}" class="quiz-active-iframe" style="width:100%; height:100%; border:none; overflow-y:auto; -webkit-overflow-scrolling:touch;"></iframe>`);
                     wrapper.append('<div class="iframe-pointer-fix right"></div>');
                     pageDiv.append(wrapper);
                 } else {
@@ -178,9 +205,8 @@
                     page: savedPage, 
                     when: {
                         start: function(e, pageObj) {
-                            let currentActualPage = flipbook.turn("page");
-                            // 💡 [CORNER CLICK PROTECTION] စာမျက်နှာ စလှုပ်ကတည်းက Quiz ဖြစ်နေရင် လှန်ခွင့်မပြုဘဲ ပိတ်ချသည်
-                            if (quizPages.includes(currentActualPage)) {
+                            // Quiz စာမျက်နှာ ဖြစ်နေပါက လက်ဖြင့် ဆွဲလှန်ခြင်းကို လုံးဝ ခွင့်မပြုပါ
+                            if (isQuizLocked) {
                                 e.preventDefault();
                                 return false;
                             }
@@ -188,8 +214,8 @@
                         turning: function(e, page) {
                             let currentActualPage = flipbook.turn("page");
                             
-                            // 💡 [STRICT FORWARD LOCK] Quiz စာမျက်နှာပေါ် ရောက်နေရင် အရှေ့ကို လုံးဝ ကျော်လှန်ခွင့် မပြုပါ
-                            if (quizPages.includes(currentActualPage) && page > currentActualPage) {
+                            // အကယ်၍ Quiz ကို မဖြေဘဲ အရှေ့ကို ခိုးကျော်ရန် ကြိုးစားပါက တားဆီးသည်
+                            if (isQuizLocked && page > currentActualPage) {
                                 e.preventDefault();
                                 return false;
                             }
@@ -200,28 +226,24 @@
                         turned: function(e, page) {
                             localStorage.setItem(storageKeyPage, page);
                             
-                            // 💡 [CORNER HOVER/CLICK DISABLE] 
-                            // ရောက်နေတဲ့ စာမျက်နှာက Quiz ဖြစ်နေရင် Turn.js ရဲ့ စာမျက်နှာလှန်တဲ့ စနစ်တစ်ခုလုံးကို ယာယီ Disable လုပ်ပစ်လိုက်ပါတယ် (ထောင့်ကနေ နှိပ်လို့ လုံးဝမရတော့ပါ)
-                            if (quizPages.includes(page)) {
-                                flipbook.turn("disable", true);
-                            } else {
-                                flipbook.turn("disable", false);
-                            }
+                            // လက်ရှိစာမျက်နှာသည် Quiz ဖြစ်ပါက လော့ခ်အလံ (Flag) ကို True ပေးသည်
+                            isQuizLocked = quizPages.includes(page);
+                            
+                            // စာမျက်နှာလှန်ပြီးသွားပါက iframe touch ကို ပုံမှန်အတိုင်း ပြန်ဖွင့်ပေးသည်
+                            $(".iframe-wrapper iframe").removeClass("quiz-disabled-swipe");
                         }
                     }
                 });
 
-                // ပထမဆုံး စဝင်ဝင်ချင်း စာမျက်နှာက Quiz ဖြစ်နေခဲ့ရင်လည်း ပိတ်ထားရန်
-                if (quizPages.includes(savedPage)) {
-                    flipbook.turn("disable", true);
-                }
+                // ပထမဆုံး စဝင်ဝင်ချင်း စာမျက်နှာအတွက် လော့ခ် စစ်ဆေးခြင်း
+                isQuizLocked = quizPages.includes(savedPage);
 
             }, 150);
         }
 
         window.addEventListener('resize', () => {
             if ($("#flipbook").turn("is")) {
-                let h = window.innerHeight * 0.90;
+                let h = window.innerHeight * 0.84;
                 let w = (window.innerWidth < 600) ? window.innerWidth * 0.95 : h * 0.707;
                 $("#flipbook").turn("size", w, h);
             }
