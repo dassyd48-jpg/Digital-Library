@@ -115,7 +115,7 @@
 <script>
     let canClick = true;
 
-    // စာသားများကို ကွဲအက်ခြင်းမရှိစေရန် ဤနေရာတွင် စမတ်ကျကျ ခွဲထုတ်သိမ်းဆည်းထားပါသည်
+    // စာလုံးပေါင်းများကို ကွက်တိပြန်လည် စိစစ်ပြင်ဆင်ထားပါသည်
     const resultData = {
         'A': {
             title: 'သဲသဲကွဲကွဲ ပြတ်ပြတ်သားသားရှိသော ရလဒ်ဆန်းစစ်ချက် - (The Reactive Iron Princess)',
@@ -131,7 +131,6 @@
         if(!canClick) return;
         canClick = false; 
 
-        // Options များကို ဖုံးကွယ်ပြီး ရလဒ်ကို အမှားကင်းစစ်စွာ ထုတ်ပြခြင်း
         document.getElementById('options-group').style.display = 'none';
         document.getElementById('res-title').innerText = resultData[option].title;
         document.getElementById('res-desc').innerText = resultData[option].desc;
@@ -139,7 +138,6 @@
     }
 
     function completeQuiz() {
-        // index.html ဆီသို့ Next Page သွားရန် ပဲ့တင်သံ ပို့လွှတ်ခြင်း
         window.parent.postMessage("quizCompleted", "*");
     }
 </script>
