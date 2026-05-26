@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAGE 2: INITIAL ANALYSIS | DASSY DIGITAL LIBRARY</title>
+    <style>
+        :root {
+            --crimson: #4a0e17;
+            --dark-bg: #140204;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+        }
+        body { 
+            background: var(--dark-bg); 
+            color: var(--light-gold); 
+            font-family: 'Pyidaungsu', sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: rgba(74, 14, 23, 0.15); 
+            border: 1px solid var(--gold); 
+            border-radius: 12px; 
+            padding: 22px; 
+            text-align: center;
+            box-shadow: 0 0 30px rgba(74, 14, 23, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        .intro-label { font-size: 11px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; display: block; font-weight: bold; }
+        .progress-bar { font-size: 12px; color: #ffab40; margin-bottom: 15px; font-weight: bold; }
+        
+        h2 { font-size: 16px; line-height: 1.6; color: #fff; margin-bottom: 5px; font-weight: normal; text-align: left; }
+        .note-text { font-size: 12px; color: #ffab40; font-style: italic; margin-bottom: 20px; display: block; text-align: center; }
+        
+        .option { 
+            display: block; width: 100%; padding: 14px; margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.2); 
+            color: #fff; border-radius: 6px; cursor: pointer; 
+            text-align: left; transition: 0.3s; font-size: 13.5px; line-height: 1.5;
+        }
+        .option:hover { background: linear-gradient(45deg, #8a1426, #4a0e17); border-color: var(--gold); transform: translateX(5px); }
+        .option strong { color: var(--gold); }
+
+        /* Result Area */
+        #result-box { display: none; animation: fadeIn 0.6s ease-out; text-align: center; }
+        .res-type { font-size: 17px; font-weight: bold; color: #000; background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); padding: 10px 20px; border-radius: 4px; display: inline-block; margin-bottom: 20px; letter-spacing: 1px; width: 100%; box-sizing: border-box; }
+        .res-desc { color: #eee; font-size: 14px; line-height: 1.8; margin-bottom: 25px; text-align: left; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 6px; border-left: 4px solid var(--gold); }
+        
+        .next-btn { 
+            background: linear-gradient(45deg, #8a1426, #4a0e17); border: 1px solid var(--gold); color: #fff; 
+            padding: 15px; border-radius: 6px; cursor: pointer; font-size: 13px;
+            text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; font-weight: bold; width: 100%;
+        }
+        .next-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(212,175,55,0.4); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    
+    <!-- QUESTION 1 -->
+    <div id="q1-container">
+        <span class="intro-label">PAGE 2: INITIAL ANALYSIS</span>
+        <div class="progress-bar">မေးခွန်း (၁ / ၂)</div>
+        <h2>သင်၏လက်တွဲဖော် သို့မဟုတ် အမျိုးသားက သင့်အပေါ် ဂရုစိုက်မှု လျော့နည်းလာပြီး ဖုန်းမျက်နှာပြင်ကိုသာ စိုက်ကြည့်နေခြင်း၊ သို့မဟုတ် မိတ်ဆွေများနှင့်သာ အချိန်ဖြုန်းနေခြင်းကို ကြုံတွေ့ရသည့်အခါ သင့်ဘက်မှ ပထမဆုံး တုံ့ပြန်မှုသည် အဘယ်အချက်နှင့် ကွက်တိကိုက်ညီသနည်း။</h2>
+        <span class="note-text">မှတ်ချက် - မိမိကိုယ်ကို ရိုးသားစွာ ဖြေဆိုရန်</span>
+        
+        <button class="option" onclick="nextQuestion('A')"><strong>အဖြေ (က) -</strong> ရှင်ကတော့ အမြဲတမ်း ဒီလိုပဲ၊ ကျွန်မကို လုံးဝ ဂရုမစိုက်ဘူး!" ဟု ရန်တွေ့ စိတ်ဆိုးကာ စကားမဆိုဘဲ မျက်နှာမူပျက်ပြတတ်သည်။</button>
+        <button class="option" onclick="nextQuestion('B')"><strong>အဖြေ (ခ) -</strong> စိတ်တွင်းမှ မကျေနပ်သော်လည်း ခလုတ်ကန်သင်းမဖြစ်လိုသဖြင့် ငြိမ်ခံနေပြီး၊ သူက စကားစလာမည့်အချိန်ကိုသာ သောကပွားလျက် ထိုင်စောင့်နေမိတတ်သည်။</button>
+        <button class="option" onclick="nextQuestion('C')"><strong>အဖြေ (ဂ) -</strong> လုံးဝ ရန်မရှာ၊ ပူညံပူညံမပြုဘဲ တည်ငြိမ်စွာပြုံးလျက် မိမိ၏ကိုယ်ပိုင်လုပ်ငန်း၊ ကိုယ်ပိုင်မိတ်ဆွေများနှင့်သာ ပျော်ရွှင်စွာ နေပြပြီး သူ၏အပေါ်ထားရှိသော အာရုံစိုက်မှုကို ချက်ချင်း ဖြတ်တောက်လိုက်တတ်သည်။</button>
+    </div>
+
+    <!-- QUESTION 2 -->
+    <div id="q2-container" style="display: none;">
+        <span class="intro-label">PAGE 2: INITIAL ANALYSIS</span>
+        <div class="progress-bar">မေးခွန်း (၂ / ၂)</div>
+        <h2>မေးခွန်း (၂) : သင်၏အမျိုးသားသည် ငွေကြေးစီမံခန့်ခွဲမှု လွဲမှားခြင်းကြောင့် ငွေကြေးကျပ်တည်းလာပြီး သင့်ထံသို့ "ငွေအမြန်ချေးပေးပါ၊ နောက်လတွင် ပြန်လည်ပေးဆပ်မည်" ဟု ဆိုလာပါသည်။ ယခင်ချေးငွေများလည်း ပြန်မရသေးသည့်အပြင် ဤသည်မှာ ပထမဆုံးအကြိမ် မဟုတ်ပါ။ သင့်ဘက်မှ တုံ့ပြန်မှုသည် အဘယ်နည်း။</h2>
+        
+        <button class="option" onclick="calculateResult('A')"><strong>အဖြေ (က) -</strong> "ရှင့်ကို လုံးဝ မချေးနိုင်ဘူး၊ အရင်ပိုက်ဆံတွေလည်း မဆပ်သေးဘူး၊ ရှင်ကတော့ အမြဲတမ်း အသုံးမကျဘူး!" ဟု ဒေါသတကြီး ငြင်းပယ်ပစ်တတ်သည်။</button>
+        <button class="option" onclick="calculateResult('B')"><strong>အဖြေ (ခ) -</strong> စိတ်ထဲက မချေမငံ ဖြစ်နေသော်လည်း မျက်နှာပျက်ရမည်ကို စိုးရိမ်၍ဖြစ်စေ၊ သနား၍ဖြစ်စေ "ရော့... ဒါ နောက်ဆုံးအကြိမ်ပဲနော်" ဟုဆိုကာ ပိုက်ဆံကို ထပ်မံ ထုတ်ပေးမိတတ်သည်။</button>
+        <button class="option" onclick="calculateResult('C')"><strong>အဖြေ (ဂ) -</strong> လုံးဝ ရန်မဖြစ်ဘဲ ချိုသာစွာပြုံးပြီး "ကျွန်မ မောင့်ကို ကူညီချင်တာပေါ့။ ဒါပေမယ့် မောင့်ရဲ့ ဒီငွေကြေးပြဿနာကို ကျွန်မ ပိုက်ဆံနဲ့ ဝင်ရှင်းပေးလိုက်ရင် မောင့်ရဲ့ အရည်အချင်းကို စော်ကားရာ ရောက်လိမ့်မယ်။ မောင် ကိုယ့်အားကိုယ်ကိုးပြီး ဒီကိစ္စကို ဘယ်လို ရဲရဲရင့်ရင့် ဖြေရှင်းမလဲဆိုတာပဲ ကျွန်မ ဘေးကနေ အားပေးမယ်နော်" ဟု စကားလုံးချိုချိုဖြင့် ငြင်းပယ်တတ်သည်။</button>
+    </div>
+
+    <!-- FINAL RESULT SCREEN -->
+    <div id="result-box">
+        <span class="intro-label">📊 ဆန်းစစ်ချက် ရလဒ်</span>
+        <div class="res-type" id="res-type"></div>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button class="next-btn" onclick="completeQuiz()">ဆန်းစစ်မှုအောင်မြင်ပြီ - စာအုပ်ကို ဆက်လက်ဖတ်ရှုရန်</button>
+    </div>
+
+</div>
+
+<script>
+    let score = { A: 0, B: 0, C: 0 };
+
+    function nextQuestion(ans) {
+        score[ans]++;
+        document.getElementById('q1-container').style.display = 'none';
+        document.getElementById('q2-container').style.display = 'block';
+    }
+
+    function calculateResult(ans) {
+        score[ans]++;
+        document.getElementById('q2-container').style.display = 'none';
+        
+        let finalType = "";
+        let finalDesc = "";
+
+        // ရွေးချယ်မှုအများဆုံးအဖြေကို တွက်ချက်ခြင်း
+        if (score.A >= score.B && score.A >= score.C) {
+            finalType = "သင်သည် 'သံမဏိမင်းသမီး (Iron Princess)' ဖြစ်သည်။";
+            finalDesc = "သင့်တွင် ကိုယ်ပိုင်စည်းကမ်းများ ရှိသော်လည်း စိတ်လိုက်မာန်ပါ တုံ့ပြန်တတ်သဖြင့် အမျိုးသားတို့သည် သင့်အနား၌ မနေချင်ဘဲ တွန်းထုတ်မိသကဲ့သို့ ဖြစ်နေသည်။ သင်သည် အပြင်ပန်း နူးညံ့မှုဗျူဟာကို အရေးတကြီး လေ့လာရပါမည်။";
+        } else if (score.B >= score.A && score.B >= score.C) {
+            finalType = "သင်သည် 'ကပ်တွယ်မှီခိုသူ (Helpless Dependent)' ဖြစ်သည်။";
+            finalDesc = "သင်သည် ရန်ပွဲဖြစ်မည်ကို ကြောက်ရွံ့သဖြင့် ငြိမ်ခံနေမိပြီး အမျိုးသားတို့၏ အပိုင်တွက်ခြင်းကို ခံနေရသည်။ သင်သည် အတွင်းစိတ် သန်မာမှုခံတပ်ကို အမြန်ဆုံး တည်ဆောက်ရပါမည်။";
+        } else {
+            finalType = "သင်သည် 'မမြင်ကွယ်ရာက ဧကရီ (The Invisible Empress)' ဖြစ်သည်။";
+            finalDesc = "ချီးကျူးထိုက်လှပေသည်။ သင်သည် မမြင်ကွယ်ရာက ဧကရီ၏ အလားအလာ ရှိသူဖြစ်သည်။ အတွင်းစိတ် ပြတ်သားပြီး အပြင်ပန်းကို စကားလုံးဖြင့် ကစားနိုင်စွမ်း ရှိသည်။";
+        }
+
+        document.getElementById('res-type').innerText = finalType;
+        document.getElementById('res-desc').innerText = finalDesc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        // Main Flip Book (index.html) ဆီသို့ Message ပို့ပြီး စာမျက်နှာအလှည့်ကို ခွင့်ပြုခြင်း
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

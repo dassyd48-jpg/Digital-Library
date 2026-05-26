@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 1 QUIZ | DASSY DIGITAL LIBRARY</title>
+    <style>
+        :root {
+            --crimson: #4a0e17;
+            --dark-bg: #140204;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+        }
+        body { 
+            background: var(--dark-bg); 
+            color: var(--light-gold); 
+            font-family: 'Pyidaungsu', sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: rgba(74, 14, 23, 0.15); 
+            border: 1px solid var(--gold); 
+            border-radius: 12px; 
+            padding: 22px; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(74, 14, 23, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: var(--gold); 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            display: block; 
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .chapter-title {
+            font-size: 13px;
+            color: #ffab40;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        h2 { font-size: 15.5px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; }
+        
+        .option { 
+            display: block; width: 100%; padding: 14px; margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); border: 1px solid rgba(212, 175, 55, 0.2); 
+            color: #fff; border-radius: 6px; cursor: pointer; text-align: left; 
+            transition: 0.3s; font-size: 13.5px; line-height: 1.5;
+        }
+        .option:hover { background: linear-gradient(45deg, #8a1426, #4a0e17); border-color: var(--gold); transform: translateX(5px); }
+        .option strong { color: var(--gold); }
+        
+        /* Result Box Styling */
+        #result-box { 
+            display: none; margin-top: 15px; padding: 20px; 
+            border: 1px solid var(--gold); background: rgba(74, 14, 23, 0.4); 
+            border-radius: 8px; animation: fadeInUp 0.5s ease-out; 
+            border-left: 5px solid var(--gold);
+        }
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: #ffab40; 
+            margin-bottom: 12px; display: block; text-align: left;
+        }
+        .res-desc { color: #fff; font-size: 13.5px; line-height: 1.7; margin-bottom: 20px; text-align: left; }
+        
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: linear-gradient(45deg, #8a1426, #4a0e17); 
+            color: #fff; border: 1px solid var(--gold); border-radius: 6px; font-weight: bold; 
+            cursor: pointer; text-align: center; text-transform: uppercase; transition: 0.3s;
+            letter-spacing: 1px; font-size: 13px;
+        }
+        .next-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(212,175,55,0.4); }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">CHAPTER 1 QUIZ</span>
+        <div class="chapter-title">ခေါင်းစဉ် - သံမဏိခံတပ်နှင့် နူးညံ့မှု မျှခြေကို ဆန်းစစ်ခြင်း</div>
+        
+        <h2><strong>လက်တွေ့ ရင်ဆိုင်ရမည့် အခြေအနေ:</strong><br>
+        သင်နှင့် သင့်လက်တွဲဖော် အမျိုးသားသည် အိမ်ထောင်ရေး/ဆက်ဆံရေးအတွင်းရှိ အရေးကြီးသော ကိစ္စရပ်တစ်ခု၌ အယူအဆ မတူညီသဖြင့် ၎င်းက သင့်အား လေသံမာထန်စွာဖြင့် အတင်းအဓမ္မ အနိုင်ပြောဆိုရန် ကြိုးစားလာပါသည်။ သင့်စိတ်တွင်း၌ လုံးဝ မကျေနပ်သော်လည်း ဤအခြေအနေကို ကိုင်တွယ်ရန် သင့်ဘက်မှ ပထမဆုံး ပြုလုပ်မည့် လုပ်ရပ်သည် အဘယ်နည်း။</h2>
+        
+        <div id="options-group">
+            <button class="option" onclick="showAnalysis('ရလဒ်ဆန်းစစ်ချက် - စိတ်အတိုင်း တုံ့ပြန်ခြင်း (The Reactive Iron Princess)', 'သင်သည် ဤအဖြေကို ရွေးချယ်ပါက သင်သည် အတွင်းရော အပြင်ပါ မာကျောလွန်းသော &quot;သံမဏိမင်းသမီး&quot; ဖြစ်သည်။ ဤလုပ်ရပ်ကြောင့် အမျိုးသား၏ အတ္တ (Ego) သည် ပိုမို ပြင်းထန်လာပြီး သင့်အပေါ် လေးစားမှု လျော့နည်းကာ ရန်ပွဲကိုသာ ကြီးထွားစေလိမ့်မည်။ သင်သည် အပြင်ပန်း နူးညံ့မှု မာယာကို လေ့လာရန် လိုအပ်နေပြီ ဖြစ်သည်။')">
+                <strong>ရွေးချယ်မှု (က) :</strong> ၎င်း၏ လေသံထက် ပိုမိုကျယ်လောင်သော လေသံ၊ မာထန်သော စကားလုံးတို့ဖြင့် ချက်ချင်း လက်ငင်း တုံ့ပြန်ငြင်းခုံပြီး မိမိ၏ မှန်ကန်မှုကို ဒေါသတကြီး သက်သေပြတတ်သည်။
+            </button>
+            <button class="option" onclick="showAnalysis('ရလဒ်ဆန်းစစ်ချက် - အလိုလိုက် ငြိမ်ခံခြင်း (The Passive Dependent)', 'သင်သည် ဤအဖြေကို ရွေးချယ်ပါက သင်သည် အတွင်းစိတ်ခံတပ် မရှိသော &quot;ကပ်တွယ်မှီခိုသူ&quot; ဖြစ်သည်။ ဤလုပ်ရပ်ကြောင့် အမျိုးသားသည် သင့်ကို အမြဲတမ်း အနိုင်ယူ၍ ရနိုင်သော အောက်ခြေလူတန်းစားပမာ အပိုင်တွက်သွားလိမ့်မည်။ သင်သည် အတွင်းစိတ် သန်မာမှုခံတပ်ကို စတင် တည်ဆောက်ရပါမည်။')">
+                <strong>ရွေးချယ်မှု (ခ) :</strong> ရန်ပွဲကြီးထွားမည်ကို ကြောက်ရွံ့သဖြင့်လည်းကောင်း၊ ၎င်း၏ စိတ်ဆိုးမာန်ပါ ပြုမူမှုကို မရင်ဆိုင်ချင်သဖြင့်လည်းကောင်း မျက်ရည်ဝဲလျက် ဘာစကားမျှ ပြန်မပြောဘဲ စိတ်မကောင်းစွာဖြင့်သာ အလျှော့ပေး ငြိမ်ခံလိုက်တတ်သည်။
+            </button>
+            <button class="option" onclick="showAnalysis('ရလဒ်ဆန်းစစ်ချက် - ဗျူဟာမြောက် ထိန်းချုပ်ခြင်း (The Strategic Invisible Empress)', 'ဂုဏ်ယူထိုက်လှပေသည်။ သင်သည် &quot;မမြင်ကွယ်ရာက ဧကရီ&quot; စစ်စစ် ဖြစ်သည်။ အတွင်း၌ ရေခဲကဲ့သို့ မာကျောသော စည်းကမ်းရှိပြီး အပြင်ပန်း၌ တည်ငြိမ်နူးညံ့စွာဖြင့် အမျိုးသားတို့၏ ခုခံစစ်ကို ရိုက်ချိုးကာ မိမိ၏ ဂုဏ်သိက္ခာကို အမြင့်ဆုံး အဆင့်သို့ ပို့ဆောင်နိုင်သူ ဖြစ်ပေသည်။')">
+                <strong>ရွေးချယ်မှု (ဂ) :</strong> ၎င်း မည်မျှပင် အော်ဟစ်ပါစေ မိမိဘက်မှ လုံးဝ စိတ်မလှုပ်ရှားဘဲ တည်ငြိမ်စွာ စိုက်ကြည့်လျက်၊ လွန်စွာ အေးစက်ငြိမ်သက်သော လေသံဖြင့် &quot;မောင့်အနေနဲ့ ဤမျှ လေသံမာထန်စွာ အော်ဟစ်နေမှသာ ကျွန်မအပေါ် အနိုင်ယူနိုင်အံ့ဟု ထင်မှတ်နေပါက... မောင့်ရဲ့ အတွေးက လွဲမှားနေပါလိမ့်မယ် မောင်။ မောင် တည်ငြိမ်သွားတဲ့ အခါမှပဲ ကျွန်မတို့ ဆက်ပြောကြတာပေါ့&quot; ဟု ဆိုကာ စည်းကမ်းကို တင်းတင်းဆုပ်ကိုင်၍ အခန်းထဲမှ အေးဆေးစွာ ထွက်ခွာသွားတတ်သည်။
+            </button>
+        </div>
+    </div>
+
+    <!-- RESULT EXPANSION SCREEN -->
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button onclick="completeQuiz()" class="next-btn">UNLOCK NEXT CHAPTER →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        // Main Flip Book (index.html) ဆီသို့ Message ပို့ပြီး စာမျက်နှာအလှည့်ကို လော့ခ်ဖွင့်ပေးခြင်း
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 4 QUIZ | DASSY DIGITAL LIBRARY</title>
+    <style>
+        :root {
+            --crimson: #4a0e17;
+            --dark-bg: #140204;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+        }
+        body { 
+            background: var(--dark-bg); 
+            color: var(--light-gold); 
+            font-family: 'Pyidaungsu', sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: rgba(74, 14, 23, 0.15); 
+            border: 1px solid var(--gold); 
+            border-radius: 12px; 
+            padding: 22px; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(74, 14, 23, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: var(--gold); 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            display: block; 
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .chapter-title {
+            font-size: 13px;
+            color: #ffab40;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        h2 { font-size: 15.5px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; }
+        
+        .option { 
+            display: block; width: 100%; padding: 14px; margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); border: 1px solid rgba(212, 175, 55, 0.2); 
+            color: #fff; border-radius: 6px; cursor: pointer; text-align: left; 
+            transition: 0.3s; font-size: 13.5px; line-height: 1.5;
+        }
+        .option:hover { background: linear-gradient(45deg, #8a1426, #4a0e17); border-color: var(--gold); transform: translateX(5px); }
+        .option strong { color: var(--gold); }
+        
+        /* Result Box Styling */
+        #result-box { 
+            display: none; margin-top: 15px; padding: 20px; 
+            border: 1px solid var(--gold); background: rgba(74, 14, 23, 0.4); 
+            border-radius: 8px; animation: fadeInUp 0.5s ease-out; 
+            border-left: 5px solid var(--gold);
+        }
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: #ffab40; 
+            margin-bottom: 12px; display: block; text-align: left;
+        }
+        .res-desc { color: #fff; font-size: 13.5px; line-height: 1.7; margin-bottom: 20px; text-align: left; }
+        
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: linear-gradient(45deg, #8a1426, #4a0e17); 
+            color: #fff; border: 1px solid var(--gold); border-radius: 6px; font-weight: bold; 
+            cursor: pointer; text-align: center; text-transform: uppercase; transition: 0.3s;
+            letter-spacing: 1px; font-size: 13px;
+        }
+        .next-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(212,175,55,0.4); }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">CHAPTER 4 QUIZ</span>
+        <div class="chapter-title">ခေါင်းစဉ် - စာသားမျက်နှာပြင်ပေါ်၌ အရှိန်အဝါကို ထိန်းချုပ်နိုင်စွမ်း ရှိ၊ မရှိ ဆန်းစစ်ခြင်း</div>
+        
+        <h2><strong>လက်တွေ့ ရင်ဆိုင်ရမည့် အခြေအနေ:</strong><br>
+        သင်တို့နှစ်ဦး စာသားဖြင့် စကားပြောဆိုနေကြသည်မှာ အလွန်အမင်း အဆင်ပြေနေပြီး အမျိုးသားသည် သင့်အပေါ် လွန်စွာ သာယာပျော်ရွှင်လျက် စကားများကို တရစပ် ဆိုလာပါသည်။ စကားဝိုင်း၏ အရှိန်အဟုန်မှာ အထွတ်အထိပ်သို့ ရောက်ရှိနေချိန်တွင် သင့်အပေါ် စွဲလမ်းမှု အစဉ်အမြဲ တည်မြဲစေရန် သင့်ဘက်မှ မည်သို့ ဆက်လက် ကိုင်တွယ်မည်နည်း။</h2>
+        
+        <div id="options-group">
+            <button class="option" onclick="showAnalysis('ရလဒ်ဆန်းစစ်ချက် - အရှိန်အဟုန်အတိုင်း စကားကို ရှည်လျားစွာ ဆက်ပြောခြင်း (The Predictable Over-Talker)', 'သင်သည် အဖြေ (က) ကို ရွေးချယ်ပါက သင်သည် ကြိုတင်ခန့်မှန်းရလွယ်သော မိန်းမ ဖြစ်သည်။ စကားဝိုင်းကို ကုန်ဆုံးသည်အထိ ရက်ဆက် ဆွဲဆန့်လိုက်ခြင်းကြောင့် အမျိုးသားသည် သင့်အပေါ် &quot;သိချင်စိတ်နှင့် စိတ်လှုပ်ရှားမှု&quot; လုံးဝ ကုန်ဆုံးသွားပြီး၊ နောက်ရက်များတွင် သင့်ထံ စာပို့ရန် ပျင်းရိငြီးငွေ့လာပါလိမ့်မည်။')">
+                <strong>ရွေးချယ်မှု (က) :</strong> "သူ စကားတွေ အများကြီး ပြောနေတုန်း ငါလည်း အခွင့်ကောင်းယူပြီး စာတွေအများကြီး ပြန်ပို့ကာ ညဉ့်နက်သည်အထိ စကားဖောင်ဖွဲ့မည်" ဟု တွေးကာ ၎င်း မအိပ်မချင်း စာသားများကို အပြန်အလှန် တရစပ် ပေးပို့နေတတ်သည်။
+            </button>
+            <button class="option" onclick="showAnalysis('ရလဒ်ဆန်းစစ်ချက် - စိတ်ကောက်ချင်ယောင်ဆောင်၍ စကား ဖြတ်ပစ်ခြင်း (The Toxic Drama Queen)', 'သင်သည် အဖြေ (ခ) ကို ရွေးချယ်ပါက သင်သည် စိတ်ခံစားချက် မတည်ငြိမ်သော မိန်းမ ဖြစ်သည်။ ဤသို့ အကြောင်းမဲ့ ရင့်သီးစွာ စကားဖြတ်ခြင်းသည် ၎င်းအား စွဲလမ်းစေသည်မဟုတ်ဘဲ သင့်အား &quot;အရေးမပါသော ကလေးဆန်သည့်မိန်းမ&quot; ဟု မြင်မက်သွားစေကာ စိတ်ကုန်သွားစေလိမ့်မည်။')">
+                <strong>ရွေးချယ်မှု (ခ) :</strong> စကားဝိုင်းကို အရင်ဖြတ်ရမည်ဟု ကြားဖူးသဖြင့်... အဆင်ပြေနေသည့်ကြားမှ အကြောင်းမရှိဘဲ "ရှင်နဲ့ စကားပြောရတာ ပျင်းစရာကောင်းတယ်၊ သွားပြီ" ဟုဆိုကာ စိတ္တဇဆန်စွာ စကားကို ရုတ်တရက် ဖြတ်တောက် ပိတ်ပစ်လိုက်တတ်သည်။
+            </button>
+            <button class="option" onclick="showAnalysis('ရလဒ်ဆန်းစစ်ချက် - အထွတ်အထိပ်အချိန်၌ အဆင့်အတန်းရှိစွာ နှုတ်ဆက်ခြင်း (The Strategic Invisible Empress)', 'ဂုဏ်ယူထိုက်လှပေသည်။ သင်သည် စာသားမျက်နှာပြင်ကို အပိုင်စိုးမိုးနိုင်သော ဧကရီ စစ်စစ် ဖြစ်သည်။ စကားဝိုင်း အကောင်းဆုံးအချိန်၌ အဆင့်အတန်းရှိစွာ လမ်းခွဲပြလိုက်ခြင်းကြောင့် အမျိုးသား၏ ဦးနှောက်အတွင်း၌ ဒိုပါမင်းဓာတ်သည် အထွတ်အထိပ်မှာတင် ရပ်တန့်သွားရပြီး၊ ၎င်းသည် တစ်ညလုံး သင့်အကြောင်းကိုသာ ထပ်ခါတလဲလဲ တွေးတောကာ နောက်ရက်တွင် သင့်ထံမှ စာသားကို မချင့်မရဲဖြင့် အသည်းအသန် ပြန်လည် တမ်းတလာရတော့သည်။')">
+                <strong>ရွေးချယ်မှု (ဂ) :</strong> လုံးဝ စိတ်မဆိုးဘဲ အလွန်အဆင်ပြေနေဆဲအချိန်၌ပင် ချိုသာစွာပြုံးလျက် "မောင်နှင့် ယခုကဲ့သို့ စကားဆိုရခြင်းမှာ လွန်စွာ စိတ်ချမ်းမြေ့ဖွယ်ရာ ကောင်းလှပါတယ် မောင်။ သို့ရာတွင် ကျွန်မ၌ မနက်ဖြန်အတွက် ပြင်ဆင်ရမည့် ကိုယ်ပိုင်အလုပ်ကိစ္စအချို့ ရှိနေသေးသဖြင့်... ယခုစကားဝိုင်းကို ဤမျှဖြင့် ခေတ္တရပ်နားခွင့် ပြုပါရှင်။ မောင်လည်း ကောင်းစွာ အနားယူပါတော့နော်" ဟု လေးနက်စွာဆိုကာ အွန်လိုင်း (Online) ပေါ်မှ အေးဆေးစွာ ထွက်ခွာသွားတတ်သည်။
+            </button>
+        </div>
+    </div>
+
+    <!-- RESULT EXPANSION SCREEN -->
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button onclick="completeQuiz()" class="next-btn">UNLOCK NEXT CHAPTER →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

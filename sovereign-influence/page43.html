@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 5 QUIZ | DASSY DIGITAL LIBRARY</title>
+    <style>
+        :root {
+            --crimson: #4a0e17;
+            --dark-bg: #140204;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+        }
+        body { 
+            background: var(--dark-bg); 
+            color: var(--light-gold); 
+            font-family: 'Pyidaungsu', sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: rgba(74, 14, 23, 0.15); 
+            border: 1px solid var(--gold); 
+            border-radius: 12px; 
+            padding: 22px; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(74, 14, 23, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: var(--gold); 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            display: block; 
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .chapter-title {
+            font-size: 13px;
+            color: #ffab40;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        h2 { font-size: 15.5px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; }
+        
+        .option { 
+            display: block; width: 100%; padding: 14px; margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); border: 1px solid rgba(212, 175, 55, 0.2); 
+            color: #fff; border-radius: 6px; cursor: pointer; text-align: left; 
+            transition: 0.3s; font-size: 13.5px; line-height: 1.5;
+        }
+        .option:hover { background: linear-gradient(45deg, #8a1426, #4a0e17); border-color: var(--gold); transform: translateX(5px); }
+        .option strong { color: var(--gold); }
+        
+        /* Result Box Styling */
+        #result-box { 
+            display: none; margin-top: 15px; padding: 20px; 
+            border: 1px solid var(--gold); background: rgba(74, 14, 23, 0.4); 
+            border-radius: 8px; animation: fadeInUp 0.5s ease-out; 
+            border-left: 5px solid var(--gold);
+        }
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: #ffab40; 
+            margin-bottom: 12px; display: block; text-align: left;
+        }
+        .res-desc { color: #fff; font-size: 13.5px; line-height: 1.7; margin-bottom: 20px; text-align: left; }
+        
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: linear-gradient(45deg, #8a1426, #4a0e17); 
+            color: #fff; border: 1px solid var(--gold); border-radius: 6px; font-weight: bold; 
+            cursor: pointer; text-align: center; text-transform: uppercase; transition: 0.3s;
+            letter-spacing: 1px; font-size: 13px;
+        }
+        .next-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(212,175,55,0.4); }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">CHAPTER 5 QUIZ</span>
+        <div class="chapter-title">ခေါင်းစဉ် - ငွေကြေးနှင့် သစ္စာတရား၏ နယ်နိမိတ်ကို ကာကွယ်နိုင်စွမ်း ရှိ၊ မရှိ ဆန်းစစ်ခြင်း</div>
+        
+        <h2><strong>လက်တွေ့ ရင်ဆိုင်ရမည့် အခြေအနေ:</strong><br>
+        သင့်လက်တွဲဖော် အမျိုးသားသည် အခြားသောအမျိုးသမီးတစ်ဦးနှင့် မဆီမဆိုင် စာသားအီစီစီလုပ်ခြင်းကို သင်က ဒုတိယအကြိမ်မြောက် ထပ်မံ၍ ကွက်ကွင်းကွင်းမြင်အောင် ဖမ်းမိလိုက်ပြန်သည်။ ၎င်းက သင့်ရှေ့မှောက်၌ ဒူးထောက်လျက် "နောက်တစ်ခါ လုံးဝ မလုပ်တော့ပါဘူး" ဟု အသည်းအသန် ငိုယိုတောင်းပန်နေချိန်တွင် သင့်ဘက်မှ မည်သို့ တုံ့ပြန်မည်နည်း။</h2>
+        
+        <div id="options-group">
+            <button class="option" onclick="showAnalysis('ရလဒ်ဆန်းစစ်ချက် - ဒေါသတကြီးဖြင့် ရန်ပွဲဖြစ်ပြီး ချက်ချင်းပြန်ခွင့်လွှတ်ခြင်း (The Emotional Forgiver)', 'သင်သည် အဖြေ (က) ကို ရွေးချယ်ပါက သင်သည် စကားလုံးသာ မာပြီး လက်တွေ့တွင် စည်းကမ်းမရှိသော မိန်းမ ဖြစ်သည်။ ဤလုပ်ရပ်ကြောင့် အမျိုးသားသည် သင့်အား &quot;ခဏပဲ အော်တတ်ပြီး အချော့ရလွယ်သော သားကောင်&quot; ဟု သတ်မှတ်ကာ နောက်နောင်တွင် ပိုမို၍ စနစ်တကျ ကွယ်ဝှက်ကာ ထပ်မံ ဖောက်ပြန်လာပါလိမ့်မည်။')">
+                <strong>ရွေးချယ်မှု (က) :</strong> "ရှင်ကတော့ ဒုတိယအကြိမ် ရှိပြီ၊ တကယ့်ကို လူယုတ်မာပဲ" ဟု အော်ဟစ်ငိုယိုကာ ဖုန်းများကို ရိုက်ခွဲပစ်တတ်သည်။ သို့သော် ၎င်းက ရက်အနည်းငယ်ခန့် လာရောက်ချော့မော့သည့်အခါ သနားစိတ်ဖြင့် စိတ်ပျော့ကာ အလွယ်တကူ ပြန်လည် ခွင့်လွှတ်လိုက်တတ်သည်။
+            </button>
+            <button class="option" onclick="showAnalysis('ရလဒ်ဆန်းစစ်ချက် - လမ်းခွဲမည်ကို ကြောက်၍ ချက်ချင်း ငြိမ်ခံလိုက်ခြင်း (The Helpless Slave)', 'သင်သည် အဖြေ (ခ) ကို ရွေးချယ်ပါက သင်သည် ဂုဏ်သိက္ခာမဲ့သော ကပ်တွယ်မှီခိုသူ ဖြစ်သည်။ သင်၏ စည်းကမ်းနယ်နိမိတ်သည် သုည ဖြစ်သည့်အတွက် အမျိုးသားသည် သင့်အပေါ် လေးစားမှု လုံးဝ ကုန်ဆုံးသွားပြီး သင့်အား ခြေဖျက်၍ ရသော ဖုန်သုတ်ဖတ်တစ်ခုပမာ သတ်မှတ်သွားပါလိမ့်မည်။')">
+                <strong>ရွေးချယ်မှု (ခ) :</strong> ၎င်းက ဤမျှ တောင်းပန်နေသည်ကို မရပ်တန့်ပါက လမ်းခွဲရတော့မည်ကို လွန်စွာ ကြောက်ရွံ့သဖြင့် ၎င်း၏ တောင်းပန်မှုကို ကြားသည်နှင့် ချက်ချင်းပင် "ရပါတယ်မောင်၊ နောက်ဆို မလုပ်နဲ့တော့နော်" ဟု ဆိုကာ မျက်ရည်သုတ်၍ ချက်ချင်း အဆင်ပြေပြလိုက်တတ်သည်။
+            </button>
+            <button class="option" onclick="showAnalysis('ရလဒ်ဆန်းစစ်ချက် - ကျောက်ဆောင်စည်းကမ်းဖြင့် သဲသဲကွဲကွဲ အပြစ်ပေးခြင်း (The Unshakable Empress)', 'ဂုဏ်ယူထိုက်လှပေသည်။ သင်သည် ကျောက်ဆောင်ပမာ မြဲမြံသော ဧကရီ စစ်စစ် ဖြစ်သည်။ သင်၏ ပြတ်သားလှသော လုပ်ရပ်နှင့် ပျောက်ကွယ်မှုကြောင့် အမျိုးသား၏ ဦးနှောက်သည် သင့်ကို အမှန်တကယ် ဆုံးရှုံးရတော့မည်ဟူသော အစွန်းရောက် ထိတ်လန့်တုန်လှုပ်မှုကို ခံစားရမည် ဖြစ်ပြီး၊ နောက်နောင်တွင် သင့်အား ဖောက်ပြန်ရန် ဝေးစွ၊ တခြားမိန်းကလေးတစ်ဦးကို မျက်လုံးချင်းဆုံရန်ပင် သေသည်အထိ မရဲတော့ဘဲ သင့်အပေါ်၌ ရှိန်စွဲရိုသေသွားရတော့သည်။')">
+                <strong>ရွေးချယ်မှု (ဂ) :</strong> ၎င်း မည်မျှပင် ငိုယိုပါစေ မိမိဘက်မှ လုံးဝ မျက်ရည်မကျ၊ ဒေါသလည်းမထွက်ဘဲ အေးစက်တည်ငြိမ်စွာ စိုက်ကြည့်လျက် "မောင်... ကျွန်မ၏ ဘဝအတွင်းသို့ မည်သူမဆို ဝင်ရောက်ခွင့် ရှိသော်လည်း၊ ကျွန်မ၏ သစ္စာတရား နယ်နိမိတ်ကို ဒုတိယအကြိမ်မြောက် ချိုးဖောက်သူအား ကျွန်မဘဝထဲ၌ ဆက်လက် ထားရှိရလောက်အောင် ကျွန်မ၏ တန်ဖိုးက အောက်တန်းမကျလှပါဘူး မောင်။ မောင့်ကို ခွင့်လွှတ်ခြင်း ရှိ၊ မရှိ ဆိုသည်မှာ မောင့်၏ နှုတ်က စကားလုံးပေါ်၌ မတည်ဘဲ ကျွန်မ၏ ကိုယ်ပိုင် စဉ်းစားဆုံးဖြတ်မှုပေါ်၌သာ တည်ပါလိမ့်မည်။ ယခုအချိန်မှစ၍ ကျွန်မ၏ အမြင်အာရုံရှေ့မှ ခေတ္တ ဖယ်ရှားပေးပါရှင်" ဟု ဆိုကာ ၎င်းနှင့် ဆက်သွယ်ရေးအားလုံးကို ပြတ်ပြတ်သားသား ဖြတ်တောက်၍ ရက်သတ္တပတ်အတော်ကြာ ပျောက်ကွယ်ပြလိုက်တတ်သည်။
+            </button>
+        </div>
+    </div>
+
+    <!-- RESULT EXPANSION SCREEN -->
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button onclick="completeQuiz()" class="next-btn">UNLOCK NEXT CHAPTER →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

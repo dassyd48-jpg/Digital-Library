@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 7 QUIZ | DASSY DIGITAL LIBRARY</title>
+    <style>
+        :root {
+            --crimson: #4a0e17;
+            --dark-bg: #140204;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+        }
+        body { 
+            background: var(--dark-bg); 
+            color: var(--light-gold); 
+            font-family: 'Pyidaungsu', sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: rgba(74, 14, 23, 0.15); 
+            border: 1px solid var(--gold); 
+            border-radius: 12px; 
+            padding: 22px; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(74, 14, 23, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: var(--gold); 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            display: block; 
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .chapter-title {
+            font-size: 13px;
+            color: #ffab40;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        h2 { font-size: 15.5px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; }
+        
+        .option { 
+            display: block; width: 100%; padding: 14px; margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); border: 1px solid rgba(212, 175, 55, 0.2); 
+            color: #fff; border-radius: 6px; cursor: pointer; text-align: left; 
+            transition: 0.3s; font-size: 13.5px; line-height: 1.5;
+        }
+        .option:hover { background: linear-gradient(45deg, #8a1426, #4a0e17); border-color: var(--gold); transform: translateX(5px); }
+        .option strong { color: var(--gold); }
+        
+        /* Result Box Styling */
+        #result-box { 
+            display: none; margin-top: 15px; padding: 20px; 
+            border: 1px solid var(--gold); background: rgba(74, 14, 23, 0.4); 
+            border-radius: 8px; animation: fadeInUp 0.5s ease-out; 
+            border-left: 5px solid var(--gold);
+        }
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: #ffab40; 
+            margin-bottom: 12px; display: block; text-align: left;
+        }
+        .res-desc { color: #fff; font-size: 13.5px; line-height: 1.7; margin-bottom: 20px; text-align: left; }
+        
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: linear-gradient(45deg, #8a1426, #4a0e17); 
+            color: #fff; border: 1px solid var(--gold); border-radius: 6px; font-weight: bold; 
+            cursor: pointer; text-align: center; text-transform: uppercase; transition: 0.3s;
+            letter-spacing: 1px; font-size: 13px;
+        }
+        .next-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(212,175,55,0.4); }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">CHAPTER 7 QUIZ</span>
+        <div class="chapter-title">ခေါင်းစဉ် - စည်းကမ်းနှင့် တန်ဖိုးနယ်နိမိတ်ကို အပြီးသတ်ထိန်းချုပ်ခြင်း</div>
+        
+        <h2><strong>လက်တွေ့ ရင်ဆိုင်ရမည့် အခြေအနေ (Scenario):</strong><br>
+        သင်က ဆက်ဆံရေးတစ်ခုကို အပြီးသတ်ဖြတ်တောက်ပြီးနောက်... အမျိုးသားသည် ၎င်း၏ အမှားများကို သိရှိသွားကာ သင့်ထံသို့ ဖုန်းများတရစပ်ဆက်ခြင်း၊ စာသားများ (Chat Box) ပေါ်၌ ငိုယိုတောင်းပန်ခြင်းနှင့် သင့်အိမ်ရှေ့အထိ ရောက်၍ ဒူးထောက်အရှုံးပေး တောင်းပန်လာသည့်အခါ သင့်ဘက်မှ မည်သို့ ကိုင်တွယ်မည်နည်း။</h2>
+        
+        <div id="options-group">
+            <button class="option" onclick="showAnalysis('သဲသဲကွဲကွဲ ပြတ်ပြတ်သားသားရှိသော ရလဒ်ဆန်းစစ်ချက် - စိတ်မကောင်းဖြစ်ကာ ချက်ချင်း ပြန်လည်လက်ခံခြင်း (The Soft-Hearted Princess)', 'သင်သည် အဖြေ (က) ကို ရွေးချယ်ပါက သင်သည် စည်းကမ်းမမြဲသော မင်းသမီး ဖြစ်သည်။ သင်၏ စည်းကမ်းတံတိုင်းသည် ၎င်း၏ ငိုယိုမှုအောက်တွင် ပြိုလဲသွားသဖြင့်... ၎င်းသည် သင့်အား &quot;အမှားလုပ်ပြီး ပြန်တောင်းပန်လျှင် အမြဲတမ်း ခွင့်လွှတ်မည့် မိန်းမလွယ်&quot; ဟု အပိုင်တွက်ကာ နောက်နောင်တွင် ယခုထက် ပိုမိုဆိုးရွားသော သစ္စာဖောက်မှုများကို ပြုလုပ်လာပါလိမ့်မည်။')">
+                <strong>ရွေးချယ်မှု (က) :</strong> ၎င်း သနားစရာကောင်းအောင် ငိုယိုပြသည်ကို မြင်သောအခါ စိတ်အာရုံ တုန်လှုပ်သွားပြီး "နောက်တစ်ခါဆိုရင်တော့ လုံးဝခွင့်မလွှတ်ဘူးနော်" ဟု ဆိုကာ ၎င်းအား ဆက်ဆံရေးအတွင်းသို့ လွယ်ကူစွာ ပြန်လည် လမ်းဖွင့်ပေးမိတတ်သည်။
+            </button>
+            <button class="option" onclick="showAnalysis('သဲသဲကွဲကွဲ ပြတ်ပြတ်သားသားရှိသော ရလဒ်ဆန်းစစ်ချက် - မိမိ၏ စည်းကမ်းနှင့် တန်ဖိုးကို ပထမဦးစားပေး၍ လျှစ်လျူရှုခြင်း (The Absolute Sovereignty)', 'အထူးပင် ဂုဏ်ယူထိုက်လှပေသည်။ သင်သည် စစ်မှန်သော &quot;ဧကရီစစ်စစ်&quot; ဖြစ်သည်။ သင့်ရှေ့မှောက်၌ ၎င်း မည်မျှပင် လူးလှိမ့်ငိုယိုစေကာမူ သင်၏ ပြတ်သားသော စည်းကမ်းခံတပ်ကို မချိုးဖျက်နိုင်တော့ကြောင်း သိသွားသည့်အခါ... သင်သည် ၎င်း၏ ဘဝတစ်ခုလုံးတွင် ဘယ်သောအခါမျှ မေ့ဖျောက်၍ မရနိုင်တော့ဘဲ တစ်သက်လုံး ရှိန်စွဲရိုသေ ကိုးကွယ်သွားရမည့် &quot;မမြင်ကွယ်ရာက ထာဝရဧကရီ&quot; အဖြစ် ကမ္ပည်းတင် ကျန်ရစ်ခဲ့မည် ဖြစ်တည်း။')">
+                <strong>ရွေးချယ်မှု (ခ) :</strong> ၎င်း၏ ငိုယိုတောင်းပန်မှုများကို တုန်လှုပ်ခြင်း လုံးဝမရှိဘဲ ရေခဲပြင်ပမာ အေးစက်စွာ ရှုမြင်တတ်သည်။ မိမိ၏ ဆုံးဖြတ်ချက်ကို ပြောင်းလဲခြင်း မရှိဘဲ... ၎င်း၏ တောင်းပန်မှုများကို အရေးမပါသော သားကောင်တစ်ကောင်၏ အော်ဟစ်သံပမာ လုံးလုံးလျားလျား လျှစ်လျူရှု (Ignore) ပစ်လိုက်ပြီး၊ မိမိ၏ အဆင့်မြင့်မားလှသော ကိုယ်ပိုင်အလုပ်များနှင့် စီးပွားရေးနိုင်ငံတော်ကိုသာ အရှိန်အဟုန်ဖြင့် ဆက်လက် တည်ဆောက်ပြလိုက်တတ်သည်။
+            </button>
+        </div>
+    </div>
+
+    <!-- RESULT EXPANSION SCREEN -->
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button onclick="completeQuiz()" class="next-btn">UNLOCK NEXT CHAPTER →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

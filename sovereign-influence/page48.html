@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chapter 6 Quiz - Dassy Digital Library</title>
+    <style>
+        :root {
+            --crimson: #4a0e17;
+            --dark-bg: #140204;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+            --card-bg: #22060a;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: var(--dark-bg); color: #fff;
+            font-family: 'Pyidaungsu', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            overflow-x: hidden;
+        }
+        .quiz-container {
+            width: 100%; max-width: 500px; height: 100vh;
+            padding: 25px 20px; display: flex; flex-direction: column;
+            justify-content: flex-start; overflow-y: auto;
+        }
+        .chapter-header {
+            text-align: center; font-size: 11px; color: var(--gold);
+            letter-spacing: 3px; font-weight: bold; margin-bottom: 10px;
+        }
+        .quiz-title {
+            text-align: center; font-size: 18px; color: #fff;
+            font-weight: 900; margin: 0 0 20px 0; letter-spacing: 1px;
+            border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 15px;
+        }
+        .scenario-box {
+            background: var(--card-bg); border-left: 3px solid var(--gold);
+            padding: 15px; border-radius: 4px; margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .scenario-box p { margin: 0; font-size: 14px; line-height: 1.7; color: var(--light-gold); }
+        .option-card {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.15);
+            border-radius: 6px; padding: 15px; margin-bottom: 15px; cursor: pointer;
+            transition: all 0.3s ease; position: relative;
+        }
+        .option-card:hover {
+            background: rgba(74,14,23,0.4); border-color: var(--gold);
+        }
+        .option-card.selected {
+            background: var(--crimson); border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(212,175,55,0.15);
+        }
+        .option-label {
+            font-size: 12px; color: var(--gold); font-weight: bold;
+            text-transform: uppercase; margin-bottom: 5px; display: block;
+        }
+        .option-text { font-size: 14px; line-height: 1.6; color: #fff; }
+        
+        .feedback-box {
+            display: none; background: rgba(0,0,0,0.4);
+            border: 1px dashed rgba(212,175,55,0.3); border-radius: 6px;
+            padding: 15px; margin-top: 10px; margin-bottom: 25px;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        .feedback-title {
+            font-size: 13px; color: var(--gold); font-weight: bold;
+            margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+        }
+        .feedback-text { font-size: 13px; line-height: 1.6; color: #e0e0e0; }
+
+        .action-btn {
+            display: none; width: 100%; padding: 15px;
+            background: linear-gradient(45deg, #8a1426, #d4af37, #8a1426);
+            color: #fff; border: none; font-weight: bold; font-size: 14px;
+            border-radius: 4px; cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.2); margin-top: auto;
+            margin-bottom: 10px; animation: fadeIn 0.4s ease forwards;
+        }
+        .action-btn:hover { transform: scale(1.01); box-shadow: 0 4px 20px rgba(212,175,55,0.4); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="chapter-header">CHAPTER 6 EVALUATION</div>
+        <h2 class="quiz-title">အခန်း (၆) ၏ စစ်ဆေးချက်ကျမ်း</h2>
+
+        <!-- Scenario Box -->
+        <div class="scenario-box">
+            <p><strong>လက်တွေ့ ရင်ဆိုင်ရမည့် အခြေအနေ:</strong><br>
+            သင့်လက်တွဲဖော် အမျိုးသားသည် ၎င်း၏ သူငယ်ချင်းများ သို့မဟုတ် လူအများရှေ့တွင် သင့်အား အောက်ကျို့သွားစေရန် သို့မဟုတ် ၎င်းကသာ သင့်အပေါ် အပိုင်စိုးမိုးထားကြောင်း ပြသရန်အတွက် သင့်အား မဆီမဆိုင် နှိမ်ချ၍ နောက်ပြောင်ကျီစယ်လာသည့်အခါ သင့်ဘက်မှ မည်သို့ တုံ့ပြန်မည်နည်း။</p>
+        </div>
+
+        <!-- Option A -->
+        <div class="option-card" onclick="selectOption('A')">
+            <span class="option-label">ရွေးချယ်မှု (က) : The Reactive Iron Princess</span>
+            <div class="option-text">"ရှင် လူတွေရှေ့မှာ ငါ့ကို ဘာလို့ ဒီလိုပြောရတာလဲ။ ရှင့်ကိုယ်ရှင် ဘာကောင်မှတ်နေလဲ" ဟု ဆိုကာ လူအများရှေ့တွင်ပင် ချက်ချင်း ဒေါသတကြီး ပြန်လည် အော်ဟစ်ငြင်းခုံတတ်သည်။</div>
+        </div>
+
+        <!-- Feedback A -->
+        <div id="feedback-A" class="feedback-box">
+            <div class="feedback-title">💡 သဲသဲကွဲကွဲ ပြတ်ပြတ်သားသားရှိသော ရလဒ်ဆန်းစစ်ချက်:</div>
+            <div class="feedback-text">သင်သည် အဖြေ (က) ကို ရွေးချယ်ပါက သင်သည် စိတ်မလုံခြုံသော မင်းသမီး ဖြစ်သည်။ ဤလုပ်ရပ်ကြောင့် အမျိုးသားသည် သင့်အား "လူအများရှေ့တွင် မိမိ၏ မျက်နှာကို ဖျက်ဆီးသော မိန်းမဆိုး" ဟု သတ်မှတ်ကာ သင့်အပေါ် ရိုသေမှု လုံးဝ ကုန်ဆုံးသွားစေလိမ့်မည်။</div>
+        </div>
+
+        <!-- Option B -->
+        <div class="option-card" onclick="selectOption('B')">
+            <span class="option-label">ရွေးချယ်မှု (ခ) : The Unshakable Empress</span>
+            <div class="option-text">၎င်း၏ စကားကို ကြားသော်လည်း ဒေါသထွက်ခြင်း သို့မဟုတ် ရယ်မောခြင်း လုံးဝ မပြုဘဲ... ၎င်း၏ မျက်လုံးကို တည့်တည့် (၃) စက္ကန့်ခန့် စိုက်ကြည့်ပြီးမှ ဘာမှမသိရော့သကဲ့သို့ တခြားသူများနှင့်သာ အေးဆေးစွာ စကားဆက်ပြောပြလိုက်တတ်သည်။ ၎င်းနှင့် နှစ်ဦးတည်း ရှိသည့်အချိန်ကျမှသာ ရေခဲကဲ့သို့ လေသံဖြင့် စည်းကမ်းကို ပြတ်သားစွာ သတ်မှတ်တတ်သည်။</div>
+        </div>
+
+        <!-- Feedback B -->
+        <div id="feedback-B" class="feedback-box">
+            <div class="feedback-title">💡 သဲသဲကွဲကွဲ ပြတ်ပြတ်သားသားရှိသော ရလဒ်ဆန်းစစ်ချက်:</div>
+            <div class="feedback-text">သင်သည် အဖြေ (ခ) ကို ရွေးချယ်ပါက သင်သည် ပြီးပြည့်စုံသော "မျက်မြင်မရသော သြဇာ" ကို ပိုင်ဆိုင်သူ ဖြစ်သည်။ လူအများရှေ့တွင် သင်၏ တုန်လှုပ်ခြင်းမရှိသော အေးစက်မှုကြောင့်... အမျိုးသားသည် မိမိ၏ ရိုင်းစိုင်းမှုအတွက် လွန်စွာ ရှက်ရွံ့သွားရပြီး၊ သင့်ထံသို့ ဒူးထောက်အညံ့ခံကာ တောင်းပန်လာရတော့သည်။</div>
+        </div>
+
+        <!-- Next Page Button -->
+        <button id="next-btn" class="action-btn" onclick="goNext()">နောက်တစ်မျက်နှာသို့</button>
+    </div>
+
+    <script>
+        let selectedOption = null;
+
+        function selectOption(option) {
+            // Option ကတ်ပြားများကို ပုံစံပြန်ပြင်ရန်
+            document.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
+            document.querySelectorAll('.feedback-box').forEach(box => box.style.display = 'none');
+            
+            // ရွေးချယ်လိုက်သော အဖြေကို Active ပြုလုပ်ရန်
+            selectedOption = option;
+            const selectedCard = event.currentTarget;
+            selectedCard.classList.add('selected');
+            
+            // သက်ဆိုင်ရာ ရလဒ်ဆန်းစစ်ချက်ကို ပြသရန်
+            document.getElementById(`feedback-${option}`).style.display = 'block';
+            
+            // "နောက်တစ်မျက်နှာသို့" Button ကို ဖော်ပေးရန်
+            document.getElementById('next-btn').style.display = 'block';
+            
+            // စာမျက်နှာအောက်ခြေသို့ အလိုအလျောက် Scroll ဆွဲပေးရန်
+            setTimeout(() => {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 100);
+        }
+
+        function goNext() {
+            // ပင်မစာအုပ်ကြီး (turn.js index.html) ထံသို့ အခန်းဆက်သွားရန် Message လှမ်းပို့ခြင်း
+            window.parent.postMessage("quizCompleted", "*");
+        }
+    </script>
+</body>
+</html>
