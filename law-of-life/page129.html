@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 13: THE LAW OF DEATH DENIAL QUIZ</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-gradient: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --dark-panel: rgba(20, 20, 20, 0.85);
+        }
+        body { 
+            background: #0D0D0D; 
+            color: #fff; 
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 520px; 
+            background: var(--dark-panel); 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+            border-radius: 10px; 
+            padding: 30px 25px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            backdrop-filter: blur(12px);
+        }
+        .phase-label { 
+            font-size: 11px; color: var(--gold); letter-spacing: 3px; 
+            text-transform: uppercase; font-weight: bold;
+            display: block; margin-bottom: 5px; text-align: center;
+        }
+        .main-title {
+            font-size: 18px; color: #fff; text-align: center; font-weight: bold; margin-bottom: 25px; line-height: 1.5;
+        }
+        .instruction-text {
+            font-size: 13px; color: #ccc; text-align: left; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 5px; border-left: 2px solid var(--gold); margin-bottom: 25px; line-height: 1.6;
+        }
+        
+        .question-block { margin-bottom: 35px; animation: fadeIn 0.5s ease-out; }
+        .q-title { font-size: 15px; color: var(--gold); font-weight: bold; margin-bottom: 12px; text-align: left; line-height: 1.5; }
+        
+        .option-label { 
+            display: block; width: 100%; padding: 14px; margin: 10px 0; 
+            background: rgba(212, 175, 55, 0.02); 
+            border: 1px solid rgba(212, 175, 55, 0.12); 
+            color: #eee; border-radius: 5px; cursor: pointer; text-align: left; 
+            transition: all 0.2s ease; font-size: 13px; line-height: 1.5;
+        }
+        .option-label input { display: none; }
+        .option-label:hover { background: rgba(212, 175, 55, 0.06); border-color: rgba(212, 175, 55, 0.4); }
+        
+        /* Option Selected State */
+        .option-label.selected {
+            background: rgba(212, 175, 55, 0.12);
+            border-color: var(--gold);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(212,175,55,0.15);
+        }
+
+        .action-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: var(--gold-gradient); 
+            color: #000; border: none; border-radius: 4px; font-weight: 900; 
+            cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 1px;
+            margin-top: 25px; box-shadow: 0 4px 15px rgba(179,135,40,0.3);
+        }
+
+        /* Result Panel */
+        #result-box { 
+            display: none; padding: 25px; 
+            border: 1px solid var(--gold); background: rgba(212, 175, 55, 0.05); 
+            border-radius: 6px; animation: fadeInUp 0.6s ease-out;
+        }
+        .res-title { 
+            font-size: 17px; font-weight: bold; color: var(--gold); 
+            margin-bottom: 16px; border-bottom: 1px solid rgba(212, 175, 55, 0.3); 
+            padding-bottom: 12px; letter-spacing: 1px; text-align: left;
+        }
+        .res-consequence { color: #ddd; font-size: 13.5px; line-height: 1.8; margin-bottom: 20px; text-align: left; }
+        .res-strategy { 
+            font-size: 13px; color: #fff; 
+            background: rgba(212, 175, 55, 0.1); padding: 15px; 
+            border-radius: 5px; text-align: left; line-height: 1.7; border-left: 3px solid var(--gold);
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">အခန်း (၁၃) လက်တွေ့ဆန်းစစ်ချက် မေးခွန်းများ</span>
+        <h1 class="main-title">ဘဝကို ပြန်လည်စီမံခြင်း ဆန်းစစ်ချက်</h1>
+        
+        <div class="instruction-text">
+            <b>ပဟေဠိအခြေအနေ:</b><br>
+            သင်ဟာ ရည်မှန်းချက်တွေနောက်ကို မနားတမ်းပြေးလွှားရင်း လူမှုပတ်ဝန်းကျင်မှာ အောင်မြင်မှု တချို့ရလာပါတယ်။ ဒါပေမဲ့ လက်တွေ့မှာတော့ နေ့စဉ်ဘဝက သောကတွေ၊ မကျေနပ်ချက်တွေ၊ ပတ်ဝန်းကျင်က အရေးမပါတဲ့ အတင်းအဖျင်းတွေနဲ့ ရန်ငြိုးတွေကြားမှာ စွမ်းအင်တွေ ကုန်ခမ်းပြီး "ငါ ဘာလို့ ဒီလောက်ထိ ပင်ပန်းခံနေရတာလဲ" ဆိုပြီး ကိုယ်ပိုင်အဓိပ္ပာယ် ပျောက်ဆုံးနေပါတယ်။ ဒီအခြေအနေမှာ သင့်ဘဝကို ဘယ်လို ပြန်လည် စီမံမလဲ?
+        </div>
+
+        <!-- Question 1 -->
+        <div class="question-block">
+            <div class="q-title">[မေးခွန်း ၁] အရေးမပါသော လူမှုရေးရန်ပွဲများနှင့် ကြုံရသည့်အခါ သင့်တုံ့ပြန်မှုက ဘယ်လိုရှိသလဲ?</div>
+            <label class="option-label" onclick="selectOption(this, 'q1')">
+                <input type="radio" name="q1" value="A"> (က) "ငါ့ကို လာထိရင်တော့ လုံးဝမခံဘူး" ဟုဆိုကာ အမှန်အမှား ပေါ်လွင်သည်အထိ ရင်ဆိုင်ဖြေရှင်းပြီး အနိုင်ယူရန် ကြိုးစားမည်။
+            </label>
+            <label class="option-label" onclick="selectOption(this, 'q1')">
+                <input type="radio" name="q1" value="B"> (ခ) စိတ်ရှုပ်ခံရမှာ ကြောက်သဖြင့် ဘာမှပြန်မပြောဘဲ ရှောင်ပြေးမည်ဖြစ်သော်လည်း ရင်ထဲတွင်တော့ မကျေနပ်ချက်များ၊ ဒေါသများကို သိုလှောင်ထားမည်။
+            </label>
+            <label class="option-label" onclick="selectOption(this, 'q1')">
+                <input type="radio" name="q1" value="C"> (ဂ) "ငါ့မှာ ဒါတွေအတွက် အချိန်မရှိဘူး" ဟု တွေးကာ မိမိတွင် အချိန်အကန့်အသတ်သာ ရှိကြောင်း သတိပြုပြီး ပြတ်ပြတ်သားသား ဥပေက္ခာပြု (Ignore) လွှတ်ချလိုက်မည်။
+            </label>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-block">
+            <div class="q-title">[မေးခွန်း ၂] ဘဝရဲ့ ရည်မှန်းချက်တွေ၊ အလုပ်တွေကို လုပ်ကိုင်တဲ့အခါ သင့်ရဲ့ ပင်မတွန်းအားက ဘာလဲ?</div>
+            <label class="option-label" onclick="selectOption(this, 'q2')">
+                <input type="radio" name="q2" value="A"> (က) ပတ်ဝန်းကျင်နှင့် ပြိုင်ဘက်များထက် သာလွန်ကြောင်း ပြသချင်သည့် အတ္တနှင့် အပေါ်ယံ အသိအမှတ်ပြုမှု (Validation) ကို ရယူလိုခြင်း။
+            </label>
+            <label class="option-label" onclick="selectOption(this, 'q2')">
+                <input type="radio" name="q2" value="B"> (ခ) မလုပ်ဘဲနေရင် ဘဝပျက်သွားမှာ စိုးရိမ်သည့် ကြောက်ရွံ့စိတ်သက်သက်ဖြင့် စက်ရုပ်တစ်ရုပ်လို လိုက်လုပ်နေခြင်း။
+            </label>
+            <label class="option-label" onclick="selectOption(this, 'q2')">
+                <input type="radio" name="q2" value="C"> (ဂ) မိမိဘဝ ပြီးဆုံးမည့်တစ်နေ့တွင် နောင်တမရစေရန်အတွက် လောကကြီးမှာ စစ်မှန်သော တန်ဖိုးနှင့် အမွေအနှစ် (Legacy) တစ်ခု ချန်ထားရစ်လိုခြင်း။
+            </label>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-block">
+            <div class="q-title">[မေးခွန်း ၃] လက်ရှိ သင့်ရဲ့ ကျန်းမာရေး၊ စိတ်အေးချမ်းမှုနှင့် ချစ်ခင်ရသူများကို အချိန်ပေးနိုင်မှု ဟန်ချက်က ဘယ်လိုရှိသလဲ?</div>
+            <label class="option-label" onclick="selectOption(this, 'q3')">
+                <input type="radio" name="q3" value="A"> (က) အလုပ်နှင့် အောင်မြင်မှုက ပထမ၊ ကျန်တဲ့အရာတွေက နောက်မှ... အချိန်တွေ အများကြီး ရှိသေးသည်ဟု တွေးကာ လျစ်လျူရှုထားမိသည်။
+            </label>
+            <label class="option-label" onclick="selectOption(this, 'q3')">
+                <input type="radio" name="q3" value="B"> (ခ) ဟန်ချက်ညီချင်သော်လည်း အခြေအနေတွေကြောင့် နောက်မှပဲ လုပ်တော့မည်ဟု ဆိုကာ အချိန်ဆွဲနေမိသည်။
+            </label>
+            <label class="option-label" onclick="selectOption(this, 'q3')">
+                <input type="radio" name="q3" value="C"> (ဂ) မိမိ၏ အချိန်သည် အကန့်အသတ်ရှိကြောင်း အမြဲသတိပြုမိသဖြင့် အလုပ်နှင့်အတူ ကျန်းမာရေး၊ မိသားစုတို့ကို ဗျူဟာမြောက် ဟန်ချက်ညီညီ ဦးစားပေး ပြင်ဆင်ထားသည်။
+            </label>
+        </div>
+
+        <button onclick="calculateResult()" class="action-btn">ဆန်းစစ်ချက်ရလဒ် ကြည့်မည် →</button>
+    </div>
+
+    <!-- Result Display Section -->
+    <div id="result-box">
+        <span class="phase-label">DIAGNOSTIC RESULT</span>
+        <div class="res-title" id="res-level"></div>
+        <p class="res-consequence" id="res-consequence"></p>
+        <div class="res-strategy" id="res-strategy"></div>
+        
+        <button onclick="completeQuiz()" class="action-btn" style="margin-top: 30px;">စာအုပ်ကို ဆက်လက်ဖတ်ရှုရန်</button>
+    </div>
+</div>
+
+<script>
+    function selectOption(element, name) {
+        const siblings = element.parentNode.querySelectorAll('.option-label');
+        siblings.forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        element.querySelector('input').checked = true;
+    }
+
+    function calculateResult() {
+        const q1 = document.querySelector('input[name="q1"]:checked');
+        const q2 = document.querySelector('input[name="q2"]:checked');
+        const q3 = document.querySelector('input[name="q3"]:checked');
+
+        if (!q1 || !q2 || !q3) {
+            alert("ကျေးဇူးပြု၍ မေးခွန်းအားလုံးအတွက် အဖြေရွေးချယ်ပေးပါရှင်။");
+            return;
+        }
+
+        // ရွေးချယ်မှုများကို ရေတွက်ခြင်း
+        const counts = { A: 0, B: 0, C: 0 };
+        counts[q1.value]++;
+        counts[q2.value]++;
+        counts[q3.value]++;
+
+        let majority = 'C'; // Default
+        // အဖြေအများစုကို ရှာဖွေခြင်း logic
+        if (counts.A >= counts.B && counts.A >= counts.C) {
+            majority = 'A';
+        } else if (counts.B >= counts.A && counts.B >= counts.C) {
+            majority = 'B';
+        } else {
+            majority = 'C';
+        }
+
+        let levelTitle = "";
+        let levelConsequence = "";
+        let levelStrategy = "";
+
+        if (majority === 'A') {
+            levelTitle = "🔴 အဖြေ (က) အများစု — \"Death Denial ထောင်ချောက်ထဲ ပိတ်မိနေသူ\"";
+            levelConsequence = "<b>ဖြစ်လာမည့်ဘဝရလဒ်:</b> သင်သည် အချိန်များကို ထာဝရ ရှိနေမည်ဟု မသိစိတ်က ထင်မှတ်နေပြီး \"သေခြင်းတရားကို မျက်ကွယ်ပြုခြင်း\" ထောင်ချောက်ထဲသို့ အပြည့်အဝ ကျရောက်နေသည်။ အပေါ်ယံ အတ္တပြိုင်ပွဲများနှင့် ရေတိုသောကများကြားတွင် အဖိုးတန်စွမ်းအင်များကို အလဟဿ ဖြုန်းတီးနေသဖြင့် ငွေရှိပြီး ဘဝမရှိသော၊ အတွင်းစိတ်ဝိညာဉ် ညှိုးနွမ်းနေသည့် လူတစ်ယောက် ဖြစ်လာတတ်သည်။ ဘဝ၏ နောက်ဆုံးအချိန် ရောက်မှသာ ကြီးမားသော နောင်တများနှင့် ရင်ဆိုင်ရနိုင်သည်။";
+            levelStrategy = "<b>💡 ဗျူဟာမြောက် အကြံဉာဏ်:</b> အောင်မြင်မှုဆိုသည်မှာ ဘဝကို ကောင်းမွန်အောင် ထောက်ပံ့ပေးသော \"ကိရိယာ\" မျှသာဖြစ်ပြီး ဘဝ၏ \"ပန်းတိုင်\" မဟုတ်ပါ။ နေ့စဉ် မိမိကိုယ်မိမိ တစ်နေ့သေရမည်ဟူသော အမှန်တရားကို သတိသွင်းခြင်းဖြင့် လက်ရှိပိုင်ဆိုင်ထားသော အချိန်ကို အနှစ်သာရရှိရှိ ပြန်လည်အသုံးချပါ။";
+        } else if (majority === 'B') {
+            levelTitle = "🟡 အဖြေ (ခ) အများစု — \"အရှိတရားထံမှ ယာယီထွက်ပြေးတိမ်းရှောင်နေသူ\"";
+            levelConsequence = "<b>ဖြစ်လာမည့်ဘဝရလဒ်:</b> သင်သည် သေခြင်းတရားနှင့် ဘဝအကျပ်အတည်းများကို ကြောက်ရွံ့စိတ်ပျက်ပြီး အရှိတရားထံမှ ယာယီထွက်ပြေးတိမ်းရှောင်ခြင်း (Escapism) ကို ပြုလုပ်နေသည်။ ပြဿနာများကို ရင်ဆိုင်ဖြေရှင်းရန် သို့မဟုတ် ပြတ်ပြတ်သားသား လွှတ်ချရန် တွန့်ဆုတ်နေပြီး \"နောက်မှ ပြောင်းလဲမှာပါ\" ဟု အချိန်ဆွဲနေသဖြင့် စိတ်ပိုင်းဆိုင်ရာ ကွက်လပ်တစ်ခုနှင့် ဘဝလမ်းကြောင်း ဝေဝါးကာ အဖိုးတန်အချိန်များ တဖြည်းဖြည်း ကုန်ဆုံးသွားနိုင်သည်။";
+            levelStrategy = "<b>💡 ဗျူဟာမြောက် အကြံဉာဏ်:</b> သေခြင်းတရားကို ဆင်ခြင်ခြင်း၏ ရည်ရွယ်ချက်မှာ ဘဝကို အရှုံးပေးရန် သို့မဟုတ် စိတ်ပျက်ရန် မဟုတ်ပါ။ အချိန်တိုတိုလေးအတွင်း မိမိ၏ တန်ဖိုးရှိသော ဖန်တီးနိုင်စွမ်းကို အကောင်းဆုံး ချန်ထားရစ်ခဲ့ရန် ဖြစ်သည်။ တာဝန်များကို ထွက်ပြေးမည့်အစား တာဝန်များကြားထဲမှာပင် စိတ်အေးချမ်းအောင် နေထိုင်တတ်သည့် ဉာဏ်ပညာကို မွေးမြူပါ။";
+        } else if (majority === 'C') {
+            levelTitle = "🔵 အဖြေ (ဂ) အများစု — \"မိမိဘဝ၏ သခင်အစစ်အမှန် (True Master of Life)\"";
+            levelConsequence = "<b>ဖြစ်လာမည့်ဘဝရလဒ်:</b> ဂုဏ်ယူပါသည်။ သင်သည် သေခြင်းတရား၏ ဥပဒေကို ပညာသားပါပါ အသုံးချပြီး ဘဝ၏ နေထိုင်မှုအရည်အသွေးကို အမြင့်ဆုံးအထိ မြှင့်တင်နိုင်သူ ဖြစ်သည်။ အရေးမပါသော အဆိပ်အတောက်များကို ပြတ်သားစွာ ဖြတ်တောက်နိုင်စွမ်းရှိပြီး၊ မိမိအတွက် တကယ်တန်ဖိုးရှိမည့် အရာများကိုသာ ရွေးချယ်လုပ်ကိုင်တတ်သဖြင့် သင့်တွင် စိတ်အေးချမ်းမှုနှင့် ရင့်ကျက်သော အောင်မြင်မှုသည် ဒွန်တွဲတည်ရှိနေလိမ့်မည်။";
+            levelStrategy = "<b>💡 ဗျူဟာမြောက် အကြံဉာဏ်:</b> ဤရင့်ကျက်သော စိတ်အခြေအနေကို ဆက်လက်ထိန်းသိမ်းပါ။ ပတ်ဝန်းကျင်က သင့်ကို စိတ်ရှုပ်အောင် လာရောက်ဆွပေးသည့်အခါတိုင်း \"ငါ့မှာ ဒါတွေအတွက် အချိန်မရှိဘူး\" ဟူသော စကားလုံးဖြင့် စိတ်ပိုင်းဆိုင်ရာ ဖြတ်တောက်မှုကို ပြတ်ပြတ်သားသား ဆက်လက်အသုံးချသွားပါ။";
+        }
+
+        // Display update
+        document.getElementById('quiz-flow').style.display = 'none';
+        document.getElementById('res-level').innerText = levelTitle;
+        document.getElementById('res-consequence').innerHTML = levelConsequence;
+        document.getElementById('res-strategy').innerHTML = levelStrategy;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

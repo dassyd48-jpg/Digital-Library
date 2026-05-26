@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 7: THE LAW OF GENDER RIGIDITY QUIZ</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #FCF6BA;
+            --dark-panel: rgba(20, 20, 20, 0.85);
+        }
+        body { 
+            background: #0D0D0D; 
+            color: #fff; 
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: var(--dark-panel); 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+            border-radius: 8px; 
+            padding: 25px; 
+            box-shadow: 0 10px 35px rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px);
+            text-align: center;
+        }
+        .phase-label { 
+            font-size: 11px; color: var(--gold); letter-spacing: 3px; 
+            text-transform: uppercase; font-weight: bold;
+            display: block; margin-bottom: 15px;
+        }
+        h2 { font-size: 15px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; }
+        
+        .option { 
+            display: block; width: 100%; padding: 15px; margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.15); 
+            color: #eee; border-radius: 4px; cursor: pointer; text-align: left; 
+            transition: all 0.3s ease; font-size: 13px; line-height: 1.5;
+        }
+        .option:hover { 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; font-weight: bold; border-color: transparent;
+            box-shadow: 0 4px 12px rgba(179,135,40,0.2);
+        }
+        
+        #result-box { 
+            display: none; margin-top: 5px; padding: 22px; 
+            border: 1px solid var(--gold); background: rgba(212, 175, 55, 0.05); 
+            border-radius: 6px; animation: fadeInUp 0.5s ease-out; 
+        }
+        .res-section { text-align: left; margin-bottom: 18px; }
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: var(--gold); 
+            margin-bottom: 10px; display: block; border-left: 3px solid var(--gold); 
+            padding-left: 10px; text-align: left; letter-spacing: 1px;
+        }
+        .res-desc { color: #ddd; font-size: 13px; line-height: 1.7; margin: 0; }
+        
+        #strategy-note { 
+            font-size: 12.5px; color: var(--gold-light); 
+            background: rgba(212, 175, 55, 0.1); padding: 14px; 
+            border-radius: 4px; margin-bottom: 22px; text-align: left; line-height: 1.6;
+        }
+        
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; border: none; border-radius: 4px; font-weight: 900; 
+            cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 1px;
+        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <span class="phase-label">အခန်း (၇) - Interactive ဆန်းစစ်ချက်</span>
+    <h3 style="font-size: 16px; color: var(--gold); margin: 5px 0 15px 0; font-weight: bold;">[ကျား၊ မ သဘာဝ၏ နိယာမ]</h3>
+    
+    <h2 id="q-text"><b>ပဟေဠိအခြေအနေ (Scenario):</b><br>လုပ်ငန်းခွင် သို့မဟုတ် အရေးကြီးတဲ့ အကျပ်အတည်းတစ်ခုမှာ ပြဿနာကို ဖြေရှင်းဖို့ သင့်ရဲ့ မွေးရာပါ Gender စရိုက် (ဥပမာ - အမျိုးသားဆိုလျှင် လုံးဝပြတ်သားခက်ထန်ခြင်း သာမက၊ အမျိုးသမီးဆိုလျှင် နူးညံ့သိမ်မွေ့ခြင်း သက်သက်) တစ်ခုတည်းနဲ့တင် မလုံလောက်ဘဲ ဆန့်ကျင်ဘက် Gender ရဲ့ အရည်အသွေး (နူးညံ့မှု သို့မဟုတ် ပြတ်သားမှု) ကို ပေါင်းစပ်အသုံးချရမယ့် အခြေအနေမျိုး ကြုံလာရပါတယ်။ သင် ဘယ်လို တုံ့ပြန်မလဲ?</h2>
+    
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'စိတ်နေသဘောထား တောင့်တင်းလွန်းသူ (Rigid) ဖြစ်သွားပြီး ပြောင်းလဲနေတဲ့ အခြေအနေတွေကြားမှာ အံဝင်ခွင်ကျမဖြစ်ဘဲ ဆက်ဆံရေး တင်းမာမှုတွေ သို့မဟုတ် လုပ်ငန်းခွင် ဆုံးရှုံးမှုတွေနဲ့ ကြုံရတတ်ပါတယ်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>စရိုက်တစ်ခုတည်းမှာ ပိတ်မိမနေပါနဲ့။ အခန်း (၇) အရ စစ်မှန်တဲ့ ဗျူဟာရှင်တွေဟာ မိမိတို့အတွင်းစိတ်ထဲမှာ ရှိတဲ့ ကျား/မ သဘာဝ အရည်အသွေး နှစ်ခုလုံးကို (Anima & Animus) ဟန်ချက်ညီညီ ပေါင်းစပ်နိုင်သူတွေ ဖြစ်ကြပါတယ်။'
+        )">၁။ (က) "ငါ့ရဲ့ ပင်ကိုယ်ပုံစံအတိုင်းပဲ သွားမယ်" ဟုဆိုကာ မာကြောရမည့်နေရာမှာ မာကြောပြီး၊ သို့မဟုတ် နူးညံ့ရမည့်နေရာမှာ လုံးဝနူးညံ့သည့် စရိုက်တစ်ခုတည်းကိုပဲ တင်းခံပြီး ဆက်လက်အသုံးချမည်။</button>
+        
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'လူသားချင်း ဆက်ဆံရေးမှာကော လုပ်ငန်းခွင်မှာပါ အလွန်ဩဇာညောင်းပြီး ဆွဲဆောင်မှုရှိတဲ့ ခေါင်းဆောင်တစ်ဦး ဖြစ်လာပါလိမ့်မယ်။ သင့်ကို လူတွေက လေးစားသလို တစ်ဖက်မှာလည်း ချစ်ခင်ကြပါလိမ့်မယ်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>ဒီလို ပျော့ပျောင်းညင်သာတဲ့ စရိုက်ကို ဆက်ထိန်းပါ။ အခြေအနေအလိုက် ပုံသဏ္ဌာန်ပြောင်းလဲနိုင်တဲ့ အရည်အသွေးဟာ ဘဝရဲ့ အမြင့်ဆုံး လက်နက်တစ်ခု ဖြစ်ပါတယ်။'
+        )">၂။ (ခ) သင့်စိတ်ထဲမှာ ကန့်သတ်ထားတဲ့ ကျား/မ စရိုက်ဘောင်တွေကို ကျော်ဖြတ်ပြီး လိုအပ်တဲ့အချိန်မှာ ပြတ်သားမှုကို သုံးသလို၊ လိုအပ်တဲ့အချိန်မှာ နူးညံ့သိမ်မွေ့မှုနဲ့ စာနာမှုကို ပါးနပ်စွာ ကူးပြောင်းအသုံးပြုမည်။</button>
+        
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'ကိုယ့်ကိုယ်ကိုယ် ဖော်ပြခွင့်မရဘဲ အတွင်းစိတ်ထဲမှာ အမြဲတမ်း ပိတ်မိနေတတ်ပြီး ကြာလာရင် မလုံခြုံမှုတွေ တိုးပွားလာကာ ဘဝမှာ ဆုံးဖြတ်ချက် မပြတ်သားသူတစ်ဦး ဖြစ်လာပါလိမ့်မယ်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>သင့်အတွင်းစိတ်ထဲက ပုန်းကွယ်နေတဲ့ စွမ်းအင်တွေကို ထုတ်သုံးဖို့ မကြောက်ပါနဲ့။ လူတစ်ယောက်ရဲ့ တကယ့်အစွမ်းအစဟာ ဘောင်တွေကို ကျော်ဖြတ်နိုင်ခြင်းမှာ ရှိပါတယ်။'
+        )">၃။ (ဂ) ဆန့်ကျင်ဘက် စရိုက်ကို ထုတ်သုံးရမှာ ရှက်ရွံ့သဖြင့် သို့မဟုတ် အားနည်းချက်ဟု ထင်မှတ်သဖြင့် မည်သည့်အရေးယူဆောင်ရွက်မှုမျှ မလုပ်ဘဲ အခြေအနေကို ငြိမ်ကြည့်နေမည်။</button>
+    </div>
+
+    <div id="result-box">
+        <div class="res-section">
+            <span class="res-title" id="res-title"></span>
+            <p class="res-desc" id="res-desc"></p>
+        </div>
+        <div id="strategy-note"></div>
+        
+        <button onclick="completeQuiz()" class="next-btn">UNLOCK NEXT CHAPTER →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc, strat) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('q-text').style.opacity = '0.15';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('strategy-note').innerHTML = strat;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

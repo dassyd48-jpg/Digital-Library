@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 1: THE LAW OF IRRATIONALITY QUIZ</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #FCF6BA;
+            --dark-panel: rgba(20, 20, 20, 0.85);
+        }
+        body { 
+            background: #0D0D0D; 
+            color: #fff; 
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: var(--dark-panel); 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+            border-radius: 8px; 
+            padding: 25px; 
+            box-shadow: 0 10px 35px rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px);
+            text-align: center;
+        }
+        .phase-label { 
+            font-size: 11px; color: var(--gold); letter-spacing: 3px; 
+            text-transform: uppercase; font-weight: bold;
+            display: block; margin-bottom: 15px;
+        }
+        h2 { font-size: 15px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; }
+        
+        .option { 
+            display: block; width: 100%; padding: 15px; margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.15); 
+            color: #eee; border-radius: 4px; cursor: pointer; text-align: left; 
+            transition: all 0.3s ease; font-size: 13px; line-height: 1.5;
+        }
+        .option:hover { 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; font-weight: bold; border-color: transparent;
+            box-shadow: 0 4px 12px rgba(179,135,40,0.2);
+        }
+        
+        #result-box { 
+            display: none; margin-top: 5px; padding: 22px; 
+            border: 1px solid var(--gold); background: rgba(212, 175, 55, 0.05); 
+            border-radius: 6px; animation: fadeInUp 0.5s ease-out; 
+        }
+        .res-section { text-align: left; margin-bottom: 18px; }
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: var(--gold); 
+            margin-bottom: 10px; display: block; border-left: 3px solid var(--gold); 
+            padding-left: 10px; text-align: left; letter-spacing: 1px;
+        }
+        .res-desc { color: #ddd; font-size: 13px; line-height: 1.7; margin: 0; }
+        
+        #strategy-note { 
+            font-size: 12.5px; color: var(--gold-light); 
+            background: rgba(212, 175, 55, 0.1); padding: 14px; 
+            border-radius: 4px; margin-bottom: 22px; text-align: left; line-height: 1.6;
+        }
+        
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; border: none; border-radius: 4px; font-weight: 900; 
+            cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 1px;
+        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <span class="phase-label">အခန်း (၁) - Interactive ဆန်းစစ်ချက်</span>
+    <h3 style="font-size: 16px; color: var(--gold); margin: 5px 0 15px 0; font-weight: bold;">[စိတ်ပိုင်းဆိုင်ရာ မျက်နှာကန်းခြင်း ထောင်ချောက်]</h3>
+    
+    <h2 id="q-text"><b>ပဟေဠိအခြေအနေ (Scenario):</b><br>သင့်လုပ်ငန်းခွင် (သို့မဟုတ်) စီးပွားရေးနယ်ပယ်မှာ သင့်ထက် ဝါရင့်တဲ့လူတစ်ယောက်က သင့်ရဲ့ လုပ်ဆောင်ချက်တွေကို အမြဲတမ်း လိုက်လံဝေဖန် အပြစ်တင်နေတတ်ပါတယ်။ ဒါပေမဲ့ သူက "ငါက မင်းကို တိုးတက်စေချင်လို့ စေတနာနဲ့ ပြောတာပါ" လို့ အမြဲအကြောင်းပြလေ့ရှိတယ်။ ဒီအခြေအနေမှာ သင် ဘယ်လို တုံ့ပြန်မလဲ?</h2>
+    
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'သင်ဟာ တစ်ဖက်လူရဲ့ စိတ်ပိုင်းဆိုင်ရာ လွှမ်းမိုးချုပ်ကိုင်မှု (Gaslighting) အောက်ကို သတိမထားမိဘဲ ရောက်သွားနိုင်ပါတယ်။ ကြာလာရင် မိမိကိုယ်မိမိ ယုံကြည်မှု (Self-Confidence) ပျောက်ဆုံးလာပြီး၊ ဘာလုပ်လုပ် အမှားလုပ်မိနေသလို ခံစားရကာ တစ်ဖက်လူရဲ့ အတည်ပြုချက် (Approval) ကိုပဲ အမြဲတမ်း စောင့်မျှော်နေရတဲ့ သားကောင် ဖြစ်သွားပါလိမ့်မယ်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>&quot;စေတနာ&quot; ဆိုတဲ့ စကားလုံးနောက်မှာ မျက်စိမှိတ် မလိုက်ပါနဲ့။ အခန်း (၁) အရ လူတွေရဲ့ စကားလုံးထက် &quot;လုပ်ရပ်&quot; ကို ကြည့်ရပါမယ်။ သူက သင့်ကို တကယ်တိုးတက်စေချင်တာလား၊ ဒါမှမဟုတ် သင့်ကို နှိပ်ကွပ်ပြီး သူက ဆရာကြီးလုပ်ချင်တာလား ဆိုတာကို ခွဲခြားပါ။ သူဝေဖန်တဲ့အထဲက အချက်အလက် (Fact) ကိုပဲယူပြီး၊ စိတ်ခံစားချက် (Emotion) နဲ့ အပြစ်တင်မှုကိုတော့ စိတ်ထဲကနေ အပိတ်အဆို့ (Boundary) လုပ်ထားဖို့ လိုအပ်ပါတယ်။'
+        )">၁။ (က) "သူပြောတာ စေတနာပဲ ဖြစ်မှာပါ" ဆိုပြီး ဝေဖန်မှုအားလုံးကို ခေါင်းငုံ့ခံလိုက်မယ်</button>
+        
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'ဂုဏ်ယူပါတယ်၊ သင်ဟာ စိတ်ခံစားချက်နောက်ကို လွယ်လွယ်နဲ့ မမျောပါဘဲ လူ့သဘာဝကို အရှိအတိုင်း မြင်အောင်ကြည့်နိုင်တဲ့ &quot;ပညာမျက်စိ&quot; ရှိသူ ဖြစ်ပါတယ်။ ဒီစရိုက်ကြောင့် ဘဝမှာ လူလိမ်တွေ၊ Manipulate လုပ်ချင်သူတွေရဲ့ ထောင်ချောက်ထဲကို လွယ်လွယ်နဲ့ ရောက်သွားမှာ မဟုတ်ပါဘူး။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>သင့်ရဲ့ ဒီအကဲခတ်စွမ်းရည်ကို ပိုမိုထက်မြက်အောင် အရောင်တင်ပါ။ ထိုသူရဲ့ မသိစိတ် (Subconscious Drive) ကို ဆက်လက်လေ့လာပါ။ သူသည် အမှန်တကယ်ပဲ အာဏာပြလိုသူ ဖြစ်နေပါက၊ သူ့ရှေ့တွင် ထိပ်တိုက်ရင်မဆိုင်ဘဲ မိမိဘက်က အမှားအယွင်းမရှိအောင် အချက်အလက် ခိုင်ခိုင်မာမာဖြင့်သာ တုံ့ပြန် ဆက်ဆံသွားပါ။'
+        )">၂။ (ခ) "သူ့ရဲ့ အပြုအမူတွေ၊ လုပ်ရပ်တွေကို တခြားသူတွေအပေါ် ဆက်ဆံပုံနဲ့ပါ ချိန်ထိုးပြီး ဆိတ်ငြိမ်စွာ စောင့်ကြည့်ဆန်းစစ်မယ်"</button>
+        
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'သင့်ဘက်က မခံချင်စိတ်နဲ့ ချက်ချင်း တုံ့ပြန်လိုက်ခြင်းက တစ်ဖက်လူကို &quot;မင်းက စိတ်မတည်ငြိမ်ဘူး၊ စေတနာကို မသိတတ်ဘူး&quot; ဆိုပြီး သင့်အပေါ် ပိုပြီး အပြစ်တင်စရာ အကွက်ကောင်း ပေးလိုက်သလို ဖြစ်သွားပါလိမ့်မယ်။ လုပ်ငန်းခွင် သို့မဟုတ် လူမှုရေးမှာ သင့်ကို ရန်လိုသူ၊ ဆက်ဆံရခက်သူလို့ အများက မြင်သွားနိုင်ပါတယ်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>ဒေါသနဲ့ တုံ့ပြန်ခြင်းဟာ တစ်ဖက်လူရဲ့ ကစားကွက်ထဲကို ဆင်းပေးလိုက်တာ ဖြစ်ပါတယ်။ အခန်း (၁) မှာ လေ့လာခဲ့တဲ့အတိုင်း &quot;စိတ်လှုပ်ရှားမှုကို ထိန်းချုပ်ခြင်း (Emotional Control)&quot; သည် အဓိက သော့ချက်ပါ။ နောက်နောင်မှာ ထိုသို့ ကြုံလာပါက ချက်ချင်း တုံ့ပြန်ခြင်း မပြုဘဲ ၃ စက္ကန့်ခန့် အသက်ရှူကာ စိတ်ကို အေးခဲထားလိုက်ပါ။ သင့်ရဲ့ တည်ငြိမ်မှုကပဲ တစ်ဖက်လူရဲ့ လွှမ်းမိုးချုပ်ကိုင်လိုတဲ့ အတ္တကို အထိရောက်ဆုံး တိုက်ဖျက်နိုင်မှာ ဖြစ်ပါတယ်။'
+        )">၃။ (ဂ) "ဒေါသထွက်ပြီး သူ့ကို ချက်ချင်း ပြန်ရန်လုပ်မယ် (သို့မဟုတ်) လမ်းခွဲ စကားမပြောဘဲ နေမယ်"</button>
+    </div>
+
+    <div id="result-box">
+        <div class="res-section">
+            <span class="res-title" id="res-title"></span>
+            <p class="res-desc" id="res-desc"></p>
+        </div>
+        <div id="strategy-note"></div>
+        
+        <button onclick="completeQuiz()" class="next-btn">UNLOCK NEXT CHAPTER →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc, strat) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('q-text').style.opacity = '0.15';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('strategy-note').innerHTML = strat; // HTML Tag များ ပါဝင်နိုင်ရန် innerHTML သုံးထားပါသည်
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        // Main Flip Book ဆီသို့ ကူးပြောင်းရန် Message ပို့ခြင်း
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

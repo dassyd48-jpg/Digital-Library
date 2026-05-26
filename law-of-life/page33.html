@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 3: THE LAW OF ROLE-PLAYING QUIZ</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #FCF6BA;
+            --dark-panel: rgba(20, 20, 20, 0.85);
+        }
+        body { 
+            background: #0D0D0D; 
+            color: #fff; 
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: var(--dark-panel); 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+            border-radius: 8px; 
+            padding: 25px; 
+            box-shadow: 0 10px 35px rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px);
+            text-align: center;
+        }
+        .phase-label { 
+            font-size: 11px; color: var(--gold); letter-spacing: 3px; 
+            text-transform: uppercase; font-weight: bold;
+            display: block; margin-bottom: 15px;
+        }
+        h2 { font-size: 15px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; }
+        
+        .option { 
+            display: block; width: 100%; padding: 15px; margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.15); 
+            color: #eee; border-radius: 4px; cursor: pointer; text-align: left; 
+            transition: all 0.3s ease; font-size: 13px; line-height: 1.5;
+        }
+        .option:hover { 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; font-weight: bold; border-color: transparent;
+            box-shadow: 0 4px 12px rgba(179,135,40,0.2);
+        }
+        
+        #result-box { 
+            display: none; margin-top: 5px; padding: 22px; 
+            border: 1px solid var(--gold); background: rgba(212, 175, 55, 0.05); 
+            border-radius: 6px; animation: fadeInUp 0.5s ease-out; 
+        }
+        .res-section { text-align: left; margin-bottom: 18px; }
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: var(--gold); 
+            margin-bottom: 10px; display: block; border-left: 3px solid var(--gold); 
+            padding-left: 10px; text-align: left; letter-spacing: 1px;
+        }
+        .res-desc { color: #ddd; font-size: 13px; line-height: 1.7; margin: 0; }
+        
+        #strategy-note { 
+            font-size: 12.5px; color: var(--gold-light); 
+            background: rgba(212, 175, 55, 0.1); padding: 14px; 
+            border-radius: 4px; margin-bottom: 22px; text-align: left; line-height: 1.6;
+        }
+        
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; border: none; border-radius: 4px; font-weight: 900; 
+            cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 1px;
+        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <span class="phase-label">အခန်း (၃) - Interactive ဆန်းစစ်ချက်</span>
+    <h3 style="font-size: 16px; color: var(--gold); margin: 5px 0 15px 0; font-weight: bold;">[ကာကွယ်မှု မျက်နှာဖုံးများနှင့် ဟန်ဆောင်မှုများ]</h3>
+    
+    <h2 id="q-text"><b>ပဟေဠိအခြေအနေ:</b><br>အရေးကြီးတဲ့ စီးပွားရေး ဆွေးနွေးပွဲတစ်ခုမှာ တစ်ဖက်လူက သင့်အပေါ် အလွန်အမင်း ရိုသေပြသပြီး လက်ဆောင်တွေ အများကြီးပေးကာ ကတိအကြီးကြီးတွေ ချက်ချင်း ပေးနေပါတယ်။ သင် ဘာပြင်ဆင်မလဲ။</h2>
+    
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'ချိုသာသော မျက်နှာဖုံးနောက်ကွယ်မှ &quot;စီးပွားရေး ထောင်ချောက်&quot; အတွင်းသို့ သားကောင်အဖြစ် သက်ဆင်းသွားပြီး ရာစုနှစ်ဝက်စာ နောင်တရရတတ်သည်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>အခန်း (၃) အရ အလွန်အမင်း ကောင်းပြခြင်းသည် တစ်ခုခုကို ဖုံးကွယ်လိုသော ကာကွယ်မှု မျက်နှာဖုံး ဖြစ်နိုင်သည်။ လောကတွင် အလကားရသော ဆုလာဘ်မရှိကြောင်း သတိပြုပါ။'
+        )">၁။ (က) သူက ငါ့အပေါ် တကယ်လေးစားတာပဲဟု တွေးကာ ဝမ်းသာအားရဖြင့် စာချုပ်များကို သတိမထားဘဲ ချက်ချင်း လက်မှတ်ထိုးမည်။</button>
+        
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'သင့်ကို မည်သည့် စီးပွားရေးလိမ်လည်သူမျှ လှည့်စား၍ မရနိုင်ပါ။ ဘေးကင်းပြီး ခိုင်မာသော ချမ်းသာမှုကို တည်ဆောက်နိုင်ပါလိမ့်မည်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>စကားလုံးကို နားမထောင်ပါနှင့်။ စာချုပ်ပါ အချက်အလက်များနှင့် သက်သေများကိုသာ ဥပဒေကြောင်းအရ အကြံဉာဏ်ရယူ စစ်ဆေးပါ။'
+        )">၂။ (ခ) အလွန်အကျွံ ကောင်းပြနေခြင်းနောက်ကွယ်က "မရိုးသားသော ရည်ရွယ်ချက်" ကို သံသယဝင်ပြီး ထိုသူ၏ နောက်ကြောင်း ရာဇဝင်နှင့် လက်တွေ့လုပ်ဆောင်ချက်များကို သေချာ စုံစမ်းစစ်ဆေးမည်။</button>
+        
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'ကြောက်ရွံ့စိတ်ကြောင့် တကယ့် ကောင်းမွန်သော မိတ်ဖက်အစစ်အမှန်များနှင့် အခွင့်အရေးများကို လက်လွတ် ဆုံးရှုံးရတတ်သည်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>ကြောက်စရာမလိုပါ။ ဉာဏ်ဖြင့် ချိန်ထိုးစစ်ဆေးခြင်းကသာ အကောင်းဆုံး လက်နက်ဖြစ်သည်။'
+        )">၃။ (ဂ) ကြောက်လှန့်ပြီး ထိုသူနှင့် စီးပွားရေး လုံးဝမလုပ်တော့ဘဲ ပြေးရှောင်မည်။</button>
+    </div>
+
+    <div id="result-box">
+        <div class="res-section">
+            <span class="res-title" id="res-title"></span>
+            <p class="res-desc" id="res-desc"></p>
+        </div>
+        <div id="strategy-note"></div>
+        
+        <button onclick="completeQuiz()" class="next-btn">UNLOCK NEXT CHAPTER →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc, strat) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('q-text').style.opacity = '0.15';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('strategy-note').innerHTML = strat;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        // Main Flip Book ဆီသို့ ကူးပြောင်းရန် Message ပို့ခြင်း
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

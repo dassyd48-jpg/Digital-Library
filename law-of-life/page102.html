@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 10: THE LAW OF FICKLENESS QUIZ</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #FCF6BA;
+            --dark-panel: rgba(20, 20, 20, 0.85);
+        }
+        body { 
+            background: #0D0D0D; 
+            color: #fff; 
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: var(--dark-panel); 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+            border-radius: 8px; 
+            padding: 25px; 
+            box-shadow: 0 10px 35px rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px);
+            text-align: center;
+        }
+        .phase-label { 
+            font-size: 11px; color: var(--gold); letter-spacing: 3px; 
+            text-transform: uppercase; font-weight: bold;
+            display: block; margin-bottom: 15px;
+        }
+        h2 { font-size: 15px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; }
+        
+        .option { 
+            display: block; width: 100%; padding: 15px; margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.15); 
+            color: #eee; border-radius: 4px; cursor: pointer; text-align: left; 
+            transition: all 0.3s ease; font-size: 13px; line-height: 1.5;
+        }
+        .option:hover { 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; font-weight: bold; border-color: transparent;
+            box-shadow: 0 4px 12px rgba(179,135,40,0.2);
+        }
+        
+        #result-box { 
+            display: none; margin-top: 5px; padding: 22px; 
+            border: 1px solid var(--gold); background: rgba(212, 175, 55, 0.05); 
+            border-radius: 6px; animation: fadeInUp 0.5s ease-out; 
+        }
+        .res-section { text-align: left; margin-bottom: 18px; }
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: var(--gold); 
+            margin-bottom: 10px; display: block; border-left: 3px solid var(--gold); 
+            padding-left: 10px; text-align: left; letter-spacing: 1px;
+        }
+        .res-desc { color: #ddd; font-size: 13px; line-height: 1.7; margin: 0; }
+        
+        #strategy-note { 
+            font-size: 12.5px; color: var(--gold-light); 
+            background: rgba(212, 175, 55, 0.1); padding: 14px; 
+            border-radius: 4px; margin-bottom: 22px; text-align: left; line-height: 1.6;
+        }
+        
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; border: none; border-radius: 4px; font-weight: 900; 
+            cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 1px;
+        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <span class="phase-label">အခန်း (၁၀) - Interactive ဆန်းစစ်ချက်</span>
+    <h3 style="font-size: 16px; color: var(--gold); margin: 5px 0 15px 0; font-weight: bold;">[မတည်ငြိမ်သော စိတ်သဘာဝ၏ နိယာမ]</h3>
+    
+    <h2 id="q-text"><b>ပဟေဠိအခြေအနေ (Scenario):</b><br>သင့်ရဲ့ လုပ်ငန်းခွင် သို့မဟုတ် အနီးနားမှာ အာဏာရှိတဲ့ လူကြီးတစ်ယောက် (သို့မဟုတ်) အဓိက လက်တွဲဖော်တစ်ဦးဟာ ဒီနေ့မှာ သင့်ကို အလွန်အမင်း ချီးမွမ်းမြှောက်စားပြီး နောက်နေ့မှာတော့ အကြောင်းပြချက်မရှိဘဲ စိမ်းကားပြောင်းလဲကာ ဝေဖန်အပြစ်တင်တာမျိုး ပြုလုပ်လာပါတယ်။ တစ်ဖက်လူရဲ့ စိတ်သဘာဝက လေထဲက တိမ်တွေလို မတည်မငြိမ် ဖြစ်နေတဲ့အခါ သင် ဘယ်လို တုံ့ပြန်မလဲ?</h2>
+    
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'သင့်ဘဝရဲ့ ပျော်ရွှင်မှုနဲ့ စိတ်အေးချမ်းမှုကို သူတစ်ပါးရဲ့ စိတ်အခြေအနေပေါ်မှာ ပုံအပ်ထားသလို ဖြစ်သွားပြီး စွမ်းအင်တွေ အလဟဿ ကုန်ခမ်းကာ စိတ်ပိုင်းဆိုင်ရာ မတည်ငြိမ်မှုတွေ ကြုံရပါလိမ့်မယ်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>အခန်း (၁၀) အရ လူတို့၏ စိတ်သည် မတည်ငြိမ် (Fickle) တတ်ကြသည်။ သူတစ်ပါးရဲ့ စိတ်ခံစားချက် လှိုင်းလုံးတွေကြားမှာ သင့်ရဲ့ လလှေကို အမြုပ်မခံပါနဲ့။'
+        )">၁။ (က) တစ်ဖက်လူရဲ့ အမူအရာအပြောင်းအလဲပေါ် မူတည်ပြီး သင့်စိတ်ထဲမှာလည်း ဒေါသထွက်လိုက်၊ ဝမ်းနည်းလိုက်၊ စိုးရိမ်ပူပန်လိုက်ဖြင့် စိတ်ခံစားချက် ဒရမ်မာထဲ လိုက်ပါမျောပါမည်။</button>
+        
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'အမြင့်ဆုံးသော စိတ်ပိုင်းဆိုင်ရာ ရင့်ကျက်မှု ဖြစ်ပါတယ်။ သင့်ရဲ့ အေးချမ်းတည်ငြိမ်မှု (Equanimity) ကြောင့် ရေရှည်မှာ ဘယ်လိုလူမျိုးကမှ သင့်ကို လွှမ်းမိုးချုပ်ကိုင်နိုင်မှာ မဟုတ်ပါဘူး။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>စိတ်ကို ဗဟိုချက်တည့်တည့်မှာပဲ ဆက်ထားပါ။ သူတစ်ပါးရဲ့ ပြောင်းလဲတတ်တဲ့ စရိုက်ကို ကိုယ်ရေးကိုယ်တာ ကိစ္စ (Personal) အဖြစ် သတ်မှတ်ပြီး စိတ်မနာပါနဲ့။'
+        )">၂။ (ခ) လူတို့၏ စိတ်သဘာဝသည် အမြဲပြောင်းလဲတတ်သော သဘောရှိကြောင်း နားလည်ကာ တစ်ဖက်လူ၏ မြှောက်စားမှုကိုလည်း သာယာခြင်းမရှိ၊ ကဲ့ရဲ့မှုကိုလည်း စိတ်မဆိုးဘဲ မိမိလုပ်စရာရှိသည်ကိုသာ စိတ်တည်ငြိမ်စွာ ဆက်လုပ်မည်။</button>
+        
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'သင့်ရဲ့ တန်ဖိုးကို အောက်ချပစ်လိုက်သလို ဖြစ်သွားပြီး ထိုသူက သင့်အပေါ် ပိုမိုနိုင်ထက်စီးနင်း လုပ်လာကာ လေးစားမှု လုံးဝမရှိတော့တဲ့ အခြေအနေမျိုး ဖြစ်သွားတတ်ပါတယ်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>မျက်နှာချိုမသွေးပါနဲ့။ သင့်ရဲ့ ပရော်ဖက်ရှင်နယ်ကျမှုနဲ့ အရည်အချင်းဖြင့်သာ သက်သေပြပါ။ ကိုယ့်ကိုယ်ကိုယ် လေးစားမှုက ပထမ ဖြစ်ပါတယ်။'
+        )">၃။ (ဂ) "သူက ငါ့ကို မုန်းသွားပြီ ထင်တယ်" ဟု တွေးကာ ကြောက်ရွံ့အားနာပြီး ထိုသူ၏ စိတ်ကျေနပ်မှုရရှိစေရန်အတွက် အောက်ကျို့ပြီး နည်းမျိုးစုံဖြင့် လိုက်လံ မျက်နှာချိုသွေးမည်။</button>
+    </div>
+
+    <div id="result-box">
+        <div class="res-section">
+            <span class="res-title" id="res-title"></span>
+            <p class="res-desc" id="res-desc"></p>
+        </div>
+        <div id="strategy-note"></div>
+        
+        <button onclick="completeQuiz()" class="next-btn">UNLOCK NEXT CHAPTER →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc, strat) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('q-text').style.opacity = '0.15';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('strategy-note').innerHTML = strat;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

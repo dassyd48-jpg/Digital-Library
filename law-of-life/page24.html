@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 2: THE LAW OF NARCISSISM QUIZ</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #FCF6BA;
+            --dark-panel: rgba(20, 20, 20, 0.85);
+        }
+        body { 
+            background: #0D0D0D; 
+            color: #fff; 
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: var(--dark-panel); 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+            border-radius: 8px; 
+            padding: 25px; 
+            box-shadow: 0 10px 35px rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px);
+            text-align: center;
+        }
+        .phase-label { 
+            font-size: 11px; color: var(--gold); letter-spacing: 3px; 
+            text-transform: uppercase; font-weight: bold;
+            display: block; margin-bottom: 15px;
+        }
+        h2 { font-size: 15px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; }
+        
+        .option { 
+            display: block; width: 100%; padding: 15px; margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.15); 
+            color: #eee; border-radius: 4px; cursor: pointer; text-align: left; 
+            transition: all 0.3s ease; font-size: 13px; line-height: 1.5;
+        }
+        .option:hover { 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; font-weight: bold; border-color: transparent;
+            box-shadow: 0 4px 12px rgba(179,135,40,0.2);
+        }
+        
+        #result-box { 
+            display: none; margin-top: 5px; padding: 22px; 
+            border: 1px solid var(--gold); background: rgba(212, 175, 55, 0.05); 
+            border-radius: 6px; animation: fadeInUp 0.5s ease-out; 
+        }
+        .res-section { text-align: left; margin-bottom: 18px; }
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: var(--gold); 
+            margin-bottom: 10px; display: block; border-left: 3px solid var(--gold); 
+            padding-left: 10px; text-align: left; letter-spacing: 1px;
+        }
+        .res-desc { color: #ddd; font-size: 13px; line-height: 1.7; margin: 0; }
+        
+        #strategy-note { 
+            font-size: 12.5px; color: var(--gold-light); 
+            background: rgba(212, 175, 55, 0.1); padding: 14px; 
+            border-radius: 4px; margin-bottom: 22px; text-align: left; line-height: 1.6;
+        }
+        
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; border: none; border-radius: 4px; font-weight: 900; 
+            cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 1px;
+        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <span class="phase-label">အခန်း (၂) - Interactive ဆန်းစစ်ချက်</span>
+    <h3 style="font-size: 16px; color: var(--gold); margin: 5px 0 15px 0; font-weight: bold;">[အတ္တအသွင်ပြောင်းခြင်းနှင့် နာမည်ကျော်ကြားလိုမှု]</h3>
+    
+    <h2 id="q-text"><b>ပဟေဠိအခြေအနေ (Scenario):</b><br>သင်ဟာ ပရောဂျက်တစ်ခုကို နေ့မအိပ် ညမေန ကြိုးစားပြီး အောင်မြင်အောင် လုပ်ခဲ့ပါတယ်။ ဒါပေမဲ့ အစည်းအဝေးပွဲမှာ သင့်ရဲ့ အဖွဲ့ခေါင်းဆောင် (သို့မဟုတ်) လုပ်ဖော်ကိုင်ဖက်တစ်ဦးက "ဒါက ငါ့ရဲ့ အကြံဉာဏ်နဲ့ ဦးဆောင်မှုကြောင့် အခုလို အောင်မြင်သွားတာပါ" ဆိုပြီး လူကြီးတွေရှေ့မှာ အကောင်းကောင်းကြီး နာမည်ကောင်း ဝင်ယူသွားပါတယ်။ သင် ဘယ်လို တုံ့ပြန်မလဲ?</h2>
+    
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'လူကြီးများရှေ့တွင် ချက်ချင်း ဒေါသတုံ့ပြန်ခြင်းက သင့်ကို အသင်းအဖွဲ့နှင့် လုပ်ကိုင်ရခက်ခဲသူ၊ ရန်လိုသူဟု ထင်မြင်သွားစေနိုင်ပြီး ထိုသူ၏ အတ္တကို သွားရောက်ဆွပေးသလိုဖြစ်ကာ သင့်အပေါ် ပိုမိုရန်ငြိုးဖွဲ့လာပါလိမ့်မည်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>အခန်း (၂) အရ လူတို့၏ အတ္တနှင့် နာမည်ကျော်ကြားလိုမှုကို အများရှေ့တွင် ရိုက်ချိုးခြင်းက အကျိုးထက် အပြစ်ပိုများသည်။ စိတ်ခံစားချက်ကို ခဏထိန်းပြီး သက်သေအထောက်အထားဖြင့်သာ သပ်သပ်စီမံပါ။'
+        )">၁။ (က) လူကြီးတွေရှေ့မှာတင် "ဒါ ကျွန်တော့်အကြံဉာဏ်ပါ၊ သူဘာမှမလုပ်ပါဘူး" ဟု ချက်ချင်း ထစ်ထစ်ချချ ထောက်ပြငြင်းခုံမည်။</button>
+        
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'သင်သည် အမြဲတမ်း သူတစ်ပါး အမြတ်ထုတ်ခြင်း ခံရသည့် "အနစ်နာခံ သားကောင်" ဖြစ်နေပါလိမ့်မည်။ လုပ်ငန်းခွင်တွင် သင့်အလုပ်ကို လူရာမသွင်းဘဲ နေတတ်ပြီး ကြာလာလျှင် စိတ်ကျဉ်းကျပ်မှု ခံစားရပါလိမ့်မည်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>အောင်မြင်မှုကို ငြိမ်ခံနေခြင်းက သူတစ်ပါးကို သင့်အပေါ် ထပ်မံခိုးယူရန် ခွင့်ပြုလိုက်ခြင်းဖြစ်သည်။ သင့်လုပ်ရပ်၏ တန်ဖိုးကို ဝှက်မထားပါနှင့်။'
+        )">၂။ (ခ) စိတ်ထဲက မကျေနပ်သော်လည်း ရန်မဖြစ်ချင်သဖြင့် ဘာမှမပြောဘဲ အောင့်အည်းသည်းခံပြီး ကိုယ့်အလုပ်ကိုယ် ဆက်လုပ်မည်။</button>
+        
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'အကောင်းဆုံးသော မာစတာ လုပ်ရပ်ဖြစ်သည်။ လူကြီးများက သင့်ကို ပရော်ဖက်ရှင်နယ်ကျကျ အလုပ်လုပ်သူ၊ Data ခိုင်မာသူဟု မြင်သွားပြီး ထိုသူ၏ လိမ်ညာမှုကိုလည်း သွယ်ဝိုက်သောနည်းဖြင့် ဖော်ထုတ်ပြီးသား ဖြစ်သွားပါလိမ့်မည်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>အမြဲတမ်း မိမိလုပ်ဆောင်ချက်များကို အထောက်အထား (Log/Report) ချန်ထားပါ။ အသံကျယ်သူထက် အချက်အလက် ခိုင်မာသူကသာ ရေရှည်တွင် အနိုင်ရစမြဲ ဖြစ်သည်။'
+        )">၃။ (ဂ) ထိုသူနှင့် ထိပ်တိုက်မတွေ့ဘဲ မိမိလုပ်ဆောင်ခဲ့သည့် အထောက်အထား၊ Report များနှင့် Data များကို လူကြီးများဆီသို့ စနစ်တကျ အီးမေးလ်ဖြင့် တရားဝင် တင်ပြမည်။</button>
+    </div>
+
+    <div id="result-box">
+        <div class="res-section">
+            <span class="res-title" id="res-title"></span>
+            <p class="res-desc" id="res-desc"></p>
+        </div>
+        <div id="strategy-note"></div>
+        
+        <button onclick="completeQuiz()" class="next-btn">UNLOCK NEXT CHAPTER →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc, strat) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('q-text').style.opacity = '0.15';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('strategy-note').innerHTML = strat;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        // Main Flip Book ဆီသို့ ကူးပြောင်းရန် Message ပို့ခြင်း
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

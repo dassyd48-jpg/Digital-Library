@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 11: THE LAW OF MASKING & DECODING QUIZ</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #FCF6BA;
+            --dark-panel: rgba(20, 20, 20, 0.85);
+        }
+        body { 
+            background: #0D0D0D; 
+            color: #fff; 
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: var(--dark-panel); 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+            border-radius: 8px; 
+            padding: 25px; 
+            box-shadow: 0 10px 35px rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px);
+            text-align: center;
+        }
+        .phase-label { 
+            font-size: 11px; color: var(--gold); letter-spacing: 3px; 
+            text-transform: uppercase; font-weight: bold;
+            display: block; margin-bottom: 15px;
+        }
+        h2 { font-size: 15px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; }
+        
+        .option { 
+            display: block; width: 100%; padding: 15px; margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.03); 
+            border: 1px solid rgba(212, 175, 55, 0.15); 
+            color: #eee; border-radius: 4px; cursor: pointer; text-align: left; 
+            transition: all 0.3s ease; font-size: 13px; line-height: 1.5;
+        }
+        .option:hover { 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; font-weight: bold; border-color: transparent;
+            box-shadow: 0 4px 12px rgba(179,135,40,0.2);
+        }
+        
+        #result-box { 
+            display: none; margin-top: 5px; padding: 22px; 
+            border: 1px solid var(--gold); background: rgba(212, 175, 55, 0.05); 
+            border-radius: 6px; animation: fadeInUp 0.5s ease-out; 
+        }
+        .res-section { text-align: left; margin-bottom: 18px; }
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: var(--gold); 
+            margin-bottom: 10px; display: block; border-left: 3px solid var(--gold); 
+            padding-left: 10px; text-align: left; letter-spacing: 1px;
+        }
+        .res-desc { color: #ddd; font-size: 13px; line-height: 1.7; margin: 0; }
+        
+        #strategy-note { 
+            font-size: 12.5px; color: var(--gold-light); 
+            background: rgba(212, 175, 55, 0.1); padding: 14px; 
+            border-radius: 4px; margin-bottom: 22px; text-align: left; line-height: 1.6;
+        }
+        
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; border: none; border-radius: 4px; font-weight: 900; 
+            cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 1px;
+        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <span class="phase-label">အခန်း (၁၁) - Interactive ဆန်းစစ်ချက်</span>
+    <h3 style="font-size: 16px; color: var(--gold); margin: 5px 0 15px 0; font-weight: bold;">[အပေါ်ယံ ဟန်ဆောင်မှုများကို ခွဲခြမ်းစိတ်ဖြာခြင်း နိယာမ]</h3>
+    
+    <h2 id="q-text"><b>ပဟေဠိအခြေအနေ (Scenario):</b><br>လူသစ်တစ်ယောက်နဲ့ စကားပြောဆို ဆက်ဆံတဲ့အခါ သို့မဟုတ် စီးပွားရေးအရ ချိတ်ဆက်တဲ့အခါ ထိုသူက စကားလုံးအလှအပတွေ၊ ခန္ဓာကိုယ်အမူအရာတွေနဲ့ သင့်အပေါ် အလွန်အမင်း ရိုးသားပွင့်လင်းဟန် ဆောင်ပြနေပါတယ်။ ဒါပေမဲ့ သူ့ရဲ့ မျက်လုံးအကြည့်၊ အသံအနေအထား သို့မဟုတ် သေးငယ်တဲ့ Micro-expressions အမူအရာတွေထဲမှာ တစ်ခုခု မရိုးသားသလို သံသယဝင်စရာ အချက်ပြမှု (Leakage Cues) အချို့ကို သင် သတိပြုမိလိုက်ပါတယ်။ သင် ဘယ်လို လုပ်မလဲ?</h2>
+    
+    <div id="options-group">
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'လူ့သဘာဝရဲ့ အပေါ်ယံ မျက်နှာဖုံး (Mask) တွေကြားမှာ လှည့်စားခံရပြီး ကြီးမားတဲ့ သစ္စာဖောက်မှု သို့မဟုတ် လိမ်လည်မှုတွေနဲ့ ကြုံတွေ့ရတတ်ပါတယ်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>အခန်း (၁၁) အရ လူတိုင်းဟာ မျက်နှာဖုံး ဝတ်ဆင်ထားကြပါတယ်။ စကားလုံးထက် သွယ်ဝိုက်သောအမူအရာတွေကသာ အမှန်တရားကို ပိုမိုဖော်ပြတတ်ကြောင်း သတိပြုပါ။'
+        )">၁။ (က) "သူပြောတာတွေက ဟုတ်မှာပါပဲ" ဟုဆိုကာ အပေါ်ယံ ပြောဆိုချက် (Words) များကိုသာ မျက်စိမှိတ်ယုံကြည်ပြီး သတိမထားဘဲ အလုံးစုံ ပုံအပ်လိုက်မည်။</button>
+        
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'လူသားတွေကို ဖတ်ရှုနိုင်တဲ့ (Human Decoder) အဆင့်မြင့် ဗျူဟာရှင် ဖြစ်လာပါလိမ့်မယ်။ ဘယ်သူကမှ သင့်ကို အပေါ်ယံ မျက်နှာဖုံးတွေနဲ့ လှည့်စားလို့ ရမှာ မဟုတ်တော့ပါဘူး။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>ဤလေ့လာဆန်းစစ်မှု စွမ်းရည်ကို ပိုမိုမြှင့်တင်ပါ။ တစ်ဖက်လူရဲ့ စကားလုံးနဲ့ အမူအရာ ကိုက်ညီမှု ရှိ/မရှိ အမြဲ ချိန်ထိုးကြည့်ပါ။'
+        )">၂။ (ခ) စကားလုံးများကို နားမထောင်ဘဲ တစ်ဖက်လူရဲ့ ခန္ဓာကိုယ်ဘာသာစကား၊ အကြည့်နှင့် သွယ်ဝိုက်သောအမူအရာ (Non-verbal cues) များကို စနစ်တကျ Decoding လုပ်ပြီး မျက်နှာဖုံးနောက်ကွယ်က ရည်ရွယ်ချက်အစစ်အမှန်ကို ပါးနပ်စွာ ဆန်းစစ်မည်။</button>
+        
+        <button class="option" onclick="showAnalysis(
+            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
+            'သင့်မှာ အထောက်အထား ခိုင်ခိုင်မာမာ မရှိဘဲ တိုက်ရိုက်စွပ်စွဲမိတဲ့အတွက် ဆက်ဆံရေး ပျက်ပြားရုံသာမက သင့်ကို လူမှုပတ်ဝန်းကျင်က Paranoid (လွန်ကဲစွာ သံသယစိတ်များသူ) ဟု မြင်သွားစေနိုင်ပါတယ်။', 
+            '💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>ဒေါသဖြင့် မတုံ့ပြန်ပါနဲ့။ ဉာဏ်ဖြင့် အသာစီးယူကာ အချက်အလက်များကို တိတ်တဆိတ် စုဆောင်းဆန်းစစ်ခြင်းကသာ အကောင်းဆုံး ဖြစ်ပါတယ်။'
+        )">၃။ (ဂ) လွန်လွန်ကဲကဲ သံသယဝင်ပြီး "ဒီလူကတော့ ငါ့ကို လိမ်နေတာ ဧကန်မုချပဲ" ဟု အများရှေ့တွင် တိုက်ရိုက် စွပ်စွဲပစ်လိုက်မည်။</button>
+    </div>
+
+    <div id="result-box">
+        <div class="res-section">
+            <span class="res-title" id="res-title"></span>
+            <p class="res-desc" id="res-desc"></p>
+        </div>
+        <div id="strategy-note"></div>
+        
+        <button onclick="completeQuiz()" class="next-btn">FINISH BOOK & OPEN LIBRARY →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc, strat) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('q-text').style.opacity = '0.15';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('strategy-note').innerHTML = strat;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRE-READING DIAGNOSTIC TEST | PAGE 2</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-gradient: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --dark-panel: rgba(18, 18, 18, 0.9);
+        }
+        body { 
+            background: #0D0D0D; 
+            color: #fff; 
+            font-family: sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 520px; 
+            background: var(--dark-panel); 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+            border-radius: 10px; 
+            padding: 30px 25px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            backdrop-filter: blur(12px);
+        }
+        .phase-label { 
+            font-size: 11px; color: var(--gold); letter-spacing: 3px; 
+            text-transform: uppercase; font-weight: bold;
+            display: block; margin-bottom: 5px; text-align: center;
+        }
+        .main-title {
+            font-size: 18px; color: #fff; text-align: center; font-weight: bold; margin-bottom: 25px; line-height: 1.5;
+        }
+        .instruction-text {
+            font-size: 13px; color: #ccc; text-align: left; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 5px; border-left: 2px solid var(--gold); margin-bottom: 25px; line-height: 1.6;
+        }
+        
+        .question-block { margin-bottom: 30px; animation: fadeIn 0.5s ease-out; }
+        .q-title { font-size: 15px; color: var(--gold); font-weight: bold; margin-bottom: 12px; text-align: left; line-height: 1.5; }
+        
+        .option-label { 
+            display: block; width: 100%; padding: 14px; margin: 10px 0; 
+            background: rgba(212, 175, 55, 0.02); 
+            border: 1px solid rgba(212, 175, 55, 0.12); 
+            color: #eee; border-radius: 5px; cursor: pointer; text-align: left; 
+            transition: all 0.2s ease; font-size: 13px; line-height: 1.5;
+            position: relative;
+        }
+        .option-label input { display: none; }
+        .option-label:hover { background: rgba(212, 175, 55, 0.06); border-color: rgba(212, 175, 55, 0.4); }
+        
+        /* Option Selected State */
+        .option-label.selected {
+            background: rgba(212, 175, 55, 0.12);
+            border-color: var(--gold);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(212,175,55,0.15);
+        }
+
+        .action-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: var(--gold-gradient); 
+            color: #000; border: none; border-radius: 4px; font-weight: 900; 
+            cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 1px;
+            margin-top: 25px; box-shadow: 0 4px 15px rgba(179,135,40,0.3);
+        }
+
+        /* Result Panel */
+        #result-box { 
+            display: none; padding: 25px; 
+            border: 1px solid var(--gold); background: rgba(212, 175, 55, 0.05); 
+            border-radius: 6px; animation: fadeInUp 0.6s ease-out; text-align: center;
+        }
+        .score-display { font-size: 13px; color: #aaa; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+        .res-title { 
+            font-size: 18px; font-weight: bold; color: var(--gold); 
+            margin-bottom: 16px; border-bottom: 1px solid rgba(212, 175, 55, 0.3); 
+            padding-bottom: 12px; letter-spacing: 1px;
+        }
+        .res-desc { color: #ddd; font-size: 13.5px; line-height: 1.8; margin-bottom: 25px; text-align: left; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">Pre-Reading Diagnostic Test</span>
+        <h1 class="main-title">"သင်သည် လူအကဲခတ်ရာတွင် မည်သည့် Level ရောက်နေသနည်း?"</h1>
+        
+        <p class="instruction-text">
+            စာဖတ်သူများအနေဖြင့် အောက်ပါ လက်တွေ့ဘဝအခြေအနေ (Scenario) ၃ ခုကို ဖတ်ပြီး မိမိအမှန်တကယ် ပြုလုပ်မည့် အဖြေကို ရွေးချယ်ပါ။
+        </p>
+
+        <!-- Question 1 -->
+        <div class="question-block" id="q1-block">
+            <div class="q-title">မေးခွန်း (၁) — လုပ်ငန်းခွင်တွင်း မျက်နှာဖုံး</div>
+            <p style="font-size: 13.5px; line-height: 1.6; color: #ddd; margin: 0 0 12px 0;">သင့်လုပ်ငန်းခွင်သို့ ရောက်ရှိလာသော အရာရှိအသစ်တစ်ဦးသည် သင့်ရှေ့တွင် အမြဲတမ်း ပြုံးရွှင်ပြပြီး "ငါက မင်းတို့တိုးတက်ဖို့ အမြဲကူညီမှာပါ" ဟု အလွန်နားဝင်ချိုစွာ ပြောတတ်သည်။ သင် ဘာလုပ်မည်နည်း။</p>
+            
+            <label class="option-label" onclick="selectOption(this, 'q1')">
+                <input type="radio" name="q1" value="1"> (က) သူ့စကားကို ယုံကြည်ပြီး စိတ်ချလက်ချဖြင့် မိမိ၏ လျှို့ဝှက်ချက်များနှင့် အားနည်းချက်များကို ရင်ဖွင့်ပြောပြမည်။
+            </label>
+            <label class="option-label" onclick="selectOption(this, 'q1')">
+                <input type="radio" name="q1" value="3"> (ခ) အပေါ်ယံအပြုံးနှင့် စကားလုံးကို မကြည့်ဘဲ၊ သူ အကျပ်အတည်း ကြုံချိန် သို့မဟုတ် အာဏာပြခွင့်ရချိန်တွင် ပြုလုပ်မည့် "လက်တွေ့လုပ်ရပ်" ကို ဆိတ်ငြိမ်စွာ စောင့်ကြည့်မည်။
+            </label>
+            <label class="option-label" onclick="selectOption(this, 'q1')">
+                <input type="radio" name="q1" value="2"> (ဂ) လူတွေကို လုံးဝမယုံကြည်သောကြောင့် သူ့ကို စိတ်ထဲကနေ ကြိုတင်ရန်သူလို သတ်မှတ်ပြီး ရှောင်ကျဉ်မည်။
+            </label>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-block" id="q2-block">
+            <div class="q-title">မေးခွန်း (၂) — အုပ်စုလိုက် လွှမ်းမိုးမှု</div>
+            <p style="font-size: 13.5px; line-height: 1.6; color: #ddd; margin: 0 0 12px 0;">ဆိုရှယ်မီဒီယာပေါ်တွင် လူအများစု ဝိုင်းဝန်းဆဲဆို တိုက်ခိုက်နေသော ပို့စ်တစ်ခု သို့မဟုတ် လူတစ်ဦးကို တွေ့ရသည်။ သင် ဘာလုပ်မည်နည်း။</p>
+            
+            <label class="option-label" onclick="selectOption(this, 'q2')">
+                <input type="radio" name="q2" value="1"> (က) လူအများစုက မှားတယ်ပြောနေတာကြောင့် မလွဲမသွေ မှားမှာပဲဟု ယူဆကာ မိမိကလည်း ဝင်ရောက်ဆဲဆို သို့မဟုတ် Share မည်။
+            </label>
+            <label class="option-label" onclick="selectOption(this, 'q2')">
+                <input type="radio" name="q2" value="3"> (ခ) တစ်ဖက်သတ် ဆုံးဖြတ်ခြင်း မပြုဘဲ စိတ်ကို ခပ်ခွာခွာထားကာ နောက်ကွယ်က အချက်အလက်အမှန်နှင့် သက်သေများကို ကိုယ်ပိုင်ဉာဏ်ဖြင့် အရင်စုံစမ်းမည်။
+            </label>
+            <label class="option-label" onclick="selectOption(this, 'q2')">
+                <input type="radio" name="q2" value="2"> (ဂ) စိတ်မဝင်စားသဖြင့် ကျော်သွားမည်ဖြစ်ပြီး မည်သူမှန်သည်၊ မှားသည်ကို စဉ်းစားမည်မဟုတ်။
+            </label>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-block" id="q3-block">
+            <div class="q-title">မေးခွန်း (၃) — အကျိုးစီးပွားနှင့် ကတိစကား</div>
+            <p style="font-size: 13.5px; line-height: 1.6; color: #ddd; margin: 0 0 12px 0;">သင့်အား နှစ်ပေါင်းများစွာ အားပေးလာသော ဖောက်သည်ကြီးတစ်ဦးက "ငါကတော့ မင်းဆီကပဲ အမြဲတမ်း ဝယ်မှာပါ" ဟု ကတိပေးသည်။ မကြာမီ ဈေးနှုန်းအလွန်သက်သာသော ပြိုင်ဘက်သစ် ပေါ်လာသည်။ သင် ဘာပြင်ဆင်မည်နည်း။</p>
+            
+            <label class="option-label" onclick="selectOption(this, 'q3')">
+                <input type="radio" name="q3" value="1"> (က) သူ့ကတိကို အပြည့်အဝယုံကြည်ပြီး အရန်စီမံချက် (Plan B) ပြုလုပ်ရန် သို့မဟုတ် ဖောက်သည်သစ်ရှာရန် လိုအပ်မည်မဟုတ်ဟု ယူဆမည်။
+            </label>
+            <label class="option-label" onclick="selectOption(this, 'q3')">
+                <input type="radio" name="q3" value="3"> (ခ) လူ့စိတ်သည် အကျိုးစီးပွားပေါ် မူတည်၍ ပြောင်းလဲတတ်ကြောင်း နားလည်သဖြင့် သူ့ကို ဆက်ဆံရေးကောင်း ထိန်းသိမ်းထားရင်း အခြားဖောက်သည်သစ်များ ရှာဖွေခြင်းနှင့် Plan B ကို အမြဲပြင်ဆင်ထားမည်။
+            </label>
+            <label class="option-label" onclick="selectOption(this, 'q3')">
+                <input type="radio" name="q3" value="2"> (ဂ) သူ သစ္စာဖောက်တော့မည်ဟု ကြိုတင်စိုးရိမ်ကာ သူ့ကို ပစ္စည်းမရောင်းတော့ဘဲ ချက်ချင်း လမ်းခွဲမည်။
+            </label>
+        </div>
+
+        <button onclick="calculateResult()" class="action-btn">ရလဒ်ကို ဆန်းစစ်မည် →</button>
+    </div>
+
+    <!-- Result Display Section -->
+    <div id="result-box">
+        <span class="phase-label">DIAGNOSTIC RESULT</span>
+        <div class="score-display" id="score-text"></div>
+        <div class="res-title" id="res-level"></div>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button onclick="completeQuiz()" class="action-btn">စာအုပ်ကို ဆက်လက်ဖတ်ရှုရန် နှိပ်ပါ</button>
+    </div>
+</div>
+
+<script>
+    // Option ရွေးချယ်မှုများကို Visual လှပအောင် ပြုလုပ်ခြင်း
+    function selectOption(element, name) {
+        const siblings = element.parentNode.querySelectorAll('.option-label');
+        siblings.forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        element.querySelector('input').checked = true;
+    }
+
+    function calculateResult() {
+        const q1 = document.querySelector('input[name="q1"]:checked');
+        const q2 = document.querySelector('input[name="q2"]:checked');
+        const q3 = document.querySelector('input[name="q3"]:checked');
+
+        // မေးခွန်းအားလုံး မဖြေရသေးပါက သတိပေးမည်
+        if (!q1 || !q2 || !q3) {
+            alert("ကျေးဇူးပြု၍ မေးခွန်းအားလုံးအတွက် အဖြေရွေးချယ်ပေးပါရှင်။");
+            return;
+        }
+
+        // ရမှတ်စုစုပေါင်း တွက်ချက်ခြင်း
+        const totalScore = parseInt(q1.value) + parseInt(q2.value) + parseInt(q3.value);
+        
+        let levelTitle = "";
+        let levelDesc = "";
+
+        // သတ်မှတ်ထားသော အမှတ်အလိုက် Level ခွဲခြားခြင်း
+        if (totalScore >= 3 && totalScore <= 5) {
+            levelTitle = "Level: သားကောင် - The Naive";
+            levelDesc = "သင်သည် လူသားတို့၏ အပေါ်ယံမျက်နှာဖုံးများနှင့် စကားလုံးများကို ပုံသေယုံကြည်တတ်သူ ဖြစ်သည်။ စိတ်ခံစားချက်နောက်သို့ လွယ်လွယ်နှင့် မျောပါတတ်ပြီး လူ့သဘာဝ ထောင်ချောက်များအတွင်းသို့ သားကောင်အဖြစ် မကြာခဏ သက်ဆင်းရတတ်သည်။ ဤစာအုပ်ကို သေသေချာချာ ဖတ်ရှုရန် အရေးတကြီး လိုအပ်နေပါသည်။";
+        } else if (totalScore >= 6 && totalScore <= 8) {
+            levelTitle = "Level: ကာကွယ်သူ - The Defensive";
+            levelDesc = "သင်သည် လောကကြီးကို ကြောက်ရွံ့ပြီး သံသယစိတ်များနေတတ်သည်။ ဘေးကင်းအောင် နေတတ်သော်လည်း လူ့သဘာဝကို နားလည်၍ ဗျူဟာမြောက် ထိန်းချုပ်နိုင်စွမ်း မရှိသေးပါ။";
+        } else if (totalScore === 9) {
+            levelTitle = "Level: သခင် - The Master";
+            levelDesc = "ဂုဏ်ယူပါသည်! သင်သည် လူ့သဘာဝကို အရှိအတိုင်း မြင်နိုင်သော ပညာမျက်စိ ရှိပြီးသား ဖြစ်သည်။ ဤစာအုပ်သည် သင့်အား ပိုမိုထက်မြက်သော မာစတာတစ်ဦး ဖြစ်လာစေရန် အရောင်တင်ပေးပါလိမ့်မည်။";
+        }
+
+        // Display update
+        document.getElementById('quiz-flow').style.display = 'none';
+        document.getElementById('score-text').innerText = `ရမှတ်စုစုပေါင်း: ${totalScore} မှတ်`;
+        document.getElementById('res-level').innerText = levelTitle;
+        document.getElementById('res-desc').innerText = levelDesc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        // Main Flip Book (index.html) ဆီသို့ ကူးပြောင်းရန် Message ပို့ခြင်း
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>
