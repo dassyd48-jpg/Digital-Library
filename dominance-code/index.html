@@ -80,7 +80,7 @@
 
         .footer-copyright {
             position: fixed;
-            bottom: 25px; 
+            bottom: 20px; 
             width: 100%;
             text-align: center;
             font-size: 9px;
@@ -93,7 +93,7 @@
         }
 
         @media screen and (max-width: 768px) {
-            .footer-copyright { bottom: 15px; font-size: 8px; letter-spacing: 1px; opacity: 0.4; }
+            .footer-copyright { bottom: 12px; font-size: 8px; letter-spacing: 1px; opacity: 0.4; }
         }
 
         /* Book Container */
@@ -115,7 +115,7 @@
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            padding-bottom: 45px; 
+            padding-bottom: 35px; /* အောက်ခြေ space ကို ပိုကျုံ့ပြီး စာအုပ်ကို ပိုရှည်စေသည် */
         }
         
         #flipbook .page { background-color: #000; background-size: 100% 100%; }
@@ -178,11 +178,9 @@
     let isQuizLocked = false;
     const myPassword = "DC@MIRROR";
 
-    // 🚨 စာမျက်နှာကို အလိုအလျောက် စစ်ဆေးပြီး အရင်ဝင်ဖူးရင် တန်းပွင့်စေမည့် စနစ်
     $(document).ready(function() {
         const isUnlocked = localStorage.getItem("dc_unlocked");
         if (isUnlocked === "true") {
-            // အရင်က Password အောင်မြင်ထားဖူးပါက Lock screen ကို ချက်ချင်းဖြုတ်သည်
             $("#lock, #bg-video").hide();
             $("#book-container").show().css("opacity", 1);
             loadAndInit();
@@ -190,17 +188,16 @@
         }
     });
 
+    // 🚨 စာမျက်နှာကို ဖုန်းမျက်နှာပြင်အမြင့်အတိုင်း အပြည့်အဝ ဆွဲဆန့်ပေးမည့် တွက်ချက်မှုစနစ်အသစ်
     function getBookSize() {
         let w = window.innerWidth;
-        let h = window.innerHeight - 50; 
+        let h = window.innerHeight - 40; // အောက်ခြေဘားတန်းလွတ်ရုံသာ ချန်ထားသည်
 
         if (window.innerWidth < 768) {
-            w = window.innerWidth - 10;
-            const maxRatio = 0.65; 
-            if (w / h > maxRatio) {
-                w = h * maxRatio;
-            }
+            // ဖုန်းများအတွက် - မည်သည့် Ratio ကန့်သတ်ချက်မှ မထားဘဲ Screen အမြင့်အတိုင်း အပြည့်ဆွဲဆန့်သည်
+            w = window.innerWidth; 
         } else {
+            // Tablet နှင့် Desktop များအတွက် ပုံပျက်ခြင်းမရှိစေရန် မူလအတိုင်းထားသည်
             const tabletRatio = 0.72;
             if (w / h > tabletRatio) { w = h * tabletRatio; } else { h = w / tabletRatio; }
         }
@@ -209,7 +206,6 @@
 
     function unlock() {
         if(document.getElementById("pass").value === myPassword) {
-            // Password မှန်ကန်ကြောင်း ဖုန်းထဲတွင် အမြဲမှတ်ထားခိုင်းခြင်း
             localStorage.setItem("dc_unlocked", "true");
             requestFullscreenMode();
             startIntroQuiz();
@@ -298,10 +294,7 @@
                 },
                 turned: function(e, page) {
                     handleMusic(page);
-                    
-                    // 🚨 စာမျက်နှာ လှန်လိုက်တိုင်း နောက်ဆုံးရောက်ခဲ့သည့် စာမျက်နှာကို မှတ်ထားခြင်း
                     localStorage.setItem("dc_last_page", page);
-
                     if (quizPages.includes(page)) {
                         triggerPsychologyTest(page);
                     }
@@ -309,7 +302,6 @@
             }
         });
 
-        // 🚨 အရင်ဖတ်လက်စ စာမျက်နှာရှိခဲ့လျှင် ထိုစာမျက်နှာဆီ တိုက်ရိုက်သွားရန်၊ မရှိလျှင် စာမျက်နှာ ၁ မှ စရန်
         const savedPage = localStorage.getItem("dc_last_page");
         if (savedPage) {
             flipbook.turn("page", parseInt(savedPage));
