@@ -34,7 +34,7 @@
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; font-family: 'Segoe UI', 'Pyidaungsu', sans-serif; }
+        body { margin: 0; background: #000; overflow: hidden; font-family: 'Segoe UI', 'Pyidaungsu', sans-serif; }
         
         #bg-video { 
             position: fixed; inset: 0; width: 100%; height: 100%; 
@@ -92,9 +92,10 @@
             }
         }
 
+        /* 🚨 ပြင်ဆင်ပြီးသား Copyright Style: မပျောက်သွားစေရန်နှင့် စာအုပ်အောက်နားလေးတွင် တိတိကျကျပေါ်စေရန် */
         .footer-copyright {
             position: fixed;
-            bottom: 35px; 
+            bottom: 35px; /* နေရာကို အပေါ်သို့ အနည်းငယ် ပြန်တင်ပေးထားပါသည် */
             width: 100%;
             text-align: center;
             font-size: 9px;
@@ -106,9 +107,10 @@
             text-transform: uppercase;
         }
 
+        /* 🚨 ဖုန်းနှင့် Tablet များအတွက် အောက်ခြေနားလေးတွင် ကွက်တိပေါ်မည့် သီးသန့် ညှိချက် */
         @media screen and (max-width: 768px) {
             .footer-copyright {
-                bottom: 25px; 
+                bottom: 25px; /* ဖုန်း screen များပေါ်တွင် အောက်ခြေနားလေး၌ သပ်သပ်ရပ်ရပ် မြင်သာစေရန် */
                 font-size: 8px;
                 letter-spacing: 1px;
                 opacity: 0.4;
@@ -128,6 +130,7 @@
             backface-visibility: hidden;
         }
 
+        /* စာအုပ်နှင့် အောက်ခြေစာသားအကြား သင့်တော်သော နေရာလွတ် ချန်ထားခြင်း */
         #flipbook-wrapper { 
             width: 100%; 
             height: 100%; 
@@ -160,7 +163,7 @@
         <h1 class="book-title">ဩဇာ၏ နိယာမ<br><span style="font-size:14px; color:var(--gold);">(THE DOMINANCE CODE)</span></h1>
         <input type="password" id="pass" placeholder="ACCESS KEY">
         <button onclick="unlock()">ENTER THE MIRROR</button>
-        <a href="https://t.me/Dassy_digital_Library" target="_blank" class="request-link">REQUEST PRIVATE ACCESS FROM DASSY</a>
+        <a href="https://t.me/Dassy_digital_Library" target="_blank" class="request-link" style="color: #BF00FF; text-shadow: 0 0 10px rgba(191, 0, 255, 0.5);">REQUEST PRIVATE ACCESS FROM DASSY</a>
     </div>
 
     <div id="book-container">
@@ -208,23 +211,9 @@
 
     function unlock() {
         if(document.getElementById("pass").value === myPassword) {
-            // စာအုပ်ထဲမဝင်ခင် Fullscreen မုဒ်ကို ဖွင့်ရန် တောင်းဆိုခြင်း
-            requestFullscreenMode();
             startIntroQuiz();
         } else {
             alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။");
-        }
-    }
-
-    // 🚨 ဖုန်းမျက်နှာပြင်ကို အပြည့်လုပ်ပေးမည့် လုပ်ဆောင်ချက်အသစ်
-    function requestFullscreenMode() {
-        let docElm = document.documentElement;
-        if (docElm.requestFullscreen) {
-            docElm.requestFullscreen().catch(err => console.log(err));
-        } else if (docElm.webkitRequestFullscreen) { /* Safari & iOS */
-            docElm.webkitRequestFullscreen().catch(err => console.log(err));
-        } else if (docElm.msRequestFullscreen) { /* IE/Edge */
-            docElm.msRequestFullscreen().catch(err => console.log(err));
         }
     }
 
@@ -260,9 +249,6 @@
     }
 
     function initBook() {
-        // စာအုပ်စပွင့်ချိန်တွင်လည်း Fullscreen သေချာစေရန် ထပ်မံလုပ်ဆောင်ခြင်း
-        requestFullscreenMode();
-        
         $("#quiz-overlay").fadeOut(400);
         $("#lock, #bg-video").fadeOut(400, function() {
             $(this).remove();
@@ -307,12 +293,6 @@
         });
 
         flipbook.turn("page", 1);
-        
-        // Size ကွက်တိဖြစ်စေရန် စက္ကန့်အနည်းငယ်အကြာတွင် resize ထပ်မံလုပ်ပေးခြင်း
-        setTimeout(() => {
-            const { w, h } = getBookSize();
-            $("#flipbook").turn("size", w, h);
-        }, 300);
     }
 
     function triggerPsychologyTest(pageNumber) {
@@ -362,3 +342,4 @@
 </script>
 </body>
 </html>
+
