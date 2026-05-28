@@ -2,61 +2,51 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KIDS' LEARNING VAULT | DASSY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>KIDS' LEARNING VAULT | DASSY DIGITAL LIBRARY</title>
+
+    <!-- AI & SEO Meta Tags -->
+    <meta name="description" content="KIDS' LEARNING VAULT by DASSY. Interactive Myanmar alphabet practice book for children. Professional educational digital resources.">
+    <meta name="keywords" content="Myanmar Alphabet, Kids Learning, DASSY Digital Library, Educational Notebooks, Children Education">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Book",
+      "name": "KIDS' LEARNING VAULT",
+      "author": { "@type": "Person", "name": "DASSY" },
+      "description": "An interactive digital practice book for teaching the Myanmar alphabet to children."
+    }
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
 
     <style>
-        html, body {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; background: #0b0d11; 
-            font-family: 'Pyidaungsu', sans-serif;
-        }
-
-        #viewport {
-            width: 100%; height: 100%;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-        }
-
-        #flipbook {
-            width: 85vw; height: calc(85vw * 1.414); 
-            max-height: 75vh; max-width: 450px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-
+        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #0b0d11; font-family: 'Pyidaungsu', sans-serif; }
+        #viewport { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        
+        #flipbook { width: 85vw; height: 75vh; max-width: 450px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .page { background: #fff; width: 100%; height: 100%; }
         .page img { width: 100%; height: 100%; object-fit: contain; }
 
-        /* ဈေးနှုန်းနှင့် ဝယ်ယူရန် စာမျက်နှာ Styling */
-        .cta-page { 
-            background: #ffffff !important; color: #333; 
-            display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; 
-            text-align: center; padding: 30px;
-        }
-
-        .price-tag {
-            font-size: 24px; font-weight: bold; color: #e67e22;
-            margin: 15px 0; border-bottom: 2px solid #eee; padding-bottom: 5px;
-        }
-
-        .buy-btn { 
-            background: #2ecc71; color: #fff; 
-            padding: 15px 30px; text-decoration: none; 
-            font-weight: bold; border-radius: 50px; 
-            margin-top: 20px; transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
-        }
+        .cta-page { background: #ffffff !important; color: #333; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 30px; }
+        .price-tag { font-size: 24px; font-weight: bold; color: #e67e22; margin: 15px 0; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        .buy-btn { background: #2ecc71; color: #fff; padding: 15px 30px; text-decoration: none; font-weight: bold; border-radius: 50px; margin-top: 20px; transition: 0.3s; box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3); }
         .buy-btn:hover { background: #27ae60; transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
+    <!-- AI Helper Hidden Content -->
+    <div style="display:none;">
+        <h1>KIDS' LEARNING VAULT</h1>
+        <p>This is an educational digital book for children in Myanmar to practice alphabet writing. Created by DASSY Digital Library.</p>
+    </div>
+
     <div id="viewport">
         <div id="flipbook">
+            <!-- အလွယ်တကူ စာမျက်နှာထပ်ထည့်နိုင်အောင် Loop သုံးလို့ရပေမယ့် Dassy စိတ်ကြိုက်အတိုင်း စုပေးထားပါတယ် -->
             <div class="page"><img src="page1.jpg"></div>
             <div class="page"><img src="page2.jpg"></div>
             <div class="page"><img src="page3.jpg"></div>
@@ -68,13 +58,10 @@
             <div class="page"><img src="page9.jpg"></div>
 
             <div class="page cta-page">
-                <h3 style="margin-bottom:5px;">Full Digital Book</h3>
+                <h3>Full Digital Book</h3>
                 <p style="color:#7f8c8d; font-size:14px;">(၁၅၆ မျက်နှာလုံးကို PDF ဖြင့် ရယူပါ)</p>
-                
                 <div class="price-tag">Price: 7000 MMK</div>
-
-                <p style="font-size:13px; line-height:1.6;">မြန်မာအက္ခရာ လေ့ကျင့်ခန်းစာအုပ်ကို <br> အခုပဲ ဝယ်ယူရယူလိုက်ပါ။</p>
-                
+                <p>မြန်မာအက္ခရာ လေ့ကျင့်ခန်းစာအုပ်ကို <br> အခုပဲ ဝယ်ယူရယူလိုက်ပါ။</p>
                 <a href="https://t.me/Dassy_Digital_Library" class="buy-btn">ဝယ်ယူရန် ဆက်သွယ်ပါ</a>
             </div>
         </div>
@@ -82,13 +69,19 @@
 
     <script>
         $(window).ready(function() {
-            $("#flipbook").turn({
-                width: $("#flipbook").width(),
-                height: $("#flipbook").height(),
+            const flipbook = $("#flipbook");
+            flipbook.turn({
+                width: flipbook.width(),
+                height: flipbook.height(),
                 autoCenter: true,
                 display: 'single',
                 acceleration: true
             });
+        });
+
+        window.addEventListener('resize', () => {
+            const flipbook = $("#flipbook");
+            flipbook.turn("size", flipbook.width(), flipbook.height());
         });
     </script>
 </body>
