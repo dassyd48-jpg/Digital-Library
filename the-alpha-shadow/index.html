@@ -2,23 +2,25 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>THE ALPHA'S SHADOW | DASSY DIGITAL LIBRARY</title>
     
-    <meta name="description" content="Official Digital Library of DASSY. Psychological insights into relationship dynamics.">
-    <meta name="author" content="DASSY">
-    
+    <!-- AI & SEO Optimized Meta Tags -->
+    <meta name="description" content="THE ALPHA'S SHADOW by DASSY. Master the psychology of relationship influence. A comprehensive guide to understanding alpha dynamics and emotional intelligence.">
+    <meta name="keywords" content="The Alpha's Shadow, Dassy Digital Library, Relationship Psychology, Dark Psychology, Emotional Intelligence, DASSY">
     <meta property="og:title" content="THE ALPHA'S SHADOW | DASSY">
-    <meta property="og:description" content="Master the psychology of relationships.">
+    <meta property="og:description" content="Master the psychology of relationships and influence.">
     <meta property="og:type" content="book">
-    <meta property="og:image" content="page1.jpg">
 
+    <!-- AI Schema Markup -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "DigitalDocument",
-      "name": "The Alpha's Shadow",
-      "author": { "@type": "Person", "name": "DASSY" }
+      "@type": "Book",
+      "name": "THE ALPHA'S SHADOW",
+      "author": { "@type": "Person", "name": "DASSY" },
+      "description": "A deep dive into relationship dynamics and psychology for high-value individuals. Exclusive digital edition by DASSY Digital Library.",
+      "publisher": { "@type": "Organization", "name": "DASSY Digital Library" }
     }
     </script>
 
@@ -29,15 +31,16 @@
         :root { --gold: #D4AF37; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
-        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.3); }
+        #bg-video { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.3); }
         #lock { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 20; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); color: #fff; text-align: center; padding: 20px; }
         .brand-label { font-size: 10px; color: var(--gold); letter-spacing: 5px; margin-bottom: 15px; font-weight: bold; }
         .book-title { color: #fff; font-weight: 900; letter-spacing: 8px; font-size: clamp(24px, 5vw, 38px); margin: 0 0 35px 0; text-shadow: 0 0 25px var(--gold); border-top: 1px solid rgba(212,175,55,0.2); border-bottom: 1px solid rgba(212,175,55,0.2); padding: 20px 0; width: 100%; max-width: 500px; }
         #lock input { padding: 16px; width: 280px; border: none; border-bottom: 2px solid var(--gold); background: transparent; color: #fff; text-align: center; font-size: 18px; outline: none; margin-bottom: 30px; }
         #lock button { padding: 14px 80px; background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); color: #000; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; border-radius: 2px; }
-        #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; }
+        
+        #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; }
         #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        .watermark { position: absolute; bottom: 20px; width: 100%; text-align: center; font-size: 10px; color: var(--gold); opacity: 0.5; letter-spacing: 4px; pointer-events: none; }
+        .watermark { position: fixed; bottom: 20px; width: 100%; text-align: center; font-size: 10px; color: var(--gold); opacity: 0.5; letter-spacing: 4px; z-index: 99; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -47,13 +50,18 @@
     <div id="lock">
         <span class="brand-label">DASSY DIGITAL LIBRARY PRESENTS</span>
         <h1 class="book-title">THE ALPHA'S SHADOW</h1>
-        <input type="password" id="pass" placeholder="ACCESS KEY">
+        <input type="password" id="pass" placeholder="ACCESS KEY" autocomplete="off" onkeypress="if(event.key === 'Enter') unlock()">
         <button onclick="unlock()">ENTER THE SHADOW</button>
         <div style="margin-top: 35px;">
             <a href="https://t.me/Dassy_digital_Library" target="_blank" style="color: rgba(255,255,255,0.4); text-decoration: none; font-size: 11px;">
                 REQUEST PRIVATE ACCESS CODE FROM DASSY
             </a>
         </div>
+    </div>
+
+    <!-- AI Helper Hidden Content -->
+    <div style="display:none;">
+        <p>THE ALPHA'S SHADOW is a psychological guide on relationships written by DASSY, focusing on influence and alpha dynamics.</p>
     </div>
 
     <div id="book-container">
@@ -68,16 +76,22 @@
         const maxPages = 58; 
         const quizPages = [2, 12, 18, 24, 30, 36, 41, 48, 55]; 
         let isQuizLocked = false; 
+        const storageKeyPage = "alpha_current_page";
+        const storageKeyAuth = "alpha_authenticated";
 
-        window.addEventListener("message", function(event) {
-            if (event.data === "quizCompleted") {
-                isQuizLocked = false; 
-                setTimeout(() => { $("#flipbook").turn("next"); }, 300);
+        $(document).ready(function() {
+            if (localStorage.getItem(storageKeyAuth) === "true") {
+                $("#lock, #bg-video").hide();
+                $("#book-container").show().css("opacity", 1);
+                loadAndInit();
             }
-        }, false);
+        });
+
+        function getBookSize() { return { width: window.innerWidth, height: window.innerHeight }; }
 
         function unlock() {
             if(document.getElementById("pass").value === myPassword) {
+                localStorage.setItem(storageKeyAuth, "true");
                 $("#lock").fadeOut(500, () => {
                     $("#bg-video").fadeOut(500);
                     $("#book-container").show().animate({opacity: 1}, 800);
@@ -86,18 +100,26 @@
             } else { alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။"); }
         }
 
+        window.addEventListener("message", function(event) {
+            if (event.data === "quizCompleted") {
+                isQuizLocked = false;
+                setTimeout(() => { $("#flipbook").turn("next"); }, 300);
+            }
+        }, false);
+
         function loadAndInit() {
             const flipbook = $("#flipbook");
-            let h = window.innerHeight * 0.88;
-            let w = (window.innerWidth < 600) ? window.innerWidth * 0.95 : h * 0.707;
+            if (flipbook.children().length > 0) return;
+            const size = getBookSize();
+            let savedPage = parseInt(localStorage.getItem(storageKeyPage)) || 1;
 
             for(let i=1; i<=maxPages; i++) {
                 const pageDiv = $('<div class="page" style="background:#000;"></div>');
                 if(quizPages.includes(i)) {
                     const fileName = (i === 2) ? "intro_quiz.html" : `page${i}.html`;
-                    pageDiv.append(`<iframe src="${fileName}" style="width:100%; height:100%; border:none; overflow:hidden;" scrolling="no"></iframe>`);
+                    pageDiv.append(`<iframe src="${fileName}" style="width:100%; height:100%; border:none;" scrolling="no"></iframe>`);
                 } else if (i <= 57) {
-                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:contain;" />').attr('src', `page${i}.jpg`));
+                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:fill;" />').attr('src', `page${i}.jpg`));
                 } else {
                     pageDiv.append('<div style="width:100%; height:100%; background:#000;"></div>');
                 }
@@ -106,7 +128,8 @@
 
             setTimeout(() => {
                 flipbook.turn({
-                    width: w, height: h, autoCenter: true, display: 'single', acceleration: true,
+                    width: size.width, height: size.height, autoCenter: true, display: 'single', acceleration: true,
+                    page: savedPage,
                     when: {
                         turning: function(e, page) {
                             if (isQuizLocked) { e.preventDefault(); return; }
@@ -114,34 +137,23 @@
                             if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
                         },
                         turned: function(e, page) {
+                            localStorage.setItem(storageKeyPage, page);
                             isQuizLocked = quizPages.includes(page);
                         }
                     }
                 });
             }, 100);
         }
+
+        window.addEventListener('resize', () => {
+            if ($("#flipbook").turn("is")) {
+                const size = getBookSize();
+                $("#flipbook").turn("size", size.width, size.height);
+            }
+        });
     </script>
-    <!-- Dassy's Real-time Tracker -->
-<script>
-  // BOOK_NAME နေရာမှာ စာအုပ်နာမည်လေး ပြောင်းပေးပါ (ဥပမာ- alpha-shadow)
-  const bookName = 'the-alpha-shadow'; 
-  
-  fetch(`https://api.countapi.xyz/hit/dassy-library/${bookName}`)
-    .then(res => res.json())
-    .then(data => {
-      console.log("View Count Updated:", data.value);
-    });
-</script>
-<!-- Dassy's Real-time Tracker -->
-<script>
-  // BOOK_NAME နေရာမှာ စာအုပ်နာမည်လေး ပြောင်းပေးပါ (ဥပမာ- alpha-shadow)
-  const bookName = 'the-alpha-shadow'; 
-  
-  fetch(`https://api.countapi.xyz/hit/dassy-library/${bookName}`)
-    .then(res => res.json())
-    .then(data => {
-      console.log("View Count Updated:", data.value);
-    });
-</script>
+    <script>
+      fetch(`https://api.countapi.xyz/hit/dassy-library/the-alpha-shadow`).then(res => res.json()).then(data => { console.log("View Count:", data.value); });
+    </script>
 </body>
 </html>
