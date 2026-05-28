@@ -2,7 +2,7 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CHAPTER 11: THE LAW OF MASKING & DECODING QUIZ</title>
     <style>
         :root {
@@ -10,6 +10,7 @@
             --gold-light: #FCF6BA;
             --dark-panel: rgba(20, 20, 20, 0.85);
         }
+        /* Touch Device များတွင် ပိုမို Smooth ဖြစ်စေရန်အတွက် Body CSS ပြင်ဆင်မှု */
         body { 
             background: #0D0D0D; 
             color: #fff; 
@@ -21,6 +22,9 @@
             align-items: center; 
             min-height: 100vh; 
             box-sizing: border-box; 
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .quiz-container { 
             width: 100%; 
@@ -38,7 +42,7 @@
             text-transform: uppercase; font-weight: bold;
             display: block; margin-bottom: 15px;
         }
-        h2 { font-size: 15px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; }
+        h2 { font-size: 15px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; transition: opacity 0.3s ease; }
         
         .option { 
             display: block; width: 100%; padding: 15px; margin: 12px 0; 
@@ -46,8 +50,9 @@
             border: 1px solid rgba(212, 175, 55, 0.15); 
             color: #eee; border-radius: 4px; cursor: pointer; text-align: left; 
             transition: all 0.3s ease; font-size: 13px; line-height: 1.5;
+            outline: none;
         }
-        .option:hover { 
+        .option:hover, .option:active { 
             background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
             color: #000; font-weight: bold; border-color: transparent;
             box-shadow: 0 4px 12px rgba(179,135,40,0.2);
@@ -56,7 +61,7 @@
         #result-box { 
             display: none; margin-top: 5px; padding: 22px; 
             border: 1px solid var(--gold); background: rgba(212, 175, 55, 0.05); 
-            border-radius: 6px; animation: fadeInUp 0.5s ease-out; 
+            border-radius: 6px; animation: fadeInUp 0.4s ease-out; 
         }
         .res-section { text-align: left; margin-bottom: 18px; }
         .res-title { 
@@ -77,6 +82,7 @@
             background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
             color: #000; border: none; border-radius: 4px; font-weight: 900; 
             cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 1px;
+            outline: none;
         }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -85,7 +91,7 @@
 
 <div class="quiz-container">
     <span class="phase-label">အခန်း (၁၁) - Interactive ဆန်းစစ်ချက်</span>
-    <h3 style="font-size: 16px; color: var(--gold); margin: 5px 0 15px 0; font-weight: bold;">[အပေါ်ယံ ဟန်ဆောင်မှုများကို ခွဲခြမ်းစိတ်ဖြာခြင်း နိယာမ]</h3>
+    <h3 style="font-size: 16px; color: var(--gold); margin: 5px 0 15px 0; font-weight: bold;">[အပေါ်ယံ ဟန်ဆောင်မှုများကို ခွဲခြမ်းစိတ်ဖြာခြင်း นိယာမ]</h3>
     
     <h2 id="q-text"><b>ပဟေဠိအခြေအနေ (Scenario):</b><br>လူသစ်တစ်ယောက်နဲ့ စကားပြောဆို ဆက်ဆံတဲ့အခါ သို့မဟုတ် စီးပွားရေးအရ ချိတ်ဆက်တဲ့အခါ ထိုသူက စကားလုံးအလှအပတွေ၊ ခန္ဓာကိုယ်အမူအရာတွေနဲ့ သင့်အပေါ် အလွန်အမင်း ရိုးသားပွင့်လင်းဟန် ဆောင်ပြနေပါတယ်။ ဒါပေမဲ့ သူ့ရဲ့ မျက်လုံးအကြည့်၊ အသံအနေအထား သို့မဟုတ် သေးငယ်တဲ့ Micro-expressions အမူအရာတွေထဲမှာ တစ်ခုခု မရိုးသားသလို သံသယဝင်စရာ အချက်ပြမှု (Leakage Cues) အချို့ကို သင် သတိပြုမိလိုက်ပါတယ်။ သင် ဘယ်လို လုပ်မလဲ?</h2>
     
@@ -131,7 +137,10 @@
     }
 
     function completeQuiz() {
-        window.parent.postMessage("quizCompleted", "*");
+        // Main Book Page ဆီသို့ နောက်စာမျက်နှာလှန်ရန် Signal ပေးပို့ခြင်း
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage("quizCompleted", "*");
+        }
     }
 </script>
 
