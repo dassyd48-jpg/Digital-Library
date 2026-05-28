@@ -2,13 +2,13 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CHAPTER 4: THE LAW OF EGO & CRITICISM QUIZ</title>
     <style>
         :root {
             --gold: #D4AF37;
             --gold-light: #FCF6BA;
-            --dark-panel: rgba(20, 20, 20, 0.85);
+            --dark-panel: rgba(20, 20, 20, 0.95);
         }
         body { 
             background: #0D0D0D; 
@@ -21,6 +21,9 @@
             align-items: center; 
             min-height: 100vh; 
             box-sizing: border-box; 
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .quiz-container { 
             width: 100%; 
@@ -38,16 +41,18 @@
             text-transform: uppercase; font-weight: bold;
             display: block; margin-bottom: 15px;
         }
-        h2 { font-size: 15px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; }
+        h2 { font-size: 14.5px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; transition: opacity 0.3s ease; }
         
         .option { 
             display: block; width: 100%; padding: 15px; margin: 12px 0; 
             background: rgba(212, 175, 55, 0.03); 
             border: 1px solid rgba(212, 175, 55, 0.15); 
             color: #eee; border-radius: 4px; cursor: pointer; text-align: left; 
-            transition: all 0.3s ease; font-size: 13px; line-height: 1.5;
+            transition: all 0.2s ease; font-size: 13px; line-height: 1.5;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
-        .option:hover { 
+        .option:hover, .option:active { 
             background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
             color: #000; font-weight: bold; border-color: transparent;
             box-shadow: 0 4px 12px rgba(179,135,40,0.2);
@@ -64,10 +69,10 @@
             margin-bottom: 10px; display: block; border-left: 3px solid var(--gold); 
             padding-left: 10px; text-align: left; letter-spacing: 1px;
         }
-        .res-desc { color: #ddd; font-size: 13px; line-height: 1.7; margin: 0; }
+        .res-desc { color: #ddd; font-size: 13.5px; line-height: 1.7; margin: 0; }
         
         #strategy-note { 
-            font-size: 12.5px; color: var(--gold-light); 
+            font-size: 13px; color: var(--gold-light); 
             background: rgba(212, 175, 55, 0.1); padding: 14px; 
             border-radius: 4px; margin-bottom: 22px; text-align: left; line-height: 1.6;
         }
@@ -76,7 +81,8 @@
             display: block; width: 100%; padding: 15px; 
             background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
             color: #000; border: none; border-radius: 4px; font-weight: 900; 
-            cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            font-size: 13px; outline: none;
         }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -90,23 +96,26 @@
     <h2 id="q-text"><b>ပဟေဠိအခြေအနေ (Scenario):</b><br>သင် အလွန်အားစိုက်ပြီး ဖန်တီးထားတဲ့ Work / Content တစ်ခုကို သင့်ရဲ့ Customer (သို့မဟုတ်) အထက်လူကြီးက "ဒါကြီးက လုံးဝ အဆင်မပြေဘူး၊ ပြန်ပြင်ပါ" ဟု ပြင်းပြင်းထန်ထန် ဝေဖန်လိုက်သည်။ သင် ဘာလုပ်မည်နည်း။</h2>
     
     <div id="options-group">
-        <button class="option" onclick="showAnalysis(
-            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
-            'သင့်ရဲ့ အလုပ်ထက် အတ္တ (Ego) ကို ရှေ့တန်းတင်မိသဖြင့် Customer သို့မဟုတ် လူကြီးများနှင့် ဆက်ဆံရေး ပျက်ပြားပြီး အလုပ်အကိုင် အခွင့်အရေးများ ဆုံးရှုံးပါလိမ့်မည်။', 
-            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>အလုပ်ကို မိမိ၏ မွေးရာပါ ကိုယ်အင်္ဂါကဲ့သို့ သဘောမထားပါနှင့်။ အလုပ်အပေါ် ဝေဖန်ခြင်းသည် သင့်လူပုဂ္ဂိုလ်ကို ဝေဖန်ခြင်း မဟုတ်ကြောင်း အခန်း (၄) နိယာမအတိုင်း ခွဲခြားတွေးခေါ်ပါ။'
-        )">၁။ (က) ငါ့ရဲ့ ကြိုးစားအားထုတ်မှုကို မသိတတ်ဘူးဟု တွေးကာ စိတ်ဆိုးဒေါသထွက်ပြီး ထိုသူနှင့် စကားများ ငြင်းခုံမည်။</button>
+        <button class="option" onclick="handleOptionClick(this)"
+                data-title="The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):"
+                data-desc="သင့်ရဲ့ အလုပ်ထက် အတ္တ (Ego) ကို ရှေ့တန်းတင်မိသဖြင့် Customer သို့မဟုတ် လူကြီးများနှင့် ဆက်ဆံရေး ပျက်ပြားပြီး အလုပ်အကိုင် အခွင့်အရေးများ ဆုံးရှုံးပါလိမ့်မည်။"
+                data-strat="💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>အလုပ်ကို မိမိ၏ မွေးရာပါ ကိုယ်အင်္ဂါကဲ့သို့ သဘောမထားပါနှင့်။ အလုပ်အပေါ် ဝေဖန်ခြင်းသည် သင့်လူပုဂ္ဂိုလ်ကို ဝေဖန်ခြင်း မဟုတ်ကြောင်း အခန်း (၄) နိယာမအတိုင်း ခွဲခြားတွေးခေါ်ပါ။">
+            ၁။ (က) ငါ့ရဲ့ ကြိုးစားအားထုတ်မှုကို မသိတတ်ဘူးဟု တွေးကာ စိတ်ဆိုးဒေါသထွက်ပြီး ထိုသူနှင့် စကားများ ငြင်းခုံမည်။
+        </button>
         
-        <button class="option" onclick="showAnalysis(
-            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
-            'စိတ်ဒဏ်ရာ ရလွယ်သူ ဖြစ်သွားပြီး ဘဝတွင် မည်သည့် အလုပ်ကြီးအကိုင်ကြီးကိုမျှ အဆုံးထိ အောင်မြင်အောင် လုပ်ဆောင်နိုင်မည် မဟုတ်ပါ။', 
-            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>ဝေဖန်မှုဆိုသည်မှာ တိုးတက်ဖို့ လမ်းပြမြေပုံတစ်ခုသာ ဖြစ်သည်။ စိတ်ခံစားချက်ကို ဘေးဖယ်ပြီး အလုပ်၏ အရည်အသွေးကိုသာ အာရုံစိုက်ပါ။'
-        )">၂။ (ခ) ငါ့မှာ အရည်အချင်း မရှိပါဘူးဆိုပြီး စိတ်ဓာတ်ကျကာ ထိုအလုပ်ကို ဆက်မလုပ်ချင်တော့ဘဲ လက်လျှော့ပစ်မည်။</button>
+        <button class="option" onclick="handleOptionClick(this)"
+                data-title="The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):"
+                data-desc="စိတ်ဒဏ်ရာ ရလွယ်သူ ဖြစ်သွားပြီး ဘဝတွင် မည်သည့် အလုပ်ကြီးအကိုင်ကြီးကိုမျှ အဆုံးထိ အောင်မြင်အောင် လုပ်ဆောင်နိုင်မည် မဟုတ်ပါ။"
+                data-strat="💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>ဝေဖန်မှုဆိုသည်မှာ တိုးတက်ဖို့ လမ်းပြမြေပုံတစ်ခုသာ ဖြစ်သည်။ စိတ်ခံစားချက်ကို ဘေးဖယ်ပြီး အလုပ်၏ အရည်အသွေးကိုသာ အာရုံစိုက်ပါ။">
+            ၂။ (ခ) ငါ့မှာ အရည်အချင်း မရှိပါဘူးဆိုပြီး စိတ်ဓာတ်ကျကာ ထိုအလုပ်ကို ဆက်မလုပ်ချင်တော့ဘဲ လက်လျှော့ပစ်မည်။
+        </button>
         
-        <button class="option" onclick="showAnalysis(
-            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
-            'သင်သည် အလွန်လျင်မြန်စွာ တိုးတက်အောင်မြင်မည့် ဗျူဟာမြောက် လုပ်ငန်းရှင်/အလုပ်သမား ဖြစ်လာပါလိမ့်မည်။ ဝေဖန်သူများပင် သင့်ရင့်ကျက်မှုကို လေးစားသွားပါလိမ့်မည်။', 
-            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>ဝေဖန်မှုကို &quot;အခမဲ့ ရရှိသော အရည်အသွေး စစ်ဆေးရေး စမ်းသပ်ချက်&quot; ဟု သဘောထားပါ။'
-        )">၃။ (ဂ) ဝေဖန်မှုကို မိမိအပေါ် တိုက်ခိုက်သည်ဟု မယူဆဘဲ ထိုသူ အမှန်တကယ် လိုချင်သည့် Objective အချက်အလက်က ဘာလဲဆိုတာကို မေးခွန်းထုတ်ပြီး စနစ်တကျ ပြန်ပြင်မည်။</button>
+        <button class="option" onclick="handleOptionClick(this)"
+                data-title="The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):"
+                data-desc="သင်သည် အလွန်လျင်မြန်စွာ တိုးတက်အောင်မြင်မည့် ဗျူဟာမြောက် လုပ်ငန်းရှင်/အလုပ်သမား ဖြစ်လာပါလိမ့်မည်။ ဝေဖန်သူများပင် သင့်ရင့်ကျက်မှုကို လေးစားသွားပါလိမ့်မည်။"
+                data-strat="💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>ဝေဖန်မှုကို 'အခမဲ့ ရရှိသော အရည်အသွေး စစ်ဆေးရေး စမ်းသပ်ချက်' ဟု သဘောထားပါ။">
+            ၃။ (ဂ) ဝေဖန်မှုကို မိမိအပေါ် တိုက်ခိုက်သည်ဟု မယူဆဘဲ ထိုသူ အမှန်တကယ် လိုချင်သည့် Objective အချက်အလက်က ဘာလဲဆိုတာကို မေးခွန်းထုတ်ပြီး စနစ်တကျ ပြန်ပြင်မည်။
+        </button>
     </div>
 
     <div id="result-box">
@@ -121,18 +130,29 @@
 </div>
 
 <script>
-    function showAnalysis(title, desc, strat) {
+    function handleOptionClick(button) {
+        // Button ရဲ့ data attributes ထဲက စာသားတွေကို ရယူခြင်း
+        const title = button.getAttribute('data-title');
+        const desc = button.getAttribute('data-desc');
+        const strat = button.getAttribute('data-strat');
+        
+        // UI ကို အပြောင်းအလဲလုပ်ခြင်း
         document.getElementById('options-group').style.display = 'none';
         document.getElementById('q-text').style.opacity = '0.15';
+        
         document.getElementById('res-title').innerText = title;
         document.getElementById('res-desc').innerText = desc;
         document.getElementById('strategy-note').innerHTML = strat;
         document.getElementById('result-box').style.display = 'block';
+        
+        // Mobile ဖုန်းတွေမှာ အဖြေကို ရှင်းရှင်းလင်းလင်း မြင်ရအောင် အပေါ်သို့ ညင်သာစွာ Scroll လုပ်ပေးခြင်း
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function completeQuiz() {
-        // Main Flip Book ဆီသို့ ကူးပြောင်းရန် Message ပို့ခြင်း
-        window.parent.postMessage("quizCompleted", "*");
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage("quizCompleted", "*");
+        }
     }
 </script>
 
