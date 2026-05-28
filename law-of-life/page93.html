@@ -2,13 +2,13 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CHAPTER 9: THE LAW OF CONFORMITY QUIZ</title>
     <style>
         :root {
             --gold: #D4AF37;
             --gold-light: #FCF6BA;
-            --dark-panel: rgba(20, 20, 20, 0.85);
+            --dark-panel: rgba(20, 20, 20, 0.95);
         }
         body { 
             background: #0D0D0D; 
@@ -21,6 +21,9 @@
             align-items: center; 
             min-height: 100vh; 
             box-sizing: border-box; 
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .quiz-container { 
             width: 100%; 
@@ -38,16 +41,18 @@
             text-transform: uppercase; font-weight: bold;
             display: block; margin-bottom: 15px;
         }
-        h2 { font-size: 15px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; }
+        h2 { font-size: 14.5px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; transition: opacity 0.3s ease; }
         
         .option { 
             display: block; width: 100%; padding: 15px; margin: 12px 0; 
             background: rgba(212, 175, 55, 0.03); 
             border: 1px solid rgba(212, 175, 55, 0.15); 
             color: #eee; border-radius: 4px; cursor: pointer; text-align: left; 
-            transition: all 0.3s ease; font-size: 13px; line-height: 1.5;
+            transition: all 0.2s ease; font-size: 13px; line-height: 1.5;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
-        .option:hover { 
+        .option:hover, .option:active { 
             background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
             color: #000; font-weight: bold; border-color: transparent;
             box-shadow: 0 4px 12px rgba(179,135,40,0.2);
@@ -64,10 +69,10 @@
             margin-bottom: 10px; display: block; border-left: 3px solid var(--gold); 
             padding-left: 10px; text-align: left; letter-spacing: 1px;
         }
-        .res-desc { color: #ddd; font-size: 13px; line-height: 1.7; margin: 0; }
+        .res-desc { color: #ddd; font-size: 13.5px; line-height: 1.7; margin: 0; }
         
         #strategy-note { 
-            font-size: 12.5px; color: var(--gold-light); 
+            font-size: 13px; color: var(--gold-light); 
             background: rgba(212, 175, 55, 0.1); padding: 14px; 
             border-radius: 4px; margin-bottom: 22px; text-align: left; line-height: 1.6;
         }
@@ -76,7 +81,8 @@
             display: block; width: 100%; padding: 15px; 
             background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
             color: #000; border: none; border-radius: 4px; font-weight: 900; 
-            cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            font-size: 13px; outline: none;
         }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -85,28 +91,31 @@
 
 <div class="quiz-container">
     <span class="phase-label">အခန်း (၉) - Interactive ဆန်းစစ်ချက်</span>
-    <h3 style="font-size: 16px; color: var(--gold); margin: 5px 0 15px 0; font-weight: bold;">[အုပ်စုလိုက် စရိုက်ပြောင်းလဲခြင်း၏ နိယာမ]</h3>
+    <h3 style="font-size: 16px; color: var(--gold); margin: 5px 0 15px 0; font-weight: bold;">[အုပ်စုလိုက် စရိုက်ပြောင်းလဲခြင်း၏ นိယာမ]</h3>
     
     <h2 id="q-text"><b>ပဟေဠိအခြေအနေ (Scenario):</b><br>သင်ဟာ အဖွဲ့အစည်းတစ်ခု သို့မဟုတ် လူမှုကွန်ရက် အသိုက်အဝန်းတစ်ခုထဲကို ရောက်နေပါတယ်။ ထိုအုပ်စုက လူအများစုဟာ အကျိုးမရှိတဲ့ အယူအဆတစ်ခု သို့မဟုတ် လူတစ်ယောက်အပေါ် ဝိုင်းဝန်းပြီး အားပေးနေကြတယ် (သို့မဟုတ် ဝိုင်းပယ်နေကြတယ်)။ သင့်အတွင်းစိတ်ထဲမှာတော့ ဒါဟာ လုံးဝမှားယွင်းနေမှန်း သိနေပေမယ့် အုပ်စုရဲ့ သဘောထားကို ဆန့်ကျင်ရင် သင့်ကို ဝိုင်းပယ်ကြမှာ ကြောက်စရာ အခြေအနေမျိုး ဖြစ်နေပါတယ်။ သင် ဘယ်လို ဆုံးဖြတ်မလဲ?</h2>
     
     <div id="options-group">
-        <button class="option" onclick="showAnalysis(
-            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
-            'အုပ်စုလိုက် မိုက်မဲမှု (Groupthink) ရဲ့ အစိတ်အပိုင်းတစ်ခု ဖြစ်သွားပြီး သင့်ရဲ့ ကိုယ်ပိုင်စရိုက် လက္ခဏာ လုံးဝ ပျောက်ဆုံးသွားပါလိမ့်မယ်။ အုပ်စုရဲ့ မှားယွင်းတဲ့ ဆုံးဖြတ်ချက်တွေရဲ့ နောက်ဆက်တွဲ ဆိုးကျိုးကိုပါ အတူတူ ခခံစားရတတ်ပါတယ်။', 
-            '💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>အခန်း (၉) အရ လူတွေဟာ အုပ်စုထဲရောက်ရင် မသိစိတ်က အလိုအလျောက် စရိုက်ပြောင်းလဲတတ်ကြပါတယ်။ အုပ်စုရဲ့ ဖိအားနောက်ကို မျက်စိမှိတ် မလိုက်ပါနဲ့။'
-        )">၁။ (က) "အုပ်စုနဲ့ အဆင်ပြေဖို့က ပထမပဲ" ဟုဆိုကာ မိမိရဲ့ ကိုယ်ပိုင်အတွေးအခေါ်ကို ပစ်ပယ်ပြီး လူအများ လုပ်သမျှ၊ ပြောသမျှကို လိုက်လံ ထောက်ခံအားပေးမည်။</button>
+        <button class="option" onclick="handleOptionClick(this)"
+                data-title="The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):"
+                data-desc="အုပ်စုလိုက် မိုက်မဲမှု (Groupthink) ရဲ့ အစိတ်အပိုင်းတစ်ခု ဖြစ်သွားပြီး သင့်ရဲ့ ကိုယ်ပိုင်စရိုက် လက္ခဏာ လုံးဝ ပျောက်ဆုံးသွားပါလိမ့်မယ်။ အုပ်စုရဲ့ မှားယွင်းတဲ့ ဆုံးဖြတ်ချက်တွေရဲ့ နောက်ဆက်တွဲ ဆိုးကျိုးကိုပါ အတူတူ ခံစားရတတ်ပါတယ်။"
+                data-strat="💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>အခန်း (၉) အရ လူတွေဟာ အုပ်စုထဲရောက်ရင် မသိစိတ်က အလိုအလျောက် စရိုက်ပြောင်းလဲတတ်ကြပါတယ်။ အုပ်စုရဲ့ ဖိအားနောက်ကို မျက်စိမှိတ် မလိုက်ပါနဲ့။">
+            ၁။ (က) "အုပ်စုနဲ့ အဆင်ပြေဖို့က ပထမပဲ" ဟုဆိုကာ မိမိရဲ့ ကိုယ်ပိုင်အတွေးအခေါ်ကို ပစ်ပယ်ပြီး လူအများ လုပ်သမျှ၊ ပြောသမျှကို လိုက်လံ ထောက်ခံအားပေးမည်။
+        </button>
         
-        <button class="option" onclick="showAnalysis(
-            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
-            'စစ်မှန်တဲ့ ရင့်ကျက်တဲ့ အတွေးအခေါ်ရှင် ဖြစ်ပါတယ်။ အုပ်စုထဲမှာ အဆင်ပြေအောင် နေထိုင်တတ်သော်လည်း အတွင်းစိတ်ကတော့ လွတ်လပ်ပြီးသား ဖြစ်လို့ ဘယ်လို ဆွဲဆောင်မှုမျိုးကြောင့်မှ လမ်းမှားမှာ မဟုတ်ပါဘူး။', 
-            '💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>မိမိကိုယ်ပိုင် တန်ဖိုးထားမှုတွေကို ဆက်လက်ဆုပ်ကိုင်ထားပါ။ လူအများစု လုပ်တိုင်း အမြဲတမ်း မမှန်ကန်နိုင်ကြောင်း သတိပြုပါ။'
-        )">၂။ (ခ) အုပ်စုရဲ့ သွေးထိုးမှုကို သတိထားပြီး မိုက်မဲတဲ့ လှိုင်းလုံးထဲမှာ မျောမပါဘဲ မိမိရဲ့ ကိုယ်ပိုင်လွတ်လပ်တဲ့ တွေးခေါ်မှု (Individuality) ကို ထိန်းကျောင်းကာ သင့်တင့်လျောက်ပတ်တဲ့ အကွာအဝေးကနေ ဉာဏ်ဖြင့် စောင့်ကြည့် ကာကွယ်မည်။</button>
+        <button class="option" onclick="handleOptionClick(this)"
+                data-title="The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):"
+                data-desc="စစ်မှန်တဲ့ ရင့်ကျက်တဲ့ အတွေးအခေါ်ရှင် ဖြစ်ပါတယ်။ အုပ်စုထဲမှာ အဆင်ပြေအောင် နေထိုင်တတ်သော်လည်း အတွင်းစိတ်ကတော့ လွတ်လပ်ပြီးသား ဖြစ်လို့ ဘယ်လို ဆွဲဆောင်မှုမျိုးကြောင့်မှ လမ်းမှားမှာ မဟုတ်ပါဘူး။"
+                data-strat="💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>မိမိကိုယ်ပိုင် တန်ဖိုးထားမှုတွေကို ဆက်လက်ဆုပ်ကိုင်ထားပါ။ လူအများစု လုပ်တိုင်း အမြဲတမ်း မမှန်ကန်နိုင်ကြောင်း သတိပြုပါ။">
+            ၂။ (ခ) အုပ်စုရဲ့ သွေးထိုးမှုကို သတိထားပြီး မိုက်မဲတဲ့ လှိုင်းလုံးထဲမှာ မျောမပါဘဲ မိမိရဲ့ ကိုယ်ပိုင်လွတ်လပ်တဲ့ တွေးခေါ်မှု (Individuality) ကို ထိန်းကျောင်းကာ သင့်တင့်လျောက်ပတ်တဲ့ အကွာအဝေးကနေ ဉာဏ်ဖြင့် စောင့်ကြည့် ကာကွယ်မည်။
+        </button>
         
-        <button class="option" onclick="showAnalysis(
-            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
-            'အုပ်စုရဲ့ စုပေါင်းအတ္တကို သွားရောက်ဆွမိသလိုဖြစ်ပြီး သင့်ကို ဝိုင်းဝန်းတိုက်ခိုက်၊ ဖယ်ကျဉ်ပစ်ကြပါလိမ့်မယ်။ အကျိုးမရှိဘဲ နစ်နာမှုတွေသာ ကြုံရတတ်ပါတယ်။', 
-            '💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>လူအုပ်ကြီးကို ထိပ်တိုက်မရင်ဆိုင်ပါနဲ့။ အုပ်စုရဲ့ သဘောသဘာဝကို နားလည်ပြီး ပါးနပ်စွာ ရှောင်လွှဲခြင်းကသာ သင့်ကို ကာကွယ်ရာ ရောက်ပါတယ်။'
-        )">၃။ (ဂ) အများရှေ့တွင် ထွက်ပေါ်ပြီး "မင်းတို့အားလုံး မှားနေတယ်" ဟု ဒေါသတကြီး ထိပ်တိုက်ရင်ဆိုင် ငြင်းခုံပြီး အုပ်စုတစ်ခုလုံးနဲ့ ရန်သူ ဖြစ်ပွားမည်။</button>
+        <button class="option" onclick="handleOptionClick(this)"
+                data-title="The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):"
+                data-desc="အုပ်စုရဲ့ စုပေါင်းအတ္တကို သွားရောက်ဆွမိသလိုဖြစ်ပြီး သင့်ကို ဝိုင်းဝန်းတိုက်ခိုက်၊ ဖယ်ကျဉ်ပစ်ကြပါလိမ့်မယ်။ အကျိုးမရှိဘဲ နစ်နာမှုတွေသာ ကြုံရတတ်ပါတယ်။"
+                data-strat="💡 ဗျူဟာမြောက် အကြံဉာဏ်:<br>လူအုပ်ကြီးကို ထိပ်တိုက်မရင်ဆိုင်ပါနဲ့။ အုပ်စုရဲ့ သဘောသဘာဝကို နားလည်ပြီး ပါးနပ်စွာ ရှောင်လွှဲခြင်းကသာ သင့်ကို ကာကွယ်ရာ ရောက်ပါတယ်။">
+            ၃။ (ဂ) အများရှေ့တွင် ထွက်ပေါ်ပြီး "မင်းတို့အားလုံး မှားနေတယ်" ဟု ဒေါသတကြီး ထိပ်တိုက်ရင်ဆိုင် ငြင်းခုံပြီး အုပ်စုတစ်ခုလုံးနဲ့ ရန်သူ ဖြစ်ပွားမည်။
+        </button>
     </div>
 
     <div id="result-box">
@@ -121,17 +130,29 @@
 </div>
 
 <script>
-    function showAnalysis(title, desc, strat) {
+    function handleOptionClick(button) {
+        // Button ရဲ့ data attributes ထဲက စာသားတွေကို ရယူခြင်း
+        const title = button.getAttribute('data-title');
+        const desc = button.getAttribute('data-desc');
+        const strat = button.getAttribute('data-strat');
+        
+        // UI ကို ဖျောက်/ပြ လုပ်ခြင်း
         document.getElementById('options-group').style.display = 'none';
         document.getElementById('q-text').style.opacity = '0.15';
+        
         document.getElementById('res-title').innerText = title;
         document.getElementById('res-desc').innerText = desc;
         document.getElementById('strategy-note').innerHTML = strat;
         document.getElementById('result-box').style.display = 'block';
+        
+        // ဖုန်းဗျူးအတွက် အပေါ်ကို ညင်သာစွာ Scroll ပြန်တင်ပေးခြင်း
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function completeQuiz() {
-        window.parent.postMessage("quizCompleted", "*");
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage("quizCompleted", "*");
+        }
     }
 </script>
 
