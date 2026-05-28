@@ -2,57 +2,33 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>ဩဇာတိက္ကမဖြင့် ခေတ်သစ်အမျိုးသမီးတို့အတွက် စိတ္တဇမဟာဗျူဟာများ | DASSY DIGITAL LIBRARY</title>
     
-    <meta name="description" content="Official Digital Library of DASSY. Master the psychology of relationship influence and sovereign boundaries for modern women.">
-    <meta name="author" content="DASSY, DASSY DIGITAL LIBRARY">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="keywords" content="Dassy, Dassy Digital Library, The Irreplaceable Queen, ဩဇာတိက္ကမဖြင့် ခေတ်သစ်အမျိုးသမီးတို့အတွက် စိတ္တဇမဟာဗျူဟာများ, Relationship Psychology, Dark Psychology, Myanmar Interactive Ebook, Sovereign Influence, High-Value Woman, စိတ်ပညာဂိမ်းစာအုပ်">
-    
-    <meta name="ai-crawler" content="index, follow">
-    <meta name="adaptive-content" content="enabled">
-    
-    <meta property="og:title" content="ဩဇာတိက္ကမဖြင့် ခေတ်သစ်အမျိုးသမီးတို့အတွက် စိတ္တဇမဟာဗျူဟာများ | DASSY">
-    <meta property="og:description" content="Master the psychology of relationships. Explore elite strategies and high-value sovereign scripts.">
-    <meta property="og:type" content="book">
-    <meta property="og:url" content="https://dassy-digital-library.github.io/"> 
-    <meta property="og:image" content="page1.jpg"> 
-    <meta property="og:site_name" content="DASSY DIGITAL LIBRARY">
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
 
     <style>
-        :root { 
-            --crimson: #4a0e17; 
-            --dark-bg: #140204;
-            --gold: #d4af37; 
-        }
+        :root { --crimson: #4a0e17; --dark-bg: #140204; --gold: #d4af37; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: var(--dark-bg); font-family: 'Pyidaungsu', sans-serif; }
         
-        .video-bg-container { position: fixed; inset: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; background: var(--dark-bg); }
+        .video-bg-container { position: fixed; inset: 0; z-index: 0; background: var(--dark-bg); }
         .video-bg-container video { width: 100%; height: 100%; object-fit: cover; }
         .video-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,2,4,0.85) 0%, rgba(74,14,23,0.5) 50%, rgba(20,2,4,0.95) 100%); z-index: 1; }
         
-        #lock { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 20; backdrop-filter: blur(3px); color: #fff; text-align: center; padding: 20px; overflow-y: auto; }
+        #lock { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 20; color: #fff; text-align: center; padding: 20px; }
         .brand-label { font-size: 11px; color: var(--gold); letter-spacing: 5px; margin-bottom: 15px; font-weight: bold; }
         .book-title { color: #fff; font-weight: 900; letter-spacing: 2px; font-size: clamp(18px, 4.5vw, 26px); margin: 0; padding-top: 20px; width: 100%; max-width: 500px; line-height: 1.6; border-top: 1px solid rgba(212,175,55,0.2); }
         .book-subtitle { font-size: clamp(12px, 2.5vw, 14px); color: var(--gold); font-style: italic; letter-spacing: 1px; margin-bottom: 30px; width: 100%; max-width: 500px; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 20px; }
 
         #lock input { padding: 15px; width: 100%; max-width: 280px; border: none; border-bottom: 2px solid var(--gold); background: transparent; color: #fff; text-align: center; font-size: 18px; outline: none; margin-bottom: 30px; letter-spacing: 3px; }
-        #lock button { padding: 15px 50px; width: 100%; max-width: 280px; background: linear-gradient(45deg, #8a1426, #d4af37, #8a1426); color: #fff; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; border-radius: 4px; box-shadow: 0 4px 15px rgba(212,175,55,0.2); transition: transform 0.2s ease; }
+        #lock button { padding: 15px 50px; width: 100%; max-width: 280px; background: linear-gradient(45deg, #8a1426, #d4af37, #8a1426); color: #fff; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; border-radius: 4px; }
         
         #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; }
-        #flipbook-wrapper { width: 100%; height: calc(100% - 40px); display: flex; justify-content: center; align-items: center; }
+        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         
-        /* Fixed Watermark Layer */
-        .fixed-watermark { 
-            position: fixed; bottom: 12px; left: 0; width: 100%; 
-            text-align: center; font-size: 9px; color: var(--gold); 
-            opacity: 0.5; letter-spacing: 2px; pointer-events: none; z-index: 99999; 
-        }
+        .fixed-watermark { position: fixed; bottom: 12px; left: 0; width: 100%; text-align: center; font-size: 9px; color: var(--gold); opacity: 0.5; letter-spacing: 2px; z-index: 99; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -66,14 +42,8 @@
         <span class="brand-label">DASSY DIGITAL LIBRARY PRESENTS</span>
         <h1 class="book-title">ဩဇာတိက္ကမဖြင့်<br>ခေတ်သစ်အမျိုးသမီးတို့အတွက် စိတ္တဇမဟာဗျူဟာများ</h1>
         <div class="book-subtitle">"The Power of Presence & Sovereign Influence"</div>
-        
-        <input type="password" id="pass" placeholder="ACCESS KEY" autocomplete="off">
+        <input type="password" id="pass" placeholder="ACCESS KEY" autocomplete="off" onkeypress="if(event.key === 'Enter') unlock()">
         <button onclick="unlock()">ENTER THE SOVEREIGNTY</button>
-        <div style="margin-top: 30px;">
-            <a href="https://t.me/Dassy_digital_Library" target="_blank" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 11px; letter-spacing: 1px;">
-                REQUEST PRIVATE ACCESS CODE FROM DASSY
-            </a>
-        </div>
     </div>
 
     <div id="book-container">
@@ -83,57 +53,66 @@
     </div>
     
     <div id="global-watermark" class="fixed-watermark" style="display:none;">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
-
     <audio id="sound" src="flip.mp3" preload="auto"></audio>
 
     <script>
         const myPassword = "#Sovereign#"; 
         const totalPages = 59; 
         const quizPages = [2, 14, 21, 28, 35, 43, 48, 55]; 
-        let isQuizLocked = false; 
+        let isQuizLocked = false;
+        const storageKeyPage = "sovereign_current_page";
+        const storageKeyAuth = "sovereign_authenticated";
 
-        document.getElementById("pass").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") { event.preventDefault(); unlock(); }
+        $(document).ready(function() {
+            if (localStorage.getItem(storageKeyAuth) === "true") {
+                $("#lock, .video-bg-container").hide();
+                $("#book-container").show().css("opacity", 1);
+                $("#global-watermark").show();
+                loadAndInitBook();
+            }
         });
+
+        function getBookSize() { return { width: window.innerWidth, height: window.innerHeight }; }
+
+        function unlock() {
+            if(document.getElementById("pass").value === myPassword) {
+                localStorage.setItem(storageKeyAuth, "true");
+                $("#lock").fadeOut(500, () => {
+                    $(".video-bg-container").fadeOut(500); 
+                    $("#book-container").show().animate({opacity: 1}, 800);
+                    $("#global-watermark").fadeIn(800);
+                    loadAndInitBook();
+                });
+            } else { alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။"); }
+        }
 
         window.addEventListener("message", function(event) {
             if (event.data === "quizCompleted") {
-                isQuizLocked = false; 
+                isQuizLocked = false;
                 setTimeout(() => { $("#flipbook").turn("next"); }, 100);
             }
         }, false);
 
-        function unlock() {
-            if(document.getElementById("pass").value === myPassword) {
-                $("#lock").fadeOut(500, () => {
-                    $(".video-bg-container").fadeOut(500); 
-                    $("#book-container").show().animate({opacity: 1}, 800);
-                    $("#global-watermark").fadeIn(800); 
-                    loadAndInitBook();
-                });
-            } else { alert("ACCESS DENIED: အထူးဝင်ခွင့်ကုဒ် မှားယွင်းနေပါသည်။"); }
-        }
-
         function loadAndInitBook() {
             const flipbook = $("#flipbook");
-            let h = (window.innerHeight - 50) * 0.90;
-            let w = (window.innerWidth < 600) ? window.innerWidth * 0.95 : h * 0.707;
+            if (flipbook.children().length > 0) return;
+            const size = getBookSize();
+            let savedPage = parseInt(localStorage.getItem(storageKeyPage)) || 1;
 
             for(let i=1; i<=totalPages; i++) {
                 const pageDiv = $('<div class="page" style="background:#140204;"></div>');
-                
                 if(quizPages.includes(i)) {
-                    let quizFile = `page${i}.html`;
-                    pageDiv.append(`<iframe src="${quizFile}" style="width:100%; height:100%; border:none; background:transparent; overflow-y:auto;" scrolling="yes"></iframe>`);
+                    pageDiv.append(`<iframe src="page${i}.html" style="width:100%; height:100%; border:none;" scrolling="yes"></iframe>`);
                 } else {
-                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:contain;" />').attr('src', `page${i}.jpg`));
+                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:fill;" />').attr('src', `page${i}.jpg`));
                 }
                 flipbook.append(pageDiv);
             }
 
             setTimeout(() => {
                 flipbook.turn({
-                    width: w, height: h, autoCenter: true, display: 'single', acceleration: true,
+                    width: size.width, height: size.height, autoCenter: true, display: 'single', acceleration: true,
+                    page: savedPage,
                     when: {
                         turning: function(e, page) {
                             if (isQuizLocked) { e.preventDefault(); return; }
@@ -141,12 +120,20 @@
                             if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
                         },
                         turned: function(e, page) {
+                            localStorage.setItem(storageKeyPage, page);
                             isQuizLocked = quizPages.includes(page);
                         }
                     }
                 });
             }, 100);
         }
+
+        window.addEventListener('resize', () => {
+            if ($("#flipbook").turn("is")) {
+                const size = getBookSize();
+                $("#flipbook").turn("size", size.width, size.height);
+            }
+        });
     </script>
 </body>
 </html>
