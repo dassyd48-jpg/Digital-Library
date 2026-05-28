@@ -16,8 +16,8 @@
 
     <title>THE FEMININE PROTOCOL | DASSY DIGITAL LIBRARY</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- turn.js ကို ပိုမိုတည်ငြိမ်ပြီး အလုပ်လုပ်တာမြန်တဲ့ CDN ပြောင်းလဲထားသည် -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.2.2/turn.min.js"></script>
+    <!-- 🛠️ Error ရှင်းရန်: မူလ Turn.js Local File လမ်းကြောင်းအတိုင်း ပြန်ပြောင်းထားပါသည် -->
+    <script src="turn.min.js"></script>
 
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -66,11 +66,11 @@
             width: 100%; height: 100%; display: flex;
             justify-content: center; align-items: center;
             background: #000;
-            padding-bottom: 35px; /* အောက်ခြေလွတ်ရုံချန်ပြီး စာမျက်နှာကို အရှည်ဆုံးဆွဲဆန့်ရန် */
+            padding-bottom: 35px; /* ဖုန်းမျက်နှာပြင် အပြည့်အရှည်ဆုံး ဖြစ်စေရန် */
         }
 
         .page { background: #001a1d; }
-        .page img { width: 100%; height: 100%; object-fit: fill !important; } /* စာမျက်နှာပုံရိပ်ကို အပြည့်ဆွဲဆန့်ရန် fill သုံးထားသည် */
+        .page img { width: 100%; height: 100%; object-fit: fill !important; } /* စာရွက်ပုံရိပ်ကို ဘေးဘောင်မလွတ်စေဘဲ ဆွဲဆန့်ရန် */
 
         .watermark { 
             position: absolute; bottom: 15px; width: 100%; 
@@ -112,7 +112,7 @@
         const quizPages = [10, 19, 25, 31, 37, 44, 50, 56]; 
         let isQuizLocked = false; 
 
-        // စာမျက်နှာဖွင့်ပြီးသားလား အော်တိုစစ်ဆေးသည့်စနစ်
+        // စာမျက်နှာဖွင့်ပြီးသားလား ကြိုတင်စစ်ဆေးခြင်း
         $(document).ready(function() {
             const isUnlocked = localStorage.getItem("tfp_unlocked");
             if (isUnlocked === "true") {
@@ -122,16 +122,16 @@
             }
         });
 
-        // 🚨 စာမျက်နှာကို ဖုန်း Screen အပြည့်အရှည်ဆုံး ဖြစ်စေမည့် အရွယ်အစားတွက်ချက်မှုစနစ်သစ်
+        // 🚨 အရွယ်အစားကို အပေါ်အောက် အပြည့်ဆွဲဆန့်ပေးမည့် တွက်ချက်မှုစနစ်
         function getBookSize() {
             let w = window.innerWidth;
             let h = window.innerHeight - 40; 
 
             if (window.innerWidth < 600) {
-                // ဖုန်းများအတွက် - Ratio ဘောင်မထားဘဲ အပေါ်အောက် အပြည့်ဆွဲဆန့်သည်
+                // ဖုန်းများအတွက် - Ratio ဘောင်မထားဘဲ screen အမြင့်အတိုင်း အပြည့်ဆွဲဆန့်သည်
                 w = window.innerWidth;
             } else {
-                // Laptop/Tablet များအတွက် ပုံမပျက်စေရန် မူလ Ratio အတိုင်းထားသည်
+                // Tablet နှင့် PC များအတွက် မူလ Ratio အတိုင်း ထားပေးသည်
                 let tabletH = window.innerHeight * 0.85;
                 let tabletW = tabletH * 0.707;
                 if (w / h > 0.707) { w = tabletW; h = tabletH; } else { h = w / 0.707; }
@@ -141,7 +141,7 @@
 
         function unlock() {
             if(document.getElementById("pass").value === myPassword) {
-                localStorage.setItem("tfp_unlocked", "true"); // သော့ပွင့်သွားကြောင်း မှတ်သားရန်
+                localStorage.setItem("tfp_unlocked", "true"); 
                 $("#bg-video").css("opacity", "0");
                 $("#lock").fadeOut(500, () => {
                     setTimeout(() => { $("#bg-video").hide(); }, 1000);
@@ -153,10 +153,11 @@
 
         function loadAndInit() {
             const flipbook = $("#flipbook");
-            if (flipbook.children().length > 0) return; // ကုဒ်ထပ်မံပွားခြင်းမှ ကာကွယ်ရန်
+            if (flipbook.children().length > 0) return; // ကုဒ်ထပ်ခါထပ်ခါ ပွားမသွားစေရန်
 
             const { w, h } = getBookSize();
 
+            // စာမျက်နှာများကို ကြိုတင်တည်ဆောက်ခြင်း
             for(let i=1; i<=maxPages; i++) {
                 const pageDiv = $('<div class="page"></div>');
                 if(quizPages.includes(i)) {
@@ -168,6 +169,7 @@
                 flipbook.append(pageDiv);
             }
 
+            // Turn.js ကို စတင်ပတ်မောင်းခြင်း
             setTimeout(() => {
                 flipbook.turn({
                     width: w, height: h, autoCenter: true, display: 'single', acceleration: true, duration: 400,
@@ -178,7 +180,7 @@
                             s.currentTime = 0; s.play().catch(e=>{});
                         },
                         turned: function(e, page) {
-                            localStorage.setItem("tfp_last_page", page); // ဖတ်လက်စစာမျက်နှာကို သိမ်းဆည်းရန်
+                            localStorage.setItem("tfp_last_page", page); // ဖတ်လက်စစာမျက်နှာကို မှတ်သားရန်
                             isQuizLocked = quizPages.includes(page);
                             if(isQuizLocked) {
                                 const f = $(this).find('.page').eq(page-1).find('iframe');
@@ -188,7 +190,7 @@
                     }
                 });
 
-                // ယခင်ဖတ်လက်စ စာမျက်နှာရှိပါက တန်းသွားရန်
+                // ယခင်ဖတ်လက်စ စာမျက်နှာရှိပါက တိုက်ရိုက်ခေါ်ယူရန်
                 const savedPage = localStorage.getItem("tfp_last_page");
                 if (savedPage) {
                     flipbook.turn("page", parseInt(savedPage));
@@ -205,7 +207,7 @@
             }
         });
 
-        // Device Screen ပြောင်းလဲသွားပါက စာအုပ်ကို အရွယ်အစားအလိုအလျောက် ပြန်ညှိရန်
+        // Screen အရွယ်အစားပြောင်းလဲပါက စာအုပ်ကို ပြန်ညှိပေးရန်
         $(window).resize(() => {
             const { w, h } = getBookSize();
             $("#flipbook").turn("size", w, h);
