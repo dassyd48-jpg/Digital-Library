@@ -19,7 +19,8 @@
     <meta property="og:description" content="Discover the hidden strategies and dark psychology of feminine energy. An interactive digital masterpiece by DASSY.">
     <meta property="og:url" content="https://dassyd48-jpg.github.io/Digital-Library/">
     <meta property="og:site_name" content="DASSY Digital Library">
-    <meta property="og:image" content="page1.jpg"> <meta property="og:image:width" content="1200">
+    <meta property="og:image" content="page1.jpg">
+    <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
     <meta name="twitter:card" content="summary_large_image">
@@ -32,7 +33,7 @@
       "@context": "https://schema.org",
       "@type": "Book",
       "name": "The Feminine Protocol",
-      "alternativeHeadline": "ဩဇာ၏ နိယာမ အပိုင်း ၂",
+      "alternativeHeadline": "အမျိုးသမီးထု၏ လျှို့ဝှက်နိယာမ",
       "author": { 
         "@type": "Person", 
         "name": "DASSY", 
@@ -183,11 +184,13 @@
 
             const { w, h } = getBookSize();
 
+            // Loop ပတ်ပြီး စာမျက်နှာ တည်ဆောက်ခြင်း
             for(let i=1; i<=maxPages; i++) {
                 const pageDiv = $('<div class="page"></div>');
                 
                 if(quizPages.includes(i)) {
-                    pageDiv.append(`<iframe data-src="page${i}.html" src="" style="width:100%; height:100%; border:none;"></iframe>`);
+                    // 🛠️ FIX: Src ကို တိုက်ရိုက် တစ်ခါတည်း လမ်းကြောင်းထည့်ပေးလိုက်ခြင်းဖြင့် အမည်းရောင်ဖြစ်ခြင်းကို လုံးဝသက်သာစေသည်
+                    pageDiv.append(`<iframe src="page${i}.html" style="width:100%; height:100%; border:none;"></iframe>`);
                 } else {
                     const img = $('<img />').attr('src', `page${i}.jpg`);
                     pageDiv.append(img);
@@ -206,14 +209,9 @@
                         },
                         turned: function(e, page) {
                             localStorage.setItem("tfp_last_page", page); 
-                            isQuizLocked = quizPages.includes(page);
                             
-                            if(isQuizLocked) {
-                                const activeIframe = flipbook.find('.page').eq(page - 1).find('iframe');
-                                if(activeIframe.length && !activeIframe.attr('src')) {
-                                    activeIframe.attr('src', activeIframe.attr('data-src'));
-                                }
-                            }
+                            // လက်ရှိစာမျက်နှာက Quiz ဖြစ်ခဲ့လျှင် Lock ချမည်
+                            isQuizLocked = quizPages.includes(page);
                         }
                     }
                 });
@@ -227,6 +225,7 @@
             }, 100);
         }
 
+        // Quiz HTML ဆီမှ Quiz အောင်မြင်ပြီးကြောင်း Message လာလျှင် စာမျက်နှာလှန်ပေးရန်
         window.addEventListener("message", (e) => {
             if(e.data === "quizCompleted") {
                 isQuizLocked = false;
