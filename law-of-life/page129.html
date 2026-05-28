@@ -2,7 +2,7 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CHAPTER 13: THE LAW OF DEATH DENIAL QUIZ</title>
     <style>
         :root {
@@ -10,6 +10,7 @@
             --gold-gradient: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             --dark-panel: rgba(20, 20, 20, 0.85);
         }
+        /* Mobile Touch နှင့် Smooth Vertical Scroll ရရှိစေရန် Body ကို ပြင်ဆင်ခြင်း */
         body { 
             background: #0D0D0D; 
             color: #fff; 
@@ -21,6 +22,9 @@
             align-items: center; 
             min-height: 100vh; 
             box-sizing: border-box; 
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .quiz-container { 
             width: 100%; 
@@ -53,6 +57,7 @@
             border: 1px solid rgba(212, 175, 55, 0.12); 
             color: #eee; border-radius: 5px; cursor: pointer; text-align: left; 
             transition: all 0.2s ease; font-size: 13px; line-height: 1.5;
+            -webkit-tap-highlight-color: transparent;
         }
         .option-label input { display: none; }
         .option-label:hover { background: rgba(212, 175, 55, 0.06); border-color: rgba(212, 175, 55, 0.4); }
@@ -63,6 +68,7 @@
             border-color: var(--gold);
             color: #fff;
             box-shadow: 0 0 10px rgba(212,175,55,0.15);
+            font-weight: bold;
         }
 
         .action-btn { 
@@ -71,6 +77,7 @@
             color: #000; border: none; border-radius: 4px; font-weight: 900; 
             cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 1px;
             margin-top: 25px; box-shadow: 0 4px 15px rgba(179,135,40,0.3);
+            outline: none;
         }
 
         /* Result Panel */
@@ -83,6 +90,7 @@
             font-size: 17px; font-weight: bold; color: var(--gold); 
             margin-bottom: 16px; border-bottom: 1px solid rgba(212, 175, 55, 0.3); 
             padding-bottom: 12px; letter-spacing: 1px; text-align: left;
+            line-height: 1.5;
         }
         .res-consequence { color: #ddd; font-size: 13.5px; line-height: 1.8; margin-bottom: 20px; text-align: left; }
         .res-strategy { 
@@ -107,7 +115,6 @@
             သင်ဟာ ရည်မှန်းချက်တွေနောက်ကို မနားတမ်းပြေးလွှားရင်း လူမှုပတ်ဝန်းကျင်မှာ အောင်မြင်မှု တချို့ရလာပါတယ်။ ဒါပေမဲ့ လက်တွေ့မှာတော့ နေ့စဉ်ဘဝက သောကတွေ၊ မကျေနပ်ချက်တွေ၊ ပတ်ဝန်းကျင်က အရေးမပါတဲ့ အတင်းအဖျင်းတွေနဲ့ ရန်ငြိုးတွေကြားမှာ စွမ်းအင်တွေ ကုန်ခမ်းပြီး "ငါ ဘာလို့ ဒီလောက်ထိ ပင်ပန်းခံနေရတာလဲ" ဆိုပြီး ကိုယ်ပိုင်အဓိပ္ပာယ် ပျောက်ဆုံးနေပါတယ်။ ဒီအခြေအနေမှာ သင့်ဘဝကို ဘယ်လို ပြန်လည် စီမံမလဲ?
         </div>
 
-        <!-- Question 1 -->
         <div class="question-block">
             <div class="q-title">[မေးခွန်း ၁] အရေးမပါသော လူမှုရေးရန်ပွဲများနှင့် ကြုံရသည့်အခါ သင့်တုံ့ပြန်မှုက ဘယ်လိုရှိသလဲ?</div>
             <label class="option-label" onclick="selectOption(this, 'q1')">
@@ -121,7 +128,6 @@
             </label>
         </div>
 
-        <!-- Question 2 -->
         <div class="question-block">
             <div class="q-title">[မေးခွန်း ၂] ဘဝရဲ့ ရည်မှန်းချက်တွေ၊ အလုပ်တွေကို လုပ်ကိုင်တဲ့အခါ သင့်ရဲ့ ပင်မတွန်းအားက ဘာလဲ?</div>
             <label class="option-label" onclick="selectOption(this, 'q2')">
@@ -135,7 +141,6 @@
             </label>
         </div>
 
-        <!-- Question 3 -->
         <div class="question-block">
             <div class="q-title">[မေးခွန်း ၃] လက်ရှိ သင့်ရဲ့ ကျန်းမာရေး၊ စိတ်အေးချမ်းမှုနှင့် ချစ်ခင်ရသူများကို အချိန်ပေးနိုင်မှု ဟန်ချက်က ဘယ်လိုရှိသလဲ?</div>
             <label class="option-label" onclick="selectOption(this, 'q3')">
@@ -152,7 +157,6 @@
         <button onclick="calculateResult()" class="action-btn">ဆန်းစစ်ချက်ရလဒ် ကြည့်မည် →</button>
     </div>
 
-    <!-- Result Display Section -->
     <div id="result-box">
         <span class="phase-label">DIAGNOSTIC RESULT</span>
         <div class="res-title" id="res-level"></div>
@@ -165,7 +169,9 @@
 
 <script>
     function selectOption(element, name) {
-        const siblings = element.parentNode.querySelectorAll('.option-label');
+        // သက်ဆိုင်ရာ မေးခွန်းအောက်က ရွေးချယ်မှုများကိုသာ ရှင်းလင်းပြီး Selected Style ပေးခြင်း
+        const container = element.closest('.question-block');
+        const siblings = container.querySelectorAll('.option-label');
         siblings.forEach(el => el.classList.remove('selected'));
         element.classList.add('selected');
         element.querySelector('input').checked = true;
@@ -207,7 +213,7 @@
             levelStrategy = "<b>💡 ဗျူဟာမြောက် အကြံဉာဏ်:</b> အောင်မြင်မှုဆိုသည်မှာ ဘဝကို ကောင်းမွန်အောင် ထောက်ပံ့ပေးသော \"ကိရိယာ\" မျှသာဖြစ်ပြီး ဘဝ၏ \"ပန်းတိုင်\" မဟုတ်ပါ။ နေ့စဉ် မိမိကိုယ်မိမိ တစ်နေ့သေရမည်ဟူသော အမှန်တရားကို သတိသွင်းခြင်းဖြင့် လက်ရှိပိုင်ဆိုင်ထားသော အချိန်ကို အနှစ်သာရရှိရှိ ပြန်လည်အသုံးချပါ။";
         } else if (majority === 'B') {
             levelTitle = "🟡 အဖြေ (ခ) အများစု — \"အရှိတရားထံမှ ယာယီထွက်ပြေးတိမ်းရှောင်နေသူ\"";
-            levelConsequence = "<b>ဖြစ်လာမည့်ဘဝရလဒ်:</b> သင်သည် သေခြင်းတရားနှင့် ဘဝအကျပ်အတည်းများကို ကြောက်ရွံ့စိတ်ပျက်ပြီး အရှိတရားထံမှ ယာယီထွက်ပြေးတိမ်းရှောင်ခြင်း (Escapism) ကို ပြုလုပ်နေသည်။ ပြဿနာများကို ရင်ဆိုင်ဖြေရှင်းရန် သို့မဟုတ် ပြတ်ပြတ်သားသား လွှတ်ချရန် တွန့်ဆုတ်နေပြီး \"နောက်မှ ပြောင်းလဲမှာပါ\" ဟု အချိန်ဆွဲနေသဖြင့် စိတ်ပိုင်းဆိုင်ရာ ကွက်လပ်တစ်ခုနှင့် ဘဝလမ်းကြောင်း ဝေဝါးကာ အဖိုးတန်အချိန်များ တဖြည်းဖြည်း ကုန်ဆုံးသွားနိုင်သည်။";
+            levelConsequence = "<b>ဖြစ်လာမည့်ဘဝရလဒ်:</b> သင်သည် သေခြင်းတရားနှင့် ဘဝအကျပ်အတည်းများကို ကြောက်ရွံ့စိတ်ပျက်ပြီး အရှိတရားထံမှ ယာယီထွက်ပြေးတိမ်းရှောင်ခြင်း (Escapism) ကို ပြုလုပ်နေသည်။ ပြဿနာများကို ရင်ဆိုင်ဖြေရှင်းရန် သို့မဟုတ် ပြတ်ပြတ်သားသား လွှတ်ချရန် တွန့်ဆုတ်နေပြီး \"နောက်မှ ပြောင်းလဲမှာပါ\" ဟု အချိန်ဆွဲနေသဖြင့် Сိတ်ပိုင်းဆိုင်ရာ ကွက်လပ်တစ်ခုနှင့် ဘဝလမ်းကြောင်း ဝေဝါးကာ အဖိုးတန်အချိန်များ တဖြည်းဖြည်း ကုန်ဆုံးသွားနိုင်သည်။";
             levelStrategy = "<b>💡 ဗျူဟာမြောက် အကြံဉာဏ်:</b> သေခြင်းတရားကို ဆင်ခြင်ခြင်း၏ ရည်ရွယ်ချက်မှာ ဘဝကို အရှုံးပေးရန် သို့မဟုတ် စိတ်ပျက်ရန် မဟုတ်ပါ။ အချိန်တိုတိုလေးအတွင်း မိမိ၏ တန်ဖိုးရှိသော ဖန်တီးနိုင်စွမ်းကို အကောင်းဆုံး ချန်ထားရစ်ခဲ့ရန် ဖြစ်သည်။ တာဝန်များကို ထွက်ပြေးမည့်အစား တာဝန်များကြားထဲမှာပင် စိတ်အေးချမ်းအောင် နေထိုင်တတ်သည့် ဉာဏ်ပညာကို မွေးမြူပါ။";
         } else if (majority === 'C') {
             levelTitle = "🔵 အဖြေ (ဂ) အများစု — \"မိမိဘဝ၏ သခင်အစစ်အမှန် (True Master of Life)\"";
@@ -221,10 +227,16 @@
         document.getElementById('res-consequence').innerHTML = levelConsequence;
         document.getElementById('res-strategy').innerHTML = levelStrategy;
         document.getElementById('result-box').style.display = 'block';
+        
+        // ရလဒ်ထွက်လာချိန်တွင် အပေါ်ဆုံးသို့ စခရင်တင်ပေးခြင်း
+        window.scrollTo(0, 0);
     }
 
     function completeQuiz() {
-        window.parent.postMessage("quizCompleted", "*");
+        // Main Book Page (index.html) ဆီသို့ နောက်စာမျက်နှာလှန်ရန် Signal ပေးပို့ခြင်း
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage("quizCompleted", "*");
+        }
     }
 </script>
 
