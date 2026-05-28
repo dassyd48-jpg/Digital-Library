@@ -50,7 +50,7 @@
         .tg-link:hover { color: #fff; border-bottom: 1px solid var(--gold); text-shadow: 0 0 8px rgba(212,175,55,0.6); }
         .tg-link:hover span.icon { transform: scale(1.2) translateX(2px); }
 
-        /* Book Framework Layout Fix */
+        /* Full Stretch Layout System */
         #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; overflow: hidden; }
         
         #flipbook-wrapper { 
@@ -60,21 +60,22 @@
             flex-direction: column;
             justify-content: center; 
             align-items: center; 
-            padding: 10px; 
+            padding: 0; /* Full Screen အပြည့်ရစေရန် padding ဖယ်ထုတ်ထားပါသည် */
         }
-        #flipbook { box-shadow: 0 0 40px rgba(0,0,0,0.8); }
+        #flipbook { width: 100vw; height: 100vh; box-shadow: 0 0 40px rgba(0,0,0,0.8); }
         
         .iframe-wrapper { width: 100%; height: 100%; position: relative; background: #000; }
         .iframe-pointer-fix { position: absolute; top: 0; left: 0; width: 45px; height: 100%; z-index: 5; background: transparent; }
         .iframe-pointer-fix.right { left: auto; right: 0; }
 
         .watermark { 
-            margin-top: 15px;
+            position: absolute;
+            bottom: 10px;
             width: 100%; 
             text-align: center; 
             font-size: clamp(9px, 2vw, 11px); 
             color: var(--gold); 
-            opacity: 0.4; 
+            opacity: 0.3; 
             letter-spacing: 3px; 
             pointer-events: none; 
             z-index: 12;
@@ -126,7 +127,7 @@
         const storageKeyPage = "dassy_book_current_page";
         const storageKeyAuth = "dassy_book_authenticated";
 
-        // DOM သီးသန့် Ready ဖြစ်ချိန်မှာ Auto-login ကို တိုက်ရိုက် run ပေးခြင်း
+        // DOM Ready ဖြစ်ချိန်မှာ Auto-login စနစ်
         $(document).ready(function() {
             if (localStorage.getItem(storageKeyAuth) === "true") {
                 $("#lock").hide();
@@ -136,17 +137,12 @@
             }
         });
 
-        // 🛠️ Responsive အရွယ်အစား တွက်ချက်ပေးသော စနစ်အသစ်
+        // 🛠️ မည်သည့်အချိုးအစားမှ ကန့်သတ်မထားသော Full Stretch Size တွက်ချက်စနစ်
         function getBookSize() {
-            let h = window.innerHeight * 0.82; 
-            let w = (window.innerWidth < 600) ? window.innerWidth * 0.94 : h * 0.707;
-            
-            // Mobile Phone အငယ်စားများအတွက် အမြင့် ထပ်ညှိပေးခြင်း
-            if (window.innerWidth < 600 && (w * 1.414) > window.innerHeight * 0.80) {
-                h = window.innerHeight * 0.76;
-                w = h / 1.414;
-            }
-            return { width: w, height: h };
+            return { 
+                width: window.innerWidth, 
+                height: window.innerHeight 
+            };
         }
 
         window.addEventListener("message", function(event) {
@@ -181,7 +177,7 @@
 
         function loadAndInit() {
             const flipbook = $("#flipbook");
-            if (flipbook.children().length > 0) return; // Duplicate မဖြစ်အောင် တားဆီးခြင်း
+            if (flipbook.children().length > 0) return; // Duplicate ကာကွယ်ခြင်း
 
             const size = getBookSize();
             let savedPage = parseInt(localStorage.getItem(storageKeyPage)) || 1;
@@ -201,7 +197,8 @@
                     wrapper.append('<div class="iframe-pointer-fix right"></div>');
                     pageDiv.append(wrapper);
                 } else {
-                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:contain; pointer-events:none;" />').attr('src', `page${i}.jpg`));
+                    // စာမျက်နှာပုံရိပ်များကို Screen အပြည့် Stretch ဖြစ်စေရန် object-fit: fill သုံးထားပါသည်
+                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:fill; pointer-events:none;" />').attr('src', `page${i}.jpg`));
                 }
                 flipbook.append(pageDiv);
             }
