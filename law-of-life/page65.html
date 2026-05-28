@@ -2,13 +2,13 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CHAPTER 6: THE LAW OF EGO AND VISION QUIZ</title>
     <style>
         :root {
             --gold: #D4AF37;
             --gold-light: #FCF6BA;
-            --dark-panel: rgba(20, 20, 20, 0.85);
+            --dark-panel: rgba(20, 20, 20, 0.95);
         }
         body { 
             background: #0D0D0D; 
@@ -21,6 +21,9 @@
             align-items: center; 
             min-height: 100vh; 
             box-sizing: border-box; 
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .quiz-container { 
             width: 100%; 
@@ -39,8 +42,7 @@
             text-transform: uppercase; font-weight: bold;
             display: block; margin-bottom: 15px;
         }
-        h2 { font-size: 15px; line-height: 1.6; margin: 15px 0; color: #fff;
-            text-align: left; font-weight: normal; }
+        h2 { font-size: 14.5px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; transition: opacity 0.3s ease; }
         
         .option { 
             display: block; 
@@ -48,9 +50,11 @@
             background: rgba(212, 175, 55, 0.03); 
             border: 1px solid rgba(212, 175, 55, 0.15); 
             color: #eee; border-radius: 4px; cursor: pointer; text-align: left; 
-            transition: all 0.3s ease; font-size: 13px; line-height: 1.5;
+            transition: all 0.2s ease; font-size: 13px; line-height: 1.5;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
-        .option:hover { 
+        .option:hover, .option:active { 
             background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
             color: #000; font-weight: bold; border-color: transparent;
             box-shadow: 0 4px 12px rgba(179,135,40,0.2);
@@ -69,10 +73,10 @@
             margin-bottom: 10px; display: block; border-left: 3px solid var(--gold); 
             padding-left: 10px; text-align: left; letter-spacing: 1px;
         }
-        .res-desc { color: #ddd; font-size: 13px; line-height: 1.7; margin: 0; }
+        .res-desc { color: #ddd; font-size: 13.5px; line-height: 1.7; margin: 0; }
         
         #strategy-note { 
-            font-size: 12.5px; 
+            font-size: 13px; 
             color: var(--gold-light); 
             background: rgba(212, 175, 55, 0.1); padding: 14px; 
             border-radius: 4px; margin-bottom: 22px; text-align: left; line-height: 1.6;
@@ -83,8 +87,8 @@
             width: 100%; padding: 15px; 
             background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
             color: #000; border: none; border-radius: 4px; font-weight: 900; 
-            cursor: pointer; 
-            text-align: center; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            font-size: 13px; outline: none;
         }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -98,25 +102,32 @@
     <h2 id="q-text"><b>ပဟေဠိအခြေအနေ (Scenario):</b><br>သင်ဟာ လုပ်ငန်းခွင် သို့မဟုတ် ပရောဂျက်တစ်ခုမှာ အောင်မြင်မှုအကြီးကြီးတစ်ခုကို တစ်ခါမျှမကြုံဖူးလောက်အောင် ရရှိသွားပါတယ်။ ဒီအခါ သင့်စိတ်ထဲမှာ "ငါက တကယ်ပဲ ပါရမီရှင်ပဲ၊ ငါလုပ်ရင် ဘာမဆို အကုန်အောင်မြင်မှာပဲ" ဆိုတဲ့ စိတ်ဝင်လာပြီး နောက်ထပ် ပိုမိုကြီးမားပြီး အန္တရာယ်များတဲ့ ရင်းနှီးမြှုပ်နှံမှု/ပရောဂျက်တစ်ခုကို ချက်ချင်း ထပ်လုပ်ဖို့ အခွင့်အရေး ရလာပါတယ်။ သင် ဘယ်လို စီမံမလဲ?</h2>
     
     <div id="options-group">
-        <button class="option" onclick="showAnalysis(
-            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
-            'သင်ဟာ သင့်ရဲ့ ယာယီအောင်မြင်မှုကြောင့် ဖြစ်ပေါ်လာတဲ့ အတ္တထောင်ချောက် (Hubris Trap) ထဲကို သတိမထားမိဘဲ သက်ဆင်းသွားနိုင်ပါတယ်။ အတိတ်က အောင်မြင်မှုဟာ အနာဂတ်အတွက် ရာနှုန်းပြည့် အာမခံချက် မဟုတ်ပါဘူး။ မာနတံခွန်ထူပြီး အကဲဖြတ်မှု မှားယွင်းခြင်းကြောင့် ပိုမိုကြီးမားတဲ့ ကျရှုံးမှုနဲ့ ရင်ဆိုင်ရပြီး ရရှိထားသမျှ အရာအားလုံး ဆုံးရှုံးသွားနိုင်ပါတယ်။', 
-            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>အောင်မြင်မှုကို အရှိအတိုင်း ခေါင်းအေးအေးဖြင့် သုံးသပ်ပါ။ အခန်း (၆) ၏ နိယာမအရ အောင်မြင်ချိန်တွင် စိတ်လှုပ်ရှားမှုနောက်သို့ မျောမပါဘဲ ပိုမိုနှိမ့်ချပြီး သတိကြီးစွာ ထားရပါမည်။ "ငါဘာမဆိုလုပ်နိုင်တယ်" ဟူသော အတွေးထက် "ဒီအောင်မြင်မှုမှာ ဘယ်အချက်တွေကြောင့် အလုပ်ဖြစ်ခဲ့တာလဲ" ဆိုသည့် အချက်အလက် (Fact) ကိုသာ ရှာဖွေပြီး အခြေခိုင်အောင် အရင်လုပ်သင့်ပါတယ်။'
-        )">၁။ (က) "ငါ့အစွမ်းအစနဲ့ဆို ဖြစ်ကိုဖြစ်ရမယ်" ဟု ကိုယ့်ကိုယ်ကိုယ် အထင်ကြီးစိတ်ဖြင့် အသေးစိတ်အချက်အလက်များကို သေချာမလေ့လာဘဲ စွန့်စားပြီး ချက်ချင်း အကြီးအကျယ် ထပ်မံတိုးချဲ့ လုပ်ကိုင်မည်။</button>
+        <!-- Option 1 -->
+        <button class="option" onclick="handleOptionClick(this)"
+                data-title="The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):"
+                data-desc="သင်ဟာ သင့်ရဲ့ ယာယီအောင်မြင်မှုကြောင့် ဖြစ်ပေါ်လာတဲ့ အတ္တထောင်ချောက် (Hubris Trap) ထဲကို သတိမထားမိဘဲ သက်ဆင်းသွားနိုင်ပါတယ်။ အတိတ်က အောင်မြင်မှုဟာ အနာဂတ်အတွက် ရာနှုန်းပြည့် အာမခံချက် မဟုတ်ပါဘူး။ မာနတံခွန်ထူပြီး အကဲဖြတ်မှု မှားယွင်းခြင်းကြောင့် ပိုမိုကြီးမားတဲ့ ကျရှုံးမှုနဲ့ ရင်ဆိုင်ရပြီး ရရှိထားသမျှ အရာအားလုံး ဆုံးရှုံးသွားနိုင်ပါတယ်။"
+                data-strat="💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>အောင်မြင်မှုကို အရှိအတိုင်း ခေါင်းအေးအေးဖြင့် သုံးသပ်ပါ။ အခန်း (၆) ၏ နိယာမအရ အောင်မြင်ချိန်တွင် စိတ်လှုပ်ရှားမှုနောက်သို့ မျောမပါဘဲ ပိုမိုနှိမ့်ချပြီး သတိကြီးစွာ ထားရပါမည်။ 'ငါဘာမဆိုလုပ်နိုင်တယ်' ဟူသော အတွေးထက် 'ဒီအောင်မြင်မှုမှာ ဘယ်အချက်တွေကြောင့် အလုပ်ဖြစ်ခဲ့တာလဲ' ဆိုသည့် အချက်အလက် (Fact) ကိုသာ ရှာဖွေပြီး အခြေခိုင်အောင် အရင်လုပ်သင့်ပါတယ်။">
+            ၁။ (က) "ငါ့အစွမ်းအစနဲ့ဆို ဖြစ်ကိုဖြစ်ရမယ်" ဟု ကိုယ့်ကိုယ်ကိုယ် အထင်ကြီးစိတ်ဖြင့် အသေးစိတ်အချက်အလက်များကို သေချာမလေ့လာဘဲ စွန့်စားပြီး ချက်ချင်း အကြီးအကျယ် ထပ်မံတိုးချဲ့ လုပ်ကိုင်မည်။
+        </button>
         
-        <button class="option" onclick="showAnalysis(
-            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
-            'ဂုဏ်ယူပါတယ်၊ သင်ဟာ စိတ်လှုပ်ရှားမှုနောက်ကို လွယ်လွယ်နဲ့ မမျောဘဲ ဘဝနဲ့ လူ့သဘာဝကို အမြင်ကျယ်ကျယ်ဖြင့် စနစ်တကျ ကြည့်မြင်နိုင်တဲ့ ဗျူဟာမြောက် ခေါင်းဆောင်ကောင်း စရိုက်ရှိသူ ဖြစ်ပါတယ်။ ဒီဉာဏ်ပညာကြောင့် သင့်ရဲ့ အောင်မြင်မှုဟာ ခဏတာမဟုတ်ဘဲ ရေရှည်ခိုင်မြဲပြီး တိုးတက်မှု အဆင့်ဆင့်ကို အမှားနည်းနည်းနဲ့ ရရှိသွားပါလိမ့်မယ်။', 
-            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>သင့်ရဲ့ ဒီအမြော်အမြင်ရှိမှုကို ဆက်လက်ထိန်းသိမ်းပါ။ စိန်ခေါ်မှုအသစ်တစ်ခုကို မစတင်မီ ပတ်ဝန်းကျင်အခြေအနေ၊ ကိန်းဂဏန်းအချက်အလက်နှင့် ဖြစ်နိုင်ခြေရှိသော အန္တရာယ် (Risk Assessment) များကို စာရွက်ပေါ်တွင် ချရေးတွက်ချက်ပါ။ သင့်ရဲ့ တည်ငြိမ်မှုက သင့်ကို ဘဝရဲ့ ထိပ်ဆုံးဆီသို့ စမတ်ကျကျ ပို့ဆောင်ပေးပါလိမ့်မယ်။'
-        )">၂။ (ခ) အောင်မြင်မှုကြောင့် စိတ်လှုပ်ရှားနေသော်လည်း တစ်ခါအောင်မြင်ရုံဖြင့် အမြဲမအောင်မြင်နိုင်ကြောင်း သတိပြုပြီး လက်ရှိအောင်မြင်မှုကို အခြေခံကာ နောက်တစ်ဆင့်အတွက် အမှားမခံဘဲ အချက်အလက် ခိုင်ခိုင်မာမာဖြင့် တဖြည်းဖြည်းချင်း သွားမည်။</button>
+        <!-- Option 2 -->
+        <button class="option" onclick="handleOptionClick(this)"
+                data-title="The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):"
+                data-desc="ဂုဏ်ယူပါတယ်၊ သင်ဟာ စိတ်လှုပ်ရှားမှုနောက်ကို လွယ်လွယ်နဲ့ မမျောဘဲ ဘဝနဲ့ လူ့သဘာဝကို အမြင်ကျယ်ကျယ်ဖြင့် စနစ်တကျ ကြည့်မြင်နိုင်တဲ့ ဗျူဟာမြောက် ခေါင်းဆောင်ကောင်း စရိုက်ရှိသူ ဖြစ်ပါတယ်။ ဒီဉာဏ်ပညာကြောင့် သင့်ရဲ့ အောင်မြင်မှုဟာ ခဏတာမဟုတ်ဘဲ ရေရှည်ခိုင်မြဲပြီး တိုးတက်မှု အဆင့်ဆင့်ကို အမှားနည်းနည်းနဲ့ ရရှိသွားပါလိမ့်မယ်။"
+                data-strat="💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>သင့်ရဲ့ ဒီအမြော်အမြင်ရှိမှုကို ဆက်လက်ထိန်းသိမ်းပါ။ စိန်ခေါ်မှုအသစ်တစ်ခုကို မစတင်မီ ပတ်ဝန်းကျင်အခြေအနေ၊ ကိန်းဂဏန်းအချက်အလက်နှင့် ဖြစ်နိုင်ခြေရှိသော အန္တရာယ် (Risk Assessment) များကို စာရွက်ပေါ်တွင် ချရေးတွက်ချက်ပါ။ သင့်ရဲ့ တည်ငြိမ်မှုက သင့်ကို ဘဝရဲ့ ထိပ်ဆုံးဆီသို့ စမတ်ကျကျ ပို့ဆောင်ပေးပါလိမ့်မယ်။">
+            ၂။ (ခ) အောင်မြင်မှုကြောင့် စိတ်လှုပ်ရှားနေသော်လည်း တစ်ခါအောင်မြင်ရုံဖြင့် အမြဲမအောင်မြင်နိုင်ကြောင်း သတိပြုပြီး လက်ရှိအောင်မြင်မှုကို အခြေခံကာ နောက်တစ်ဆင့်အတွက် အမှားမခံဘဲ အချက်အလက် ခိုင်ခိုင်မာမာဖြင့် တဖြည်းဖြည်းချင်း သွားမည်။
+        </button>
         
-        <button class="option" onclick="showAnalysis(
-            'The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):', 
-            'သင့်ဘက်က ကျရှုံးမှာကို အလွန်အကျွံ ကြောက်ရွံ့စိုးရိမ်စိတ် (Fear of Failure) ကြောင့် ဘဝရဲ့ ပိုမိုကြီးမားတဲ့ အခွင့်အလမ်းတွေကို လက်လွတ် ဆုံးရှုံးသွားရပါလိမ့်မယ်။ လက်ရှိနေရာမှာတင် တန့်နေပြီး ရေရှည်မှာ ခေတ်နောက်ကျ ကျန်ခဲ့ကာ သင့်ရဲ့ အရည်အချင်းတွေ တဖြည်းဖြည်း သံချေးတက် ပျောက်ကွယ်သွားတတ်ပါတယ်။', 
-            '💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>အမှားလုပ်မိမှာကို မကြောက်ပါနဲ့။ ကျရှုံးမှုဟာ သင့်လူပုဂ္ဂိုလ်ကို တန်ဖိုးဖြတ်တာမဟုတ်ဘဲ သင်ခန်းစာတစ်ခုသာ ဖြစ်တယ်ဆိုတာကို သတိပြုပါ။ အောင်မြင်မှုကို ကြောက်ရွံ့ပြီး ငြိမ်မခံနေပါနဲ့။ သင်လုပ်ရမှာက စိန်ခေါ်မှုအသစ်တွေကို လုံးဝမရှောင်လွှဲဘဲ၊ အန္တရာယ်ကို ကြိုတင်ကာကွယ်နိုင်မည့် အစီအစဉ် (Plan B) ကို သေသေချာချာ ပြင်ဆင်ပြီးမှ ရဲရဲဝံ့ဝံ့ ရှေ့ဆက်တိုးဖို့ ဖြစ်ပါတယ်။'
-        )">၃။ (ဂ) အောင်မြင်မှုကို ကြောက်ရွံ့ပြီး "နောက်တစ်ခါ ကျရှုံးသွားရင် ဒုက္ခ" ဟု တွေးကာ မည်သည့် စိန်ခေါ်မှုအသစ်ကိုမျှ ထပ်မလုပ်တော့ဘဲ လက်ရှိနေရာမှာတင် ရောင့်ရဲပြီး ငြိမ်ခံနေမည်။</button>
+        <!-- Option 3 -->
+        <button class="option" onclick="handleOptionClick(this)"
+                data-title="The Consequence (ဖြစ်လာမည့်ဘဝရလဒ်):"
+                data-desc="သင့်ဘက်က ကျရှုံးမှာကို အလွန်အကျွံ ကြောက်ရွံ့စိုးရိမ်စိတ် (Fear of Failure) ကြောင့် ဘဝရဲ့ ပိုမိုကြီးမားတဲ့ အခွင့်အလမ်းတွေကို လက်လွတ် ဆုံးရှုံးသွားရပါလိမ့်မယ်။ လက်ရှိနေရာမှာတင် တန့်နေပြီး ရေရှည်မှာ ခေတ်နောက်ကျ ကျန်ခဲ့ကာ သင့်ရဲ့ အရည်အချင်းတွေ တဖြည်းဖြည်း သံချေးတက် ပျောက်ကွယ်သွားတတ်ပါတယ်။"
+                data-strat="💡 ဗျူဟာမြောက် အကြံဉာဏ် (Strategic Advice):<br>အမှားလုပ်မိမှာကို မကြောက်ပါနဲ့။ ကျရှုံးမှုဟာ သင့်လူပုဂ္ဂိုလ်ကို တန်ဖိုးဖြတ်တာမဟုတ်ဘဲ သင်ခန်းစာတစ်ခုသာ ဖြစ်တယ်ဆိုတာကို သတိပြုပါ။ အောင်မြင်မှုကို ကြောက်ရွံ့ပြီး ငြိမ်မခံနေပါနဲ့။ သင်လုပ်ရမှာက စိန်ခေါ်မှုအသစ်တွေကို လုံးဝမရှောင်လွှဲဘဲ၊ အန္တရာယ်ကို ကြိုတင်ကာကွယ်နိုင်မည့် အစီအစဉ် (Plan B) ကို သေသေချာချာ ပြင်ဆင်ပြီးမှ ရဲရဲဝံ့ဝံ့ ရှေ့ဆက်တိုးဖို့ ဖြစ်ပါတယ်။">
+            ၃။ (ဂ) အောင်မြင်မှုကို ကြောက်ရွံ့ပြီး "နောက်တစ်ခါ ကျရှုံးသွားရင် ဒုက္ခ" ဟု တွေးကာ မည်သည့် စိန်ခေါ်မှုအသစ်ကိုမျှ ထပ်မလုပ်တော့ဘဲ လက်ရှိနေရာမှာတင် ရောင့်ရဲပြီး ငြိမ်ခံနေမည်။
+        </button>
     </div>
 
+    <!-- Result Box -->
     <div id="result-box">
         <div class="res-section">
             <span class="res-title" id="res-title"></span>
@@ -129,18 +140,29 @@
 </div>
 
 <script>
-    function showAnalysis(title, desc, strat) {
+    function handleOptionClick(button) {
+        // Button ရဲ့ data attributes ထဲက စာသားတွေကို ရယူခြင်း
+        const title = button.getAttribute('data-title');
+        const desc = button.getAttribute('data-desc');
+        const strat = button.getAttribute('data-strat');
+        
+        // UI ကို ဖျောက်/ပြ လုပ်ခြင်း
         document.getElementById('options-group').style.display = 'none';
         document.getElementById('q-text').style.opacity = '0.15';
+        
         document.getElementById('res-title').innerText = title;
         document.getElementById('res-desc').innerText = desc;
-        document.getElementById('strategy-note').innerHTML = strat; 
+        document.getElementById('strategy-note').innerHTML = strat;
         document.getElementById('result-box').style.display = 'block';
+        
+        // ဖုန်းတွေပေါ်မှာ အဖြေစာသားကို အလွယ်တကူ မြင်နိုင်ဖို့ Smooth Scroll လုပ်ပေးခြင်း
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function completeQuiz() {
-        // Main Flip Book ဆီသို့ ကူးပြောင်းရန် Message ပို့ခြင်း
-        window.parent.postMessage("quizCompleted", "*");
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage("quizCompleted", "*");
+        }
     }
 </script>
 
