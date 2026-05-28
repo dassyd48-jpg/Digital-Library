@@ -99,14 +99,26 @@
             padding-bottom: 35px;
         }
 
-        .page { background: #001a1d; width: 100%; height: 100%; }
-        .page img { width: 100%; height: 100%; object-fit: fill !important; display: block; }
-        .page iframe { width: 100%; height: 100%; border: none; display: block; background: #001a1d; }
+        /* 🛠️ Improved CSS Layout for Page & iFrames to prevent blank/black scaling bugs */
+        .page { background: #001a1d; width: 100%; height: 100%; position: relative; overflow: hidden; }
+        .page img { width: 100%; height: 100%; object-fit: fill !important; display: block; pointer-events: none; }
+        
+        .page iframe { 
+            width: 100% !important; 
+            height: 100% !important; 
+            border: none !important; 
+            display: block; 
+            background: #001a1d; 
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
 
         .watermark { 
             position: absolute; bottom: 15px; width: 100%; 
             text-align: center; font-size: 9px; color: #4ed9e6; 
             opacity: 0.4; letter-spacing: 3px; pointer-events: none;
+            z-index: 15;
         }
     </style>
 </head>
@@ -189,7 +201,7 @@
                 const pageDiv = $('<div class="page"></div>');
                 
                 if(quizPages.includes(i)) {
-                    // 🛠️ FIX: Src ကို တိုက်ရိုက် တစ်ခါတည်း လမ်းကြောင်းထည့်ပေးလိုက်ခြင်းဖြင့် အမည်းရောင်ဖြစ်ခြင်းကို လုံးဝသက်သာစေသည်
+                    // 🛠️ Static Path Rendering Logic: ကက်ရှ်လွဲချော်မှုမရှိစေရန် src သို့ တိုက်ရိုက်လမ်းကြောင်းပေးထားသည်
                     pageDiv.append(`<iframe src="page${i}.html" style="width:100%; height:100%; border:none;"></iframe>`);
                 } else {
                     const img = $('<img />').attr('src', `page${i}.jpg`);
@@ -210,7 +222,7 @@
                         turned: function(e, page) {
                             localStorage.setItem("tfp_last_page", page); 
                             
-                            // လက်ရှိစာမျက်နှာက Quiz ဖြစ်ခဲ့လျှင် Lock ချမည်
+                            // လက်ရှိစာမျက်နှာက Quiz ဖြစ်ခဲ့လျှင် Next ကို Lock ချမည်
                             isQuizLocked = quizPages.includes(page);
                         }
                     }
