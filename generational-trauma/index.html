@@ -82,7 +82,7 @@
         
         .book-title { 
             color: var(--bright-green); font-weight: 900; letter-spacing: 6px; 
-            font-size: clamp(22px, 5vw, 34px); margin: 0 0 35px 0; 
+            font-size: clamp(22px, 5vw, 34px); margin: 0; 
             text-shadow: var(--neon-glow);
             border-top: 1px solid rgba(212, 175, 55, 0.3); 
             border-bottom: 1px solid rgba(212, 175, 55, 0.3); 
@@ -170,14 +170,15 @@
             justify-content: center; 
             align-items: center; 
             position: relative;
+            padding-bottom: 40px; /* စာမျက်နှာလှန်ချိန် Watermark ကို မကျော်စေရန် space ချန်ထားခြင်း */
         }
         
-        /* FIX: Watermark ကို စာအုပ်စာမျက်နှာတွေရဲ့ အပေါ်ဆုံး layer မှာ တည်ရှိစေပြီး 
-           စာမျက်နှာလှန်သော်လည်း turn.js layer အောက်သို့ ရောက်မသွားစေရန် z-index: 999 သို့ မြှင့်တင်ထားပါသည်
-        */
+        .page { background: #000; width: 100%; height: 100%; position: relative; overflow: hidden; }
+        .page img { width: 100%; height: 100%; object-fit: fill !important; display: block; pointer-events: none; }
+
         .watermark { 
             position: absolute; 
-            bottom: 30px; /* ဖုန်း Browser မျိုးစုံ၏ အောက်ခြေ bar များနှင့် လွတ်ကင်းစေရန် အနည်းငယ် ပိုမြှင့်ပေးထားပါသည် */
+            bottom: 30px; 
             width: 100%; 
             text-align: center; 
             font-size: 10px; 
@@ -196,7 +197,7 @@
         }
         
         .quiz-container iframe {
-            width: 100%; height: 100%; border: none;
+            width: 100% !important; height: 100% !important; border: none !important; display: block;
         }
 
         @keyframes goldShimmer {
@@ -252,6 +253,32 @@
         let isQuizLocked = false; 
         let currentActivePage = 1;
 
+        // 🛠️ FIX 2: Password တစ်ခါပဲ တောင်းစေဖို့ ဝင်စစ်ဆေးတဲ့ Logic
+        $(document).ready(function() {
+            const isUnlocked = localStorage.getItem("aos_unlocked");
+            if (isUnlocked === "true") {
+                $("#lock, #bg-video").hide();
+                $("#book-container").show().css({ 'opacity': '1', 'transform': 'scale(1)' });
+                loadAndInit();
+            }
+        });
+
+        // 🛠️ FIX 1: စာမျက်နှာ Ratio ကို Mobile/Tablet ပေါ်မူတည်ပြီး တွက်ချက်ပေးတဲ့ Logic
+        function getBookSize() {
+            let w = window.innerWidth;
+            let h = window.innerHeight - 40;
+
+            if (window.innerWidth < 600) {
+                w = window.innerWidth;
+                h = window.innerHeight * 0.82; // မူရင်း 0.82 အချိုးကို ကွက်တိပြန်ထိန်းထားခြင်း
+            } else {
+                let tabletH = window.innerHeight * 0.82;
+                let tabletW = tabletH * 0.707;
+                if (w / h > 0.707) { w = tabletW; h = tabletH; } else { h = w / 0.707; }
+            }
+            return { w, h };
+        }
+
         // Iframe Window Messenger Sync
         window.addEventListener("message", function(event) {
             if (event.data === "quizCompleted") {
@@ -267,7 +294,9 @@
             const lightAmbience = document.getElementById("bgm-light");
 
             if(inputField.value === myPassword) {
-                // Browser Autoplay Policy Fix: Activate both audios inside explicit user click
+                // 🛠️ FIX 2: Password အောင်မြင်ကြောင်း သိမ်းဆည်းခြင်း
+                localStorage.setItem("aos_unlocked", "true");
+
                 darkAmbience.play().then(() => darkAmbience.pause()).catch(()=>{});
                 lightAmbience.play().then(() => lightAmbience.pause()).catch(()=>{});
 
@@ -292,7 +321,7 @@
                 }, 800);
             } else { 
                 inputField.classList.remove("error-shake");
-                void inputField.offsetWidth; // Trigger reflow to restart animation safely
+                void inputField.offsetWidth; 
                 inputField.classList.add("error-shake");
                 inputField.value = "";
                 inputField.focus();
@@ -302,21 +331,18 @@
         // Render Frame Elements
         function loadAndInit() {
             const flipbook = $("#flipbook");
-            
-            /* FIX: စာအုပ်အမြင့်ကို 82% သို့ ညှိလိုက်ခြင်းဖြင့် စာမျက်နှာလှန်သည့် animations များ 
-               အောက်ခြေ watermark ကို လုံးဝ လာရောက် မဖုံးအုပ်နိုင်စေရန် ဘေးကင်းဇုန် ပြုလုပ်ပေးထားပါသည် 
-            */
-            let h = window.innerHeight * 0.82; 
-            let w = (window.innerWidth < 600) ? window.innerWidth * 0.95 : h * 0.707;
+            if (flipbook.children().length > 0) return;
+
+            const { w, h } = getBookSize();
 
             for(let i = 1; i <= totalPages; i++) {
-                const pageDiv = $('<div class="page" style="background:#000;"></div>');
+                const pageDiv = $('<div class="page"></div>');
                 
                 if(quizPages.includes(i)) {
                     pageDiv.append(`<div class="quiz-container"><iframe src="quiz.html?p=${i}" scrolling="no"></iframe></div>`);
                 } 
                 else if (i < totalPages) {
-                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:contain;" />').attr('src', `page${i}.jpg`));
+                    pageDiv.append($('<img />').attr('src', `page${i}.jpg`));
                 } 
                 else {
                     pageDiv.append('<div style="width:100%; height:100%; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; color:rgba(212,175,55,0.4); font-family:sans-serif; text-align:center; padding:20px;"><div style="font-size:12px; letter-spacing:4px; font-weight:bold; margin-bottom:10px; color:#fff;">DASSY DIGITAL LIBRARY</div><div style="font-size:11px; letter-spacing:2px; color:var(--gold); opacity:0.8;">— END OF PREVIEW —</div></div>');
@@ -327,7 +353,7 @@
             // Engine Initializations
             setTimeout(() => {
                 flipbook.turn({
-                    width: w, height: h, autoCenter: true, display: 'single', acceleration: true,
+                    width: w, height: h, autoCenter: true, display: 'single', acceleration: true, duration: 400,
                     elevation: 0,
                     when: {
                         turning: function(e, page) {
@@ -340,19 +366,33 @@
                         },
                         turned: function(e, page) {
                             currentActivePage = page;
+                            
+                            // 🛠️ FIX 3: ဖတ်လက်စ စာမျက်နှာကို သိမ်းဆည်းပေးခြင်း Logic
+                            localStorage.setItem("aos_last_page", page);
+
                             isQuizLocked = quizPages.includes(page);
                             controlMusic(page);
                         }
                     }
                 });
-                controlMusic(1);
-            }, 150);
+
+                // 🛠️ FIX 3: ဖတ်လက်စ စာမျက်နှာကို ပြန်ခေါ်ယူဖွင့်ပေးခြင်း Logic
+                const savedPage = localStorage.getItem("aos_last_page");
+                if (savedPage) {
+                    flipbook.turn("page", parseInt(savedPage));
+                    controlMusic(parseInt(savedPage));
+                } else {
+                    flipbook.turn("page", 1);
+                    controlMusic(1);
+                }
+            }, 100);
         }
 
         // Music Logic Controller
         function controlMusic(page) {
             const dark = document.getElementById("bgm-dark");
             const light = document.getElementById("bgm-light");
+            if(!dark || !light) return;
             
             if (quizPages.includes(page)) {
                 if (dark.paused) {
@@ -371,8 +411,7 @@
 
         // Engine Auto Resizer
         $(window).resize(function() {
-            let h = window.innerHeight * 0.82; 
-            let w = (window.innerWidth < 600) ? window.innerWidth * 0.95 : h * 0.707;
+            const { w, h } = getBookSize();
             if ($("#flipbook").turn("is")) {
                 $("#flipbook").turn("size", w, h);
             }
