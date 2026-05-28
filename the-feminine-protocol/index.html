@@ -2,7 +2,7 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
     <script type="application/ld+json">
     {
@@ -16,16 +16,17 @@
 
     <title>THE FEMININE PROTOCOL | DASSY DIGITAL LIBRARY</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+    <!-- turn.js ကို ပိုမိုတည်ငြိမ်ပြီး အလုပ်လုပ်တာမြန်တဲ့ CDN ပြောင်းလဲထားသည် -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.2.2/turn.min.js"></script>
 
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
         
         /* High-Definition Background Video */
         #bg-video { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            object-fit: cover; z-index: 0; filter: brightness(0.8); /* ကြည်လင်အောင် Brightness တိုးထားသည် */
+            object-fit: cover; z-index: 0; filter: brightness(0.8);
             transition: opacity 1s ease;
         }
 
@@ -46,7 +47,7 @@
         #lock input {
             padding: 16px; width: 260px; border: 1px solid #4ed9e6; 
             background: rgba(0,0,0,0.8); color: #fff; text-align: center; 
-            font-size: 16px; letter-spacing: 5px; border-radius: 4px;
+            font-size: 16px; letter-spacing: 5px; border-radius: 4px; outline: none;
         }
 
         #lock button {
@@ -55,17 +56,21 @@
             text-transform: uppercase; border-radius: 4px;
         }
 
-        /* Perfect Centering for All Devices */
+        /* Full Screen Book Container */
         #book-container { 
             display: none; width: 100vw; height: 100vh; 
-            position: relative; z-index: 10;
+            position: relative; z-index: 10; opacity: 0;
         }
 
         #flipbook-wrapper {
             width: 100%; height: 100%; display: flex;
             justify-content: center; align-items: center;
             background: #000;
+            padding-bottom: 35px; /* အောက်ခြေလွတ်ရုံချန်ပြီး စာမျက်နှာကို အရှည်ဆုံးဆွဲဆန့်ရန် */
         }
+
+        .page { background: #001a1d; }
+        .page img { width: 100%; height: 100%; object-fit: fill !important; } /* စာမျက်နှာပုံရိပ်ကို အပြည့်ဆွဲဆန့်ရန် fill သုံးထားသည် */
 
         .watermark { 
             position: absolute; bottom: 15px; width: 100%; 
@@ -84,12 +89,12 @@
         <input type="password" id="pass" placeholder="PRIVATE CODE">
         <button onclick="unlock()">INITIALIZE</button>
         <div style="margin-top: 25px; text-align: center;">
-    <a href="https://t.me/Dassy_digital_Library" target="_blank" 
-       style="display: inline-flex; align-items: center; gap: 8px; color: rgba(255, 255, 255, 0.4); text-decoration: none; font-size: 12px; transition: 0.3s; font-family: sans-serif; letter-spacing: 1px;">
-        <span>📩</span> 
-        <span style="border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 2px;">Contact DASSY for Password</span>
-    </a>
-</div>
+            <a href="https://t.me/Dassy_digital_Library" target="_blank" 
+               style="display: inline-flex; align-items: center; gap: 8px; color: rgba(255, 255, 255, 0.4); text-decoration: none; font-size: 12px; transition: 0.3s; font-family: sans-serif; letter-spacing: 1px;">
+                <span>📩</span> 
+                <span style="border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 2px;">Contact DASSY for Password</span>
+            </a>
+        </div>
     </div>
 
     <div id="book-container">
@@ -107,12 +112,40 @@
         const quizPages = [10, 19, 25, 31, 37, 44, 50, 56]; 
         let isQuizLocked = false; 
 
+        // စာမျက်နှာဖွင့်ပြီးသားလား အော်တိုစစ်ဆေးသည့်စနစ်
+        $(document).ready(function() {
+            const isUnlocked = localStorage.getItem("tfp_unlocked");
+            if (isUnlocked === "true") {
+                $("#lock, #bg-video").hide();
+                $("#book-container").show().css("opacity", 1);
+                loadAndInit();
+            }
+        });
+
+        // 🚨 စာမျက်နှာကို ဖုန်း Screen အပြည့်အရှည်ဆုံး ဖြစ်စေမည့် အရွယ်အစားတွက်ချက်မှုစနစ်သစ်
+        function getBookSize() {
+            let w = window.innerWidth;
+            let h = window.innerHeight - 40; 
+
+            if (window.innerWidth < 600) {
+                // ဖုန်းများအတွက် - Ratio ဘောင်မထားဘဲ အပေါ်အောက် အပြည့်ဆွဲဆန့်သည်
+                w = window.innerWidth;
+            } else {
+                // Laptop/Tablet များအတွက် ပုံမပျက်စေရန် မူလ Ratio အတိုင်းထားသည်
+                let tabletH = window.innerHeight * 0.85;
+                let tabletW = tabletH * 0.707;
+                if (w / h > 0.707) { w = tabletW; h = tabletH; } else { h = w / 0.707; }
+            }
+            return { w, h };
+        }
+
         function unlock() {
             if(document.getElementById("pass").value === myPassword) {
-                $("#bg-video").css("opacity", "0"); // Video ဖျောက်ပစ်ရန်
+                localStorage.setItem("tfp_unlocked", "true"); // သော့ပွင့်သွားကြောင်း မှတ်သားရန်
+                $("#bg-video").css("opacity", "0");
                 $("#lock").fadeOut(500, () => {
                     setTimeout(() => { $("#bg-video").hide(); }, 1000);
-                    $("#book-container").fadeIn(400);
+                    $("#book-container").show().animate({ opacity: 1 }, 600);
                     loadAndInit();
                 });
             } else { alert("ACCESS DENIED: Code မှားယွင်းနေပါသည်။"); }
@@ -120,21 +153,16 @@
 
         function loadAndInit() {
             const flipbook = $("#flipbook");
-            // Screen Size အလိုက် စာအုပ်အရွယ်အစားကို ချိန်ညှိခြင်း
-            let h = window.innerHeight * 0.85;
-            let w = h * 0.707;
-            
-            if(window.innerWidth < 600) { // Mobile အတွက်
-                w = window.innerWidth * 0.9;
-                h = w / 0.707;
-            }
+            if (flipbook.children().length > 0) return; // ကုဒ်ထပ်မံပွားခြင်းမှ ကာကွယ်ရန်
+
+            const { w, h } = getBookSize();
 
             for(let i=1; i<=maxPages; i++) {
-                const pageDiv = $('<div class="page" style="background:#001a1d;"></div>');
+                const pageDiv = $('<div class="page"></div>');
                 if(quizPages.includes(i)) {
                     pageDiv.append(`<iframe data-src="page${i}.html" style="width:100%; height:100%; border:none;"></iframe>`);
                 } else {
-                    const img = $('<img style="width:100%; height:100%; object-fit:contain;" />').attr('src', `page${i}.jpg`);
+                    const img = $('<img />').attr('src', `page${i}.jpg`);
                     pageDiv.append(img);
                 }
                 flipbook.append(pageDiv);
@@ -142,7 +170,7 @@
 
             setTimeout(() => {
                 flipbook.turn({
-                    width: w, height: h, autoCenter: true, display: 'single', acceleration: true,
+                    width: w, height: h, autoCenter: true, display: 'single', acceleration: true, duration: 400,
                     when: {
                         turning: function(e, page) {
                             if (isQuizLocked) { e.preventDefault(); return; }
@@ -150,14 +178,23 @@
                             s.currentTime = 0; s.play().catch(e=>{});
                         },
                         turned: function(e, page) {
+                            localStorage.setItem("tfp_last_page", page); // ဖတ်လက်စစာမျက်နှာကို သိမ်းဆည်းရန်
                             isQuizLocked = quizPages.includes(page);
                             if(isQuizLocked) {
-                                const f = $(this).find('iframe');
+                                const f = $(this).find('.page').eq(page-1).find('iframe');
                                 if(!f.attr('src')) f.attr('src', f.attr('data-src'));
                             }
                         }
                     }
                 });
+
+                // ယခင်ဖတ်လက်စ စာမျက်နှာရှိပါက တန်းသွားရန်
+                const savedPage = localStorage.getItem("tfp_last_page");
+                if (savedPage) {
+                    flipbook.turn("page", parseInt(savedPage));
+                } else {
+                    flipbook.turn("page", 1);
+                }
             }, 100);
         }
 
@@ -168,23 +205,11 @@
             }
         });
 
-        // Device ပြောင်းလဲမှုရှိပါက စာအုပ်ကို အလည်ပြန်ပို့ရန်
+        // Device Screen ပြောင်းလဲသွားပါက စာအုပ်ကို အရွယ်အစားအလိုအလျောက် ပြန်ညှိရန်
         $(window).resize(() => {
-            const h = window.innerHeight * 0.85;
-            const w = (window.innerWidth < 600) ? window.innerWidth * 0.9 : h * 0.707;
-            $("#flipbook").turn("size", w, (window.innerWidth < 600) ? w/0.707 : h);
+            const { w, h } = getBookSize();
+            $("#flipbook").turn("size", w, h);
         });
     </script>
-   <!-- Dassy's Real-time Tracker -->
-<script>
-  // BOOK_NAME နေရာမှာ စာအုပ်နာမည်လေး ပြောင်းပေးပါ (ဥပမာ- alpha-shadow)
-  const bookName = 'the-feminine-protocol'; 
-  
-  fetch(`https://api.countapi.xyz/hit/dassy-library/${bookName}`)
-    .then(res => res.json())
-    .then(data => {
-      console.log("View Count Updated:", data.value);
-    });
-</script> 
 </body>
 </html>
