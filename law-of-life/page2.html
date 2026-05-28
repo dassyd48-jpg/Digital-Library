@@ -2,7 +2,7 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PRE-READING DIAGNOSTIC TEST | PAGE 2</title>
     <style>
         :root {
@@ -10,6 +10,7 @@
             --gold-gradient: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             --dark-panel: rgba(18, 18, 18, 0.9);
         }
+        /* Mobile Touch နှင့် Smooth Vertical Scroll ရရှိစေရန် Body ကို ပြင်ဆင်ခြင်း */
         body { 
             background: #0D0D0D; 
             color: #fff; 
@@ -21,6 +22,9 @@
             align-items: center; 
             min-height: 100vh; 
             box-sizing: border-box; 
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .quiz-container { 
             width: 100%; 
@@ -54,9 +58,11 @@
             color: #eee; border-radius: 5px; cursor: pointer; text-align: left; 
             transition: all 0.2s ease; font-size: 13px; line-height: 1.5;
             position: relative;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
         .option-label input { display: none; }
-        .option-label:hover { background: rgba(212, 175, 55, 0.06); border-color: rgba(212, 175, 55, 0.4); }
+        .option-label:hover, .option-label:active { background: rgba(212, 175, 55, 0.06); border-color: rgba(212, 175, 55, 0.4); }
         
         /* Option Selected State */
         .option-label.selected {
@@ -64,6 +70,7 @@
             border-color: var(--gold);
             color: #fff;
             box-shadow: 0 0 10px rgba(212,175,55,0.15);
+            font-weight: bold;
         }
 
         .action-btn { 
@@ -72,6 +79,7 @@
             color: #000; border: none; border-radius: 4px; font-weight: 900; 
             cursor: pointer; text-align: center; text-transform: uppercase; letter-spacing: 1px;
             margin-top: 25px; box-shadow: 0 4px 15px rgba(179,135,40,0.3);
+            outline: none;
         }
 
         /* Result Panel */
@@ -168,7 +176,8 @@
 <script>
     // Option ရွေးချယ်မှုများကို Visual လှပအောင် ပြုလုပ်ခြင်း
     function selectOption(element, name) {
-        const siblings = element.parentNode.querySelectorAll('.option-label');
+        const container = element.closest('.question-block');
+        const siblings = container.querySelectorAll('.option-label');
         siblings.forEach(el => el.classList.remove('selected'));
         element.classList.add('selected');
         element.querySelector('input').checked = true;
@@ -209,11 +218,16 @@
         document.getElementById('res-level').innerText = levelTitle;
         document.getElementById('res-desc').innerText = levelDesc;
         document.getElementById('result-box').style.display = 'block';
+        
+        // ရလဒ်ထွက်လာချိန်တွင် စခရင်ကို အပေါ်ဆုံးသို့ ပြန်တင်ပေးခြင်း
+        window.scrollTo(0, 0);
     }
 
     function completeQuiz() {
         // Main Flip Book (index.html) ဆီသို့ ကူးပြောင်းရန် Message ပို့ခြင်း
-        window.parent.postMessage("quizCompleted", "*");
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage("quizCompleted", "*");
+        }
     }
 </script>
 
