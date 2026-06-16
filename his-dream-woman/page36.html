@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>PSYCHOLOGY TEST - 5</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-gradient: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --dark-panel: rgba(18, 2, 4, 0.9);
+            --border-glow: rgba(212, 175, 55, 0.25);
+        }
+        body { background: #060001; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .quiz-container { width: 100%; max-width: 480px; background: var(--dark-panel); border: 1px solid var(--border-glow); border-radius: 4px; padding: 22px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); position: relative; }
+        .header-tag { text-align: center; font-size: 11px; color: var(--gold); letter-spacing: 3px; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; }
+        .main-title { text-align: center; font-size: 19px; color: #fff; margin: 0 0 15px 0; font-weight: bold; line-height: 1.4; border-bottom: 1px solid rgba(212,175,55,0.15); padding-bottom: 12px; }
+        .instruction-text { font-size: 13px; color: #ccc; line-height: 1.6; margin-bottom: 25px; text-align: justify; background: rgba(255,255,255,0.02); padding: 10px; border-left: 2px solid var(--gold); }
+        .q-block { margin-bottom: 25px; border-bottom: 1px dashed rgba(212,175,55,0.1); padding-bottom: 20px; }
+        .q-block:last-of-type { border-bottom: none; }
+        .q-title { font-size: 14.5px; font-weight: bold; color: var(--gold); line-height: 1.5; margin-bottom: 12px; }
+        .option-label { display: block; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); padding: 12px 14px; margin-bottom: 10px; border-radius: 4px; cursor: pointer; font-size: 13.5px; line-height: 1.5; transition: all 0.2s ease; }
+        .option-label input[type="radio"] { margin-right: 10px; accent-color: var(--gold); transform: scale(1.1); vertical-align: middle; }
+        .option-label.selected { background: rgba(212, 175, 55, 0.08); border-color: var(--gold); color: #fff; }
+        .submit-btn { width: 100%; padding: 15px; background: var(--gold-gradient); color: #000; border: none; font-size: 14px; font-weight: 900; letter-spacing: 2px; cursor: pointer; border-radius: 3px; margin-top: 10px; text-transform: uppercase; box-shadow: 0 4px 15px rgba(179,135,40,0.3); }
+        #result-box { display: none; animation: fadeInUp 0.5s ease backwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .badge-box { text-align: center; margin-bottom: 20px; }
+        .result-badge { display: inline-block; padding: 8px 16px; background: rgba(212,175,55,0.1); border: 1px solid var(--gold); color: var(--gold); font-weight: bold; font-size: 15px; border-radius: 2px; }
+        .analysis-text { font-size: 14px; line-height: 1.7; color: #e5e5e5; text-align: justify; margin-bottom: 30px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); }
+        .next-btn { width: 100%; padding: 15px; background: transparent; color: var(--gold); border: 1px solid var(--gold); font-size: 13px; font-weight: bold; letter-spacing: 2px; cursor: pointer; border-radius: 4px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-area">
+        <div class="header-tag">PAGE 36</div>
+        <h2 class="main-title">Psychology Test - 5</h2>
+        
+        <p class="instruction-text">
+            ဤအခန်းကို ဖတ်ရှုပြီးနောက် စာဖတ်သူအနေဖြင့် အမျိုးသားတို့၏ အမှောင်ခြမ်းလိုလားချက်နှင့် မိမိ၏ နားလည်မှုကို ဆန်းစစ်နိုင်ရန် အောက်ပါမေးခွန်းကို ဂရုတစိုက် ဖြေဆိုပေးပါ။
+        </p>
+
+        <div class="q-block">
+            <div class="q-title">
+                <span style="color: var(--gold); display: block; margin-bottom: 6px;">[ Interactive Test 5: အဆင့်မြင့် လွှမ်းမိုးမှု နိယာမဆန်းစစ်ချက် ]</span>
+                မေးခွန်း - အမျိုးသားတစ်ဦးသည် ၎င်း၏ ပြင်ပလူမှုပတ်ဝန်းကျင်တွင် အမြဲတမ်း သန်မာရမည်ဟူသော ဂုဏ်သိက္ခာကို ဝတ်ဆင်ထားလေ့ရှိသည်။ သို့သော် ၎င်းတို့၏ မသိစိတ်က ဘဝတစ်သက်တာလုံး ပုံအပ်မည့် အမျိုးသမီးကို ရွေးချယ်ရာတွင် မည်သည့်အရာကို လျှို့ဝှက်စွာ အတောင့်တဆုံး ဖြစ်သနည်း။
+            </div>
+            
+            <label class="option-label">
+                <input type="radio" name="q36" value="A" onclick="highlightOption(this)"> A) မိမိထက် အမြဲတမ်း သန်မာထက်မြက်ပြီး ဘဝကို ဦးဆောင်လမ်းပြပေးမည့်သူ။
+            </label>
+            <label class="option-label">
+                <input type="radio" name="q36" value="B" onclick="highlightOption(this)"> B) မိမိ၏ အားနည်းချက်၊ ပင်ပန်းမှုများကို ဘေးကင်းလုံခြုံစွာ ချပြခွင့်ရမည့် စိတ်တွင်းခိုလှုံရာ။
+            </label>
+            <label class="option-label">
+                <input type="radio" name="q36" value="C" onclick="highlightOption(this)"> C) မိမိကို အမြဲတမ်း စိတ်လှုပ်ရှားမှုအသစ်တွေ ပေးနိုင်ပြီး ခန့်မှန်းရခက်သော စရိုက်ရှိသူ။
+            </label>
+        </div>
+
+        <button onclick="processAnswers()" class="submit-btn">စစ်ဆေးချက်ရလဒ် ကြည့်ရန် →</button>
+    </div>
+
+    <div id="result-box">
+        <div class="header-tag" style="margin-bottom: 15px;">YOUR PSYCHOLOGY ANALYSIS</div>
+        <div class="badge-box"><span class="result-badge" id="res-title"></span></div>
+        <div class="analysis-text" id="res-desc"></div>
+        <button onclick="completeQuiz()" class="next-btn">UNLOCK NEXT CHAPTER →</button>
+    </div>
+</div>
+
+<script>
+    function highlightOption(radio) {
+        const container = radio.closest('.q-block');
+        const labels = container.querySelectorAll('.option-label');
+        labels.forEach(label => label.classList.remove('selected'));
+        radio.closest('.option-label').classList.add('selected');
+    }
+
+    function processAnswers() {
+        const q36 = document.querySelector('input[name="q36"]:checked');
+
+        if (!q36) {
+            alert("ကျေးဇူးပြု၍ မေးခွန်းအတွက် အဖြေရွေးချယ်ပေးပါရှင်။");
+            return;
+        }
+
+        let title = "";
+        let desc = "";
+
+        if (q36.value === 'A') {
+            title = "[ ရလဒ်ဆန်းစစ်ချက် ]";
+            desc = "ဆန်းစစ်ချက်: ၎င်းသည် ရေတိုဆွဲဆောင်မှုအတွက် ကောင်းမွန်နိုင်သော်လည်း အမျိုးသားတစ်ဦးအတွက် ရေရှည်ဘဝတစ်သက်တာအထိ ပုံအပ်လိုစိတ်ကို မဖြစ်ပေါ်စေနိုင်ကြောင်း စာအုပ်ပါ နိယာမများအရ သတိပြုရန် လိုအပ်သည်။";
+        } else if (q36.value === 'B') {
+            title = "[ မှန်ကန်ပါသည်။ ]";
+            desc = "ဆန်းစစ်ချက်: သင်သည် အမျိုးသားတို့၏ အမှောင်ခြမ်းလိုလားချက် (The Dark Core Triggers) အလုပ်လုပ်ပုံကို အပြည့်အဝ နားလည်သွားပြီ ဖြစ်သည်။ ယောက်ျားတစ်ဦးသည် မိမိ၏ အားနည်းချက်ကို လုံခြုံစွာ ပြသနိုင်ပြီး အတ္တကို ဖြည့်ဆည်းပေးသည့် ပတ်ဝန်းကျင်မျိုးကို ကြုံရသည့်အခါ ၎င်းအမျိုးသမီးကို တစ်သက်တာလုံးအတွက် စိတ်အချရဆုံးသော လက်တွဲဖော်အဖြစ် ၎င်း၏ ဗီဇစိတ်က မလွဲမသွေ ရွေးချယ်သွားရခြင်း ဖြစ်သည်။";
+        } else if (q36.value === 'C') {
+            title = "[ ရလဒ်ဆန်းစစ်ချက် ]";
+            desc = "ဆန်းစစ်ချက်: ၎င်းသည် အခန်း (၂) တွင် ဆွေးနွေးခဲ့သည့် \"လွယ်လွယ်ရနိုင်သော အမျိုးသမီး\" ပုံစံမျိုး ဖြစ်သွားတတ်သဖြင့် ရေရှည်လေးစားမှုနှင့် တစ်သက်တာ ပုံအပ်လိုစိတ်ကို မဖြစ်ပေါ်စေနိုင်ပါ။";
+        }
+
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function completeQuiz() {
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: "quizCompleted", page: 36 }, "*");
+        }
+    }
+</script>
+
+</body>
+</html>

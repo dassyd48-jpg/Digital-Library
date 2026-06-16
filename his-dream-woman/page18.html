@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>PSYCHOLOGY TEST - 2</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-gradient: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --dark-panel: rgba(18, 2, 4, 0.9);
+            --border-glow: rgba(212, 175, 55, 0.25);
+        }
+        body { background: #060001; color: #fff; font-family: sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .quiz-container { width: 100%; max-width: 480px; background: var(--dark-panel); border: 1px solid var(--border-glow); border-radius: 4px; padding: 22px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); position: relative; }
+        .header-tag { text-align: center; font-size: 11px; color: var(--gold); letter-spacing: 3px; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; }
+        .main-title { text-align: center; font-size: 19px; color: #fff; margin: 0 0 15px 0; font-weight: bold; line-height: 1.4; border-bottom: 1px solid rgba(212,175,55,0.15); padding-bottom: 12px; }
+        .instruction-text { font-size: 13px; color: #ccc; line-height: 1.6; margin-bottom: 25px; text-align: justify; background: rgba(255,255,255,0.02); padding: 10px; border-left: 2px solid var(--gold); }
+        .q-block { margin-bottom: 25px; border-bottom: 1px dashed rgba(212,175,55,0.1); padding-bottom: 20px; }
+        .q-block:last-of-type { border-bottom: none; }
+        .q-title { font-size: 14.5px; font-weight: bold; color: var(--gold); line-height: 1.5; margin-bottom: 12px; }
+        .option-label { display: block; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); padding: 12px 14px; margin-bottom: 10px; border-radius: 4px; cursor: pointer; font-size: 13.5px; line-height: 1.5; transition: all 0.2s ease; }
+        .option-label input[type="radio"] { margin-right: 10px; accent-color: var(--gold); transform: scale(1.1); vertical-align: middle; }
+        .option-label.selected { background: rgba(212, 175, 55, 0.08); border-color: var(--gold); color: #fff; }
+        .submit-btn { width: 100%; padding: 15px; background: var(--gold-gradient); color: #000; border: none; font-size: 14px; font-weight: 900; letter-spacing: 2px; cursor: pointer; border-radius: 3px; margin-top: 10px; text-transform: uppercase; box-shadow: 0 4px 15px rgba(179,135,40,0.3); }
+        #result-box { display: none; animation: fadeInUp 0.5s ease backwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .badge-box { text-align: center; margin-bottom: 20px; }
+        .result-badge { display: inline-block; padding: 8px 16px; background: rgba(212,175,55,0.1); border: 1px solid var(--gold); color: var(--gold); font-weight: bold; font-size: 15px; border-radius: 2px; }
+        .analysis-text { font-size: 14px; line-height: 1.7; color: #e5e5e5; text-align: justify; margin-bottom: 30px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); }
+        .next-btn { width: 100%; padding: 15px; background: transparent; color: var(--gold); border: 1px solid var(--gold); font-size: 13px; font-weight: bold; letter-spacing: 2px; cursor: pointer; border-radius: 4px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-area">
+        <div class="header-tag">PAGE 18</div>
+        <h2 class="main-title">Psychology Test - 2</h2>
+        
+        <p class="instruction-text">
+            ဤအခန်းကို ဖတ်ရှုပြီးနောက် စာဖတ်သူအနေဖြင့် အမျိုးသားတို့၏ ဗီဇနှင့် မိမိ၏ ချဉ်းကပ်ပုံကို ဆန်းစစ်နိုင်ရန် အောက်ပါမေးခွန်းကို ဂရုတစိုက် ဖြေဆိုပေးပါ။
+        </p>
+
+        <div class="q-block">
+            <div class="q-title">
+                <span style="color: var(--gold); display: block; margin-bottom: 6px;">[ Interactive Test 2: ဆက်ဆံရေး၏ အဆင့်အတန်းနှင့် တန်ဖိုးသတ်မှတ်ချက် ဆန်းစစ်ချက် ]</span>
+                မေးခွန်း - သင်သည် စိတ်ဝင်စားရသော အမျိုးသားတစ်ဦးနှင့် စတင်သိကျွမ်းခါစတွင် ၎င်းက သင့်အား အချိန်မတော် (ဥပမာ - ညဉ့်နက်သန်းခေါင်) ၌ အပြင်ထွက်ရန် ချက်ချင်း ကမ်းလှမ်းလာပါက သင် မည်သို့ တုံ့ပြန်မည်နည်း။
+            </div>
+            
+            <label class="option-label">
+                <input type="radio" name="q18" value="A" onclick="highlightOption(this)"> A) ၎င်းနှင့် တွေ့ဆုံခွင့်ကို မဆုံးရှုံးလိုသည့်အတွက် မိမိ၏ အစီအစဉ်များကို ဖျက်ပြီး ချက်ချင်း လိုက်ပါသွားမည်။
+            </label>
+            <label class="option-label">
+                <input type="radio" name="q18" value="B" onclick="highlightOption(this)"> B) မိမိတွင် ကိုယ်ပိုင်အစီအစဉ်နှင့် အချိန်ဇယားရှိကြောင်း ပြတ်သားစွာ ပြောဆိုပြီး သင့်တော်မည့် အခြားနေ့ရက်တစ်ခုကိုသာ ပြန်လည်ချိန်းဆိုမည်။
+            </label>
+            <label class="option-label">
+                <input type="radio" name="q18" value="C" onclick="highlightOption(this)"> C) လိုက်မသွားသော်လည်း ၎င်းစိတ်မကောင်းဖြစ်မည်ကို စိုးရိမ်သဖြင့် အကြောင်းပြချက်များစွာ ပေး၍ အနုမောဒနာပြု ငြင်းပယ်မည်။
+            </label>
+        </div>
+
+        <button onclick="processAnswers()" class="submit-btn">စစ်ဆေးချက်ရလဒ် ကြည့်ရန် →</button>
+    </div>
+
+    <div id="result-box">
+        <div class="header-tag" style="margin-bottom: 15px;">YOUR PSYCHOLOGY ANALYSIS</div>
+        <div class="badge-box"><span class="result-badge" id="res-title"></span></div>
+        <div class="analysis-text" id="res-desc"></div>
+        <button onclick="completeQuiz()" class="next-btn">UNLOCK NEXT CHAPTER →</button>
+    </div>
+</div>
+
+<script>
+    function highlightOption(radio) {
+        const container = radio.closest('.q-block');
+        const labels = container.querySelectorAll('.option-label');
+        labels.forEach(label => label.classList.remove('selected'));
+        radio.closest('.option-label').classList.add('selected');
+    }
+
+    function processAnswers() {
+        const q18 = document.querySelector('input[name="q18"]:checked');
+
+        if (!q18) {
+            alert("ကျေးဇူးပြု၍ မေးခွန်းအတွက် အဖြေရွေးချယ်ပေးပါရှင်။");
+            return;
+        }
+
+        let title = "";
+        let desc = "";
+
+        if (q18.value === 'A') {
+            title = "[ သင်သည် The Accessible Profile (လွယ်ကူသောပုံစံ) ဖြစ်သည် ]";
+            desc = "ဆန်းစစ်ချက်: သင်သည် The Accessible Profile (လွယ်ကူသောပုံစံ) ထဲသို့ ဝင်ရောက်နေသည်။ အမျိုးသား၏ ဗီဇစိတ်သည် သင့်အား စိတ်လှုပ်ရှားဖွယ်ရာအဖြစ် မြင်နိုင်သော်လည်း၊ ၎င်းဘက်မှ အားစိုက်ထုတ်ရန်မလိုဟု သတ်မှတ်သွားနိုင်ပြီး ရေရှည်ဘဝတစ်သက်တာအတွက် လေးစားမှုလျော့နည်းသွားစေနိုင်ပါသည်။";
+        } else if (q18.value === 'B') {
+            title = "[ သင်သည် The High-Value Profile (ကိုယ်ပိုင်တန်ဖိုးကို သိသူ) ဖြစ်သည် ]";
+            desc = "ဆန်းစစ်ချက်: သင်သည် မိမိ၏ နယ်နိမိတ်နှင့် ကိုယ်ပိုင်စည်းကို ပြတ်သားစွာ ပြသလိုက်ခြင်းဖြစ်သည်။ ဤပြုမူမှုသည် အမျိုးသား၏ ဗီဇစိတ်ကို နှိုးဆွပေးလိုက်ပြီး သင့်အား အလွယ်တကူ မရနိုင်သော၊ လေးစားရမည့် အမျိုးသမီးအဖြစ် မသိစိတ်က ကောက်ချက်ချကာ ဘဝတစ်သက်တာအတွက် ပိုမိုလိုလားလာစေမည် ဖြစ်သည်။";
+        } else if (q18.value === 'C') {
+            title = "[ သင်သည် ဝေခွဲမရသောပုံစံ ဖြစ်သည် ]";
+            desc = "ဆန်းစစ်ချက်: သင် ငြင်းပယ်လိုက်သော်လည်း တုံ့ပြန်ပုံ အားနည်းသည့်အတွက် အမျိုးသားက သင့်အား ထပ်မံ ဖိအားပေး၍ ရနိုင်သည်ဟု တွက်ချက်သွားနိုင်ပြီး ဆက်ဆံရေး၏ လွှမ်းမိုးမှုအချိုးအစားကို ၎င်းဘက်သို့ ပါသွားစေနိုင်ပါသည်။";
+        }
+
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function completeQuiz() {
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: "quizCompleted", page: 18 }, "*");
+        }
+    }
+</script>
+
+</body>
+</html>
