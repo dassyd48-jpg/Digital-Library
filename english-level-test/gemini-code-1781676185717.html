@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RealLife English Placement Quiz</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #fdfbf7; 
+            padding: 20px; 
+            color: #333;
+        }
+        .container { 
+            max-width: 650px; 
+            margin: auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+        }
+        .logo { 
+            font-size: 28px; 
+            font-weight: bold; 
+            color: #2c3e50; 
+            text-align: center; 
+            margin-bottom: 30px; 
+            border-bottom: 3px solid #e74c3c; 
+            padding-bottom: 15px; 
+        }
+        .instructions {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #e74c3c;
+            margin-bottom: 25px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .question { 
+            margin-bottom: 25px; 
+            border-bottom: 1px solid #eee; 
+            padding-bottom: 15px; 
+        }
+        .question-text {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .options-label {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        .options-label input {
+            margin-right: 10px;
+        }
+        button { 
+            background-color: #e74c3c; 
+            color: white; 
+            border: none; 
+            padding: 15px 24px; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            font-size: 18px; 
+            font-weight: bold;
+            width: 100%; 
+            transition: background 0.2s;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #c0392b;
+        }
+        #result { 
+            margin-top: 30px; 
+            padding: 25px; 
+            display: none; 
+            font-weight: bold; 
+            font-size: 22px; 
+            text-align: center; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo">RealLife English Placement Quiz</div>
+        
+        <div class="instructions">
+            <strong>Instructions:</strong> Please answer all 30 questions. Once you have completed the quiz, click the "Submit Quiz" button at the bottom to view your total score.
+        </div>
+
+        <form id="quizForm">
+            <div class="question">
+                <div class="question-text">1. I ______ from Myanmar.</div>
+                <label class="options-label"><input type="radio" name="q1" value="A"> A) is</label>
+                <label class="options-label"><input type="radio" name="q1" value="B"> B) am</label>
+                <label class="options-label"><input type="radio" name="q1" value="C"> C) are</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">2. She ______ English every day.</div>
+                <label class="options-label"><input type="radio" name="q2" value="A"> A) study</label>
+                <label class="options-label"><input type="radio" name="q2" value="B"> B) studying</label>
+                <label class="options-label"><input type="radio" name="q2" value="C"> C) studies</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">3. Where ______ you live?</div>
+                <label class="options-label"><input type="radio" name="q3" value="A"> A) do</label>
+                <label class="options-label"><input type="radio" name="q3" value="B"> B) does</label>
+                <label class="options-label"><input type="radio" name="q3" value="C"> C) is</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">4. They ______ like coffee.</div>
+                <label class="options-label"><input type="radio" name="q4" value="A"> A) doesn't</label>
+                <label class="options-label"><input type="radio" name="q4" value="B"> B) don't</label>
+                <label class="options-label"><input type="radio" name="q4" value="C"> C) isn't</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">5. What ______ she doing now?</div>
+                <label class="options-label"><input type="radio" name="q5" value="A"> A) am</label>
+                <label class="options-label"><input type="radio" name="q5" value="B"> B) is</label>
+                <label class="options-label"><input type="radio" name="q5" value="C"> C) are</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">6. We ______ a movie yesterday.</div>
+                <label class="options-label"><input type="radio" name="q6" value="A"> A) watched</label>
+                <label class="options-label"><input type="radio" name="q6" value="B"> B) watch</label>
+                <label class="options-label"><input type="radio" name="q6" value="C"> C) watching</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">7. Did you ______ your homework?</div>
+                <label class="options-label"><input type="radio" name="q7" value="A"> A) finish</label>
+                <label class="options-label"><input type="radio" name="q7" value="B"> B) finished</label>
+                <label class="options-label"><input type="radio" name="q7" value="C"> C) finishing</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">8. I ______ to Yangon next week.</div>
+                <label class="options-label"><input type="radio" name="q8" value="A"> A) goes</label>
+                <label class="options-label"><input type="radio" name="q8" value="B"> B) will go</label>
+                <label class="options-label"><input type="radio" name="q8" value="C"> C) went</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">9. There ______ many students in the classroom.</div>
+                <label class="options-label"><input type="radio" name="q9" value="A"> A) is</label>
+                <label class="options-label"><input type="radio" name="q9" value="B"> B) are</label>
+                <label class="options-label"><input type="radio" name="q9" value="C"> C) am</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">10. This book is ______ than that one.</div>
+                <label class="options-label"><input type="radio" name="q10" value="A"> A) better</label>
+                <label class="options-label"><input type="radio" name="q10" value="B"> B) gooder</label>
+                <label class="options-label"><input type="radio" name="q10" value="C"> C) more good</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">11. Have you ever ______ sushi?</div>
+                <label class="options-label"><input type="radio" name="q11" value="A"> A) eat</label>
+                <label class="options-label"><input type="radio" name="q11" value="B"> B) eaten</label>
+                <label class="options-label"><input type="radio" name="q11" value="C"> C) ate</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">12. She has ______ working here for three years.</div>
+                <label class="options-label"><input type="radio" name="q12" value="A"> A) been</label>
+                <label class="options-label"><input type="radio" name="q12" value="B"> B) be</label>
+                <label class="options-label"><input type="radio" name="q12" value="C"> C) being</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">13. If it rains, we ______ stay at home.</div>
+                <label class="options-label"><input type="radio" name="q13" value="A"> A) would</label>
+                <label class="options-label"><input type="radio" name="q13" value="B"> B) will</label>
+                <label class="options-label"><input type="radio" name="q13" value="C"> C) did</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">14. This car was ______ in Japan.</div>
+                <label class="options-label"><input type="radio" name="q14" value="A"> A) made</label>
+                <label class="options-label"><input type="radio" name="q14" value="B"> B) make</label>
+                <label class="options-label"><input type="radio" name="q14" value="C"> C) making</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">15. You ______ smoke here. It is prohibited.</div>
+                <label class="options-label"><input type="radio" name="q15" value="A"> A) can</label>
+                <label class="options-label"><input type="radio" name="q15" value="B"> B) must not</label>
+                <label class="options-label"><input type="radio" name="q15" value="C"> C) should</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">16. I am interested ______ learning Spanish.</div>
+                <label class="options-label"><input type="radio" name="q16" value="A"> A) in</label>
+                <label class="options-label"><input type="radio" name="q16" value="B"> B) on</label>
+                <label class="options-label"><input type="radio" name="q16" value="C"> C) at</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">17. He speaks English ______ .</div>
+                <label class="options-label"><input type="radio" name="q17" value="A"> A) good</label>
+                <label class="options-label"><input type="radio" name="q17" value="B"> B) fluent</label>
+                <label class="options-label"><input type="radio" name="q17" value="C"> C) fluently</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">18. The man ______ lives next door is a doctor.</div>
+                <label class="options-label"><input type="radio" name="q18" value="A"> A) which</label>
+                <label class="options-label"><input type="radio" name="q18" value="B"> B) who</label>
+                <label class="options-label"><input type="radio" name="q18" value="C"> C) whose</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">19. I don't have ______ money left.</div>
+                <label class="options-label"><input type="radio" name="q19" value="A"> A) any</label>
+                <label class="options-label"><input type="radio" name="q19" value="B"> B) some</label>
+                <label class="options-label"><input type="radio" name="q19" value="C"> C) many</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">20. Could you please ______ me a favor?</div>
+                <label class="options-label"><input type="radio" name="q20" value="A"> A) do</label>
+                <label class="options-label"><input type="radio" name="q20" value="B"> B) make</label>
+                <label class="options-label"><input type="radio" name="q20" value="C"> C) give</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">21. I ______ up late today.</div>
+                <label class="options-label"><input type="radio" name="q21" value="A"> A) waked</label>
+                <label class="options-label"><input type="radio" name="q21" value="B"> B) woke</label>
+                <label class="options-label"><input type="radio" name="q21" value="C"> C) waking</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">22. They go ______ every Sunday morning.</div>
+                <label class="options-label"><input type="radio" name="q22" value="A"> A) swim</label>
+                <label class="options-label"><input type="radio" name="q22" value="B"> B) swimming</label>
+                <label class="options-label"><input type="radio" name="q22" value="C"> C) swum</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">23. She doesn't like apples, ______ ?</div>
+                <label class="options-label"><input type="radio" name="q23" value="A"> A) does she</label>
+                <label class="options-label"><input type="radio" name="q23" value="B"> B) doesn't she</label>
+                <label class="options-label"><input type="radio" name="q23" value="C"> C) is she</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">24. He is ______ engineer.</div>
+                <label class="options-label"><input type="radio" name="q24" value="A"> A) an</label>
+                <label class="options-label"><input type="radio" name="q24" value="B"> B) a</label>
+                <label class="options-label"><input type="radio" name="q24" value="C"> C) the</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">25. We have been friends ______ 2015.</div>
+                <label class="options-label"><input type="radio" name="q25" value="A"> A) for</label>
+                <label class="options-label"><input type="radio" name="q25" value="B"> B) since</label>
+                <label class="options-label"><input type="radio" name="q25" value="C"> C) from</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">26. This phone is too ______ .</div>
+                <label class="options-label"><input type="radio" name="q26" value="A"> A) expense</label>
+                <label class="options-label"><input type="radio" name="q26" value="B"> B) expensive</label>
+                <label class="options-label"><input type="radio" name="q26" value="C"> C) expensing</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">27. The bank is ______ the hotel.</div>
+                <label class="options-label"><input type="radio" name="q27" value="A"> A) next to</label>
+                <label class="options-label"><input type="radio" name="q27" value="B"> B) next</label>
+                <label class="options-label"><input type="radio" name="q27" value="C"> C) beside of</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">28. I ______ my shift at 4 PM.</div>
+                <label class="options-label"><input type="radio" name="q28" value="A"> A) finish</label>
+                <label class="options-label"><input type="radio" name="q28" value="B"> B) finishes</label>
+                <label class="options-label"><input type="radio" name="q28" value="C"> C) finishing</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">29. I have a ______ .</div>
+                <label class="options-label"><input type="radio" name="q29" value="A"> A) fever</label>
+                <label class="options-label"><input type="radio" name="q29" value="B"> B) fevering</label>
+                <label class="options-label"><input type="radio" name="q29" value="C"> C) fevers</label>
+            </div>
+
+            <div class="question">
+                <div class="question-text">30. This is ______ friend.</div>
+                <label class="options-label"><input type="radio" name="q30" value="A"> A) I</label>
+                <label class="options-label"><input type="radio" name="q30" value="B"> B) my</label>
+                <label class="options-label"><input type="radio" name="q30" value="C"> C) me</label>
+            </div>
+
+            <button type="button" onclick="calculateResult()">Submit Quiz</button>
+        </form>
+
+        <div id="result" class="success"></div>
+    </div>
+
+    <script>
+        // Answer.html ထဲမှ မှန်ကန်သော အဖြေဒေတာများကို ချိန်ညှိထားခြင်း
+        const correctAnswers = {
+            q1: 'B', q2: 'C', q3: 'A', q4: 'B', q5: 'B',
+            q6: 'A', q7: 'A', q8: 'B', q9: 'B', q10: 'A',
+            q11: 'B', q12: 'A', q13: 'B', q14: 'A', q15: 'B',
+            q16: 'A', q17: 'C', q18: 'B', q19: 'A', q20: 'A',
+            q21: 'B', q22: 'B', q23: 'A', q24: 'A', q25: 'B',
+            q26: 'B', q27: 'A', q28: 'B', q29: 'A', q30: 'B'
+        };
+
+        function calculateResult() {
+            const form = document.getElementById('quizForm');
+            let totalScore = 0;
+            const totalQuestionsCount = 30;
+
+            // မေးခွန်း ၃၀ လုံးကို လှည့်ပတ်ပြီး ကျောင်းသားအဖြေနှင့် တိုက်စစ်ခြင်း
+            for (let i = 1; i <= totalQuestionsCount; i++) {
+                const questionKey = 'q' + i;
+                const studentSelection = form.elements[questionKey];
+                
+                if (studentSelection) {
+                    if (studentSelection.value === correctAnswers[questionKey]) {
+                        totalScore++;
+                    }
+                }
+            }
+
+            // ရလဒ်ပြသပေးမည့် နေရာကို ဖော်ထုတ်ပြီး ရမှတ်ကို ပြသပေးခြင်း
+            const resultBox = document.getElementById('result');
+            resultBox.innerHTML = `Quiz Completed!<br>Your Score: ${totalScore} / ${totalQuestionsCount}`;
+            resultBox.style.display = 'block';
+
+            // အမှတ်စာရင်းဆီသို့ စာမျက်နှာကို အလိုအလျောက် ရွှေ့ပေးခြင်း
+            resultBox.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
