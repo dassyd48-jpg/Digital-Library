@@ -146,12 +146,14 @@
         }
 
         // Quiz ဖြေပြီးလျှင် Lock ဖွင့်ပေးရန် စနစ်
-        window.addEventListener("message", function(event) {
-            if (event.data === "quizCompleted") {
-                isQuizLocked = false; 
-                setTimeout(() => { $("#flipbook").turn("next"); }, 300);
-            }
-        }, false);
+        // 🌟 index (4).html ရဲ့ <script> အပိုင်းထဲတွင် ဤကုဒ်ကို ထည့်သွင်းပေးရန်လိုအပ်သည်
+window.addEventListener("message", function(event) {
+    if (event.data === "quizCompleted") {
+        setTimeout(() => { 
+            $("#flipbook").turn("next"); 
+        }, 300);
+    }
+}, false);
 
         function unlock() {
             if(document.getElementById("pass").value === myPassword) {
