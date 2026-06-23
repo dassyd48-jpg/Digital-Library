@@ -30,14 +30,14 @@
         <div id="result-box">
             <span id="res-title" class="result-title"></span>
             <p id="res-desc"></p>
-            <p style="font-size: 11px; color: #888; margin-top: 20px;">စာမျက်နှာလှန်၍ ဆက်လက်ဖတ်ရှုပါ</p>
+            <p style="font-size: 11px; color: #888; margin-top: 20px;">(စာမျက်နှာကို အလိုအလျောက် လှန်ပေးပါမည်...)</p>
         </div>
     </div>
     <script>
         const data = {
             1: { title: "THE SOUL READER", desc: "သင်ဟာ စကားလုံးတွေထက် လူတွေရဲ့ အတွင်းစိတ် ခံစားချက်ကို ပိုမိုသိမြင်နိုင်သူပါ။" },
             2: { title: "THE AESTHETIC", desc: "သင်ဟာ အမြင်အာရုံ စူးရှပြီး စနစ်တကျရှိမှုကို တန်ဖိုးထားတဲ့ ခေါင်းဆောင်ကောင်းတစ်ဦးပါ။" },
-            3: { title: "THE AUDITORY", desc: "သင်ဟာ ဆက်သွယ်ရေး စွမ်းရည်မြင့်မားပြီး စကားလုံးတွေရဲ့ အနက်အဓိပ္ပာယ်ကို နားလည်သူပါ။" },
+            3: { title: "THE AUDITORY", desc: "သင်ဟာ ဆက်သွယ်ရေး စွမ်းရည်မြင့်မားပြီး စကားလုံးတွေရဲ့ အနက်အဓိပ္ပာယ်ကို นားလည်သူပါ။" },
             4: { title: "THE INTUITIVE", desc: "သင့်မှာ ထူးခြားတဲ့ အလိုလိုသိစိတ် (Inutition) ရှိပြီး အန္တရာယ်ကို ကြိုတင်သိမြင်တတ်ပါတယ်။" },
             5: { title: "THE POSITIVE", desc: "သင်ဟာ လူမှုဆက်ဆံရေး ပြေပြစ်ပြီး တခြားသူတွေကို နွေးထွေးမှု ပေးနိုင်သူပါ။" }
         };
@@ -48,7 +48,13 @@
             document.getElementById('res-title').innerText = data[c].title;
             document.getElementById('res-desc').innerText = data[c].desc;
             document.getElementById('result-box').style.display = 'block';
-            window.parent.postMessage("quizCompleted", "*");
+            
+            // 🌟 ရလဒ်စာသားကို ၁.၅ စက္ကန့် ဖတ်ရှုပြီးမှ ပတ်ဝန်းကျင် စာမျက်နှာ (index.html) သို့ လှမ်းလှန်ခိုင်းသည့် စနစ်
+            setTimeout(() => {
+                if (window.parent) {
+                    window.parent.postMessage("quizCompleted", "*");
+                }
+            }, 1500);
         }
     </script>
 </body>
