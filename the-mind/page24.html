@@ -14,6 +14,31 @@
         #result-box { display: none; margin-top: 10px; padding: 25px; border: 1px solid #d4af37; background: #000; border-radius: 12px; animation: slideUp 0.6s ease; }
         .result-title { font-size: 24px; font-weight: bold; color: #f7ef8a; display: block; margin-bottom: 12px; }
         .result-desc { font-size: 15px; color: #e0e0e0; line-height: 1.7; }
+        
+        /* 🌟 ဒုတိယပုံစံအတိုင်း လှပသော ရွှေရောင် Gradient Unlock Button Style */
+        .unlock-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 15px; 
+            margin-top: 20px; 
+            background: linear-gradient(180deg, #f7ef8a 0%, #d4af37 100%); 
+            color: #000; 
+            border: none; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            font-size: 14px; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease; 
+        }
+        .unlock-btn:hover { 
+            transform: scale(1.02); 
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); 
+            opacity: 0.95;
+        }
+        
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -31,14 +56,13 @@
         <div id="result-box">
             <span id="rt" class="result-title"></span>
             <p id="rd" class="result-desc"></p>
-            <hr style="border: 0; border-top: 1px solid rgba(212,175,55,0.2); margin: 20px 0;">
-            <p style="font-size: 11px; color: #888;">(စာမျက်နှာကို အလိုအလျောက် လှန်ပေးပါမည်...)</p>
+            <button class="unlock-btn" onclick="turnToNextPage()">UNLOCK NEXT CHAPTER ➔</button>
         </div>
     </div>
     <script>
         const res = {
             1: { t: "DIAMOND UNDER PRESSURE", d: "သင်ဟာ ဖိအားတွေကို စွမ်းအင်အဖြစ် ပြောင်းလဲနိုင်ပြီး ခက်ခဲလေ ပိုမိုတောက်ပလေ ဖြစ်မယ့်သူပါ။" },
-            2: { t: "THE HUMANISTIC", d: "သင်ဟာ ခခံစားချက်ကို ဦးစားပေးပြီး ကိုယ့်ကိုယ်ကိုယ် ပြန်လည်ရုန်းထနိုင်တဲ့ စိတ်ဓာတ်ရှိသူပါ။" },
+            2: { t: "THE HUMANISTIC", d: "သင်ဟာ ခံစားချက်ကို ဦးစားပေးပြီး ကိုယ့်ကိုယ်ကိုယ် ပြန်လည်ရုန်းထနိုင်တဲ့ စိတ်ဓာတ်ရှိသူပါ။" },
             3: { t: "THE ZEN MASTER", d: "ဘယ်လိုမုန်တိုင်းမျိုးမှာမဆို စိတ်တည်ငြိမ်မှုမပျက်ဘဲ အမှန်ကန်ဆုံးလမ်းကို ရှာဖွေနိုင်သူပါ။" },
             4: { t: "THE VOLCANO", d: "သင့်မှာ ပြင်းထန်တဲ့ စွမ်းအင်ရှိပါတယ်။ အဲ့ဒီစွမ်းအင်ကို အပြုသဘောဆောင်တဲ့နေရာမှာ အသုံးချဖို့ လိုအပ်ပါတယ်။" },
             5: { t: "THE TEAM PLAYER", d: "စုပေါင်းအင်အားရဲ့ တန်ဖိုးကို နားလည်ပြီး အခက်အခဲကို လက်တွဲဖြေရှင်းတတ်သူပါ။" }
@@ -50,13 +74,12 @@
             document.getElementById('rt').innerText = res[n].t;
             document.getElementById('rd').innerText = res[n].d;
             document.getElementById('result-box').style.display = 'block';
-            
-            // 🌟 ရလဒ်စာသားကို ၁.၅ စက္ကန့် ဖတ်ရှုပြီးမှ index.html (Parent) သို့ စာမျက်နှာလှန်ရန် အချက်ပြချက် ပို့သည့်စနစ်
-            setTimeout(() => {
-                if (window.parent) {
-                    window.parent.postMessage("quizCompleted", "*");
-                }
-            }, 1500);
+        }
+        
+        function turnToNextPage() {
+            if (window.parent) {
+                window.parent.postMessage("quizCompleted", "*");
+            }
         }
     </script>
 </body>
