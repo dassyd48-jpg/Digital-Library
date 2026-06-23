@@ -25,14 +25,14 @@
             <button class="option" onclick="run(1)">၁။ မိသားစုနှင့် ချစ်ခင်ရသူများ</button>
             <button class="option" onclick="run(2)">၂။ ရေရှည် ငွေကြေးနှင့် အကျိုးစီးပွား</button>
             <button class="option" onclick="run(3)">၃။ ကိုယ်ပိုင် ပျော်ရွှင်မှုနှင့် လွတ်လပ်ခွင့်</button>
-            <button class="option" onclick="run(4)">၄။ မိမိ၏ ဂုဏ်သိက္ခာနှင့် စည်းမျဉ်းများ</button>
+            <button class="option" onclick="run(4)">၄။ မိမိ၏ ဂုဏ်သိက္ခာနှင့် Сည်းမျဉ်းများ</button>
             <button class="option" onclick="run(5)">၅။ အများအကျိုးနှင့် လူမှုပတ်ဝန်းကျင်</button>
         </div>
         <div id="result-box">
             <span id="rt" class="result-title"></span>
             <p id="rd" class="result-desc"></p>
             <hr style="border: 0; border-top: 1px solid rgba(212,175,55,0.2); margin: 20px 0;">
-            <p style="font-size: 11px; color: #888;">စာမျက်နှာလှန်၍ ဆက်လက်ဖတ်ရှုပါ</p>
+            <p style="font-size: 11px; color: #888;">(စာမျက်နှာကို အလိုအလျောက် လှန်ပေးပါမည်...)</p>
         </div>
     </div>
     <script>
@@ -50,7 +50,13 @@
             document.getElementById('rt').innerText = res[n].t;
             document.getElementById('rd').innerText = res[n].d;
             document.getElementById('result-box').style.display = 'block';
-            window.parent.postMessage("quizCompleted", "*");
+            
+            // 🌟 ရလဒ်စာသားကို ၁.၅ စက္ကန့် ဖတ်ရှုစေပြီးမှ အလိုအလျောက် နောက်တစ်မျက်နှာလှန်ရန် အချက်ပြချက်ပို့ခြင်း
+            setTimeout(() => {
+                if (window.parent) {
+                    window.parent.postMessage("quizCompleted", "*");
+                }
+            }, 1500);
         }
     </script>
 </body>
