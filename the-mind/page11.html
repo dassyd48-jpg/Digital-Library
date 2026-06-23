@@ -26,7 +26,7 @@
         <div id="result-box">
             <span id="res-title" class="result-title"></span>
             <p id="res-desc"></p>
-            <p style="font-size: 10px; color: #888; margin-top: 15px;">(စာမျက်နှာကို ဘေးသို့လှန်ပါ)</p>
+            <p style="font-size: 10px; color: #888; margin-top: 15px;">(စာမျက်နှာကို အလိုအလျောက် လှန်ပေးပါမည်...)</p>
         </div>
     </div>
     <script>
@@ -43,7 +43,13 @@
             document.getElementById('res-title').innerText = results[n].title;
             document.getElementById('res-desc').innerText = results[n].desc;
             document.getElementById('result-box').style.display = 'block';
-            window.parent.postMessage("quizCompleted", "*");
+            
+            // 🌟 ဖြေပြီးလျှင် ရလဒ်စာသား ဖတ်နိုင်ရန် ၁.၅ စက္ကန့် ဆိုင်းငံ့ပြီးမှ Auto လှန်ပေးမည့် စနစ်
+            setTimeout(() => {
+                if (window.parent) {
+                    window.parent.postMessage("quizCompleted", "*");
+                }
+            }, 1500);
         }
     </script>
 </body>
