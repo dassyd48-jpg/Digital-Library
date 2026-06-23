@@ -32,13 +32,13 @@
             <span id="rt" class="result-title"></span>
             <p id="rd" class="result-desc"></p>
             <hr style="border: 0; border-top: 1px solid rgba(212,175,55,0.2); margin: 20px 0;">
-            <p style="font-size: 11px; color: #888;">စာမျက်နှာလှန်၍ ဆက်လက်ဖတ်ရှုပါ</p>
+            <p style="font-size: 11px; color: #888;">(စာမျက်နှာကို အလိုအလျောက် လှန်ပေးပါမည်...)</p>
         </div>
     </div>
     <script>
         const res = {
             1: { t: "DIAMOND UNDER PRESSURE", d: "သင်ဟာ ဖိအားတွေကို စွမ်းအင်အဖြစ် ပြောင်းလဲနိုင်ပြီး ခက်ခဲလေ ပိုမိုတောက်ပလေ ဖြစ်မယ့်သူပါ။" },
-            2: { t: "THE HUMANISTIC", d: "သင်ဟာ ခံစားချက်ကို ဦးစားပေးပြီး ကိုယ့်ကိုယ်ကိုယ် ပြန်လည်ရုန်းထနိုင်တဲ့ စိတ်ဓာတ်ရှိသူပါ။" },
+            2: { t: "THE HUMANISTIC", d: "သင်ဟာ ခခံစားချက်ကို ဦးစားပေးပြီး ကိုယ့်ကိုယ်ကိုယ် ပြန်လည်ရုန်းထနိုင်တဲ့ စိတ်ဓာတ်ရှိသူပါ။" },
             3: { t: "THE ZEN MASTER", d: "ဘယ်လိုမုန်တိုင်းမျိုးမှာမဆို စိတ်တည်ငြိမ်မှုမပျက်ဘဲ အမှန်ကန်ဆုံးလမ်းကို ရှာဖွေနိုင်သူပါ။" },
             4: { t: "THE VOLCANO", d: "သင့်မှာ ပြင်းထန်တဲ့ စွမ်းအင်ရှိပါတယ်။ အဲ့ဒီစွမ်းအင်ကို အပြုသဘောဆောင်တဲ့နေရာမှာ အသုံးချဖို့ လိုအပ်ပါတယ်။" },
             5: { t: "THE TEAM PLAYER", d: "စုပေါင်းအင်အားရဲ့ တန်ဖိုးကို နားလည်ပြီး အခက်အခဲကို လက်တွဲဖြေရှင်းတတ်သူပါ။" }
@@ -50,7 +50,13 @@
             document.getElementById('rt').innerText = res[n].t;
             document.getElementById('rd').innerText = res[n].d;
             document.getElementById('result-box').style.display = 'block';
-            window.parent.postMessage("quizCompleted", "*");
+            
+            // 🌟 ရလဒ်စာသားကို ၁.၅ စက္ကန့် ဖတ်ရှုပြီးမှ index.html (Parent) သို့ စာမျက်နှာလှန်ရန် အချက်ပြချက် ပို့သည့်စနစ်
+            setTimeout(() => {
+                if (window.parent) {
+                    window.parent.postMessage("quizCompleted", "*");
+                }
+            }, 1500);
         }
     </script>
 </body>
