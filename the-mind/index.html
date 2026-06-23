@@ -30,7 +30,6 @@
         
         #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.4); transition: opacity 1.2s ease; }
         
-        /* Lock Screen Style - Purple/Gold Theme with Index 4 Content */
         #lock { 
             position: fixed;
             inset: 0; display: flex; justify-content: center; align-items: center; 
@@ -112,7 +111,6 @@
     <audio id="sound" src="flip.mp3" preload="auto"></audio>
 
     <script>
-        // မူရင်း အချက်အလက်များ (Index 4 မှ မပြောင်းလဲသော တန်ဖိုးများ)
         const myPassword = "THE@@MIND99";
         const maxPages = 40; 
         const quizPages = [11, 18, 24, 31, 37]; 
@@ -121,7 +119,6 @@
         
         let isQuizLocked = false;
 
-        // Index 3 မှ စိတ်ချရသော Password Check စနစ်
         $(document).ready(function() {
             if (localStorage.getItem(storageKeyAuth) === "true") {
                 $("#lock, #bg-video").hide();
@@ -130,7 +127,6 @@
             }
         });
 
-        // Index 3 မှ Mobile/Tablet Screen ကွက်တိ ညှိပေးသည့် Logic 
         function getBookSize() {
             let w = window.innerWidth;
             let h = window.innerHeight - 40; 
@@ -145,15 +141,15 @@
             return { w, h };
         }
 
-        // Quiz ဖြေပြီးလျှင် Lock ဖွင့်ပေးရန် စနစ်
-        // 🌟 index (4).html ရဲ့ <script> အပိုင်းထဲတွင် ဤကုဒ်ကို ထည့်သွင်းပေးရန်လိုအပ်သည်
-window.addEventListener("message", function(event) {
-    if (event.data === "quizCompleted") {
-        setTimeout(() => { 
-            $("#flipbook").turn("next"); 
-        }, 300);
-    }
-}, false);
+        // 🌟 ပြင်ဆင်ပြီးသော Message Listener စနစ် (Lock ကို ဖြုတ်ပြီးမှ Next သို့သွားမည်)
+        window.addEventListener("message", function(event) {
+            if (event.data === "quizCompleted") {
+                isQuizLocked = false; // 🛠️ FIX: ဒိုင်ခံပိတ်ထားသော Lock ကို အရင်ဆုံး ဖွင့်ပေးလိုက်ခြင်း
+                setTimeout(() => { 
+                    $("#flipbook").turn("next"); 
+                }, 300);
+            }
+        }, false);
 
         function unlock() {
             if(document.getElementById("pass").value === myPassword) {
@@ -177,22 +173,18 @@ window.addEventListener("message", function(event) {
             for(let i=1; i<=maxPages; i++) {
                 const pageDiv = $('<div class="page"></div>');
                 
-                // Quiz စာမျက်နှာများအတွက် iframe သတ်မှတ်ချက်
                 if(quizPages.includes(i)) {
                     pageDiv.append(`<iframe src="page${i}.html" style="width:100%; height:100%; border:none; overflow:hidden;" scrolling="no"></iframe>`);
                 } 
-                // ပုံမှန်စာမျက်နှာများ (Page.jpg)
                 else if (i < maxPages) {
                     pageDiv.append($('<img />').attr('src', `page${i}.jpg`));
                 } 
-                // နောက်ဆုံးစာမျက်နှာ
                 else {
                     pageDiv.append('<div style="width:100%; height:100%; background:#000; display:flex; align-items:center; justify-content:center; color:#555; font-size:12px;">END OF PREVIEW</div>');
                 }
                 flipbook.append(pageDiv);
             }
 
-            // Turn.js စတင်ခြင်း (Index 3 စနစ်အတိုင်း အပြည့်အဝ ပြင်ဆင်ပြီး)
             setTimeout(() => {
                 flipbook.turn({
                     width: w, height: h, autoCenter: true, display: 'single', acceleration: true, duration: 400,
@@ -203,15 +195,12 @@ window.addEventListener("message", function(event) {
                             if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
                         },
                         turned: function(e, page) {
-                            // ဖတ်လက်စ စာမျက်နှာကို မှတ်သားခြင်း
                             localStorage.setItem(storageKeyPage, page);
-                            // Quiz စာမျက်နှာကို Lock ချခြင်း
                             isQuizLocked = quizPages.includes(page);
                         }
                     }
                 });
                 
-                // ဖတ်လက်စ စာမျက်နှာကို ပြန်ခေါ်ယူဖွင့်ပေးခြင်း Logic
                 const savedPage = localStorage.getItem(storageKeyPage);
                 if (savedPage) {
                     flipbook.turn("page", parseInt(savedPage));
@@ -221,7 +210,6 @@ window.addEventListener("message", function(event) {
             }, 100);
         }
 
-        // Screen Size ပြောင်းလဲလျှင် လိုက်ညှိရန်
         $(window).resize(function() {
             const { w, h } = getBookSize();
             if ($("#flipbook").turn("is")) {
@@ -230,7 +218,6 @@ window.addEventListener("message", function(event) {
         });
     </script>
     <script>
-        // မူရင်း ပါဝင်သော Views Count API
         fetch(`https://api.countapi.xyz/hit/dassy-library/the-mind`).then(res => res.json()).then(data => { console.log("Views:", data.value); });
     </script>
 </body>
