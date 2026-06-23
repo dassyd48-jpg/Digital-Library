@@ -2,31 +2,61 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body { background: #000; color: #d4af37; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
-        .card { border: 1px solid rgba(212, 175, 55, 0.5); padding: 30px; border-radius: 20px; background: #111; width: 100%; max-width: 400px; text-align: center; }
-        .warning { font-size: 11px; color: #ffab40; margin-bottom: 20px; text-transform: uppercase; border-bottom: 1px solid rgba(255,171,64,0.2); padding-bottom: 10px; }
-        h3 { font-size: 18px; line-height: 1.5; margin-bottom: 25px; color: #f7ef8a; }
-        .option { display: block; width: 100%; padding: 14px; margin: 8px 0; border: 1px solid rgba(212, 175, 55, 0.3); background: rgba(255,255,255,0.03); color: #d4af37; border-radius: 10px; cursor: pointer; text-align: left; font-size: 14px; }
-        .option:hover { background: #d4af37; color: #000; font-weight: bold; }
-        #result-box { display: none; margin-top: 20px; padding: 20px; border: 1px solid #d4af37; background: rgba(212, 175, 55, 0.1); border-radius: 12px; animation: fadeIn 0.8s ease; }
-        .result-title { font-size: 22px; font-weight: bold; color: #fff; display: block; margin-bottom: 10px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .card { border: 1px solid rgba(212, 175, 55, 0.4); padding: 30px; border-radius: 15px; background: #111; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        .warning-box { background: rgba(255, 171, 64, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 20px; }
+        .warning-text { font-size: 11px; color: #ffab40; letter-spacing: 1px; font-weight: bold; text-transform: uppercase; display: block; }
+        h3 { font-size: 19px; line-height: 1.6; margin-bottom: 25px; color: #f7ef8a; }
+        .option { display: block; width: 100%; padding: 15px; margin: 10px 0; border: 1px solid rgba(212, 175, 55, 0.2); background: rgba(255,255,255,0.02); color: #d4af37; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; text-align: left; font-size: 14px; }
+        .option:hover { background: #d4af37; color: #000; transform: scale(1.02); }
+        #result-box { display: none; margin-top: 10px; padding: 25px; border: 1px solid #d4af37; background: #000; border-radius: 12px; animation: slideUp 0.6s ease; }
+        .result-title { font-size: 24px; font-weight: bold; color: #f7ef8a; display: block; margin-bottom: 12px; }
+        .result-desc { font-size: 15px; color: #e0e0e0; line-height: 1.7; }
+        
+        /* ရွှေရောင် လင်းလက်သော Gradient Unlock Button Style */
+        .unlock-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 15px; 
+            margin-top: 20px; 
+            background: linear-gradient(180deg, #f7ef8a 0%, #d4af37 100%); 
+            color: #000; 
+            border: none; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            font-size: 14px; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease; 
+        }
+        .unlock-btn:hover { 
+            transform: scale(1.02); 
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); 
+            opacity: 0.95;
+        }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
     <div class="card">
-        <div class="warning">⚠️ မရွေးချယ်ခင် သေချာစွာစဉ်းစားပါ။ မိမိကိုယ်ကို ရိုးသားပါ။</div>
-        <h3>သင့်ရဲ့ "Shadow Side" မှာ ဘယ်လိုစွမ်းအားမျိုး ပုန်းကွယ်နေသလဲ?</h3>
-        <button class="option" onclick="showResult(1)">၁။ အရာရာကို ထိန်းချုပ်လိုစိတ်</button>
-        <button class="option" onclick="showResult(2)">၂။ သူတစ်ပါးရဲ့ အာရုံစိုက်မှုကို ရယူလိုစိတ်</button>
-        <button class="option" onclick="showResult(3)">၃။ အားလုံးထက် သာလွန်လိုစိတ်</button>
-        <button class="option" onclick="showResult(4)">၄။ တစ်ဦးတည်း သီးခြားနေလိုစိတ်</button>
-        <button class="option" onclick="showResult(5)">၅။ အမှန်တရားကိုသာ ဖော်ထုတ်လိုစိတ်</button>
+        <div class="warning-box"><span class="warning-text">⚠️ မရွေးချယ်ခင် သေချာစွာစဉ်းစားပါ။ မိမိကိုယ်ကို ရိုးသားပါ။</span></div>
+        <h3 id="q-text">သင့်ရဲ့ "Shadow Side" မှာ ဘယ်လိုစွမ်းအားမျိုး ပုန်းကွယ်နေသလဲ?</h3>
+        <div id="opts">
+            <button class="option" onclick="showResult(1)">၁။ အရာရာကို ထိန်းချုပ်လိုစိတ်</button>
+            <button class="option" onclick="showResult(2)">၂။ သူတစ်ပါးရဲ့ အာရုံစိုက်မှုကို ရယူလိုစိတ်</button>
+            <button class="option" onclick="showResult(3)">၃။ အားလုံးထက် သာလွန်လိုစိတ်</button>
+            <button class="option" onclick="showResult(4)">၄။ တစ်ဦးတည်း သီးခြားနေလိုစိတ်</button>
+            <button class="option" onclick="showResult(5)">၅။ အမှန်တရားကိုသာ ဖော်ထုတ်လိုစိတ်</button>
+        </div>
         <div id="result-box">
             <span id="res-title" class="result-title"></span>
-            <p id="res-desc"></p>
-            <p style="font-size: 10px; color: #888; margin-top: 15px;">(စာမျက်နှာကို အလိုအလျောက် လှန်ပေးပါမည်...)</p>
+            <p id="res-desc" class="result-desc"></p>
+            <button class="unlock-btn" onclick="turnToNextPage()">UNLOCK NEXT CHAPTER ➔</button>
         </div>
     </div>
     <script>
@@ -38,18 +68,18 @@
             5: { title: "THE REVOLUTIONARY", desc: "ပြောင်းလဲမှုတွေကို စတင်နိုင်တဲ့ သတ္တိရှိသူပါ။" }
         };
         function showResult(n) {
-            document.querySelector('h3').style.display = 'none';
-            document.querySelectorAll('.option').forEach(o => o.style.display = 'none');
+            document.getElementById('q-text').style.display = 'none';
+            document.getElementById('opts').style.display = 'none';
+            document.querySelector('.warning-box').style.display = 'none';
             document.getElementById('res-title').innerText = results[n].title;
             document.getElementById('res-desc').innerText = results[n].desc;
             document.getElementById('result-box').style.display = 'block';
-            
-            // 🌟 ဖြေပြီးလျှင် ရလဒ်စာသား ဖတ်နိုင်ရန် ၁.၅ စက္ကန့် ဆိုင်းငံ့ပြီးမှ Auto လှန်ပေးမည့် စနစ်
-            setTimeout(() => {
-                if (window.parent) {
-                    window.parent.postMessage("quizCompleted", "*");
-                }
-            }, 1500);
+        }
+        
+        function turnToNextPage() {
+            if (window.parent) {
+                window.parent.postMessage("quizCompleted", "*");
+            }
         }
     </script>
 </body>
