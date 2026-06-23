@@ -32,7 +32,7 @@
             <span id="rt" class="result-title"></span>
             <p id="rd" class="result-desc"></p>
             <hr style="border: 0; border-top: 1px solid rgba(212,175,55,0.2); margin: 20px 0;">
-            <p style="font-size: 11px; color: #888;">စာမျက်နှာလှန်၍ ဆက်လက်ဖတ်ရှုပါ</p>
+            <p style="font-size: 11px; color: #888;">(စာမျက်နှာကို အလိုအလျောက် လှန်ပေးပါမည်...)</p>
         </div>
     </div>
     <script>
@@ -50,7 +50,13 @@
             document.getElementById('rt').innerText = res[n].t;
             document.getElementById('rd').innerText = res[n].d;
             document.getElementById('result-box').style.display = 'block';
-            window.parent.postMessage("quizCompleted", "*");
+            
+            // 🌟 ရလဒ်စာသားကို ၁.၅ စက္ကန့် ဖတ်ရှုစေပြီးမှ အလိုအလျောက် စာမျက်နှာလှန်ရန် Parent (index.html) သို့ Message ပို့ခြင်း
+            setTimeout(() => {
+                if (window.parent) {
+                    window.parent.postMessage("quizCompleted", "*");
+                }
+            }, 1500);
         }
     </script>
 </body>
