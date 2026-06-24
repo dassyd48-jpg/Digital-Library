@@ -21,7 +21,8 @@
       align-items: center;
       justify-content: center;
       color: #0c4a6e;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       position: relative;
     }
 
@@ -185,7 +186,7 @@
     }
     .btn-modal-done:active { transform: translateY(3px); box-shadow: 0 2px 0 #26af5f; }
 
-    h1 { font-size: 26px; font-weight: 700; margin-bottom: 15px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.2); background: rgba(2, 132, 199, 0.85); padding: 8px 25px; border-radius: 20px; }
+    h1 { font-size: 26px; font-weight: 700; margin-bottom: 15px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.2); background: rgba(2, 132, 199, 0.85); padding: 8px 25px; border-radius: 20px; text-align: center; }
     h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #f97316; font-size: 1.3em; }
     
     .stage { display: flex; gap: 20px; width: 100%; max-width: 950px; justify-content: center; }
@@ -197,7 +198,7 @@
       box-shadow: 0 16px 32px rgba(0,0,0,0.25), inset 0 0 0 5px #fef08a;
     }
     .canvas-container { background: #ffffff; border-radius: 14px; overflow: hidden; position: relative; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1); }
-    canvas { display: block; cursor: crosshair; touch-action: none; }
+    canvas { display: block; cursor: crosshair; touch-action: none; max-width: 100%; height: auto; }
     
     /* Tools Control Panel */
     .panel {
@@ -234,13 +235,20 @@
     }
 
     @media (max-width: 760px) {
-      body { overflow-y: auto; justify-content: flex-start; padding-top: 60px; }
-      .nav-buttons-container { top: 10px; left: 10px; }
-      .btn-action-back, .btn-action-home { padding: 8px 14px; font-size: 12px; }
-      .audio-slider-panel { top: 10px; right: 10px; padding: 4px 10px; }
-      .stage { flex-direction: column-reverse; align-items: center; }
-      .panel { width: 100%; max-width: 400px; }
+      body { justify-content: flex-start; padding-top: 75px; padding-bottom: 20px; }
+      .nav-buttons-container { top: 12px; left: 12px; }
+      .btn-action-back, .btn-action-home { padding: 8px 14px; font-size: 12px; border-radius: 12px; }
+      .audio-slider-panel { top: 12px; right: 12px; padding: 4px 10px; }
+      h1 { font-size: 20px; padding: 6px 18px; margin-bottom: 10px; width: calc(100% - 10px); max-width: 360px; }
+      .stage { flex-direction: column; align-items: center; gap: 12px; }
+      .wood-frame { padding: 10px; border-radius: 18px; width: calc(100% - 10px); max-width: 360px; }
+      .canvas-container { border-radius: 10px; }
+      canvas { width: 100% !important; height: auto !important; }
+      .panel { width: calc(100% - 10px); max-width: 360px; border-radius: 18px; padding: 12px; gap: 10px; }
       .brush-grid { grid-template-columns: repeat(5, 1fr); }
+      .eraser { height: 50px; }
+      .actions { margin-top: 5px; }
+      .btn { height: 48px; }
       .cartoon-trees, .bush-left, .bush-right, .sun { display: none; }
     }
   </style>
