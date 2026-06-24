@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Paint the Burmese Letter င - Animated Magical Pond</title>
+  <title>Paint the Burmese Letter Ng – Animated Magical Pond</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
@@ -187,7 +187,7 @@
     }
     h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #facc15; font-size: 1.3em; }
     
-    /* 🎯 MAIN LAYOUT FRAME - အလယ်ဗဟိုမှာ ဘေးချင်းကပ်လျက် စုစည်းနေစေရန် ညှိထားပါတယ် */
+    /* 🎯 MAIN LAYOUT FRAME */
     .stage { 
       display: flex; 
       flex-direction: row;
@@ -241,7 +241,7 @@
     .btn { 
       font-family: 'Noto Sans Myanmar', sans-serif; 
       min-height: 54px; 
-      height: auto;     
+      height: auto;      
       padding: 6px 2px; 
       border-radius: 12px; border: none; color: white; font-weight: 700; font-size: 11px; cursor: pointer; 
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -258,7 +258,7 @@
     }
 
     /* ==========================================================================
-       📱 MOBILE RESPONSIVE LAYOUT (ဘယ် device မှာမဆို ဘေးချင်းကပ်လျက် အလယ်ဗဟိုမှာ စုစည်းပေးထားခြင်း)
+       📱 MOBILE RESPONSIVE LAYOUT
        ========================================================================== */
     @media (max-width: 760px) {
       body { overflow: hidden; justify-content: center; padding-top: 0; }
@@ -266,7 +266,6 @@
       .btn-action-back, .btn-action-home { padding: 6px 12px; font-size: 11px; border-radius: 12px; box-shadow: 0 3px 0 rgba(0,0,0,0.2); }
       .audio-slider-panel { top: 8px; right: 8px; padding: 4px 8px; }
       
-      /* ဖုန်း screen ပေါ်မှာ Canvas ကော၊ Panel ကော အောက်မဆင်းဘဲ ဘေးချင်းကပ်လျက် အလယ်ဗဟိုမှာ ရှိနေစေရန် */
       .stage { 
         flex-direction: row; 
         gap: 8px; 
@@ -276,7 +275,6 @@
       }
       
       .wood-frame { padding: 8px; border-radius: 16px; }
-      /* ဖုန်းအလိုက် Canvas Size ကို Responsive Auto ချိန်ညှိပေးခြင်း */
       canvas { width: clamp(240px, 55vw, 420px); height: clamp(240px, 55vw, 420px); }
       
       .panel { 
@@ -470,6 +468,7 @@
 
     function initUI() {
       bgMusicAudio.volume = 0.3;
+      winApplauseAudio.volume = 0.3; // ကောင်းမွန်စွာ သတ်မှတ်ပေးခြင်း
       bgMusicAudio.play().catch(e => console.log("Audio waiting user interaction."));
 
       const volumeSlider = document.getElementById('gameVolumeControl');
@@ -478,15 +477,16 @@
       function updateVolume(volValue) {
         bgMusicAudio.volume = volValue;
         winApplauseAudio.volume = volValue;
-        if (volValue == 0) {
+        if (parseFloat(volValue) === 0) {
           iconIndicator.textContent = '🔇';
-        } else if (volValue < 0.4) {
+        } else if (parseFloat(volValue) < 0.4) {
           iconIndicator.textContent = '🔈';
         } else {
           iconIndicator.textContent = '🔊';
         }
       }
 
+      // Slider listener ကို ပိုမိုမြန်ဆန်ပြီး အလုပ်ဖြစ်အောင် ပြင်ဆင်ထားပါသည်
       volumeSlider.addEventListener('input', (e) => updateVolume(e.target.value));
       volumeSlider.addEventListener('change', (e) => updateVolume(e.target.value));
 
@@ -560,11 +560,13 @@
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
 
-    // "င" အတွက် SVG နောက်ခံစာသား သတ်မှတ်ချက်ကို အစားထိုးထားပါသည်
     canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>င</text></svg>\")";
     canvas.style.backgroundSize = "100% 100%";
 
-    initUI();
+    // DOMContentLoaded စနစ် သို့မဟုတ် window load အပြီးမှ သေချာအလုပ်လုပ်စေရန် ပြောင်းလဲထားပါသည်
+    window.addEventListener('DOMContentLoaded', () => {
+      initUI();
+    });
   </script>
 </body>
 </html>
