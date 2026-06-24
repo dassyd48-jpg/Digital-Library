@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Paint the Burmese Letter Ng - Animated Magical Ocean</title>
+  <title>Paint the Burmese Letter င - Animated Magical Ocean</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -342,7 +342,7 @@
     const ctx = canvas.getContext('2d');
     let isPainting = false;
     let currentColor = '#0ea5e9';
-    let currentType = 'star'; 
+    let currentType = 'solid'; 
     let currentPattern = '';
     let isEraser = false;
     let brushSize = 32;
@@ -352,7 +352,6 @@
     const winApplauseAudio = document.getElementById('applauseSoundEffect');
 
     const brushes = [
-      { id: 'star-brush', type: 'star', color: '#0ea5e9' }, 
       { id: 'sky-blue', type: 'solid', color: '#38bdf8' },
       { id: 'ocean-blue', type: 'solid', color: '#0284c7' },
       { id: 'yellow', type: 'solid', color: '#facc15' },
@@ -420,22 +419,6 @@
       ctx.lineTo(x, y);
       ctx.stroke();
 
-      if (!isEraser && Math.random() < 0.45) {
-        ctx.save();
-        ctx.globalCompositeOperation = 'source-over';
-        if (currentType === 'star') {
-          ctx.fillStyle = '#fef08a';
-          ctx.font = '20px serif';
-          ctx.fillText('⭐', x + (Math.random() * 30 - 15), y + (Math.random() * 30 - 15));
-        } else {
-          ctx.fillStyle = '#ffffff';
-          ctx.beginPath();
-          ctx.arc(x + (Math.random() * 26 - 13), y + (Math.random() * 26 - 13), Math.random() * 3 + 1.5, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        ctx.restore();
-      }
-
       lastX = x; lastY = y;
     }
 
@@ -471,12 +454,7 @@
       brushes.forEach((b, i) => {
         const div = document.createElement('div');
         div.className = 'brush' + (i === 0 ? ' selected' : '');
-        
-        if(b.type === 'star') {
-          div.innerHTML = `<div class="swatch" style="background:${b.color}; display:flex; align-items:center; justify-content:center; font-size:16px;">⭐</div>`;
-        } else {
-          div.innerHTML = `<div class="swatch" style="background:${b.color}"></div>`;
-        }
+        div.innerHTML = `<div class="swatch" style="background:${b.color}"></div>`;
         
         if(b.pattern === 'dots') div.firstChild.style.backgroundImage = 'radial-gradient(circle, #fff 20%, transparent 20%)';
         if(b.pattern === 'stripes') div.firstChild.style.backgroundImage = 'linear-gradient(45deg, #fff 25%, transparent 25%)';
@@ -532,7 +510,6 @@
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
 
-    // Canvas Background တွင် "င" စာလုံးကို ပြောင်းလဲသတ်မှတ်ထားပါတယ်
     canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>င</text></svg>\")";
     canvas.style.backgroundSize = "100% 100%";
 
