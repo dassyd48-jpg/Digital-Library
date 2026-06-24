@@ -6,12 +6,11 @@
   <title>Paint the Burmese Letter ဃ - Animated Magical Mountains</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
     
-    /* ဃ ရဲ့ မဟာတောင်တန်းကြီးများနှင့် နေဝင်ရိုးရီကောင်းကင်နောက်ခံ (ဒါကိုပဲ ချန်ထားပါတယ်) */
     body {
       font-family: 'Fredoka', system-ui, sans-serif;
       background: linear-gradient(to bottom, #ffedd5 0%, #fed7aa 30%, #fdba74 50%, #f97316 50%, #c2410c 100%);
@@ -25,7 +24,7 @@
     }
 
     /* ==========================================================================
-       MAGICAL MOUNTAIN ANIMATIONS (ဃ ရဲ့ နောက်ခံ Landscape အလှဆင်ခြင်းများ)
+       MAGICAL MOUNTAIN ANIMATIONS
        ========================================================================== */
     .balloon-container {
       position: absolute; top: 15%; left: 12%; z-index: 1; pointer-events: none;
@@ -58,7 +57,7 @@
     }
 
     /* ==========================================================================
-       "ခ" ၏ ORIGINAL CSS STYLES (ခ ကုဒ်အတိုင်း လုံးဝမပြောင်းလဲထားပါ)
+       ORIGINAL CSS STYLES
        ========================================================================== */
     .intro-screen {
       position: fixed; inset: 0; background-color: #111827; z-index: 1000;
@@ -254,7 +253,7 @@
 
     <div class="audio-slider-panel">
       <span id="volIndicatorIcon">🔊</span>
-      <input type="range" id="gameVolumeControl" min="0" max="1" step="0.01" value="0.3" class="vol-range-input" />
+      <input type="range" id="gameVolumeControl" min="0" max="1" step="0.01" value="0.3" class="vol-range-input" oninput="adjustGameVolume(this.value)" />
     </div>
 
     <h1>အရောင်ခြယ်ပါ <span class="glyph">ဃ</span> !</h1>
@@ -295,6 +294,24 @@
   <audio id="applauseSoundEffect" src="clapping.mp3"></audio>
 
   <script>
+    // --- GLOBAL VOLUME CONTROL ---
+    window.adjustGameVolume = function(volValue) {
+      const bgMusicAudio = document.getElementById('paintBgmAudio');
+      const winApplauseAudio = document.getElementById('applauseSoundEffect');
+      const iconIndicator = document.getElementById('volIndicatorIcon');
+
+      if (bgMusicAudio) bgMusicAudio.volume = volValue;
+      if (winApplauseAudio) winApplauseAudio.volume = volValue;
+
+      if (volValue == 0) {
+        iconIndicator.textContent = '🔇';
+      } else if (volValue < 0.4) {
+        iconIndicator.textContent = '🔈';
+      } else {
+        iconIndicator.textContent = '🔊';
+      }
+    };
+
     const canvas = document.getElementById('paintCanvas');
     const ctx = canvas.getContext('2d');
     let isPainting = false;
@@ -391,26 +408,9 @@
     }
 
     function initUI() {
-      bgMusicAudio.volume = 0.3;
-      bgMusicAudio.play().catch(e => console.log("Audio waiting user interaction."));
-
-      const volumeSlider = document.getElementById('gameVolumeControl');
-      const iconIndicator = document.getElementById('volIndicatorIcon');
-
-      function updateVolume(volValue) {
-        bgMusicAudio.volume = volValue;
-        winApplauseAudio.volume = volValue;
-        if (volValue == 0) {
-          iconIndicator.textContent = '🔇';
-        } else if (volValue < 0.4) {
-          iconIndicator.textContent = '🔈';
-        } else {
-          iconIndicator.textContent = '🔊';
-        }
-      }
-
-      volumeSlider.addEventListener('input', (e) => updateVolume(e.target.value));
-      volumeSlider.addEventListener('change', (e) => updateVolume(e.target.value));
+      // Set initial volume
+      if (bgMusicAudio) bgMusicAudio.volume = 0.3;
+      if (winApplauseAudio) winApplauseAudio.volume = 0.3;
 
       document.getElementById('btnStart').onclick = () => {
         document.getElementById('introScreen').classList.add('hide');
@@ -482,7 +482,6 @@
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
 
-    /* ဃ အက္ခရာ လမ်းကြောင်း SVG ကို Canvas နောက်ခံအဖြစ် တိကျစွာ ပြောင်းလဲထားသည် */
     canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>ဃ</text></svg>\")";
     canvas.style.backgroundSize = "100% 100%";
 
