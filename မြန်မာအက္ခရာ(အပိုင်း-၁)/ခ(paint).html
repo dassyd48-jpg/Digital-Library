@@ -223,43 +223,47 @@
       100% { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(1.4); opacity: 0; }
     }
 
-    /* 📱 PHONE CRISIS RESPONSIVE LAYOUT FIXED (ကင်းလွတ်ခွင့်မရှိ စနစ်တကျ ပြင်ဆင်မှု) */
+    /* ==========================================================================
+       📱 MOBILE RESPONSIVE LAYOUT (FIXED & CENTERED)
+       ========================================================================== */
     @media (max-width: 760px) {
       body { padding-top: 0; }
       h1 { margin-top: 55px; font-size: 18px; padding: 4px 15px; margin-bottom: 5px; }
       
-      /* Canvas ရော Brushes ရော အပေါ်အောက် အချိုးကျ ဆန့်ဝင်သွားအောင် ပြုလုပ်ခြင်း */
+      /* space-between စားဝင်မည့်အစား center သုံးပြီး အက္ခရာအောက်ခြေမှာ panel ကပ်နေအောင် ပြုလုပ်ခြင်း */
       .stage { 
         flex-direction: column; 
         width: 100%; 
-        justify-content: space-between;
+        justify-content: center; 
         align-items: center;
-        gap: 8px;
+        gap: 12px; /* Canvas နဲ့ Panel အကွာအဝေးကို အနီးဆုံးဖြစ်အောင် ထိန်းညှိခြင်း */
+        flex: none; /* အောက်ခြေအစွန်းထိ ဆွဲမချပစ်ရန် */
       }
       
-      /* Canvas Box အမြင့်ကို Auto ညှိပြီး Screen ထဲ အံဝင်ခွင်ကျ ဖြစ်စေခြင်း */
+      /* Canvas Box အရွယ်အစား */
       .wood-frame { 
-        width: 280px; height: 280px; 
+        width: 270px; height: 270px; 
         padding: 8px; border-radius: 16px; 
       }
       .canvas-container { width: 100%; height: 100%; }
 
-      /* Panel ကို အောက်ခြေမှာ စနစ်တကျ နေရာချခြင်း */
+      /* Brushes Panel ကို Canvas အောက်ခြေနားမှာတင် စုစုစည်းစည်းဖြစ်စေခြင်း */
       .panel { 
-        width: 100%; max-width: 340px; 
+        width: 100%; max-width: 330px; 
         padding: 10px; border-radius: 16px;
-        gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        margin-bottom: 20px; /* Safe Area အတွက် အောက်ခြေမှ အနည်းငယ်ခွာထားခြင်း */
       }
-      .panel-title { display: none; } /* ဖုန်းထဲမှာ နေရာသက်သာအောင် ခေါင်းစဉ်ဖျောက်ထားမည် */
+      .panel-title { display: none; }
       
-      .eraser { height: 42px; border-radius: 10px; flex-direction: row; gap: 6px; font-size: 11px; }
+      .eraser { height: 40px; border-radius: 10px; flex-direction: row; gap: 6px; font-size: 11px; }
       .eraser span { font-size: 18px !important; }
       
       .brush-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
       .brush { border-radius: 8px; }
       
       .actions { margin-top: 4px; }
-      .btn { height: 44px; border-radius: 10px; font-size: 11px; }
+      .btn { height: 42px; border-radius: 10px; font-size: 11px; }
       
       .water-ripples, .lilypad, .pond-flowers { display: none; }
     }
@@ -267,11 +271,11 @@
     /* ပိုသေးတဲ့ ဖုန်းအသေးစားလေးတွေအတွက် (e.g. iPhone SE) */
     @media (max-height: 650px) and (max-width: 760px) {
       h1 { margin-top: 48px; font-size: 16px; margin-bottom: 2px; }
-      .wood-frame { width: 220px; height: 220px; }
-      .panel { max-width: 300px; padding: 6px; }
+      .wood-frame { width: 210px; height: 210px; }
+      .panel { max-width: 290px; padding: 6px; margin-bottom: 10px; }
       .brush-grid { gap: 4px; }
-      .btn { height: 38px; }
-      .eraser { height: 36px; }
+      .btn { height: 36px; }
+      .eraser { height: 34px; }
     }
   </style>
 </head>
