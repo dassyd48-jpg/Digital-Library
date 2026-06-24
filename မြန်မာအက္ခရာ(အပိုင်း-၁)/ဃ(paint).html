@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Paint the Burmese Letter ဃ - Animated Magical Mountains</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
     
-    /* တောင်တန်းကြီးများနှင့် နေဝင်ရိုးရီကောင်းကင်အလှ ကာတွန်းနောက်ခံ */
+    /* ဃ ရဲ့ မဟာတောင်တန်းကြီးများနှင့် နေဝင်ရိုးရီကောင်းကင်နောက်ခံ */
     body {
       font-family: 'Fredoka', system-ui, sans-serif;
       background: linear-gradient(to bottom, #ffedd5 0%, #fed7aa 30%, #fdba74 50%, #f97316 50%, #c2410c 100%);
@@ -21,15 +21,12 @@
       align-items: center;
       justify-content: center;
       color: #7c2d12;
-      overflow: hidden;
       position: relative;
     }
 
     /* ==========================================================================
-       MAGICAL MOUNTAIN ANIMATIONS (မဟာတောင်တန်းကြီးများနှင့် Live အထူးပြုလုပ်ချက်များ)
+       MAGICAL MOUNTAIN ANIMATIONS (ဃ ရဲ့ နောက်ခံ အလှဆင်ခြင်းများနှင့် Animation များ)
        ========================================================================== */
-    
-    /* ကောင်းကင်တွင် အပေါ်အောက် ဖြည်းဖြည်းချင်း လွင့်မျောနေသော မိုးပျံပူဖောင်းကြီး */
     .balloon-container {
       position: absolute;
       top: 15%;
@@ -47,16 +44,15 @@
       filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15));
     }
 
-    /* CSS ဖြင့် ပုံဖော်ထားသော ထပ်ဆင့်မဟာတောင်တန်းကြီးများ Layer များ */
     .mountain-range {
       position: absolute;
-      bottom: 20%;
+      bottom: 0;
+      left: 0;
       width: 100%;
-      height: 280px;
+      height: 40%;
       pointer-events: none;
       z-index: 1;
     }
-    /* နောက်ဘက် တောင်တန်းကြီးများ */
     .mountain-back {
       position: absolute;
       bottom: 0;
@@ -74,8 +70,6 @@
       height: 90%;
       background: #d97706;
     }
-
-    /* ရှေ့ဘက် တောင်တန်းကြီးများနှင့် အပင်အုပ်များ */
     .mountain-front {
       position: absolute;
       bottom: -20px;
@@ -93,7 +87,6 @@
       100% { transform: rotate(1deg) translateX(3px); }
     }
 
-    /* တောင်ခြေက ကာတွန်းပန်းခင်းလေးများ */
     .mountain-foothills {
       position: absolute;
       bottom: -10px;
@@ -104,7 +97,6 @@
       border-radius: 50% 50% 0 0 / 20px 20px 0 0;
       box-shadow: inset 0 12px 0 #b45309;
     }
-    
     .mountain-flowers {
       position: absolute;
       bottom: 20px;
@@ -126,29 +118,46 @@
     }
 
     /* ==========================================================================
-       GAME UI INTERFACE (အသုံးချစနစ်များ)
+       "ခ" ၏ ORIGINAL STRUCTURE & DESIGN (လုံးဝ မပြောင်းလဲထားသော Structure)
        ========================================================================== */
     .intro-screen {
-      position: fixed; inset: 0; background-color: #0f172a; z-index: 1000;
+      position: fixed;
+      inset: 0; background-color: #0f172a; z-index: 1000;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 20px; text-align: center; color: #ffffff; transition: opacity 0.5s ease, transform 0.5s ease;
+      padding: 20px; text-align: center; color: #ffffff;
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
     .intro-screen.hide { opacity: 0; pointer-events: none; transform: scale(1.05); }
     .intro-emojis { font-size: clamp(32px, 5vw, 48px); margin-bottom: 15px; letter-spacing: 8px; }
-    .intro-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(28px, 4.5vw, 46px); font-weight: 800; margin-bottom: 10px; color: #f97316; }
-    .intro-badge { font-family: 'Noto Sans Myanmar', sans-serif; background-color: #c2410c; padding: 6px 18px; border-radius: 20px; font-size: clamp(13px, 2vw, 16px); font-weight: 700; margin-bottom: 25px; display: inline-block; white-space: nowrap; }
-    .intro-desc { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(14px, 2.2vw, 18px); max-width: 600px; line-height: 1.8; color: #ffedd5; margin-bottom: 40px; }
+    .intro-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(28px, 4.5vw, 46px); font-weight: 800; margin-bottom: 10px; color: #38bdf8; }
+    .intro-badge { font-family: 'Noto Sans Myanmar', sans-serif; background-color: #0369a1; padding: 6px 18px; border-radius: 20px; font-size: clamp(13px, 2vw, 16px); font-weight: 700; margin-bottom: 25px; display: inline-block; }
+    .intro-desc { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(14px, 2.2vw, 18px); max-width: 600px; line-height: 1.8; color: #e0f2fe; margin-bottom: 40px; }
     
     .btn-start {
-      font-family: 'Noto Sans Myanmar', sans-serif; background-color: #ea580c; color: white; border: none; padding: 14px 45px; font-size: clamp(18px, 2.5vw, 22px); font-weight: 700; border-radius: 30px; cursor: pointer; box-shadow: 0 6px 0 #9a3412, 0 10px 20px rgba(0,0,0,0.3); transition: transform 0.1s ease, box-shadow 0.1s ease;
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      background-color: #0ea5e9; color: white; border: none; padding: 14px 45px; font-size: clamp(18px, 2.5vw, 22px); font-weight: 700; border-radius: 30px; cursor: pointer;
+      box-shadow: 0 6px 0 #0369a1, 0 10px 20px rgba(0,0,0,0.3); transition: transform 0.1s ease, box-shadow 0.1s ease;
     }
-    .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #9a3412, 0 4px 10px rgba(0,0,0,0.3); }
+    .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #0369a1, 0 4px 10px rgba(0,0,0,0.3); }
 
-    .game-container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 15px; opacity: 0; transform: scale(0.95); transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; }
+    .game-container { 
+      position: relative; 
+      z-index: 10; 
+      display: flex; 
+      flex-direction: column;
+      align-items: center; 
+      justify-content: center;
+      width: 100%; 
+      height: 100%; 
+      padding: 10px; 
+      opacity: 0; 
+      transform: scale(0.95);
+      transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; 
+    }
     .game-container.show { opacity: 1; transform: scale(1); }
 
-    /* 🚪 NAVIGATION FRAME CONTROL PANEL */
     .nav-buttons-container { position: absolute; top: 15px; left: 15px; z-index: 100; display: flex; gap: 10px; }
+    
     .btn-action-back {
       font-family: 'Noto Sans Myanmar', sans-serif; font-weight: 800; font-size: 14px;
       color: #ffffff; background: linear-gradient(180deg, #f43f5e 0%, #be123c 100%);
@@ -167,369 +176,350 @@
     }
     .btn-action-home:active { transform: translateY(3px); box-shadow: 0 2px 0 #4c0519, 0 4px 8px rgba(0,0,0,0.2); }
 
-    /* 🔊 INTERACTIVE AUDIO CONTROLLER TOOL */
     .audio-slider-panel {
-      position: absolute; top: 15px; right: 15px; z-index: 100;
-      background: rgba(194, 65, 12, 0.85); border: 2px solid #ffedd5; padding: 6px 14px; border-radius: 20px;
-      display: flex; align-items: center; gap: 8px; box-shadow: 0 6px 12px rgba(0,0,0,0.15); color: #ffffff;
+      position: absolute;
+      top: 15px; right: 15px; z-index: 100;
+      background: rgba(15, 23, 42, 0.6); border: 2px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(4px); padding: 6px 14px; border-radius: 20px;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15); color: #ffffff;
     }
     .audio-slider-panel span { font-size: 16px; user-select: none; }
-    .vol-range-input { width: 80px; height: 6px; background: #e2e8f0; border-radius: 8px; appearance: none; cursor: pointer; accent-color: #fef08a; }
+    .vol-range-input {
+      width: 80px; height: 6px; background: #e2e8f0; border-radius: 8px;
+      appearance: none; cursor: pointer; accent-color: #38bdf8;
+    }
 
-    /* 🏆 WINNER CELEBRATION BOX CONGRATS MODAL OVERLAY */
     .congrats-modal-overlay {
-      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
+      position: fixed;
+      inset: 0; background: rgba(15, 23, 42, 0.6);
       backdrop-filter: blur(4px); z-index: 2000; display: flex; align-items: center; justify-content: center;
       opacity: 0; pointer-events: none; transition: opacity 0.4s ease; padding: 20px;
     }
     .congrats-modal-overlay.show { opacity: 1; pointer-events: auto; }
     .congrats-card {
-      background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%);
-      border: 4px solid #b45309; border-radius: 32px; padding: 40px; text-align: center; max-width: 420px; width: 100%;
+      background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+      border: 4px solid #22c55e; border-radius: 32px; padding: 40px; text-align: center;
+      max-width: 420px; width: 100%;
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); transform: scale(0.8);
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .congrats-modal-overlay.show .congrats-card { transform: scale(1); }
-    .congrats-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 32px; font-weight: 800; color: #b45309; margin-bottom: 12px; }
-    .congrats-text { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 16px; font-weight: 600; color: #7c2d12; margin-bottom: 28px; line-height: 1.6; }
+    .congrats-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 32px; font-weight: 800; color: #16a34a; margin-bottom: 12px; }
+    .congrats-text { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 16px; font-weight: 600; color: #166534; margin-bottom: 28px; line-height: 1.6; }
+    
     .btn-modal-done {
-      font-family: 'Noto Sans Myanmar', sans-serif; background-color: #2ed573; color: white; border: none; padding: 12px 50px; font-size: 18px; font-weight: 700; border-radius: 24px; cursor: pointer; box-shadow: 0 5px 0 #21a95a; transition: transform 0.1s;
+      font-family: 'Noto Sans Myanmar', sans-serif; background-color: #22c55e;
+      color: white; border: none; padding: 12px 50px; font-size: 18px; font-weight: 700; border-radius: 24px; cursor: pointer; box-shadow: 0 5px 0 #15803d;
+      transition: transform 0.1s;
     }
-    .btn-modal-done:active { transform: translateY(3px); box-shadow: 0 2px 0 #21a95a; }
+    .btn-modal-done:active { transform: translateY(3px); box-shadow: 0 2px 0 #15803d; }
 
-    h1 { font-size: 26px; font-weight: 700; margin-bottom: 15px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.2); background: rgba(194, 65, 12, 0.9); padding: 8px 25px; border-radius: 20px; }
-    h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #fef08a; font-size: 1.3em; }
+    h1 { 
+      font-size: clamp(20px, 4vw, 28px); font-weight: 700; margin-bottom: 10px;
+      color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.3); background: rgba(15, 23, 42, 0.5); padding: 6px 20px; border-radius: 20px; text-align: center;
+    }
+    h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #38bdf8; font-size: 1.3em; }
     
-    .stage { display: flex; gap: 20px; width: 100%; max-width: 950px; justify-content: center; }
+    .stage { display: flex; flex-direction: row; gap: 12px; width: 100%; max-width: 950px; justify-content: center; align-items: center; }
     
-    /* တောင်တန်း Theme နှင့် ကိုက်ညီသော သစ်သားဘောင်ဒီဇိုင်း */
     .wood-frame {
-      position: relative; padding: 18px; border-radius: 24px;
-      background: linear-gradient(180deg, #b45309 0%, #78350f 100%);
-      box-shadow: 0 16px 32px rgba(0,0,0,0.3), inset 0 0 0 5px #ffedd5;
+      position: relative; padding: 12px; border-radius: 24px;
+      background: linear-gradient(180deg, #78350f 0%, #451a03 100%);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.3), inset 0 0 0 4px #fef3c7;
     }
     .canvas-container { background: #ffffff; border-radius: 14px; overflow: hidden; position: relative; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1); }
-    canvas { display: block; cursor: crosshair; touch-action: none; }
+    canvas { display: block; cursor: crosshair; touch-action: none; max-width: 100%; height: auto; }
     
-    /* Tools Control Panel */
     .panel {
-      width: 150px; background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%); border-radius: 24px;
-      padding: 15px; display: flex; flex-direction: column; gap: 12px;
-      box-shadow: 0 12px 24px rgba(0,0,0,0.15), inset 0 0 0 3px #ffedd5;
+      width: 140px; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); border-radius: 24px;
+      padding: 12px; display: flex; flex-direction: column; gap: 10px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15), inset 0 0 0 3px #f1f5f9; height: 100%; justify-content: space-between;
     }
-    .panel-title { font-size: 14px; font-weight: 700; text-align: center; color: #b45309; letter-spacing: 1px; }
+    .panel-title { font-size: 12px; font-weight: 700; text-align: center; color: #64748b; letter-spacing: 1px; }
+    
     .eraser {
-      height: 65px; border-radius: 16px; background: white;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      cursor: pointer; box-shadow: 0 4px 0 #ffedd5; font-weight: 700; font-size: 13px; user-select: none; border: 2px solid #ffedd5;
+      height: 55px; border-radius: 16px; background: white; display: flex;
+      flex-direction: column; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 0 #e2e8f0; font-weight: 700; font-size: 12px; user-select: none;
+      border: 2px solid #e2e8f0;
     }
-    .eraser.selected { background: #ffedd5; border-color: #b45309; box-shadow: inset 0 0 0 2px #b45309; }
+    .eraser.selected { background: #f1f5f9; border-color: #0ea5e9; box-shadow: inset 0 0 0 2px #0ea5e9; }
     
-    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
     .brush {
-      aspect-ratio: 1/1; border-radius: 14px; cursor: pointer; position: relative;
-      box-shadow: 0 3px 0 rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #e2e8f0;
+      aspect-ratio: 1/1; border-radius: 12px; cursor: pointer;
+      position: relative; box-shadow: 0 3px 0 rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #e2e8f0;
     }
-    .brush.selected { transform: scale(1.05); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #ca8a04; }
-    .swatch { position: absolute; inset: 4px; border-radius: 10px; }
+    .brush.selected { transform: scale(1.05); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0ea5e9; }
+    .swatch { position: absolute; inset: 4px; border-radius: 8px; }
     
-    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: auto; }
     
-    /* 🛠️ FIXED MAIN RESET/NEXT BUTTONS LAYOUT */
-    .btn { 
-      font-family: 'Noto Sans Myanmar', sans-serif; 
-      min-height: 62px; /* စာလုံးနှစ်ကြောင်းစာ လုံလောက်တဲ့ အမြင့် */
-      height: auto;     /* စာသားအလိုက် အလိုအလျောက် ပုံမှန်အတိုင်း ဆန့်ထွက်စေရန် */
-      padding: 8px 4px; /* အတွင်းအကွာအဝေးကို သေသပ်အောင်ထိန်းညှိ */
-      border-radius: 14px; border: none; color: white; font-weight: 700; font-size: 12px; cursor: pointer; 
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      line-height: 1.4;  /* စာကြောင်းနှစ်ကြောင်းကြား အကွာအဝေးကို မြန်မာစာလုံး ပုံစံအတိုင်း ကွက်တိဖြစ်စေရန် */
+    .btn {
+      font-family: 'Noto Sans Myanmar', sans-serif; min-height: 62px; height: auto; padding: 8px 4px;
+      border: none; border-radius: 16px; font-weight: 800; font-size: 11px; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: white;
+      transition: transform 0.1s, box-shadow 0.1s; text-align: center; line-height: 1.2;
     }
-    .btn-reset { background: #d97706; box-shadow: 0 4px 0 #b45309; }
-    .btn-next { background: #ca8a04; box-shadow: 0 4px 0 #854d0e; }
-    
-    #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
-    .star { position: absolute; font-size: 28px; animation: fall 1.5s ease-out forwards; }
-    @keyframes fall {
-      0% { transform: translate(0,0) rotate(0deg) scale(0.5); opacity: 1; }
-      100% { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(1.4); opacity: 0; }
+    .btn-reset { background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 4px 0 #b45309, 0 6px 10px rgba(0,0,0,0.15); }
+    .btn-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #b45309, 0 2px 4px rgba(0,0,0,0.15); }
+    .btn-done { background: linear-gradient(180deg, #10b981 0%, #059669 100%); box-shadow: 0 4px 0 #047857, 0 6px 10px rgba(0,0,0,0.15); }
+    .btn-done:active { transform: translateY(3px); box-shadow: 0 1px 0 #047857, 0 2px 4px rgba(0,0,0,0.15); }
+    .btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+    /* 🎆 "ခ" ၏ မူရင်း Star Burst Explosion Effect စတိုင်လ် */
+    .star {
+      position: absolute; z-index: 999; pointer-events: none; font-size: 24px;
+      animation: explode 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    @keyframes explode {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(0.5); opacity: 0; }
     }
 
-    @media (max-width: 760px) {
-      body { overflow-y: auto; justify-content: flex-start; padding-top: 60px; }
-      .nav-buttons-container { top: 10px; left: 10px; }
-      .btn-action-back, .btn-action-home { padding: 8px 14px; font-size: 12px; }
-      .audio-slider-panel { top: 10px; right: 10px; padding: 4px 10px; }
-      .stage { flex-direction: column-reverse; align-items: center; }
-      .panel { width: 100%; max-width: 400px; }
-      .brush-grid { grid-template-columns: repeat(5, 1fr); }
-      .mountain-range, .mountain-foothills, .mountain-flowers, .balloon-container { display: none; }
+    @media (max-width: 768px) {
+      .stage { flex-direction: column; gap: 10px; }
+      .panel { width: 100%; max-width: 450px; height: auto; flex-direction: row; align-items: center; }
+      .panel-title { display: none; }
+      .eraser { height: 50px; width: 75px; margin-bottom: 0; }
+      .brush-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; flex-grow: 1; }
+      .actions { margin-top: 0; width: 120px; }
+      .btn { min-height: 50px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="nav-buttons-container">
-    <button class="btn-action-back" id="btnNavigationBack">← Back</button>
-    <button class="btn-action-home" onclick="window.location.href='index.html?fromGame=true'">🏠 Home</button>
-  </div>
-
-  <div class="audio-slider-panel">
-    <span id="volIndicatorIcon">🔊</span>
-    <input type="range" id="gameVolumeControl" min="0" max="1" step="0.05" value="0.3" class="vol-range-input" oninput="adjustGameVolume(this.value)" />
-  </div>
-
-  <div class="congrats-modal-overlay" id="congratsWindowBox">
-    <div class="congrats-card">
-      <div style="font-size: 55px; margin-bottom: 10px;">🎉✨⭐</div>
-      <div class="congrats-title">Congratulations!</div>
-      <div class="congrats-text">သားသားမီးမီးတို့ရေ... အခန့်ညားဆုံး မဟာတောင်တန်းကြီးပေါ်က အက္ခရာ "ဃ" လေးကို အောင်မြင်စွာနဲ့ ဆေးရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ ကွယ်။ တော်လိုက်တာ။ 🌟</div>
-      <button class="btn-modal-done" onclick="window.location.href='index.html?fromGame=true'">ပြီးပြီ</button>
-    </div>
-  </div>
-
-  <audio id="paintBgmAudio" src="main-bgm.mp3" loop></audio>
-  <audio id="applauseSoundEffect" src="clapping.mp3"></audio>
-
-  <div class="balloon-container">
-    <div class="balloon">🎈</div>
-  </div>
-
+  <div class="balloon-container"><div class="balloon">🎈</div></div>
   <div class="mountain-range">
-    <div class="mountain-back left"></div>
+    <div class="mountain-back"></div>
     <div class="mountain-back right"></div>
     <div class="mountain-front"></div>
-  </div>
-  
-  <div class="mountain-foothills"></div>
-  
-  <div class="mountain-flowers">
-    <div class="flower-cluster">🌸🌻</div>
-    <div class="flower-cluster">🌷🌹</div>
-  </div>
-
-  <div class="intro-screen" id="introScreen">
-    <div class="intro-emojis">⛰️🎈✨🌄🌸</div>
-    <div class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</div>
-    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဃ" မဟာတောင်တန်းကြီးများ</div>
-    <div class="intro-desc">
-      ကလေးတို့ရေ... အခုဆိုရင် အလွန်ကြီးမားပြီး ခန့်ညားတဲ့ မဟာတောင်တန်းကြီးတွေဆီ ရောက်လာခဲ့ပြီနော်။ လေထဲမှာ ကစားနေတဲ့ မိုးပျံပူဖောင်းကြီးတွေနဲ့အတူ မြန်မာအက္ခရာ စတုတ္ထမြောက်လုံး "ဃ" လေးကို အသစ်စက်စက် ကြယ်ပျံစုတ်တံလေး သုံးပြီး လှလှပပ ခြယ်သလိုက်ရအောင်။
+    <div class="mountain-foothills">
+      <div class="mountain-flowers">
+        <div class="flower-cluster">🌸🌻</div>
+        <div class="flower-cluster">🌻🌸</div>
+      </div>
     </div>
-    <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
   </div>
 
-  <div class="game-container" id="gameContainer">
-    <h1>အရောင်ခြယ်ပါ <span class="glyph">ဃ</span> !</h1>
+  <div id="welcomeIntroBox" class="intro-screen">
+    <div class="intro-emojis">🎒✨🎨✏️</div>
+    <div class="intro-title">မြန်မာစာလုံး ဆေးရောင်ခြယ်စနစ်</div>
+    <div class="intro-badge">ဗျည်းအက္ခရာ - "ဃ"</div>
+    <div class="intro-desc">ဃကြီး အက္ခရာကို နောက်ခံလမ်းကြောင်းအတိုင်း စုတ်တံလေးနဲ့ လှလှပပ ဆေးရောင်ခြယ်ပြီး ရေးဆွဲလေ့ကျင့်ကြည့်ကြရအောင်။</div>
+    <button class="btn-start" onclick="launchGameInterface()">ကစားမည် ✨</button>
+  </div>
+
+  <div id="mainGameContainer" class="game-container">
+    
+    <div class="nav-buttons-container">
+      <button class="btn-action-back" onclick="handleNavigationControl('back')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        နောက်သို့
+      </button>
+      <button class="btn-action-home" onclick="handleNavigationControl('home')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        ပင်မစာမျက်နှာ
+      </button>
+    </div>
+
+    <div class="audio-slider-panel">
+      <span>🔊</span>
+      <input type="range" class="vol-range-input" id="bgMusicVolumeCtrl" min="0" max="1" step="0.1" value="0.5" oninput="adjustGlobalAudioVolume(this.value)">
+    </div>
+
+    <h1>မြန်မာဗျည်း <span class="glyph">"ဃ"</span> ကို ခြယ်သပါ</h1>
 
     <div class="stage">
+      
       <div class="wood-frame">
         <div class="canvas-container">
-          <canvas id="paintCanvas" width="550" height="550"></canvas>
+          <canvas id="drawingBoardCanvas" width="550" height="550"></canvas>
         </div>
       </div>
 
-      <aside class="panel">
-        <div class="panel-title">BRUSHES</div>
-        <div class="eraser" id="eraser">
-          <span style="font-size:24px">🧽</span><div>Eraser</div>
+      <div class="panel">
+        <div class="panel-title">စုတ်တံပုံစံများ</div>
+        
+        <div id="eraserTool" class="eraser" onclick="activateEraserMode()">
+          <span style="font-size:20px; margin-bottom:2px;">🧽</span>
+          <span>ဖျက်ရန်</span>
         </div>
-        <div class="brush-grid" id="brushGrid"></div>
+        
+        <div class="brush-grid" id="colorsPaletteGrid"></div>
+        
         <div class="actions">
-          <button class="btn btn-reset" id="btnReset">↻<br>အသစ်ပြန်စ</button>
-          <button class="btn btn-next" id="btnNext">✓<br>ပြီးပြီ</button>
+          <button class="btn btn-reset" onclick="clearCanvasWorkspace()">
+            <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+            အစမှ ပြန်စ
+          </button>
+          <button class="btn btn-done" onclick="validateUserArtwork()">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            ပြီးပြီ
+          </button>
         </div>
-      </aside>
+      </div>
+
     </div>
   </div>
 
-  <div id="confetti"></div>
+  <div id="congratsWindowBox" class="congrats-modal-overlay">
+    <div class="congrats-card">
+      <div style="font-size: 64px; margin-bottom: 15px;">🏆</div>
+      <div class="congrats-title">ဝမ်းမြောက်ပါသည် ။</div>
+      <div class="congrats-text">မောင်လေး၊ ညီမလေးတို့ ဃကြီး အက္ခရာလေးကို အောင်မြင်စွာ ရေးဆွဲခြယ်သပြီးပါပြီ။ နောက်ထပ် စာလုံးအသစ်တွေကိုလည်း ဆက်လက်လေ့ကျင့်လိုက်ကြရအောင်။</div>
+      <button class="btn-modal-done" onclick="closeCelebrationOverlay()">ပြီးပါပြီ ✨</button>
+    </div>
+  </div>
+
+  <audio id="gameBackgroundMusic" loop src="https://actions.google.com/sounds/v1/ambiences/morning_birds.ogg"></audio>
+  <audio id="successSoundEffect" src="https://actions.google.com/sounds/v1/cartoon/cartoon_wink.ogg"></audio>
 
   <script>
-    const canvas = document.getElementById('paintCanvas');
+    const canvas = document.getElementById('drawingBoardCanvas');
     const ctx = canvas.getContext('2d');
-    let isPainting = false;
-    let currentColor = '#f59e0b';
-    let currentType = 'star'; 
-    let currentPattern = '';
-    let isEraser = false;
-    let brushSize = 32;
-    let lastX = 0, lastY = 0;
+    const bgMusic = document.getElementById('gameBackgroundMusic');
+    const winSound = document.getElementById('successSoundEffect');
 
-    const bgMusicAudio = document.getElementById('paintBgmAudio');
-    const winApplauseAudio = document.getElementById('applauseSoundEffect');
+    let isDrawing = false;
+    let currentMode = 'brush'; 
+    let currentSize = 25;
+    let currentColor = '#ff4757'; 
 
-    const brushes = [
-      { id: 'star-brush', type: 'star', color: '#f59e0b' }, 
-      { id: 'orange', type: 'solid', color: '#f97316' },
-      { id: 'brown', type: 'solid', color: '#b45309' },
-      { id: 'yellow', type: 'solid', color: '#fde047' },
-      { id: 'red', type: 'solid', color: '#ef4444' },
-      { id: 'green', type: 'solid', color: '#22c55e' },
-      { id: 'blue', type: 'solid', color: '#3b82f6' },
-      { id: 'rainbow', type: 'rainbow', color: 'linear-gradient(45deg, #ff3366, #ff9933, #ffff33, #33cc66, #3399ff, #9933ff)' },
-      { id: 'pat-dots', type: 'pattern', color: '#ea580c', pattern: 'dots' },
-      { id: 'pat-stripes', type: 'pattern', color: '#ca8a04', pattern: 'stripes' }
+    const colorPresets = [
+      '#ff4757', '#2ed573', '#1e90ff', '#ffa502',
+      '#9b59b6', '#34495e', '#ff6b81', '#20bf6b'
     ];
 
-    function getPattern(type, color, pName) {
-      if (type === 'solid' || type === 'star') return color;
-      if (type === 'rainbow') {
-        const grad = ctx.createLinearGradient(60, 60, 490, 490);
-        grad.addColorStop(0, '#ff3366');
-        grad.addColorStop(0.2, '#ff9933');
-        grad.addColorStop(0.4, '#ffff33');
-        grad.addColorStop(0.6, '#33cc66');
-        grad.addColorStop(0.8, '#3399ff');
-        grad.addColorStop(1, '#9933ff');
-        return grad;
+    function launchGameInterface() {
+      document.getElementById('welcomeIntroBox').classList.add('hide');
+      document.getElementById('mainGameContainer').classList.add('show');
+      bgMusic.play().catch(e => console.log("Audio play deferred: " + e));
+    }
+
+    function handleNavigationControl(destination) {
+      if(destination === 'back') {
+        alert('နောက်သို့ ပြန်သွားရန် စနစ်ကို ပြင်ဆင်နေပါသည်...');
+      } else {
+        document.getElementById('mainGameContainer').classList.remove('show');
+        document.getElementById('welcomeIntroBox').classList.remove('hide');
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
       }
-      const pCanvas = document.createElement('canvas');
-      pCanvas.width = 20; pCanvas.height = 20;
-      const pCtx = pCanvas.getContext('2d');
-      pCtx.fillStyle = color; pCtx.fillRect(0,0,20,20);
-      if (pName === 'dots') {
-        pCtx.fillStyle = '#ffffff'; pCtx.beginPath(); pCtx.arc(10,10,3,0,Math.PI*2); pCtx.fill();
-      } else if (pName === 'stripes') {
-        pCtx.strokeStyle = '#ffffff'; pCtx.lineWidth = 3; pCtx.beginPath(); pCtx.moveTo(0,0); pCtx.lineTo(20,20); pCtx.stroke();
-      }
-      return ctx.createPattern(pCanvas, 'repeat');
+    }
+
+    function adjustGlobalAudioVolume(value) {
+      bgMusic.volume = value;
+      winSound.volume = value;
+    }
+
+    function initColorPalette() {
+      const grid = document.getElementById('colorsPaletteGrid');
+      colorPresets.forEach((color, idx) => {
+        const brushBtn = document.createElement('div');
+        brushBtn.className = `brush${idx === 0 ? ' selected' : ''}`;
+        brushBtn.dataset.color = color;
+        
+        const swatch = document.createElement('div');
+        swatch.className = 'swatch';
+        swatch.style.backgroundColor = color;
+        
+        brushBtn.appendChild(swatch);
+        brushBtn.addEventListener('click', () => selectBrushColor(color, brushBtn));
+        grid.appendChild(brushBtn);
+      });
+    }
+
+    function selectBrushColor(color, element) {
+      currentMode = 'brush';
+      currentColor = color;
+      document.getElementById('eraserTool').classList.remove('selected');
+      document.querySelectorAll('.brush').forEach(b => b.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    function activateEraserMode() {
+      currentMode = 'eraser';
+      document.querySelectorAll('.brush').forEach(b => b.classList.remove('selected'));
+      document.getElementById('eraserTool').classList.add('selected');
+    }
+
+    function clearCanvasWorkspace() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function closeCelebrationOverlay() {
+      document.getElementById('congratsWindowBox').classList.remove('show');
+      clearCanvasWorkspace();
+    }
+
+    function getCoordinates(e) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      return {
+        x: ((e.clientX || e.pageX) - rect.left) * scaleX,
+        y: ((e.clientY || e.pageY) - rect.top) * scaleY
+      };
     }
 
     function startDrawing(e) {
-      isPainting = true;
-      const rect = canvas.getBoundingClientRect();
-      lastX = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
-      lastY = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+      isDrawing = true;
+      const coords = getCoordinates(e);
+      ctx.beginPath();
+      ctx.moveTo(coords.x, coords.y);
     }
-    
-    function stopDrawing() { isPainting = false; ctx.beginPath(); }
+
+    function stopDrawing() {
+      isDrawing = false;
+      ctx.beginPath();
+    }
 
     function draw(e) {
-      if (!isPainting) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
-      const y = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+      if (!isDrawing) return;
+      const coords = getCoordinates(e);
 
-      ctx.lineWidth = brushSize;
+      ctx.lineWidth = currentSize;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
 
-      if (isEraser) {
+      if (currentMode === 'eraser') {
         ctx.globalCompositeOperation = 'destination-out';
-        ctx.lineWidth = 48;
       } else {
         ctx.globalCompositeOperation = 'source-over';
-        ctx.strokeStyle = getPattern(currentType, currentColor, currentPattern);
+        ctx.strokeStyle = currentColor;
       }
 
-      ctx.beginPath();
-      ctx.moveTo(lastX, lastY);
-      ctx.lineTo(x, y);
+      ctx.lineTo(coords.x, coords.y);
       ctx.stroke();
-
-      if (!isEraser && Math.random() < 0.45) {
-        ctx.save();
-        ctx.globalCompositeOperation = 'source-over';
-        if (currentType === 'star') {
-          ctx.fillStyle = '#fef08a';
-          ctx.font = '20px serif';
-          ctx.fillText('⭐', x + (Math.random() * 30 - 15), y + (Math.random() * 30 - 15));
-        } else {
-          ctx.fillStyle = '#ffffff';
-          ctx.beginPath();
-          ctx.arc(x + (Math.random() * 26 - 13), y + (Math.random() * 26 - 13), Math.random() * 3 + 1.5, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        ctx.restore();
-      }
-
-      lastX = x; lastY = y;
     }
 
-    function adjustGameVolume(volValue) {
-      bgMusicAudio.volume = volValue;
-      winApplauseAudio.volume = volValue;
-      const iconIndicator = document.getElementById('volIndicatorIcon');
-      if (volValue == 0) {
-        iconIndicator.textContent = '🔇';
-      } else if (volValue < 0.4) {
-        iconIndicator.textContent = '🔈';
-      } else {
-        iconIndicator.textContent = '🔊';
+    /* 🎆 "ခ" ၏ မူရင်း Star Burst CSS Custom Property Wave Logic (လုံးဝမပြောင်းလဲပါ) */
+    function validateUserArtwork() {
+      if(winSound) winSound.play();
+      
+      const host = document.getElementById('mainGameContainer');
+      const items = ['✨', '⭐', '🎈', '🎉', '🌸'];
+
+      for (let i = 0; i < 35; i++) {
+        const el = document.createElement('div');
+        el.className = 'star';
+        el.textContent = items[Math.floor(Math.random() * items.length)];
+        el.style.left = '50%'; 
+        el.style.top = '50%';
+        
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 120 + Math.random() * 320;
+        
+        el.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+        el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+        
+        host.appendChild(el);
+        setTimeout(() => el.remove(), 1500);
       }
-    }
 
-    function initUI() {
-      bgMusicAudio.volume = 0.3;
-      bgMusicAudio.play().catch(e => console.log("Audio engine waiting user gesture."));
-
-      document.getElementById('btnStart').onclick = () => {
-        document.getElementById('introScreen').classList.add('hide');
-        document.getElementById('gameContainer').classList.add('show');
-        bgMusicAudio.play().catch(err => console.log(err));
-      };
-
-      document.getElementById('btnNavigationBack').onclick = () => {
-        document.getElementById('gameContainer').classList.remove('show');
-        document.getElementById('introScreen').classList.remove('hide');
-      };
-
-      const grid = document.getElementById('brushGrid');
-      brushes.forEach((b, i) => {
-        const div = document.createElement('div');
-        div.className = 'brush' + (i === 0 ? ' selected' : '');
-        
-        if(b.type === 'star') {
-          div.innerHTML = `<div class="swatch" style="background:${b.color}; display:flex; align-items:center; justify-content:center; font-size:16px;">⭐</div>`;
-        } else {
-          div.innerHTML = `<div class="swatch" style="background:${b.color}"></div>`;
-        }
-        
-        if(b.pattern === 'dots') div.firstChild.style.backgroundImage = 'radial-gradient(circle, #fff 20%, transparent 20%)';
-        if(b.pattern === 'stripes') div.firstChild.style.backgroundImage = 'linear-gradient(45deg, #fff 25%, transparent 25%)';
-        
-        div.onclick = () => {
-          isEraser = false;
-          currentColor = b.color; currentType = b.type; currentPattern = b.pattern || '';
-          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
-          document.getElementById('eraser').classList.remove('selected');
-          div.classList.add('selected');
-        };
-        grid.appendChild(div);
-      });
-
-      document.getElementById('eraser').onclick = () => {
-        isEraser = true;
-        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
-        document.getElementById('eraser').classList.add('selected');
-      };
-
-      document.getElementById('btnReset').onclick = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      };
-
-      document.getElementById('btnNext').onclick = () => {
-        bgMusicAudio.pause();
-        winApplauseAudio.currentTime = 0;
-        winApplauseAudio.play().catch(err => console.log(err));
-
-        const host = document.getElementById('confetti');
-        const items = ['⭐', '🌄', '✨', '🎉', '🎈', '☀️', '⛰️'];
-        for (let i = 0; i < 55; i++) {
-          const el = document.createElement('div');
-          el.className = 'star';
-          el.textContent = items[Math.floor(Math.random() * items.length)];
-          el.style.left = '50%'; el.style.top = '50%';
-          const angle = Math.random() * Math.PI * 2;
-          const dist = 120 + Math.random() * 320;
-          el.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
-          el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
-          host.appendChild(el);
-          setTimeout(() => el.remove(), 1500);
-        }
-
-        document.getElementById('congratsWindowBox').classList.add('show');
-      };
+      document.getElementById('congratsWindowBox').classList.add('show');
     }
 
     canvas.addEventListener('mousedown', startDrawing);
@@ -539,10 +529,12 @@
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
 
-    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>ဃ</text></svg>\")";
-    canvas.style.backgroundSize = "100% 100%";
+    /* ဃ အက္ခရာ လမ်းကြောင်း SVG ကို Canvas နောက်ခံအဖြစ် သတ်မှတ်ခြင်း */
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' fill='none' stroke='%23e2e8f0' stroke-width='16' stroke-dasharray='10,12' text-anchor='middle' dominant-baseline='central'>ဃ</text><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' fill='none' stroke='%23cbd5e1' stroke-width='4' text-anchor='middle' dominant-baseline='central'>ဃ</text></svg>\")";
+    canvas.style.backgroundPosition = 'center';
+    canvas.style.backgroundRepeat = 'no-repeat';
 
-    initUI();
+    initColorPalette();
   </script>
 </body>
 </html>
