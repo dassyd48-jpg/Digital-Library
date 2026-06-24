@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Paint the Burmese Letter က - Magical Animated Forest</title>
+  <title>Paint the Burmese Letters - Magical Animated Forest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
@@ -11,7 +11,6 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
     
-    /* ကလေးများအကြိုက် တောက်ပပြီး သဘာဝကျသော ကာတွန်းနောက်ခံဒီဇိုင်း */
     body {
       font-family: 'Fredoka', system-ui, sans-serif;
       background: linear-gradient(to bottom, #7dd3fc 0%, #bae6fd 35%, #fef08a 65%, #a3e635 65%, #4ade80 100%);
@@ -27,10 +26,8 @@
     }
 
     /* ==========================================================================
-       ANIMATED ENVIRONMENT (အသက်ဝင်သော သဘာဝပတ်ဝန်းကျင် အထူးပြုလုပ်ချက်များ)
+       ANIMATED ENVIRONMENT
        ========================================================================== */
-    
-    /* လှုပ်ရှားနေသော နေမင်းကြီး */
     .sun {
       position: absolute;
       top: 5%;
@@ -48,7 +45,6 @@
       100% { transform: scale(1.1); box-shadow: 0 0 40px #f8fafc, 0 0 50px #facc15; }
     }
 
-    /* ဖြည်းဖြည်းချင်း မျောလွင့်နေသော တိမ်တိုက်များ */
     .clouds { position: absolute; top: 8%; left: 0; width: 100%; height: 120px; pointer-events: none; z-index: 1; }
     .cloud { position: absolute; background: #ffffff; border-radius: 100px; opacity: 0.9; box-shadow: inset -8px -8px 0 rgba(0,0,0,0.05); }
     .cloud::before, .cloud::after { content: ''; position: absolute; background: #ffffff; border-radius: 50%; }
@@ -66,7 +62,6 @@
       100% { left: 100vw; }
     }
 
-    /* လေတိုက်၍ အသက်ဝင်စွာ ဘယ်ညာယိမ်းနွဲ့နေသော ကာတွန်းသစ်ပင်အစစ်များ */
     .cartoon-trees { position: absolute; bottom: 25%; width: 100%; height: 320px; pointer-events: none; z-index: 2; }
     .tree-left, .tree-right { position: absolute; bottom: 0; width: 240px; height: 320px; transform-origin: bottom center; }
     .tree-left { left: -30px; animation: treeSway 5s ease-in-out infinite alternate; }
@@ -82,13 +77,10 @@
     }
 
     .trunk { position: absolute; bottom: -20px; left: 100px; width: 45px; height: 160px; background: #a16207; border-radius: 15px; box-shadow: inset -10px 0 0 #78350f; }
-    
-    /* သစ်ရွက်အုပ်များကို ပိုမိုနူးညံ့ပြီး လှပစွာ ထပ်ဆင့်ထားခြင်း */
     .foliage { position: absolute; top: 30px; left: 35px; width: 170px; height: 170px; background: #22c55e; border-radius: 50%; box-shadow: inset -15px -15px 0 #16a34a, 0 8px 15px rgba(0,0,0,0.1); }
     .foliage::before { content: ''; position: absolute; top: -25px; left: 35px; width: 110px; height: 110px; background: #4ade80; border-radius: 50%; box-shadow: inset -8px -8px 0 #22c55e; }
     .foliage::after { content: ''; position: absolute; bottom: 15px; right: -15px; width: 90px; height: 90px; background: #15803d; border-radius: 50%; }
 
-    /* ချုံပုတ်လေးများ */
     .bush-left, .bush-right { position: absolute; bottom: -15px; width: 220px; height: 110px; background: #16a34a; border-radius: 90px 90px 0 0; z-index: 4; pointer-events: none; box-shadow: inset 0 15px 0 #4ade80; }
     .bush-left { left: 15px; transform-origin: bottom center; animation: bushNudge 4s ease-in-out infinite alternate; }
     .bush-right { right: 15px; transform-origin: bottom center; animation: bushNudge 4.5s ease-in-out infinite alternate-reverse; }
@@ -99,7 +91,7 @@
     }
 
     /* ==========================================================================
-       MAIN INTERFACE (ဂိမ်းကစားမည့် အစိတ်အပိုင်းများ)
+       MAIN INTERFACE
        ========================================================================== */
     .intro-screen {
       position: fixed;
@@ -124,11 +116,7 @@
     .game-container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 15px; opacity: 0; transform: scale(0.95); transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; }
     .game-container.show { opacity: 1; transform: scale(1); }
 
-    /* 🚪 NAVIGATION CONTROLS FRAME */
-    .nav-buttons-container {
-      position: absolute;
-      top: 15px; left: 15px; z-index: 100; display: flex; gap: 10px;
-    }
+    .nav-buttons-container { position: absolute; top: 15px; left: 15px; z-index: 100; display: flex; gap: 10px; }
     .btn-action-back {
       font-family: 'Noto Sans Myanmar', sans-serif; font-weight: 800; font-size: 14px;
       color: #ffffff; background: linear-gradient(180deg, #f43f5e 0%, #be123c 100%);
@@ -147,24 +135,18 @@
     }
     .btn-action-home:active { transform: translateY(3px); box-shadow: 0 2px 0 #4c0519, 0 4px 8px rgba(0,0,0,0.2); }
 
-    /* AUDIO UTILITIES PANEL */
     .audio-slider-panel {
-      position: absolute;
-      top: 15px; right: 15px; z-index: 100;
+      position: absolute; top: 15px; right: 15px; z-index: 100;
       background: rgba(2, 132, 199, 0.85); border: 2px solid #cbd5e1;
-      padding: 6px 14px; border-radius: 20px;
-      display: flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 20px; display: flex; align-items: center; gap: 8px;
       box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
     .audio-slider-panel span { font-size: 16px; user-select: none; }
-    .vol-range-input {
-      width: 80px; height: 6px; background: #e2e8f0; border-radius: 8px; appearance: none; cursor: pointer; accent-color: #f97316;
-    }
+    .vol-range-input { width: 80px; height: 6px; background: #e2e8f0; border-radius: 8px; appearance: none; cursor: pointer; accent-color: #f97316; }
 
     /* CELEBRATION CONGRATS MODAL BOX */
     .congrats-modal-overlay {
-      position: fixed;
-      inset: 0; background: rgba(15, 23, 42, 0.6);
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
       backdrop-filter: blur(4px); z-index: 2000; display: flex; align-items: center; justify-content: center;
       opacity: 0; pointer-events: none; transition: opacity 0.4s ease; padding: 20px;
     }
@@ -172,9 +154,8 @@
     .congrats-card {
       background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
       border: 4px solid #ea580c; border-radius: 32px; padding: 40px; text-align: center;
-      max-width: 420px; width: 100%;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); transform: scale(0.8);
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      max-width: 420px; width: 100%; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .congrats-modal-overlay.show .congrats-card { transform: scale(1); }
     .congrats-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 32px; font-weight: 800; color: #ea580c; margin-bottom: 12px; }
@@ -191,7 +172,6 @@
     
     .stage { display: flex; gap: 20px; width: 100%; max-width: 950px; justify-content: center; }
     
-    /* ချစ်စရာကောင်းသော သစ်သားဘောင်ဒီဇိုင်း */
     .wood-frame {
       position: relative; padding: 18px; border-radius: 24px;
       background: linear-gradient(180deg, #ca8a04 0%, #a16207 50%, #854d0e 100%);
@@ -200,7 +180,6 @@
     .canvas-container { background: #ffffff; border-radius: 14px; overflow: hidden; position: relative; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1); }
     canvas { display: block; cursor: crosshair; touch-action: none; max-width: 100%; height: auto; }
     
-    /* Tools Control Panel */
     .panel {
       width: 150px; background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%); border-radius: 24px;
       padding: 15px; display: flex; flex-direction: column; gap: 12px;
@@ -269,7 +248,7 @@
     <div class="congrats-card">
       <div style="font-size: 55px; margin-bottom: 10px;">🎉✨⭐</div>
       <div class="congrats-title">Congratulations!</div>
-      <div class="congrats-text">သားသားမီးမီးတို့ရေ... အက္ခရာ "က" လေးကို သေသပ်လှပစွာနဲ့ အရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ တော်လိုက်တာ ကွယ်။ 🌟</div>
+      <div class="congrats-text" id="congratsText">သားသားမီးမီးတို့ရေ... အက္ခရာလေးကို သေသပ်လှပစွာနဲ့ အရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ တော်လိုက်တာ ကွယ်။ 🌟</div>
       <button class="btn-modal-done" id="btnModalDone">Done</button>
     </div>
   </div>
@@ -294,15 +273,15 @@
   <div class="intro-screen" id="introScreen">
     <div class="intro-emojis">🌳🎨✨🌈☀️</div>
     <div class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</div>
-    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "က" ကို အရောင်ခြယ်ကြစို့</div>
-    <div class="intro-desc">
-      ကလေးတို့ရေ... သဘာဝတောအုပ်လေးထဲမှာ အသက်ဝင်လှုပ်ရှားနေတဲ့ သစ်ပင်ကြီးတွေ၊ တိမ်တိုက်လေးတွေနဲ့အတူ မြန်မာအက္ခရာပထမဆုံးလုံး "က" လေးကို စိတ်ကြိုက်ဆေးခြယ်ကြမယ်။ လှပတဲ့ သက်တံရောင်စုံနဲ့ တောက်ပတဲ့ ကြယ်ပွင့်စုတ်တံလေးတွေ သုံးပြီး ခြယ်သကြည့်ရအောင်။
+    <div class="intro-badge" id="introBadge">အက္ခရာ သင်ခန်းစာ : "က" ကို အရောင်ခြယ်ကြစို့</div>
+    <div class="intro-desc" id="introDesc">
+      ကလေးတို့ရေ... သဘာဝတောအုပ်လေးထဲမှာ အသက်ဝင်လှုပ်ရှားနေတဲ့ သစ်ပင်ကြီးတွေ၊ တိမ်တိုက်လေးတွေနဲ့အတူ မြန်မာအက္ခရာ "က" လေးကို စိတ်ကြိုက်ဆေးခြယ်ကြမယ်။ လှပတဲ့ သက်တံရောင်စုံနဲ့ တောက်ပတဲ့ ကြယ်ပွင့်စုတ်တံလေးတွေ သုံးပြီး ခြယ်သကြည့်ရအောင်။
     </div>
     <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
   </div>
 
   <div class="game-container" id="gameContainer">
-    <h1>အရောင်ခြယ်ပါ <span class="glyph">က</span> !</h1>
+    <h1 id="gameTitle">အရောင်ခြယ်ပါ <span class="glyph" id="headerGlyph">က</span> !</h1>
 
     <div class="stage">
       <div class="wood-frame">
@@ -328,6 +307,9 @@
   <div id="confetti"></div>
 
   <script>
+    // 💡 ဤနေရာတွင် မိမိအသုံးပြုလိုသော ဗျည်းအက္ခရာကို ပြောင်းလဲသတ်မှတ်နိုင်ပါသည် (က၊ ခ၊ ဂ၊ ဃ၊ င)
+    const currentLetter = 'က'; 
+
     const canvas = document.getElementById('paintCanvas');
     const ctx = canvas.getContext('2d');
     let isPainting = false;
@@ -353,6 +335,13 @@
       { id: 'pat-dots', type: 'pattern', color: '#2f3542', pattern: 'dots' },
       { id: 'pat-stripes', type: 'pattern', color: '#ff4757', pattern: 'stripes' }
     ];
+
+    function setupDynamicText() {
+      document.getElementById('introBadge').textContent = `အက္ခရာ သင်ခန်းစာ : "${currentLetter}" ကို အရောင်ခြယ်ကြစို့`;
+      document.getElementById('introDesc').textContent = `ကလေးတို့ရေ... သဘာဝတောအုပ်လေးထဲမှာ အသက်ဝင်လှုပ်ရှားနေတဲ့ သစ်ပင်ကြီးတွေ၊ တိမ်တိုက်လေးတွေနဲ့အတူ မြန်မာအက္ခရာ "${currentLetter}" လေးကို စိတ်ကြိုက်ဆေးခြယ်ကြမယ်။ လှပတဲ့ သက်တံရောင်စုံနဲ့ တောက်ပတဲ့ ကြယ်ပွင့်စုတ်တံလေးတွေ သုံးပြီး ခြယ်သကြည့်ရအောင်။`;
+      document.getElementById('gameTitle').innerHTML = `အရောင်ခြယ်ပါ <span class="glyph">${currentLetter}</span> !`;
+      document.getElementById('congratsText').textContent = `သားသားမီးမီးတို့ရေ... အက္ခရာ "${currentLetter}" လေးကို သေသပ်လှပစွာနဲ့ အရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ တော်လိုက်တာ ကွယ်။ 🌟`;
+    }
 
     function getPattern(type, color, pName) {
       if (type === 'solid') return color;
@@ -437,12 +426,12 @@
       }
     }
 
-    // ပင်မစာမျက်နှာသို့ ?fromGame=true Parameter ဖြင့် ပြန်လည်ဦးတည်ပေးသော စနစ်တကျ Function
     function returnToMainPage() {
       window.location.href = 'index.html?fromGame=true';
     }
 
     function initUI() {
+      setupDynamicText();
       bgMusicAudio.volume = 0.3;
       bgMusicAudio.play().catch(e => console.log("Audio presentation initialized. Waiting user interaction."));
 
@@ -510,7 +499,6 @@
       };
     }
 
-    // ခလုတ်နှိပ်သည့် Event များကို လမ်းကြောင်းအသစ်ဖြင့် ချိတ်ဆက်ခြင်း
     document.getElementById('btnActionHome').onclick = returnToMainPage;
     document.getElementById('btnModalDone').onclick = returnToMainPage;
 
@@ -520,7 +508,9 @@
     canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
-    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>က</text></svg>\")";
+    
+    // Canvas background SVG သို့ အက္ခရာ Dynamic ချိတ်ဆက်ခြင်း
+    canvas.style.backgroundImage = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>${currentLetter}</text></svg>")`;
     canvas.style.backgroundSize = "100% 100%";
 
     initUI();
