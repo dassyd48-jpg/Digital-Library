@@ -73,11 +73,15 @@
         .tg-link { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 12px; letter-spacing: 1.5px; border-bottom: 1px dashed rgba(212, 175, 55, 0.3); padding-bottom: 4px; }
 
         #book-container { display: none; position: relative; width: 100vw; height: 100vh; z-index: 10; opacity: 0; display: flex; justify-content: center; align-items: center; background-color: #050505; }
-        #flipbook-box { position: relative; width: 100%; height: 100%; max-width: 500px; max-height: 100vh; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 60px rgba(0,0,0,0.9); }
+        
+        /* 📌 သင်ဝိုင်းပြထားသော ပန်းရောင်မျဉ်းအချိုးအစားအတိုင်း အရှည်ကို ညှိရန် max-height အား 78vh သို့ ပြောင်းလဲပြင်ဆင်ထားသည် */
+        #flipbook-box { position: relative; width: 100%; height: 100%; max-width: 500px; max-height: 78vh; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 60px rgba(0,0,0,0.9); }
         #flipbook { width: 100%; height: 100%; }
         
         .page-node { width: 100%; height: 100%; background: #000; position: relative; }
-        .page-img { width: 100%; height: 100%; object-fit: fill; pointer-events: none; }
+        
+        /* 📌 စာမျက်နှာပုံရိပ်များ ပုံမပျက်ဘဲ ဝိုင်းထားသည့်အထိပဲ ကွက်တိဝင်စေရန် object-fit: contain သို့ ပြောင်းထားသည် */
+        .page-img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
         
         .iframe-wrapper { width: 100%; height: 100%; position: relative; }
         .iframe-pointer-fix { position: absolute; top: 0; left: 0; width: 45px; height: 100%; z-index: 5; background: transparent; }
@@ -86,12 +90,12 @@
         
         .watermark { position: absolute; bottom: 10px; width: 100%; text-align: center; font-size: 10px; color: var(--gold); opacity: 0.2; letter-spacing: 3px; pointer-events: none; z-index: 12; }
 
-        /* 📌 Top-Level Fixed UI Layer: Turn.js ၏ Layer ရှုပ်ထွေးမှုများမှ ကင်းဝေးစေရန် */
+        /* 📌 Top-Level Fixed UI Layer */
         #bookmark-btn { 
             position: fixed; 
             top: 20px; 
             left: calc(50% + 250px - 145px); 
-            z-index: 99999 !important; /* အပေါ်ဆုံးထပ်ထက် ပိုမြင့်သော နေရာသို့ ပို့ဆောင်ခြင်း */
+            z-index: 99999 !important; 
             background: rgba(0, 0, 0, 0.85); 
             border: 1px solid var(--gold); 
             color: #fff; 
@@ -162,7 +166,7 @@
         
         let isQuizLocked = false; 
         let isInitializing = true; 
-        let globalCurrentPage = 1; // ✨ Turn.js အပြင်ဘက်ကနေ စာမျက်နှာကို ပုံသေမှတ်သားပေးမယ့် Global Track Variable
+        let globalCurrentPage = 1; 
         
         const storageKeyAuth = "dassy_book_authenticated_v2";
         const storageKeyBookmark = "dassy_book_marked_page"; 
@@ -214,7 +218,7 @@
 
             let savedPage = parseInt(localStorage.getItem(storageKeyBookmark)) || 1;
             if(savedPage >= maxPages) savedPage = 1;
-            globalCurrentPage = savedPage; // Initialize လုပ်ချိန်မှာ တန်းမှတ်မည်
+            globalCurrentPage = savedPage; 
 
             for(let i = 1; i <= maxPages; i++) {
                 const pageDiv = $('<div class="page-node"></div>');
@@ -251,7 +255,7 @@
                             }
                         },
                         turned: function(e, page) {
-                            globalCurrentPage = page; // ✨ စာမျက်နှာလှန်ပြီးတိုင်း အမြဲတမ်း Global ထဲ ကွက်တိထည့်မည်
+                            globalCurrentPage = page; 
                             isQuizLocked = quizPages.includes(page);
                             updateBookmarkButtonUI(page); 
                             isInitializing = false; 
@@ -265,11 +269,9 @@
             }, 150);
         }
 
-        // 🧠 Core Logic Framework အသစ် - Turn.js ကို အမှီမပြုဘဲ တိုက်ရိုက် Action ယူစေခြင်း
         function toggleBookmark() {
-            // Quiz စာမျက်နှာဖြစ်ပါက နှိပ်ခွင့်မပြုဘဲ Alert တန်းပြရန်
             if (quizPages.includes(globalCurrentPage)) {
-                alert("မေးခွန်းစာမျက်နှာများကို မှတ်သား၍မရပါရှင်။");
+                alert("မေးခွန်းစာမျက်နှာများကို )မှတ်သား၍မရပါရှင်။");
                 return;
             }
 
