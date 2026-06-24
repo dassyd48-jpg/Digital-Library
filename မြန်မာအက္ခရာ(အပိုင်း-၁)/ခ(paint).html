@@ -6,7 +6,7 @@
   <title>Paint the Burmese Letter ခ - Animated Magical Pond</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -230,29 +230,26 @@
       body { padding-top: 0; }
       h1 { margin-top: 55px; font-size: 18px; padding: 4px 15px; margin-bottom: 5px; }
       
-      /* space-between စားဝင်မည့်အစား center သုံးပြီး အက္ခရာအောက်ခြေမှာ panel ကပ်နေအောင် ပြုလုပ်ခြင်း */
       .stage { 
         flex-direction: column; 
         width: 100%; 
         justify-content: center; 
         align-items: center;
-        gap: 12px; /* Canvas နဲ့ Panel အကွာအဝေးကို အနီးဆုံးဖြစ်အောင် ထိန်းညှိခြင်း */
-        flex: none; /* အောက်ခြေအစွန်းထိ ဆွဲမချပစ်ရန် */
+        gap: 12px; 
+        flex: none; 
       }
       
-      /* Canvas Box အရွယ်အစား */
       .wood-frame { 
         width: 270px; height: 270px; 
         padding: 8px; border-radius: 16px; 
       }
       .canvas-container { width: 100%; height: 100%; }
 
-      /* Brushes Panel ကို Canvas အောက်ခြေနားမှာတင် စုစုစည်းစည်းဖြစ်စေခြင်း */
       .panel { 
         width: 100%; max-width: 330px; 
         padding: 10px; border-radius: 16px;
         gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        margin-bottom: 20px; /* Safe Area အတွက် အောက်ခြေမှ အနည်းငယ်ခွာထားခြင်း */
+        margin-bottom: 20px; 
       }
       .panel-title { display: none; }
       
@@ -268,7 +265,6 @@
       .water-ripples, .lilypad, .pond-flowers { display: none; }
     }
 
-    /* ပိုသေးတဲ့ ဖုန်းအသေးစားလေးတွေအတွက် (e.g. iPhone SE) */
     @media (max-height: 650px) and (max-width: 760px) {
       h1 { margin-top: 48px; font-size: 16px; margin-bottom: 2px; }
       .wood-frame { width: 210px; height: 210px; }
@@ -288,7 +284,7 @@
 
   <div class="audio-slider-panel">
     <span id="volIndicatorIcon">🔊</span>
-    <input type="range" id="gameVolumeControl" min="0" max="1" step="0.05" value="0.3" class="vol-range-input" oninput="adjustGameVolume(this.value)" />
+    <input type="range" id="gameVolumeControl" min="0" max="1" step="0.01" value="0.3" class="vol-range-input" />
   </div>
 
   <div class="congrats-modal-overlay" id="congratsWindowBox">
@@ -450,22 +446,28 @@
       lastX = x; lastY = y;
     }
 
-    function adjustGameVolume(volValue) {
-      bgMusicAudio.volume = volValue;
-      winApplauseAudio.volume = volValue;
-      const iconIndicator = document.getElementById('volIndicatorIcon');
-      if (volValue == 0) {
-        iconIndicator.textContent = '🔇';
-      } else if (volValue < 0.4) {
-        iconIndicator.textContent = '🔈';
-      } else {
-        iconIndicator.textContent = '🔊';
-      }
-    }
-
     function initUI() {
       bgMusicAudio.volume = 0.3;
       bgMusicAudio.play().catch(e => console.log("Audio waiting user interaction."));
+
+      // 🔊 Volume Slider Event Listener အသစ်များကို တိုက်ရိုက်ချိတ်ဆက်ခြင်း
+      const volumeSlider = document.getElementById('gameVolumeControl');
+      const iconIndicator = document.getElementById('volIndicatorIcon');
+
+      function updateVolume(volValue) {
+        bgMusicAudio.volume = volValue;
+        winApplauseAudio.volume = volValue;
+        if (volValue == 0) {
+          iconIndicator.textContent = '🔇';
+        } else if (volValue < 0.4) {
+          iconIndicator.textContent = '🔈';
+        } else {
+          iconIndicator.textContent = '🔊';
+        }
+      }
+
+      volumeSlider.addEventListener('input', (e) => updateVolume(e.target.value));
+      volumeSlider.addEventListener('change', (e) => updateVolume(e.target.value));
 
       document.getElementById('btnStart').onclick = () => {
         document.getElementById('introScreen').classList.add('hide');
