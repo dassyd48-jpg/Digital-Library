@@ -6,10 +6,10 @@
   <title>Paint the Burmese Letter ဂ - Animated Forest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
     
     body {
       font-family: 'Fredoka', system-ui, sans-serif;
@@ -20,7 +20,6 @@
       align-items: center;
       justify-content: center;
       color: #0c4a6e;
-      overflow: hidden;
       position: relative;
     }
 
@@ -89,7 +88,20 @@
     }
     .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #ea580c, 0 4px 10px rgba(0,0,0,0.3); }
 
-    .game-container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 15px; opacity: 0; transform: scale(0.95); transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; }
+    .game-container { 
+      position: relative; 
+      z-index: 10; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center;
+      width: 100%; 
+      height: 100%;
+      padding: 10px; 
+      opacity: 0; 
+      transform: scale(0.95); 
+      transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; 
+    }
     .game-container.show { opacity: 1; transform: scale(1); }
 
     /* 🚪 NAVIGATION PANEL FRAME */
@@ -142,51 +154,78 @@
     }
     .btn-modal-done:active { transform: translateY(3px); box-shadow: 0 2px 0 #21a95a; }
 
-    h1 { font-size: 28px; font-weight: 700; margin-bottom: 15px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.3); background: rgba(2, 132, 199, 0.8); padding: 8px 25px; border-radius: 20px; }
+    h1 { 
+      font-size: clamp(20px, 4vw, 28px); 
+      font-weight: 700; 
+      margin-bottom: 10px; 
+      color: #ffffff; 
+      text-shadow: 0 3px 6px rgba(0,0,0,0.3); 
+      background: rgba(2, 132, 199, 0.8); 
+      padding: 6px 20px; 
+      border-radius: 20px; 
+      text-align: center;
+    }
     h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #f97316; font-size: 1.3em; text-shadow: none; }
     
-    .stage { display: flex; gap: 20px; width: 100%; max-width: 950px; justify-content: center; }
+    /* 🎯 MAIN LAYOUT FRAME - အလယ်ဗဟိုမှာ ကပ်လျက်စုစည်းနေစေရန် ညှိထားပါတယ် */
+    .stage { 
+      display: flex; 
+      flex-direction: row;
+      gap: 12px; 
+      width: 100%; 
+      max-width: 950px; 
+      justify-content: center; 
+      align-items: center;
+    }
     
     .wood-frame {
-      position: relative; padding: 18px; border-radius: 24px;
+      position: relative; 
+      padding: 12px; 
+      border-radius: 24px;
       background: linear-gradient(180deg, #ca8a04 0%, #a16207 50%, #854d0e 100%);
-      box-shadow: 0 16px 32px rgba(0,0,0,0.3), inset 0 0 0 5px #fef08a;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.3), inset 0 0 0 4px #fef08a;
     }
     .canvas-container { background: #ffffff; border-radius: 14px; overflow: hidden; position: relative; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1); }
-    canvas { display: block; cursor: crosshair; touch-action: none; }
+    canvas { display: block; cursor: crosshair; touch-action: none; max-width: 100%; height: auto; }
     
     .panel {
-      width: 150px; background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%); border-radius: 24px;
-      padding: 15px; display: flex; flex-direction: column; gap: 12px;
+      width: 140px; 
+      background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%); 
+      border-radius: 24px;
+      padding: 12px; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 10px;
       box-shadow: 0 12px 24px rgba(0,0,0,0.15), inset 0 0 0 3px #e0f2fe;
+      height: 100%;
+      justify-content: space-between;
     }
-    .panel-title { font-size: 14px; font-weight: 700; text-align: center; color: #0369a1; letter-spacing: 1px; }
+    .panel-title { font-size: 12px; font-weight: 700; text-align: center; color: #0369a1; letter-spacing: 1px; }
     .eraser {
-      height: 65px; border-radius: 16px; background: white;
+      height: 55px; border-radius: 16px; background: white;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      cursor: pointer; box-shadow: 0 4px 0 #bae6fd; font-weight: 700; font-size: 13px; user-select: none; border: 2px solid #e0f2fe;
+      cursor: pointer; box-shadow: 0 4px 0 #bae6fd; font-weight: 700; font-size: 12px; user-select: none; border: 2px solid #e0f2fe;
     }
     .eraser.selected { background: #bae6fd; border-color: #0284c7; box-shadow: inset 0 0 0 2px #0284c7; }
     
-    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
     .brush {
-      aspect-ratio: 1/1; border-radius: 14px; cursor: pointer; position: relative;
+      aspect-ratio: 1/1; border-radius: 12px; cursor: pointer; position: relative;
       box-shadow: 0 3px 0 rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #e2e8f0;
     }
     .brush.selected { transform: scale(1.05); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #f97316; }
-    .swatch { position: absolute; inset: 4px; border-radius: 10px; }
+    .swatch { position: absolute; inset: 4px; border-radius: 8px; }
     
-    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: auto; }
     
-    /* 🛠️ FIXED MAIN RESET/NEXT BUTTONS LAYOUT */
     .btn { 
       font-family: 'Noto Sans Myanmar', sans-serif; 
-      min-height: 62px; /* စာလုံးနှစ်ကြောင်းစာ လုံလောက်တဲ့ အမြင့် */
-      height: auto;     /* စာသားအလိုက် အလိုအလျောက် ပုံမှန်အတိုင်း ဆန့်ထွက်စေရန် */
-      padding: 8px 4px; /* အတွင်းအကွာအဝေးကို သေသပ်အောင်ထိန်းညှိ */
-      border-radius: 14px; border: none; color: white; font-weight: 700; font-size: 12px; cursor: pointer; 
+      min-height: 54px; 
+      height: auto;     
+      padding: 6px 2px; 
+      border-radius: 12px; border: none; color: white; font-weight: 700; font-size: 11px; cursor: pointer; 
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      line-height: 1.4;  /* စာကြောင်းနှစ်ကြောင်းကြား အကွာအဝေးကို မြန်မာစာလုံး ပုံစံအတိုင်း ကွက်တိဖြစ်စေရန် */
+      line-height: 1.3;  
     }
     .btn-reset { background: #0284c7; box-shadow: 0 4px 0 #0369a1; }
     .btn-next { background: #ea580c; box-shadow: 0 4px 0 #c2410c; }
@@ -198,14 +237,42 @@
       100% { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(1.4); opacity: 0; }
     }
 
+    /* ==========================================================================
+       RESPONSIVE MOBILE DEVICES TUNING (ဘယ် device မှာမဆို စုစုစည်းစည်းဖြစ်အောင်)
+       ========================================================================== */
     @media (max-width: 760px) {
-      body { overflow-y: auto; justify-content: flex-start; padding-top: 60px; }
-      .nav-buttons-container { top: 10px; left: 10px; }
-      .btn-action-back, .btn-action-home { padding: 8px 14px; font-size: 12px; }
-      .audio-slider-panel { top: 10px; right: 10px; padding: 4px 10px; }
-      .stage { flex-direction: column-reverse; align-items: center; }
-      .panel { width: 100%; max-width: 400px; }
-      .brush-grid { grid-template-columns: repeat(5, 1fr); }
+      body { overflow: hidden; justify-content: center; padding-top: 0; }
+      .nav-buttons-container { top: 8px; left: 8px; }
+      .btn-action-back, .btn-action-home { padding: 6px 12px; font-size: 11px; border-radius: 12px; box-shadow: 0 3px 0 rgba(0,0,0,0.2); }
+      .audio-slider-panel { top: 8px; right: 8px; padding: 4px 8px; }
+      
+      /* ဖုန်း screen ပေါ်မှာ တစ်ခုနဲ့တစ်ခု ဘေးချင်းကပ်လျက် အလယ်ဗဟိုမှာ ကျစ်ကျစ်လျစ်လျစ် ရှိနေစေရန် */
+      .stage { 
+        flex-direction: row; 
+        gap: 8px; 
+        justify-content: center; 
+        align-items: center;
+        padding: 5px;
+      }
+      
+      .wood-frame { padding: 8px; border-radius: 16px; }
+      /* ဖုန်းအလိုက် Canvas အရွယ်အစားကို အလိုအလျောက် ချိန်ညှိပေးခြင်း */
+      canvas { width: clamp(240px, 55vw, 420px); height: clamp(240px, 55vw, 420px); }
+      
+      .panel { 
+        width: clamp(90px, 25vw, 120px); 
+        padding: 8px; 
+        gap: 6px; 
+        border-radius: 16px;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.1), inset 0 0 0 2px #e0f2fe;
+      }
+      .panel-title { font-size: 10px; margin-bottom: 2px; }
+      .eraser { height: 42px; border-radius: 10px; font-size: 10px; }
+      .eraser span { font-size: 18px !important; }
+      .brush-grid { gap: 4px; }
+      .brush { border-radius: 8px; }
+      .btn { min-height: 44px; font-size: 10px; border-radius: 10px; }
+      
       .cartoon-trees, .bush-left, .bush-right { display: none; }
     }
   </style>
@@ -226,7 +293,7 @@
     <div class="congrats-card">
       <div style="font-size: 55px; margin-bottom: 10px;">🎉✨⭐</div>
       <div class="congrats-title">Congratulations!</div>
-      <div class="congrats-text">သားသားမီးမီးတို့ရေ... အက္ခရာ "ဂ" သက်တန့်ခုံးလေးကို အောင်မြင်စွာနဲ့ ဆေးရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ ကွယ်။ တော်လိုက်တာ။ 🌟</div>
+      <div class="congrats-text">သားသားမီးမီးတို့ရေ... အက္ခရာ "ဂ" သက်တန့်ခုံးလေးကို အောင်မြင်စွာနဲ့ ဆေးရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ ကွယ်။ တော်လိုက်တာ။ 🌟</div>
       <button class="btn-modal-done" onclick="window.location.href='index.html?fromGame=true'">ပြီးပြီ</button>
     </div>
   </div>
@@ -256,9 +323,9 @@
   <div class="intro-screen" id="introScreen">
     <div class="intro-emojis">⛰️🎨✨🌈🎈</div>
     <div class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</div>
-    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဂ" သက်တန့်ခုံးလေးကို အရောင်ခြယ်ကြစို့</div>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဂ" သက်တန့်ခုံးလေးကို အရောင်ခြယ်ကြစို့</div>
     <div class="intro-desc">
-      ကလေးတို့ရေ... မိုးကောင်းကင်ကြီးထဲမှာ လှပတဲ့ သက်တန့်ခုံးကြီးက ပျောက်ကွယ်နေတယ်နော်။ အဲဒီသက်တံခုံးကြီးက မြန်မာအက္ခရာ "ဂ" လေးနဲ့ တူတူပဲ။ ကဲ... စုတ်တံလေးတွေကို ကိုင်ပြီး "ဂ" လမ်းကြောင်းအတိုင်း ရောင်စုံဆေးလေးတွေ ခြယ်သပြီး သက်တန့်ကြီးကို ပြန်ဖော်ထုတ်ကြရအောင်။
+      ကလေးတို့ရေ... မိုးကောင်းကင်ကြီးထဲမှာ လှပတဲ့ သက်တန့်ခုံးကြီးက ပျောက်ကွယ်နေတယ်နော်။ အဲဒီသက်တံခုံးကြီးက မြန်မာအက္ခရာ "ဂ" လေးနဲ့ တူတူပဲ။ ကဲ... စုတ်တံလေးတွေကို ကိုင်ပြီး "ဂ" လမ်းကြောင်းအတိုင်း ရောင်စုံဆေးလေးတွေ ခြယ်သပြီး သက်တန့်ကြီးကို ပြန်ဖော်ထုတ်ကြရအောင်။
     </div>
     <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
   </div>
@@ -302,6 +369,32 @@
 
     const bgMusicAudio = document.getElementById('paintBgmAudio');
     const winApplauseAudio = document.getElementById('applauseSoundEffect');
+    const volumeSlider = document.getElementById('gameVolumeControl');
+
+    let audioCtx = null;
+    let bgMusicGainNode = null;
+    let applauseGainNode = null;
+    let bgMusicSource = null;
+    let applauseSource = null;
+
+    function initWebAudioAPI() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        bgMusicGainNode = audioCtx.createGain();
+        bgMusicSource = audioCtx.createMediaElementSource(bgMusicAudio);
+        bgMusicSource.connect(bgMusicGainNode);
+        bgMusicGainNode.connect(audioCtx.destination);
+        
+        applauseGainNode = audioCtx.createGain();
+        applauseSource = audioCtx.createMediaElementSource(winApplauseAudio);
+        applauseSource.connect(applauseGainNode);
+        applauseGainNode.connect(audioCtx.destination);
+
+        bgMusicGainNode.gain.value = volumeSlider.value;
+        applauseGainNode.gain.value = volumeSlider.value;
+      }
+    }
 
     const brushes = [
       { id: 'rainbow', type: 'rainbow', color: 'linear-gradient(45deg, #ff3366, #ff9933, #ffff33, #33cc66, #3399ff, #9933ff)' },
@@ -386,8 +479,12 @@
     }
 
     function adjustGameVolume(volValue) {
+      if (bgMusicGainNode) bgMusicGainNode.gain.value = volValue;
+      if (applauseGainNode) applauseGainNode.gain.value = volValue;
+
       bgMusicAudio.volume = volValue;
       winApplauseAudio.volume = volValue;
+
       const iconIndicator = document.getElementById('volIndicatorIcon');
       if (volValue == 0) {
         iconIndicator.textContent = '🔇';
@@ -400,11 +497,17 @@
 
     function initUI() {
       bgMusicAudio.volume = 0.3;
-      bgMusicAudio.play().catch(e => console.log("Audio waiting engine interaction."));
+      winApplauseAudio.volume = 0.3;
 
       document.getElementById('btnStart').onclick = () => {
         document.getElementById('introScreen').classList.add('hide');
         document.getElementById('gameContainer').classList.add('show');
+        
+        initWebAudioAPI();
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
         bgMusicAudio.play().catch(err => console.log(err));
       };
 
