@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Paint the Burmese Letter င - Animated Magical Ocean</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Paint the Burmese Letter Ng - Animated Magical Ocean</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
     
     /* ပင်လယ်ရေအောက်ကမ္ဘာ ကာတွန်းနောက်ခံ */
     body {
@@ -21,7 +21,6 @@
       align-items: center;
       justify-content: center;
       color: #0c4a6e;
-      overflow: hidden;
       position: relative;
     }
 
@@ -125,7 +124,20 @@
     }
     .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #0369a1, 0 4px 10px rgba(0,0,0,0.3); }
 
-    .game-container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 15px; opacity: 0; transform: scale(0.95); transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; }
+    .game-container { 
+      position: relative; 
+      z-index: 10; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center;
+      width: 100%; 
+      height: 100%;
+      padding: 15px; 
+      opacity: 0; 
+      transform: scale(0.95); 
+      transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; 
+    }
     .game-container.show { opacity: 1; transform: scale(1); }
 
     /* 🚪 NAVIGATION FRAME CONTROL PANEL */
@@ -178,24 +190,24 @@
     }
     .btn-modal-done:active { transform: translateY(3px); box-shadow: 0 2px 0 #21a95a; }
 
-    h1 { font-size: 26px; font-weight: 700; margin-bottom: 15px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.2); background: rgba(3, 105, 161, 0.9); padding: 8px 25px; border-radius: 20px; }
+    h1 { font-size: clamp(20px, 4vw, 28px); font-weight: 700; margin-bottom: 10px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.2); background: rgba(3, 105, 161, 0.9); padding: 6px 20px; border-radius: 20px; text-align: center; }
     h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #fef08a; font-size: 1.3em; }
     
-    .stage { display: flex; gap: 20px; width: 100%; max-width: 950px; justify-content: center; }
+    .stage { display: flex; gap: 12px; width: 100%; max-width: 950px; justify-content: center; align-items: center; }
     
     /* ရေအောက်သစ်သားဘောင် သို့မဟုတ် သန္တာကျောက်တန်း Theme ဘောင်ဒီဇိုင်း */
     .wood-frame {
-      position: relative; padding: 18px; border-radius: 24px;
+      position: relative; padding: 12px; border-radius: 24px;
       background: linear-gradient(180deg, #0284c7 0%, #0c4a6e 100%);
       box-shadow: 0 16px 32px rgba(0,0,0,0.3), inset 0 0 0 5px #e0f2fe;
     }
     .canvas-container { background: #ffffff; border-radius: 14px; overflow: hidden; position: relative; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1); }
-    canvas { display: block; cursor: crosshair; touch-action: none; }
+    canvas { display: block; cursor: crosshair; touch-action: none; max-width: 100%; height: auto; }
     
     /* Tools Control Panel */
     .panel {
-      width: 150px; background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%); border-radius: 24px;
-      padding: 15px; display: flex; flex-direction: column; gap: 12px;
+      width: 140px; background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%); border-radius: 24px;
+      padding: 12px; display: flex; flex-direction: column; gap: 10px;
       box-shadow: 0 12px 24px rgba(0,0,0,0.15), inset 0 0 0 3px #e0f2fe;
     }
     .panel-title { font-size: 14px; font-weight: 700; text-align: center; color: #0284c7; letter-spacing: 1px; }
