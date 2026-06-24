@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dassy's Alphabet Quest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght@400;700;900&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0f172a;
+            font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .burmese-font {
+            font-family: 'Pyidaungsu', 'Myanmar3', 'Yunghkio', sans-serif;
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <div id="hud" class="absolute top-4 left-4 right-4 pointer-events-none z-30 flex flex-col space-y-2 max-w-md">
+        <div class="flex items-center space-x-3 bg-slate-900/90 backdrop-blur-md p-3 rounded-2xl border border-white/10 shadow-lg">
+            <span class="text-xs font-black text-[#5ce1e6] tracking-wider uppercase">Learning Progress</span>
+            <div class="flex-1 bg-black/40 h-4 rounded-full overflow-hidden p-0.5 border border-white/5">
+                <div id="xp-bar" class="bg-gradient-to-r from-[#00f2fe] to-[#4facfe] h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <span id="level-display" class="bg-[#5ce1e6] text-black text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Lvl 1</span>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2 bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 shadow-lg">
+                <span class="text-xl">⭐️</span>
+                <span id="cash-display" class="text-white font-black tracking-widest text-sm">0</span>
+            </div>
+            <div class="flex items-center space-x-2 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 backdrop-blur-md px-4 py-2 rounded-2xl border border-amber-500/40 shadow-lg animate-pulse">
+                <span class="text-xs font-black text-amber-400 uppercase tracking-wider">Collect:</span>
+                <span id="target-letter-display" class="burmese-font text-xl font-bold text-yellow-300">ခ</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="absolute top-4 right-4 z-40 flex items-center space-x-2">
+        <div class="pointer-events-none flex items-center space-x-2 bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 shadow-lg">
+            <span class="text-lg">❤️</span>
+            <span id="hp-display" class="text-rose-500 font-black tracking-wider text-sm">100 / 100</span>
+        </div>
+        
+        <button id="exit-btn" class="hidden pointer-events-auto flex items-center justify-center bg-rose-600 hover:bg-rose-500 text-white font-black px-4 py-2.5 rounded-2xl border-b-4 border-rose-800 active:scale-95 transition-all shadow-lg text-sm">
+            🚪 <span class="ml-1 burmese-font text-xs font-bold tracking-wide">ထွက်မည်</span>
+        </button>
+    </div>
+
+    <div id="upgrade-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-[100] flex items-center justify-center p-6 transition-all duration-300">
+        <div class="bg-[#121212] border-2 border-amber-500/20 rounded-[3rem] p-10 max-w-md w-full text-center shadow-[0_0_100px_rgba(245,158,11,0.15)] scale-95 transition-transform">
+            <div class="relative mb-8">
+                <div class="text-4xl">✨🎓✨</div>
+            </div>
+            <h2 class="text-3xl font-black text-amber-500 tracking-wider mb-2 uppercase">GENIUS LEVEL UP!</h2>
+            <p class="text-neutral-500 text-xs tracking-widest mb-8 uppercase">Select your magic learning power-up</p>
+            
+            <div id="upgrade-options" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="joystick-zone" class="absolute bottom-12 left-12 w-32 h-32 bg-white/5 border border-white/10 rounded-full flex items-center justify-center pointer-events-auto touch-none z-30 shadow-2xl active:bg-white/10 transition-colors">
+        <div id="joystick-knob" class="w-12 h-12 bg-white/20 border border-white/40 rounded-full transition-transform duration-75"></div>
+    </div>
+
+    <div id="overlay-screen" class="absolute inset-0 bg-black/95 backdrop-blur-md z-[90] flex flex-col items-center justify-center text-center p-8">
+        <h1 class="text-5xl sm:text-7xl font-black text-amber-500 tracking-widest mb-2 uppercase drop-shadow-[0_0_30px_rgba(245,158,11,0.3)]">ALPHABET QUEST</h1>
+        <p class="text-emerald-500 text-[10px] uppercase font-black tracking-[0.5em] mb-12">Dassy's Burmese Learning Adventure</p>
+        
+        <div id="game-stats" class="hidden bg-white/5 border border-white/5 rounded-3xl p-6 mb-10 max-w-xs w-full text-left space-y-3 font-sans">
+            <div class="flex justify-between"><span class="text-neutral-400 burmese-font">မှန်ကန်သော အက္ခရာများ</span><span id="stat-coins" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-neutral-400 burmese-font">မှားယွင်းသော အက္ခရာများ</span><span id="stat-kills" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-neutral-400 burmese-font">ရောက်ရှိသွားသော အဆင့်</span><span id="stat-level" class="text-[#5ce1e6] font-bold">Lvl 1</span></div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center pointer-events-auto w-full max-w-md">
+            <button id="start-btn" class="w-full sm:w-auto px-10 py-5 bg-amber-600 hover:bg-amber-500 text-white font-black text-xs uppercase tracking-[0.2em] rounded-full transition-all shadow-[0_15px_40px_rgba(217,119,6,0.3)] border-b-4 border-amber-800 active:scale-95 burmese-font">
+                🔄 စတင်ကစားမည်
+            </button>
+            
+            <button id="main-page-btn" class="w-full sm:w-auto px-10 py-5 bg-rose-600 hover:bg-rose-500 text-white font-black text-xs uppercase tracking-[0.2em] rounded-full transition-all shadow-[0_15px_40px_rgba(225,29,72,0.3)] border-b-4 border-rose-800 active:scale-95 burmese-font">
+                🚪 ပင်မစာမျက်နှာ (Main Page)
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+            if (type === 'shoot') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(550, now);
+                osc.frequency.exponentialRampToValueAtTime(180, now + 0.1);
+                gainNode.gain.setValueAtTime(0.08, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'hit') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(120, now);
+                osc.frequency.exponentialRampToValueAtTime(40, now + 0.12);
+                gainNode.gain.setValueAtTime(0.06, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+                osc.start(now);
+                osc.stop(now + 0.12);
+            } else if (type === 'coin') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.setValueAtTime(1200, now + 0.08);
+                gainNode.gain.setValueAtTime(0.12, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
+                osc.start(now);
+                osc.stop(now + 0.22);
+            } else if (type === 'fail') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(100, now);
+                osc.frequency.linearRampToValueAtTime(70, now + 0.25);
+                gainNode.gain.setValueAtTime(0.12, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            } else if (type === 'levelup') {
+                const freqs = [300, 400, 500, 600, 800];
+                freqs.forEach((f, i) => {
+                    const oscSeq = audioCtx.createOscillator();
+                    const gainSeq = audioCtx.createGain();
+                    oscSeq.connect(gainSeq);
+                    gainSeq.connect(audioCtx.destination);
+                    oscSeq.type = 'sine';
+                    oscSeq.frequency.setValueAtTime(f, now + i * 0.06);
+                    gainSeq.gain.setValueAtTime(0.06, now + i * 0.06);
+                    gainSeq.gain.exponentialRampToValueAtTime(0.01, now + i * 0.06 + 0.15);
+                    oscSeq.start(now + i * 0.06);
+                    oscSeq.stop(now + i * 0.06 + 0.15);
+                });
+            }
+        }
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const burmeseAlphabets = [
+            'က', 'ခ', 'ဂ', 'ဃ', 'င', 'စ', 'ဆ', 'ဇ', 'ဈ', 'ည',
+            'တ', 'ထ', 'ဒ', 'ဓ', 'န', 'ပ', 'ဖ', 'ဗ', 'ဘ', 'မ',
+            'ယ', 'ရ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ'
+        ];
+
+        const game = {
+            running: false,
+            paused: false,
+            score: 0,
+            correctPops: 0,
+            incorrectPops: 0,
+            targetLetter: 'ခ',
+            camera: { x: 0, y: 0 }
+        };
+
+        const player = {
+            x: 0,
+            y: 0,
+            vx: 0,
+            vy: 0,
+            radius: 20,
+            hp: 100,
+            maxHp: 100,
+            xp: 0,
+            maxXp: 100,
+            level: 1,
+            speed: 3.8,
+            range: 180,
+            damage: 50,
+            shootCooldown: 0.3,
+            lastShotTime: 0
+        };
+
+        const keys = {};
+        const entities = {
+            projectiles: [],
+            letterBubbles: [],
+            collectibles: [],
+            scenery: []
+        };
+
+        function initScenery() {
+            entities.scenery = [];
+            const size = 3000;
+            for (let i = 0; i < 40; i++) {
+                entities.scenery.push({ type: 'tree', x: (Math.random() - 0.5) * size, y: (Math.random() - 0.5) * size, radius: 35 });
+            }
+            for (let i = 0; i < 15; i++) {
+                entities.scenery.push({ type: 'puddle', x: (Math.random() - 0.5) * size, y: (Math.random() - 0.5) * size, radius: 50, color: Math.random() > 0.5 ? '#65a30d' : '#4d7c0f' });
+            }
+            for (let i = 0; i < 15; i++) {
+                entities.scenery.push({ type: 'lamp', x: (Math.random() - 0.5) * size, y: (Math.random() - 0.5) * size, radius: 12 });
+            }
+            for (let i = 0; i < 15; i++) {
+                entities.scenery.push({ type: 'bench', x: (Math.random() - 0.5) * size, y: (Math.random() - 0.5) * size, radius: 25 });
+            }
+        }
+
+        function changeTargetLetter() {
+            if (burmeseAlphabets.includes('ခ')) {
+                game.targetLetter = 'ခ';
+            } else {
+                const randomIndex = Math.floor(Math.random() * burmeseAlphabets.length);
+                game.targetLetter = burmeseAlphabets[randomIndex];
+            }
+            document.getElementById('target-letter-display').innerText = game.targetLetter;
+        }
+
+        function drawTree(ctx, x, y) {
+            ctx.fillStyle = 'rgba(0,0,0,0.15)';
+            ctx.beginPath(); ctx.ellipse(x, y + 25, 40, 20, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#78350f'; ctx.fillRect(x - 8, y, 16, 30);
+            ctx.fillStyle = '#15803d';
+            ctx.beginPath(); ctx.arc(x, y - 20, 35, 0, Math.PI * 2); ctx.arc(x - 20, y - 10, 25, 0, Math.PI * 2); ctx.arc(x + 20, y - 10, 25, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#16a34a'; ctx.beginPath(); ctx.arc(x - 5, y - 25, 28, 0, Math.PI * 2); ctx.fill();
+        }
+
+        function drawLamp(ctx, x, y) {
+            ctx.fillStyle = 'rgba(0,0,0,0.15)'; ctx.beginPath(); ctx.arc(x, y + 10, 15, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#334155'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(x, y + 10); ctx.lineTo(x, y - 50); ctx.stroke();
+            ctx.fillStyle = 'rgba(253, 224, 71, 0.2)'; ctx.beginPath(); ctx.arc(x, y - 50, 40, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#eab308'; ctx.beginPath(); ctx.arc(x, y - 50, 7, 0, Math.PI * 2); ctx.fill();
+        }
+
+        function drawBench(ctx, x, y) {
+            ctx.fillStyle = 'rgba(0,0,0,0.15)'; ctx.fillRect(x - 30, y + 10, 60, 15);
+            ctx.fillStyle = '#475569'; ctx.fillRect(x - 23, y, 6, 12); ctx.fillRect(x + 17, y, 6, 12);
+            ctx.fillStyle = '#b45309'; ctx.fillRect(x - 30, y - 5, 60, 12);
+            ctx.fillStyle = '#d97706'; ctx.fillRect(x - 30, y - 12, 60, 6);
+        }
+
+        function drawPlayer(ctx, x, y) {
+            ctx.fillStyle = 'rgba(0,0,0,0.2)'; ctx.beginPath(); ctx.ellipse(x, y + 15, 20, 10, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#312e81'; ctx.beginPath(); ctx.moveTo(x - 16, y + 15); ctx.quadraticCurveTo(x, y - 25, x + 16, y + 15); ctx.closePath(); ctx.fill();
+            ctx.fillStyle = '#1e1b4b'; ctx.beginPath(); ctx.arc(x, y - 5, 8, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#fbbf24'; ctx.beginPath(); ctx.arc(x - 3, y - 5, 2, 0, Math.PI * 2); ctx.arc(x + 3, y - 5, 2, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = 'rgba(239, 68, 68, 0.45)'; ctx.lineWidth = 2.5; ctx.setLineDash([8, 6]); ctx.beginPath(); ctx.arc(x, y, player.range, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]);
+        }
+
+        function drawLetterBubble(ctx, bubble) {
+            const { x, y, letter, scale } = bubble;
+            const isTarget = letter === game.targetLetter;
+
+            ctx.fillStyle = 'rgba(0,0,0,0.1)'; ctx.beginPath(); ctx.ellipse(x, y + 25 * scale, 22 * scale, 10 * scale, 0, 0, Math.PI * 2); ctx.fill();
+
+            let gradient = ctx.createRadialGradient(x, y, 2, x, y, 24 * scale);
+            if (isTarget) {
+                gradient.addColorStop(0, '#fef08a'); gradient.addColorStop(0.7, '#eab308'); gradient.addColorStop(1, 'rgba(234, 179, 8, 0.15)'); ctx.strokeStyle = '#eab308';
+            } else {
+                gradient.addColorStop(0, '#e0f2fe'); gradient.addColorStop(0.7, '#38bdf8'); gradient.addColorStop(1, 'rgba(56, 189, 248, 0.15)'); ctx.strokeStyle = '#38bdf8';
+            }
+            ctx.fillStyle = gradient; ctx.beginPath(); ctx.arc(x, y, 22 * scale, 0, Math.PI * 2); ctx.fill();
+            ctx.lineWidth = 2.5; ctx.stroke();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'; ctx.beginPath(); ctx.arc(x - 7 * scale, y - 7 * scale, 4 * scale, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#0f172a'; ctx.font = `bold ${24 * scale}px Pyidaungsu, "Myanmar3", "Yunghkio", sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(letter, x, y + 2);
+        }
+
+        const joystickZone = document.getElementById('joystick-zone');
+        const joystickKnob = document.getElementById('joystick-knob');
+        let joystickActive = false;
+        let joystickStart = { x: 0, y: 0 };
+        let joystickDir = { x: 0, y: 0 };
+
+        joystickZone.addEventListener('touchstart', (e) => {
+            joystickActive = true;
+            const rect = joystickZone.getBoundingClientRect();
+            joystickStart = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+            e.preventDefault();
+        }, { passive: false });
+
+        joystickZone.addEventListener('touchmove', (e) => {
+            if (!joystickActive) return;
+            const touch = e.touches[0];
+            const dx = touch.clientX - joystickStart.x;
+            const dy = touch.clientY - joystickStart.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const maxRadius = 50;
+
+            if (distance === 0) {
+                joystickDir = { x: 0, y: 0 }; joystickKnob.style.transform = 'translate(0px, 0px)';
+            } else {
+                const angle = Math.atan2(dy, dx);
+                const boundedDist = Math.min(distance, maxRadius);
+                 joystickDir = { x: Math.cos(angle), y: Math.sin(angle) };
+                joystickKnob.style.transform = `translate(${joystickDir.x * boundedDist}px, ${joystickDir.y * boundedDist}px)`;
+            }
+            e.preventDefault();
+        }, { passive: false });
+
+        joystickZone.addEventListener('touchend', (e) => {
+            joystickActive = false; joystickDir = { x: 0, y: 0 }; joystickKnob.style.transform = 'translate(0px, 0px)';
+            e.preventDefault();
+        }, { passive: false });
+
+        window.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()] = true; });
+        window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (!game.running || game.paused) return;
+            const exitBtn = document.getElementById('exit-btn');
+            const rect = exitBtn.getBoundingClientRect();
+            if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) return;
+            fireManualProjectile(e.clientX, e.clientY);
+        });
+
+        canvas.addEventListener('touchstart', (e) => {
+            if (!game.running || game.paused) return;
+            const touch = e.touches[0];
+            const rect = joystickZone.getBoundingClientRect();
+            if (touch.clientX >= rect.left && touch.clientX <= rect.right && touch.clientY >= rect.top && touch.clientY <= rect.bottom) return;
+            const exitBtn = document.getElementById('exit-btn');
+            const exitRect = exitBtn.getBoundingClientRect();
+            if (touch.clientX >= exitRect.left && touch.clientX <= exitRect.right && touch.clientY >= exitRect.top && touch.clientY <= exitRect.bottom) return;
+            fireManualProjectile(touch.clientX, touch.clientY);
+        }, { passive: true });
+
+        function fireManualProjectile(screenX, screenY) {
+            const now = Date.now() / 1000;
+            if (now - player.lastShotTime < player.shootCooldown) return;
+            const worldX = screenX + game.camera.x; const worldY = screenY + game.camera.y;
+            const dx = worldX - player.x; const dy = worldY - player.y;
+            const dist = Math.sqrt(dx * dx + dy * dy); if (dist === 0) return;
+
+            playSound('shoot');
+            entities.projectiles.push({ x: player.x, y: player.y, vx: (dx / dist) * 11, vy: (dy / dist) * 11, radius: 7 });
+            player.lastShotTime = now;
+        }
+
+        function spawnLetterBubble() {
+            if (!game.running || game.paused) return;
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 450 + Math.random() * 150;
+            const x = player.x + Math.cos(angle) * dist; const y = player.y + Math.sin(angle) * dist;
+            const isTargetSpawn = Math.random() < 0.40;
+            let chosenLetter = game.targetLetter;
+            if (!isTargetSpawn) {
+                const filtered = burmeseAlphabets.filter(char => char !== game.targetLetter);
+                chosenLetter = filtered[Math.floor(Math.random() * filtered.length)];
+            }
+
+            entities.letterBubbles.push({ x, y, letter: chosenLetter, scale: 1.0 + Math.random() * 0.3, speed: 1.1 + Math.random() * 0.6, angleOffset: Math.random() * Math.PI, hp: 1, spawnTime: Date.now() });
+        }
+
+        setInterval(spawnLetterBubble, 1100);
+        const UPGRADE_POOL = [
+            { id: 'dmg', name: 'Focus Beam', desc: '+25% Letter Popping Power', stat: 'damage', factor: 1.25 },
+            { id: 'rng', name: 'Scope Field', desc: '+15% Search & Capture Range', stat: 'range', factor: 1.15 },
+            { id: 'spd', name: 'Learning Boots', desc: '+15% Movement Velocity', stat: 'speed', factor: 1.15 },
+            { id: 'rate', name: 'Quick Cast', desc: '-15% Spell Casting Delay', stat: 'shootCooldown', factor: 0.85 }
+        ];
+
+        function triggerLevelUp() {
+            playSound('levelup'); player.level++; player.xp = 0; player.maxXp = Math.round(player.maxXp * 1.5);
+            const optionsContainer = document.getElementById('upgrade-options'); optionsContainer.innerHTML = '';
+            const shuffled = [...UPGRADE_POOL].sort(() => 0.5 - Math.random()).slice(0, 3);
+            shuffled.forEach(upg => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-5 bg-[#1a1a1a] border border-white/5 hover:border-amber-500 rounded-2xl flex items-center justify-between text-left transition-all active:scale-95";
+                btn.innerHTML = `<div><h4 class="text-white font-black text-sm tracking-wide uppercase">${upg.name}</h4><p class="text-neutral-500 text-[10px] mt-1 uppercase tracking-wider">${upg.desc}</p></div><span class="text-lg">🎓</span>`;
+                btn.onclick = () => applyUpgrade(upg);
+                optionsContainer.appendChild(btn);
+            });
+            document.getElementById('upgrade-modal').classList.remove('hidden');
+            game.paused = true;
+        }
+
+        function applyUpgrade(upg) {
+            player[upg.stat] *= upg.factor;
+            document.getElementById('upgrade-modal').classList.add('hidden');
+            game.paused = false;
+        }
+
+        let lastTime = performance.now();
+        function updateGame(dt) {
+            if (!game.running || game.paused) return;
+            let moveX = 0; let moveY = 0;
+
+            if (keys['w'] || keys['arrowup']) moveY = -1;
+            if (keys['s'] || keys['arrowdown']) moveY = 1;
+            if (keys['a'] || keys['arrowleft']) moveX = -1;
+            if (keys['d'] || keys['arrowright']) moveX = 1;
+
+            if (moveX !== 0 && moveY !== 0) { moveX *= 0.7071; moveY *= 0.7071; }
+            if (joystickActive) { moveX = joystickDir.x; moveY = joystickDir.y; }
+
+            player.x += moveX * player.speed * dt; player.y += moveY * player.speed * dt;
+            game.camera.x += (player.x - window.innerWidth / 2 - game.camera.x) * 0.1 * dt;
+            game.camera.y += (player.y - window.innerHeight / 2 - game.camera.y) * 0.1 * dt;
+
+            for (let i = entities.projectiles.length - 1; i >= 0; i--) {
+                const proj = entities.projectiles[i]; proj.x += proj.vx * dt; proj.y += proj.vy * dt;
+                const flightDistance = Math.sqrt((proj.x - player.x) ** 2 + (proj.y - player.y) ** 2);
+                if (flightDistance > player.range + 200) { entities.projectiles.splice(i, 1); continue; }
+
+                let projectileHit = false;
+                for (let j = entities.letterBubbles.length - 1; j >= 0; j--) {
+                    const bubble = entities.letterBubbles[j];
+                    const dx = bubble.x - proj.x; const dy = bubble.y - proj.y; const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < (22 * bubble.scale) + proj.radius) {
+                        projectileHit = true;
+                        if (bubble.letter === game.targetLetter) {
+                            playSound('hit'); entities.letterBubbles.splice(j, 1);
+                            game.correctPops++; game.score += 15; player.xp += 25;
+                            if (player.xp >= player.maxXp) triggerLevelUp();
+                            entities.collectibles.push({ x: bubble.x, y: bubble.y, type: 'correct_token', letter: bubble.letter, value: 25 });
+                            changeTargetLetter();
+                        } else {
+                            playSound('fail'); game.incorrectPops++; entities.letterBubbles.splice(j, 1);
+                        }
+                        break;
+                    }
+                }
+                if (projectileHit) entities.projectiles.splice(i, 1);
+            }
+
+            for (let idx = entities.letterBubbles.length - 1; idx >= 0; idx--) {
+                const bubble = entities.letterBubbles[idx];
+                if (bubble.letter !== game.targetLetter && (Date.now() - bubble.spawnTime > 5000)) { entities.letterBubbles.splice(idx, 1); continue; }
+
+                const offsetTime = Date.now() * 0.002 + bubble.angleOffset;
+                const driftX = Math.cos(offsetTime) * 0.6; const driftY = Math.sin(offsetTime) * 0.6;
+                const dx = player.x - bubble.x; const dy = player.y - bubble.y; const dist = Math.sqrt(dx * dx + dy * dy);
+                bubble.x += ((dx / dist) * bubble.speed + driftX) * dt; bubble.y += ((dy / dist) * bubble.speed + driftY) * dt;
+                if (dist < player.radius + 18) {
+                    if (bubble.letter === game.targetLetter) {
+                        playSound('coin'); game.correctPops++; game.score += 25; player.xp += 30;
+                        if (player.xp >= player.maxXp) triggerLevelUp();
+                        entities.letterBubbles.splice(idx, 1); changeTargetLetter();
+                    } else {
+                        playSound('fail'); entities.letterBubbles.splice(idx, 1);
+                        player.hp = Math.max(0, player.hp - 10);
+                        if (player.hp <= 0) gameOver();
+                    }
+                }
+            }
+
+            for (let i = entities.collectibles.length - 1; i >= 0; i--) {
+                const item = entities.collectibles[i];
+                const dx = player.x - item.x; const dy = player.y - item.y; const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < player.range) { item.x += (dx / dist) * 7.5 * dt; item.y += (dy / dist) * 7.5 * dt; }
+                if (dist < player.radius + 10) {
+                    playSound('coin'); player.xp += item.value;
+                    if (player.xp >= player.maxXp) triggerLevelUp();
+                    entities.collectibles.splice(i, 1);
+                }
+            }
+
+            document.getElementById('xp-bar').style.width = `${(player.xp / player.maxXp) * 100}%`;
+            document.getElementById('level-display').innerText = `Lvl ${player.level}`;
+            document.getElementById('cash-display').innerText = game.score;
+            document.getElementById('hp-display').innerText = `${Math.max(0, Math.round(player.hp))} / ${player.maxHp}`;
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save(); ctx.translate(-game.camera.x, -game.camera.y);
+
+            ctx.fillStyle = '#1e3a1e'; ctx.fillRect(player.x - 2000, player.y - 2000, 4000, 4000);
+            ctx.strokeStyle = 'rgba(255,255,255,0.03)'; ctx.lineWidth = 1.5;
+            for (let x = -2000; x < 2000; x += 150) { ctx.beginPath(); ctx.moveTo(x, -2000); ctx.lineTo(x, 2000); ctx.stroke(); }
+            for (let y = -2000; y < 2000; y += 150) { ctx.beginPath(); ctx.moveTo(-2000, y); ctx.lineTo(2000, y); ctx.stroke(); }
+
+            entities.scenery.forEach(item => {
+                if (item.type === 'puddle') {
+                    ctx.fillStyle = item.color; ctx.beginPath(); ctx.ellipse(item.x, item.y, item.radius, item.radius / 1.8, 0, 0, Math.PI * 2); ctx.fill();
+                    ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.ellipse(item.x, item.y, item.radius - 10, (item.radius - 10) / 1.8, 0, 0, Math.PI * 2); ctx.stroke();
+                }
+            });
+
+            entities.collectibles.forEach(item => {
+                ctx.fillStyle = '#fbbf24'; ctx.beginPath(); ctx.arc(item.x, item.y, 8, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)'; ctx.beginPath(); ctx.arc(item.x - 3, item.y - 3, 2.5, 0, Math.PI * 2); ctx.fill();
+            });
+
+            entities.projectiles.forEach(proj => {
+                ctx.fillStyle = '#67e8f9'; ctx.beginPath(); ctx.arc(proj.x, proj.y, proj.radius, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(proj.x - 2, proj.y - 2, 2.5, 0, Math.PI * 2); ctx.fill();
+            });
+
+            entities.letterBubbles.forEach(bubble => drawLetterBubble(ctx, bubble));
+            drawPlayer(ctx, player.x, player.y);
+            entities.scenery.forEach(item => {
+                if (item.type === 'tree') drawTree(ctx, item.x, item.y);
+                if (item.type === 'lamp') drawLamp(ctx, item.x, item.y);
+                if (item.type === 'bench') drawBench(ctx, item.x, item.y);
+            });
+            ctx.restore();
+        }
+
+        function gameLoop(now) {
+            let dt = (now - lastTime) / 16.666; lastTime = now; if (dt > 4) dt = 4;
+            updateGame(dt); render(); requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            player.hp = player.maxHp; player.xp = 0; player.level = 1; player.x = 0; player.y = 0;
+            game.score = 0; game.correctPops = 0; game.incorrectPops = 0;
+            entities.letterBubbles = []; entities.projectiles = []; entities.collectibles = [];
+            
+            initScenery(); changeTargetLetter();
+            document.getElementById('overlay-screen').classList.add('hidden');
+            document.getElementById('exit-btn').classList.remove('hidden');
+            game.running = true;
+        }
+
+        // ကစားနေစဉ်အတွင်း ညာဘက်အပေါ်က 🚪 ထွက်မည် ခလုတ်ကို နှိပ်လျှင် index.html ရဲ့ Main Lesson Menu သို့ တိုက်ရိုက်ထွက်ရန်
+        function returnToMainPage() {
+            playSound('fail');
+            game.running = false;
+            window.location.href = 'index.html?fromGame=true';
+        }
+
+        // ဂိမ်းထဲတွင် သွေးကုန်၍ ရှုံးသွားသောအခါ လုပ်ဆောင်ချက်
+        function gameOver() {
+            game.running = false;
+            document.getElementById('exit-btn').classList.add('hidden');
+            
+            document.getElementById('stat-coins').innerText = game.correctPops;
+            document.getElementById('stat-kills').innerText = game.incorrectPops;
+            document.getElementById('stat-level').innerText = `Lvl ${player.level}`;
+            document.getElementById('game-stats').classList.remove('hidden');
+            
+            document.getElementById('start-btn').innerText = "🔄 ပြန်လည်ကစားမည်";
+            document.getElementById('overlay-screen').classList.remove('hidden');
+        }
+
+        document.getElementById('start-btn').onclick = startGame;
+        document.getElementById('exit-btn').onclick = returnToMainPage;
+        
+        // အောက်ခြေရှိ ပင်မစာမျက်နှာ (Main Page) ခလုတ်ကို နှိပ်ပါက index.html ရဲ့ Main Lesson Menu သို့ တိုက်ရိုက်ထွက်ရန်
+        document.getElementById('main-page-btn').onclick = function() {
+            window.location.href = 'index.html?fromGame=true';
+        };
+
+        window.onload = function() {
+            requestAnimationFrame(gameLoop);
+        };
+    </script>
+</body>
+</html>

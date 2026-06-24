@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Burmese Alphabet Hide & Seek - Perfect Fixed Positions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Noto+Sans+Myanmar:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; user-select: none; }
+    
+    body {
+      font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+      background: linear-gradient(to bottom, #d2f1ff 0%, #f4f9f1 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 10px;
+    }
+
+    /* ==========================================================================
+       HEADER PANEL & INSTRUCTIONS
+       ========================================================================= */
+    .header-panel {
+      width: 100%;
+      max-width: 800px; background: white; border: 4px solid #4caf50;
+      border-radius: 20px; padding: 10px 20px; display: flex; align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+      z-index: 10; margin-bottom: 12px; gap: 15px;
+    }
+    .instruction { font-size: 20px; font-weight: 700; color: #2e7d32; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .target-box {
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: 34px; font-weight: 900;
+      color: white; background: #ff5722; padding: 2px 24px; border-radius: 14px;
+      box-shadow: 0 4px 0 #e64a19; animation: pulseTarget 1s infinite alternate;
+    }
+    @keyframes pulseTarget { 0% { transform: scale(1); } 100% { transform: scale(1.06); } }
+    
+    /* Navigation Group Style */
+    .nav-group { display: flex; gap: 8px; align-items: center; }
+    .btn-nav {
+      font-family: 'Fredoka', sans-serif; background: #4caf50; color: white; border: none;
+      padding: 6px 14px; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer;
+      box-shadow: 0 3px 0 #2e7d32; transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .btn-nav:active { transform: translateY(2px); box-shadow: 0 1px 0 #2e7d32; }
+    
+    .score-stars { font-size: 24px; color: #ffca28; letter-spacing: 3px; }
+
+    /* ==========================================================================
+       AUDIO CONTROLS OVERLAY STYLE
+       ========================================================================= */
+    .audio-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(76, 175, 80, 0.15);
+      padding: 4px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(76, 175, 80, 0.3);
+    }
+    .audio-controls button {
+      background: none; border: none; font-size: 16px; cursor: pointer; focus: outline-none;
+    }
+    .audio-controls input[type="range"] {
+      width: 60px; height: 5px; cursor: pointer; accent-color: #4caf50;
+    }
+
+    /* ==========================================================================
+       GAME STAGE
+       ========================================================================= */
+    .game-stage {
+      position: relative;
+      width: 100%; max-width: 800px; aspect-ratio: 16/10;
+      background: linear-gradient(to bottom, #cbefff 0%, #e8f7ff 45%, #fffde6 75%);
+      border: 6px solid #2e7d32; border-radius: 24px; overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    }
+
+    .mountain-range {
+      position: absolute; bottom: 38%; left: 0; width: 100%; height: 30%;
+      background: #9ccc65; clip-path: polygon(0% 100%, 18% 35%, 40% 70%, 72% 25%, 100% 100%);
+      opacity: 0.4; z-index: 1;
+    }
+    .ground-lawn {
+      position: absolute; bottom: 0; left: 0; width: 100%; height: 42%;
+      background: linear-gradient(to bottom, #5cb85c 0%, #3e8f3e 100%);
+      z-index: 2; box-shadow: inset 0 6px 0 #8edd8e;
+    }
+    .village-road {
+      position: absolute; bottom: 0; left: 36%; width: 24%; height: 100%;
+      background: #eec570; clip-path: polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%);
+      opacity: 0.5; z-index: 2;
+    }
+
+    .sky-cloud { position: absolute; background: white; border-radius: 50%; opacity: 0.85; z-index: 1; }
+    .cloud-1 { top: 15%; left: 10%; width: 90px; height: 35px; box-shadow: 40px 0 0 -5px white, -30px 5px 0 -2px white; }
+    .cloud-2 { top: 22%; right: 15%; width: 110px; height: 40px; box-shadow: 45px 5px 0 -5px white, -35px 0 0 0 white; opacity: 0.7; }
+
+    /* ==========================================================================
+       HIDING SLOTS & SCENERY GRAPHICS
+       ========================================================================= */
+    .spot-container { position: absolute; z-index: 4; cursor: pointer; }
+    .object-layer { position: absolute; inset: 0; z-index: 6; pointer-events: none; }
+
+    /* 1. Fluffy Soft Tree (Far Left) */
+    .spot-tree { bottom: 25%; left: 5%; width: 160px; height: 220px; }
+    .organic-tree {
+      position: absolute; top: 0; left: 5px; width: 150px; height: 150px;
+      background: #2e7d32; border-radius: 63% 37% 64% 36% / 60% 60% 40% 40%;
+      box-shadow: -15px 10px 0 #1b5e20, 15px -10px 0 #4caf50, inset -15px -15px 0 #1b5e20;
+    }
+    .organic-trunk {
+      position: absolute; bottom: 0; left: 62px; width: 36px; height: 85px;
+      background: #5d4037; border-radius: 20px 20px 4px 4px; z-index: 3;
+    }
+
+    /* 2. Soft Cloud-like Bush (Center-Left) */
+    .spot-bush-left { bottom: 12%; left: 26%; width: 140px; height: 85px; }
+    .organic-bush-left {
+      position: absolute; inset: 0; background: #388e3c;
+      border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+      box-shadow: -15px 5px 0 #2e7d32, 15px 5px 0 #4abc4e, inset -10px -8px 0 #1b5e20;
+    }
+
+    /* 3. Smooth Round Pebbled Boulder Set (Center-Right) */
+    .spot-rock { bottom: 14%; right: 33%; width: 140px; height: 80px; }
+    .organic-rock-main {
+      position: absolute; bottom: 0; left: 0; width: 95px; height: 75px;
+      background: #8e8e8e; border-radius: 60% 50% 40% 40% / 70% 70% 30% 40%;
+      box-shadow: inset -12px -10px 0 #525252, inset 10px 10px 0 #b5b5b5;
+    }
+    .organic-rock-sub {
+      position: absolute; bottom: 0; right: 5px; width: 70px; height: 50px;
+      background: #757575; border-radius: 50% 60% 40% 30% / 60% 70% 30% 40%;
+      box-shadow: -8px -6px 0 #3b3b3b, inset 6px 6px 0 #949494;
+    }
+
+    /* 4. Cute Cartoon House (Far Right Back) */
+    .spot-house { bottom: 35%; right: 5%; width: 170px; height: 110px; }
+    .organic-roof { 
+      position: absolute; top: -38px; left: -10px; width: 190px; height: 52px; 
+      background: #d32f2f; border-radius: 40px 40px 4px 4px; box-shadow: inset 0 -6px 0 #b71c1c;
+    }
+    .organic-wall { position: absolute; inset: 10px 0 0 0; background: #fff3e0; border: 4px solid #ffe0b2; border-radius: 16px; }
+    .organic-door { position: absolute; bottom: 0; left: 65px; width: 40px; height: 65px; background: #6d4c41; border-radius: 12px 12px 0 0; }
+
+    /* 5. Fluffy Foreground Bush (Far Right Front) */
+    .spot-bush-right { bottom: 4%; right: 7%; width: 145px; height: 90px; }
+    .organic-bush-right {
+      position: absolute; inset: 0; background: #4caf50;
+      border-radius: 50% 60% 40% 50% / 60% 60% 40% 40%;
+      box-shadow: -20px 10px 0 #388e3c, 15px 5px 0 #66bb6a, inset -12px -10px 0 #2e7d32;
+    }
+
+    /* ==========================================================================
+       KIDS CHARACTER SYSTEM (PERFECT CUSTOM INDEX POSITIONS)
+       ========================================================================= */
+    .kid-character {
+      position: absolute; width: 70px; height: 100px; display: flex; flex-direction: column; align-items: center;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.25); z-index: 3; pointer-events: none;
+    }
+    
+    .spot-tree .kid-character { left: 102px; bottom: 10px; }
+    .spot-bush-left .kid-character { left: 50%; transform: translateX(-50%); top: -20px; }
+    .spot-rock .kid-character { left: 50%; transform: translateX(-50%); top: -25px; }
+    .spot-house .kid-character { left: -25px; bottom: -20px; }
+    .spot-bush-right .kid-character { left: 50%; transform: translateX(-50%); top: -20px; }
+
+    /* Character Held Letter Bubble (ABOVE HEAD) */
+    .held-letter {
+      position: absolute; top: -46px; left: 50%; transform: translateX(-50%) scale(0);
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: 26px; font-weight: 900;
+      background: #fff9c4; color: #e65100; border: 3px solid #ff5722;
+      padding: 2px 14px; border-radius: 14px; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.12); line-height: 1.2; z-index: 9;
+    }
+    .held-letter::after {
+      content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+      border-width: 8px 8px 0; border-style: solid; border-color: #ff5722 transparent; display: block; width: 0;
+    }
+
+    /* Kids Outfits Config */
+    .kid-head { width: 42px; height: 42px; background: #ffebd2; border-radius: 50%; position: relative; border: 2px solid #6d4c41; z-index: 4; }
+    .kid-hair { position: absolute; top: -2px; left: -2px; right: -2px; height: 18px; background: #2d1a14; border-radius: 20px 20px 0 0; }
+    .kid-eyes { position: absolute; top: 16px; left: 8px; right: 8px; display: flex; justify-content: space-between; }
+    .kid-eyes::before, .kid-eyes::after { content: ''; width: 6px; height: 6px; background: #263238; border-radius: 50%; }
+    .kid-smile { position: absolute; bottom: 6px; left: 16px; width: 10px; height: 6px; border-bottom: 2px solid #263238; border-radius: 0 0 5px 5px; }
+    
+    .kid-body { 
+      width: 38px; height: 45px; background: #00b0ff; border-radius: 12px 12px 0 0; margin-top: -2px; position: relative; z-index: 3;
+      opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    
+    /* ==========================================================================
+       ANIMATION CONTROL STATES (HANDLE POSITION & PEEK LIFT PERFECTLY)
+       ========================================================================= */
+    .spot-tree.peek .kid-character { transform: translateX(35px) translateY(-10px); }
+    .spot-house.peek .kid-character { transform: translateY(-45px); }
+    .spot-bush-left.peek .kid-character { transform: translateX(-50%) translateY(-45px); }
+    .spot-rock.peek .kid-character { transform: translateX(-50%) translateY(-45px); }
+    .spot-bush-right.peek .kid-character { transform: translateX(-50%) translateY(-45px); }
+
+    .spot-container.peek .held-letter { transform: translateX(-50%) scale(1); }
+    .spot-container.peek .kid-body { opacity: 1; transform: translateY(0); }
+    
+    /* Success Winning Jump Controls */
+    .spot-tree.success .kid-character { animation: winJumpTree 0.4s infinite alternate; }
+    @keyframes winJumpTree { 0% { transform: translateX(35px) translateY(-10px); } 100% { transform: translateX(35px) translateY(-32px); } }
+
+    .spot-house.success .kid-character { animation: winJumpHouse 0.4s infinite alternate; }
+    @keyframes winJumpHouse { 0% { transform: translateY(-40px); } 100% { transform: translateY(-62px); } }
+
+    .spot-bush-left.success .kid-character { animation: winJumpBL 0.4s infinite alternate; }
+    @keyframes winJumpBL { 0% { transform: translateX(-50%) translateY(-40px); } 100% { transform: translateX(-50%) translateY(-62px); } }
+
+    .spot-rock.success .kid-character { animation: winJumpRock 0.4s infinite alternate; }
+    @keyframes winJumpRock { 0% { transform: translateX(-50%) translateY(-40px); } 100% { transform: translateX(-50%) translateY(-62px); } }
+
+    .spot-bush-right.success .kid-character { animation: winJumpBR 0.4s infinite alternate; }
+    @keyframes winJumpBR { 0% { transform: translateX(-50%) translateY(-40px); } 100% { transform: translateX(-50%) translateY(-62px); } }
+
+    .spot-container.success .kid-body { opacity: 1; transform: translateY(0); }
+
+    /* Wrong Shake Controls */
+    .spot-tree.wrong .kid-character { animation: wrongShakeTree 0.4s ease; }
+    @keyframes wrongShakeTree { 0%, 100% { transform: translateX(35px) translateY(-10px); } 25% { transform: translateX(29px) translateY(-10px); } 75% { transform: translateX(41px) translateY(-10px); } }
+
+    .spot-house.wrong .kid-character { animation: wrongShakeHouse 0.4s ease; }
+    @keyframes wrongShakeHouse { 0%, 100% { transform: translateY(-45px); } 25% { transform: translateX(-6px) translateY(-45px); } 75% { transform: translateX(6px) translateY(-45px); } }
+
+    .spot-bush-left.wrong .kid-character { animation: wrongShakeBL 0.4s ease; }
+    @keyframes wrongShakeBL { 0%, 100% { transform: translateX(-50%) translateY(-45px); } 25% { transform: translateX(-56%) translateY(-45px); } 75% { transform: translateX(-44%) translateY(-45px); } }
+
+    .spot-rock.wrong .kid-character { animation: wrongShakeRock 0.4s ease; }
+    @keyframes wrongShakeRock { 0%, 100% { transform: translateX(-50%) translateY(-45px); } 25% { transform: translateX(-56%) translateY(-45px); } 75% { transform: translateX(-44%) translateY(-45px); } }
+
+    .spot-bush-right.wrong .kid-character { animation: wrongShakeBR 0.4s ease; }
+    @keyframes wrongShakeBR { 0%, 100% { transform: translateX(-50%) translateY(-45px); } 25% { transform: translateX(-56%) translateY(-45px); } 75% { transform: translateX(-44%) translateY(-45px); } }
+
+    /* ==========================================================================
+       OVERLAYS SCREENS
+       ========================================================================= */
+    .intro-screen {
+      position: absolute; inset: 0; 
+      background: linear-gradient(to bottom, #d2f1ff 0%, #edf7fc 50%, #f4f9f1 100%);
+      z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center; transition: opacity 0.4s ease, pointer-events 0.4s;
+    }
+    .intro-screen.hide { opacity: 0; pointer-events: none; }
+    .intro-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 38px; font-weight: 900; color: #1b5e20; margin-bottom: 12px; }
+    .intro-badge { background: #ff5722; color: white; padding: 6px 22px; border-radius: 20px; font-weight: 700; margin-bottom: 24px; box-shadow: 0 4px 0 #e64a19; }
+    
+    .btn-action {
+      font-family: 'Noto Sans Myanmar', sans-serif; padding: 12px 48px; font-size: 20px; font-weight: 900;
+      color: white; background: #4caf50; border: none; border-radius: 16px; cursor: pointer;
+      box-shadow: 0 6px 0 #2e7d32; z-index: 5;
+    }
+    .btn-action:active { transform: translateY(3px); box-shadow: 0 3px 0 #2e7d32; }
+
+    .reward-backdrop {
+      position: absolute; inset: 0; background: rgba(0,0,0,0.55); z-index: 200;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .reward-backdrop.show { opacity: 1; pointer-events: auto; }
+    .reward-box {
+      background: white; border: 5px solid #ffca28; border-radius: 24px; padding: 35px 30px;
+      width: 90%; max-width: 420px; text-align: center; transform: scale(0.7); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+    }
+    .reward-backdrop.show .reward-box { transform: scale(1); }
+    .reward-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 28px; font-weight: 900; color: #e64a19; margin-bottom: 10px; }
+    .reward-letter-display { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 62px; font-weight: 900; color: #4caf50; margin: 12px 0; }
+  </style>
+</head>
+<body>
+
+  <audio id="bgMusic" src="main-bgm.mp3" loop></audio>
+
+  <div class="header-panel">
+    <div class="nav-group">
+      <button class="btn-nav" id="btnBack" onclick="goBack()">← Back</button>
+      <button class="btn-nav" id="btnHome" onclick="goHome()">🏠 Home</button>
+      
+      <div class="audio-controls">
+        <button id="muteBtn" onclick="toggleMute()">🔊</button>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5" oninput="updateVolume(this.value)" />
+      </div>
+    </div>
+    
+    <div class="instruction">
+      <span>သူငယ်ချင်းတို့ဆီက</span>
+      <div class="target-box" id="targetDisplay">က</div>
+      <span>ရှာပေးပါဦး။</span>
+    </div>
+    <div class="score-stars" id="starContainer">☆☆☆☆☆</div>
+  </div>
+
+  <div class="game-stage">
+    <div class="sky-cloud cloud-1"></div>
+    <div class="sky-cloud cloud-2"></div>
+    <div class="mountain-range"></div>
+    <div class="ground-lawn"><div class="village-road"></div></div>
+    
+    <div class="spot-container spot-tree" onclick="handleSpotClick(0)">
+      <div class="kid-character" id="kid0">
+        <div class="held-letter" id="letter0">-</div>
+        <div class="kid-head"><div class="kid-hair"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#ff70a6;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="organic-tree"></div>
+        <div class="organic-trunk"></div>
+      </div>
+    </div>
+
+    <div class="spot-container spot-bush-left" onclick="handleSpotClick(1)">
+      <div class="kid-character" id="kid1">
+        <div class="held-letter" id="letter1">-</div>
+        <div class="kid-head"><div class="kid-hair" style="background:#ab47bc;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#a855f7;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="organic-bush-left"></div>
+      </div>
+    </div>
+
+    <div class="spot-container spot-rock" onclick="handleSpotClick(2)">
+      <div class="kid-character" id="kid2">
+        <div class="held-letter" id="letter2">-</div>
+        <div class="kid-head"><div class="kid-hair" style="background:#4e342e;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#4cc9f0;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="organic-rock-main"></div>
+        <div class="organic-rock-sub"></div>
+      </div>
+    </div>
+
+    <div class="spot-container spot-house" onclick="handleSpotClick(3)">
+      <div class="kid-character" id="kid3">
+        <div class="held-letter" id="letter3">-</div>
+        <div class="kid-head"><div class="kid-hair" style="background:#ef6c00;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#ffca28;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="organic-roof"></div>
+        <div class="organic-wall"></div>
+        <div class="organic-door"></div>
+      </div>
+    </div>
+
+    <div class="spot-container spot-bush-right" onclick="handleSpotClick(4)">
+      <div class="kid-character" id="kid4">
+        <div class="held-letter" id="letter4">-</div>
+        <div class="kid-head"><div class="kid-hair" style="background:#26a69a;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#ff70a6;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="organic-bush-right"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="intro-screen" id="welcomePanel">
+    <h1 class="intro-title">အက္ခရာသူငယ်ချင်းတို့ တူတူပုန်းတမ်း</h1>
+    <div class="intro-badge">Lesson 1 : က ၊ ခ ၊ ဂ ၊ ဃ ၊ င</div>
+    <button class="btn-action" onclick="startGame()">စတင်မည်</button>
+  </div>
+
+  <div class="reward-backdrop" id="rewardPanel">
+    <div class="reward-box">
+      <h2 class="reward-title" id="rewardTitleText">🎉 အောင်မြင်စွာ ရှာဖွေနိုင်ခဲ့ပါပြီ! 🎉</h2>
+      <p style="font-family:'Noto Sans Myanmar'; color:#546e7a;">သူငယ်ချင်းလေးဆီက ရှာတွေ့လိုက်တဲ့ အက္ခရာကတော့ -</p>
+      <div class="reward-letter-display" id="rewardLetterBox">က</div>
+      <button class="btn-action" id="btnNextAction" style="background:#ff9800; box-shadow:0 6px 0 #e65100; margin-top: 10px;" onclick="advanceToNextRound()">နောက်ထပ် အက္ခရာအသစ် ရှာမည်</button>
+    </div>
+  </div>
+
+  <script>
+    const lettersPoolList = ['က', 'ခ', 'ဂ', 'ဃ', 'င'];
+    let assignedPositions = [];
+    let scoreProgress = 0;
+    let currentTargetLetter = '';
+    let isTransitioning = false;
+
+    // AUDIO SYSTEM LOGIC
+    const audioMusic = document.getElementById('bgMusic');
+    const muteBtn = document.getElementById('muteBtn');
+    const volumeSlider = document.getElementById('volumeSlider');
+
+    function updateVolume(val) {
+      audioMusic.volume = val;
+      if (val == 0) {
+        audioMusic.muted = true;
+        muteBtn.textContent = '🔇';
+      } else {
+        audioMusic.muted = false;
+        muteBtn.textContent = '🔊';
+      }
+    }
+
+    function toggleMute() {
+      if (audioMusic.muted) {
+        audioMusic.muted = false;
+        muteBtn.textContent = '🔊';
+        if (audioMusic.volume === 0) {
+          audioMusic.volume = 0.5;
+          volumeSlider.value = 0.5;
+        }
+      } else {
+        audioMusic.muted = true;
+        muteBtn.textContent = '🔇';
+      }
+    }
+
+    // Home ခလုတ်ကို နှိပ်လျှင် ပင်မစာမျက်နှာသို့ သွားမည်
+    function goHome() {
+      window.location.href = 'index.html?fromGame=true';
+    }
+
+    // Back ခလုတ်ကို နှိပ်လျှင် Welcome Panel သို့ ပြန်သွားမည်
+    function goBack() {
+      document.getElementById('rewardPanel').classList.remove('show');
+      for(let i = 0; i < 5; i++) {
+        const parentElementNode = document.getElementById(`kid${i}`).parentElement;
+        parentElementNode.classList.remove('peek', 'success', 'wrong');
+      }
+      document.getElementById('welcomePanel').classList.remove('hide');
+    }
+
+    function startGame() {
+      document.getElementById('welcomePanel').classList.add('hide');
+      
+      // စတင်မည် နှိပ်လိုက်တာနဲ့ သီချင်းကို Play ပါမယ်
+      audioMusic.volume = volumeSlider.value;
+      audioMusic.play().catch(e => console.log("Audio play gesture bypass:", e));
+
+      scoreProgress = 0;
+      setupNewTargetRound();
+    }
+
+    function setupNewTargetRound() {
+      isTransitioning = false;
+      currentTargetLetter = lettersPoolList[scoreProgress];
+      let tempLettersArray = [...lettersPoolList];
+      assignedPositions = [];
+      
+      for(let i = 0; i < 5; i++) {
+        let randomIndex = Math.floor(Math.random() * tempLettersArray.length);
+        assignedPositions.push(tempLettersArray.splice(randomIndex, 1)[0]);
+        
+        document.getElementById(`letter${i}`).textContent = assignedPositions[i];
+        
+        const parentElementNode = document.getElementById(`kid${i}`).parentElement;
+        parentElementNode.classList.remove('peek', 'success', 'wrong');
+      }
+      
+      renderDashboardUI();
+    }
+
+    function renderDashboardUI() {
+      document.getElementById('targetDisplay').textContent = currentTargetLetter;
+      
+      let starMarkup = '';
+      for(let i = 0; i < 5; i++) {
+        starMarkup += (i < scoreProgress) ? '★' : '☆';
+      }
+      document.getElementById('starContainer').textContent = starMarkup;
+    }
+
+    function handleSpotClick(spotIndex) {
+      if(isTransitioning) return;
+      
+      isTransitioning = true;
+      const clickedSpotContainer = document.getElementById(`kid${spotIndex}`).parentElement;
+      const discoveredLetter = assignedPositions[spotIndex];
+
+      clickedSpotContainer.classList.remove('wrong', 'peek', 'success');
+      void clickedSpotContainer.offsetWidth; 
+      clickedSpotContainer.classList.add('peek');
+
+      setTimeout(() => {
+        if(discoveredLetter === currentTargetLetter) {
+          clickedSpotContainer.classList.remove('peek');
+          clickedSpotContainer.classList.add('success');
+          
+          document.getElementById('rewardLetterBox').textContent = currentTargetLetter;
+          scoreProgress++;
+          
+          setTimeout(() => {
+            if(scoreProgress >= 5) {
+              document.getElementById('rewardTitleText').textContent = "🏆 သင်ခန်းစာ ပြီးဆုံးပါပြီ! 🏆";
+              document.getElementById('btnNextAction').textContent = "နောက်ထပ် သင်ခန်းစာသို့ သွားမည်";
+            } else {
+              document.getElementById('rewardTitleText').textContent = "🎉 အောင်မြင်စွာ ရှာဖွေနိုင်ခဲ့ပါပြီ! 🎉";
+              document.getElementById('btnNextAction').textContent = "နောက်ထပ် အက္ခရာအသစ် ရှာမည်";
+            }
+            document.getElementById('rewardPanel').classList.add('show');
+          }, 950);
+
+        } else {
+          clickedSpotContainer.classList.add('wrong');
+          setTimeout(() => {
+            clickedSpotContainer.classList.remove('wrong', 'peek');
+            isTransitioning = false;
+          }, 1200);
+        }
+      }, 400);
+    }
+
+    function advanceToNextRound() {
+      document.getElementById('rewardPanel').classList.remove('show');
+      if(scoreProgress >= 5) {
+        // ဂိမ်းပြီးဆုံးသွားချိန်တွင် ပင်မစာမျက်နှာသို့ သွားမည်
+        window.location.href = 'index.html?fromGame=true';
+      } else {
+        setupNewTargetRound();
+      }
+    }
+  </script>
+</body>
+</html>

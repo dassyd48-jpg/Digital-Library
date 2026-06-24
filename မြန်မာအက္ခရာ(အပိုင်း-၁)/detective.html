@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Letter Detective - Dassy Digital Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --sky-blue: #87CEEB;
+            --bubble-color: rgba(255, 255, 255, 0.65);
+            --bubble-border: #ffffff;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+            background-color: var(--sky-blue);
+            /* Mobile Optimization: Prevent text selection and fast-click zoom issues */
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        /* Background Clouds */
+        .sky {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
+        }
+        .cloud {
+            position: absolute; background: white; border-radius: 100px;
+            filter: blur(8px); opacity: 0.7; animation: move-clouds linear infinite;
+        }
+        .cloud1 { width: 180px; height: 50px; top: 10%; left: -200px; animation-duration: 30s; }
+        .cloud2 { width: 140px; height: 40px; top: 25%; left: -150px; animation-duration: 40s; }
+        @keyframes move-clouds {
+            from { transform: translateX(-10%); }
+            to { transform: translateX(120vw); }
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 15px 10px;
+            box-sizing: border-box;
+        }
+
+        /* Top Bar Utilities */
+        .top-bar {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            z-index: 100;
+        }
+
+        .btn-action-home {
+            font-family: 'Noto Sans Myanmar', sans-serif;
+            font-weight: 800; font-size: 14px; color: #ffffff;
+            background: linear-gradient(180deg, #e11d48 0%, #9f1239 100%);
+            padding: 8px 16px; border-radius: 16px; border: none; cursor: pointer;
+            box-shadow: 0 4px 0 #4c0519, 0 6px 10px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        .btn-action-home:active { transform: translateY(2px); box-shadow: 0 2px 0 #4c0519; }
+
+        .audio-slider-panel {
+            background: rgba(2, 136, 209, 0.9); border: 2px solid #ffffff;
+            padding: 6px 12px; border-radius: 20px; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15); color: white;
+        }
+        .vol-range-input {
+            width: 60px; height: 6px; cursor: pointer; accent-color: #facc15;
+        }
+
+        /* Game Header Control Box */
+        .header-card {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 15px;
+            border-radius: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .target-display { font-size: 5vw; max-size: 1.5rem; color: #ea580c; font-weight: 800; margin-bottom: 6px; font-family: 'Noto Sans Myanmar', sans-serif; }
+        /* Desktop limits for font size */
+        @media (min-width: 480px) { .target-display { font-size: 1.5rem; } }
+        
+        .counter { font-size: 1.1rem; color: #0288d1; font-weight: bold; margin-bottom: 12px; }
+
+        /* Step Progress Inside Header */
+        .progress-map-container {
+            display: flex; justify-content: center; gap: 8px;
+        }
+        .progress-step {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: rgba(0,0,0,0.05); border: 2px solid #b0bec5;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Noto Sans Myanmar', sans-serif; font-weight: 800; font-size: 14px; color: #546e7a;
+            transition: all 0.3s ease;
+        }
+        .progress-step.active {
+            background: #facc15; border-color: #eab308; color: #01579b; transform: scale(1.1); box-shadow: 0 0 8px rgba(234,179,8,0.5);
+        }
+        .progress-step.completed {
+            background: #2ed573; border-color: #26af5f; color: white;
+        }
+
+        /* Game Grid Box */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 5px;
+        }
+
+        .bubble {
+            aspect-ratio: 1;
+            background: var(--bubble-color);
+            border: 3px solid var(--bubble-border);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; font-family: 'Noto Sans Myanmar', sans-serif; font-weight: 800; color: #01579b;
+            cursor: pointer;
+            box-shadow: inset -4px -4px 10px rgba(255,255,255,0.6), 4px 4px 10px rgba(0,0,0,0.08);
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        /* Status Flashes */
+        .bubble.correct-flash { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #16a34a !important; animation: pop 0.4s forwards; pointer-events: none; }
+        .bubble.wrong-flash { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #dc2626 !important; animation: shake 0.3s; }
+
+        /* Modals */
+        .congrats-modal-overlay {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px); z-index: 2000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px;
+        }
+        .congrats-modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .congrats-card {
+            background: #ffffff; border: 4px solid #0288d1; border-radius: 28px; padding: 25px; text-align: center;
+            max-width: 380px; width: 100%; box-shadow: 0 20px 25px rgba(0,0,0,0.15); transform: scale(0.8); transition: transform 0.3s ease;
+            box-sizing: border-box;
+        }
+        .congrats-modal-overlay.show .congrats-card { transform: scale(1); }
+        .congrats-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 24px; font-weight: 800; color: #0288d1; margin-bottom: 10px; }
+        .congrats-text { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 14px; color: #01579b; margin-bottom: 20px; line-height: 1.6; }
+        .btn-modal-done {
+            font-family: 'Noto Sans Myanmar', sans-serif; background-color: #2ed573; color: white; border: none; padding: 10px 40px; font-size: 16px; font-weight: 700; border-radius: 20px; cursor: pointer; box-shadow: 0 4px 0 #26af5f;
+        }
+
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.15); opacity: 0.5; } 100% { transform: scale(0); opacity: 0; visibility: hidden; } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+        /* Responsive Mobile Layout adjustments */
+        @media (max-width: 480px) {
+            .game-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+            .bubble { font-size: 28px; }
+            .top-bar { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="sky"><div class="cloud cloud1"></div><div class="cloud cloud2"></div></div>
+
+    <div class="container">
+        <div class="top-bar">
+            <button class="btn-action-home" onclick="window.location.href='index.html?fromGame=true'">🏠 Home</button>
+            <div class="audio-slider-panel">
+                <span id="volIndicatorIcon">🔊</span>
+                <input type="range" id="gameVolumeControl" min="0" max="1" step="0.05" value="0.5" class="vol-range-input" oninput="adjustGameVolume(this.value)" />
+            </div>
+        </div>
+
+        <div class="header-card">
+            <div class="target-display">" <span id="target-letter-text" style="color: #e11d48;">က</span> " လေးတွေကို လိုက်ရှာကြည့်ရအောင်</div>
+            <div class="counter">တွေ့ရှိမှု: <span id="count">0</span> / <span id="total-target">0</span></div>
+            
+            <div class="progress-map-container" id="levelProgressMap">
+                <div class="progress-step" id="step-0">က</div>
+                <div class="progress-step" id="step-1">ခ</div>
+                <div class="progress-step" id="step-2">ဂ</div>
+                <div class="progress-step" id="step-3">ဃ</div>
+                <div class="progress-step" id="step-4">င</div>
+            </div>
+        </div>
+
+        <div class="game-grid" id="grid"></div>
+    </div>
+
+    <div class="congrats-modal-overlay" id="congratsWindowBox">
+        <div class="congrats-card">
+            <div style="font-size: 40px; margin-bottom: 10px;">🎉✨⭐</div>
+            <div class="congrats-title">ထူးချွန်လိုက်တာ!</div>
+            <div class="congrats-text">သားသားမီးမီးတို့ရေ... "က" ကနေ "င" အထိ အက္ခရာလေးတွေကို ရှာဖွေပြီး စုံထောက်ကြီးအလုပ်ကို အောင်မြင်စွာ လုပ်ဆောင်နိုင်ခဲ့ပါပြီ။ တော်လိုက်တာကွယ်။ 🌟</div>
+            <button class="btn-modal-done" onclick="window.location.href='index.html?fromGame=true'">ပြီးပြီ</button>
+        </div>
+    </div>
+
+    <script>
+        const targetLettersSequence = ['က', 'ခ', 'ဂ', 'ဃ', 'င'];
+        let currentLevelIndex = 0;
+        let foundCount = 0;
+        let totalTarget = 0;
+
+        const grid = document.getElementById('grid');
+        const countDisplay = document.getElementById('count');
+        const totalDisplay = document.getElementById('total-target');
+        const targetTextDisplay = document.getElementById('target-letter-text');
+
+        let correctSound, oopsSound, winApplauseAudio;
+        try {
+            correctSound = new Audio('correct.mp3');
+            oopsSound = new Audio('oops.mp3');
+            winApplauseAudio = new Audio('clapping.mp3');
+        } catch(e) {
+            console.log("Audio not supported");
+        }
+
+        function adjustGameVolume(volValue) {
+            if(correctSound) correctSound.volume = volValue;
+            if(oopsSound) oopsSound.volume = volValue;
+            if(winApplauseAudio) winApplauseAudio.volume = volValue;
+            const iconIndicator = document.getElementById('volIndicatorIcon');
+            if (volValue == 0) iconIndicator.textContent = '🔇';
+            else if (volValue < 0.4) iconIndicator.textContent = '🔈';
+            else iconIndicator.textContent = '🔊';
+        }
+
+        function playSound(sound) {
+            if(!sound) return;
+            try {
+                sound.currentTime = 0;
+                sound.play().catch(e => console.log("Audio play blocked"));
+            } catch (err) {}
+        }
+
+        function updateProgressMap() {
+            for (let i = 0; i < targetLettersSequence.length; i++) {
+                const stepElement = document.getElementById(`step-${i}`);
+                if(!stepElement) continue;
+                stepElement.classList.remove('active', 'completed');
+                if (i === currentLevelIndex) {
+                    stepElement.classList.add('active');
+                } else if (i < currentLevelIndex) {
+                    stepElement.classList.add('completed');
+                }
+            }
+        }
+
+        function initGame() {
+            grid.innerHTML = '';
+            foundCount = 0;
+            totalTarget = 0;
+            countDisplay.innerText = '0';
+            
+            const currentTarget = targetLettersSequence[currentLevelIndex];
+            targetTextDisplay.innerText = currentTarget;
+            updateProgressMap();
+
+            let generatedItems = [];
+            for (let i = 0; i < 12; i++) {
+                const isTarget = Math.random() > 0.55;
+                let letter = isTarget ? currentTarget : targetLettersSequence[Math.floor(Math.random() * targetLettersSequence.length)];
+                
+                if (!isTarget && letter === currentTarget) {
+                    const filtered = targetLettersSequence.filter(l => l !== currentTarget);
+                    letter = filtered[Math.floor(Math.random() * filtered.length)];
+                }
+                if (letter === currentTarget) totalTarget++;
+                generatedItems.push(letter);
+            }
+
+            if (totalTarget < 3) {
+                for(let k = 0; k < 3; k++) {
+                    if(generatedItems[k] !== currentTarget) {
+                        if(generatedItems[k] === currentTarget) totalTarget--;
+                        generatedItems[k] = currentTarget;
+                        totalTarget++;
+                    }
+                }
+            }
+            
+            totalDisplay.innerText = totalTarget;
+
+            generatedItems.forEach(letter => {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.innerText = letter;
+                // Works perfectly on mobile touch and desktop click
+                bubble.onclick = () => handleBubbleClick(bubble, letter, currentTarget);
+                grid.appendChild(bubble);
+            });
+        }
+
+        function handleBubbleClick(bubble, letter, currentTarget) {
+            if (letter === currentTarget) {
+                playSound(correctSound);
+                bubble.classList.add('correct-flash');
+                foundCount++;
+                countDisplay.innerText = foundCount;
+                
+                if (foundCount === totalTarget) {
+                    setTimeout(() => { goToNextLevel(); }, 500);
+                }
+            } else {
+                playSound(oopsSound);
+                bubble.classList.remove('wrong-flash');
+                void bubble.offsetWidth; 
+                bubble.classList.add('wrong-flash');
+                setTimeout(() => { bubble.classList.remove('wrong-flash'); }, 400);
+            }
+        }
+
+        function goToNextLevel() {
+            currentLevelIndex++;
+            if (currentLevelIndex < targetLettersSequence.length) {
+                initGame();
+            } else {
+                updateProgressMap();
+                playSound(winApplauseAudio);
+                document.getElementById('congratsWindowBox').classList.add('show');
+            }
+        }
+
+        adjustGameVolume(0.5);
+        initGame();
+    </script>
+</body>
+</html>
