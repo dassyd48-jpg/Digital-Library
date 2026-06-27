@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Find and Paint (စ - ည) - Dassy Digital Library</title>
+    <!-- Tailwind CSS for UI HUD -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Noto+Sans+Myanmar:wght@700;900&display=swap" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --sky-blue: #5bc0be;
+            --grass-green: #76c893;
+            --flower-core: #ffffff;
+            --text-dark: #2d3748;
+            --target-yellow: #f1c40f;
+            --dark-green: #2a9d3a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body, html {
+            width: 100%; height: 100%; overflow: hidden;
+            font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+            user-select: none; -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        /* Cartoon Garden Background */
+        .game-bg {
+            background: linear-gradient(180deg, #5ecfff 0%, #b4ecff 40%, #76c893 41%, #52b788 100%);
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1;
+        }
+
+        /* Grid Paint Elements */
+        .canvas-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            gap: 4px;
+            width: 90vw;
+            max-width: 480px;
+            height: 90vw;
+            max-height: 480px;
+            background: #ffffff;
+            border: 8px solid #f1c40f;
+            border-radius: 24px;
+            padding: 8px;
+            box-shadow: 0 16px 30px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        .segment {
+            background: #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 900;
+            color: #475569;
+            cursor: pointer;
+            transition: transform 0.1s ease, background 0.3s ease;
+        }
+        .segment:active { transform: scale(0.9); }
+        .segment.painted { color: #ffffff !important; animation: popScale 0.3s ease-out; }
+        .segment.wrong { background: #fca5a5 !important; color: #b91c1c !important; animation: shake 0.3s ease; }
+
+        @keyframes popScale {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        /* SUPER ANIMATED CARTOON INTRO SCREEN */
+        .intro-screen {
+            position: absolute; inset: 0; 
+            background: linear-gradient(to bottom, #bae6fd 0%, #7dd3fc 50%, #4ade80 100%);
+            z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; text-align: center; overflow: hidden; transition: opacity 0.4s ease;
+        }
+        .intro-screen.hide { opacity: 0; pointer-events: none; }
+        
+        .intro-sun {
+            position: absolute; top: 40px; right: 40px; width: 70px; height: 70px;
+            background: #f59e0b; border-radius: 50%; border: 5px dashed #d97706;
+            animation: rotateSun 20s linear infinite;
+        }
+        @keyframes rotateSun { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .intro-cloud {
+            position: absolute; background: white; border-radius: 30px; opacity: 0.9;
+            animation: cloudMove 10s infinite alternate ease-in-out;
+        }
+        .c-1 { top: 60px; left: -20px; width: 120px; height: 40px; box-shadow: 20px -10px 0 white; }
+        .c-2 { bottom: 180px; right: -30px; width: 140px; height: 45px; box-shadow: -20px 8px 0 white; }
+        @keyframes cloudMove { 0% { transform: translateX(-10px); } 100% { transform: translateX(25px); } }
+
+        .btn-action {
+            font-family: 'Noto Sans Myanmar', sans-serif; padding: 14px 45px; font-size: 22px; font-weight: 900;
+            color: white; background: #fbbf24; border: none; border-radius: 50px; cursor: pointer; 
+            box-shadow: 0 8px 0 #d97706, 0 12px 25px rgba(217,119,6,0.3); transition: transform 0.1s; z-index: 5;
+            animation: wiggleBtn 3s infinite ease-in-out;
+        }
+        .btn-action:active { transform: translateY(4px); box-shadow: 0 4px 0 #d97706; animation: none; }
+        @keyframes wiggleBtn {
+            0%, 80%, 100% { transform: rotate(0deg); }
+            85% { transform: rotate(3deg) scale(1.02); }
+            90% { transform: rotate(-3deg) scale(1.02); }
+        }
+
+        /* Color Palette Circle */
+        .color-dot { width: 44px; height: 44px; border-radius: 50%; cursor: pointer; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 0.2s; }
+        .color-dot.active { transform: scale(1.2); border-color: #232323; }
+
+        /* Custom Styling for Volume Input Range */
+        input[type="range"] {
+            accent-color: #10b981;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="relative flex flex-col items-center justify-center min-h-screen select-none">
+
+    <!-- Cartoon Dynamic Background -->
+    <div class="game-bg"></div>
+
+    <!-- HUD Layout Top Panel -->
+    <div class="absolute top-4 left-4 right-4 z-20 pointer-events-none flex justify-between items-start">
+        <!-- Target Info Box -->
+        <div class="bg-white/95 backdrop-blur-md border-4 border-amber-400 p-3 rounded-2xl shadow-xl flex flex-col items-center min-w-[110px]">
+            <span class="text-[11px] font-black text-amber-600 tracking-wider">ရှာရမည့်အက္ခရာ</span>
+            <span id="target-display" class="text-4xl font-black text-slate-800 mt-1">စ</span>
+        </div>
+
+        <!-- Right Side: Score Progress, Audio Controllers & Exit -->
+        <div class="flex flex-col items-end space-y-2 pointer-events-auto">
+            <!-- Score Status -->
+            <div class="bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl border-2 border-emerald-400 shadow-md font-bold text-slate-700 flex items-center space-x-2">
+                <span>🎨 ဆေးခြယ်ပြီး:</span>
+                <span id="found-display" class="text-xl font-black text-emerald-600">0</span>
+                <span class="text-slate-400">/</span>
+                <span id="total-display" class="text-sm font-bold text-slate-500">0</span>
+            </div>
+            
+            <!-- Dynamic Audio Panel + Exit -->
+            <div class="flex items-center space-x-2 bg-white/95 backdrop-blur-md p-2 rounded-xl border border-slate-200 shadow-md">
+                <!-- Mute / Unmute Trigger Toggle -->
+                <button id="mute-btn" onclick="toggleMute()" class="text-lg hover:scale-110 transition-transform">🔊</button>
+                <!-- Live Volume Level Range Slider -->
+                <input id="volume-slider" type="range" min="0" max="1" step="0.05" value="0.4" oninput="updateVolume(this.value)" class="w-16 sm:w-20 h-1.5 bg-slate-200 rounded-lg appearance-none">
+                
+                <div class="w-[1px] h-5 bg-slate-300 mx-1"></div>
+                
+                <button onclick="exitToMain()" class="bg-red-500 hover:bg-red-600 text-white font-black px-3 py-1.5 rounded-lg border-b-2 border-red-700 text-[11px] tracking-wide transition-all active:scale-95">
+                    🚪 ထွက်မည်
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Active Coloring Playground -->
+    <div id="paintCanvas" class="canvas-grid"></div>
+
+    <!-- Bottom Palette: Dynamic Color Changer -->
+    <div class="absolute bottom-6 z-20 bg-white/90 backdrop-blur-md px-5 py-3 rounded-3xl border-4 border-white shadow-2xl flex items-center space-x-4">
+        <div class="color-dot active" style="background: #ef4444;" onclick="changePaintColor('#ef4444', this)"></div>
+        <div class="color-dot" style="background: #3b82f6;" onclick="changePaintColor('#3b82f6', this)"></div>
+        <div class="color-dot" style="background: #eab308;" onclick="changePaintColor('#eab308', this)"></div>
+        <div class="color-dot" style="background: #a855f7;" onclick="changePaintColor('#a855f7', this)"></div>
+        <div class="color-dot" style="background: #ec4899;" onclick="changePaintColor('#ec4899', this)"></div>
+    </div>
+
+    <!-- Welcome / Animated Garden Start Screen -->
+    <div id="start-screen" class="intro-screen">
+        <div class="intro-sun"></div>
+        <div class="intro-cloud c-1"></div>
+        <div class="intro-cloud c-2"></div>
+        
+        <div class="text-6xl mb-4 z-10 animate-bounce">🌸🦋🏡</div>
+        <h1 class="text-3xl sm:text-4xl font-black text-slate-800 drop-shadow-md mb-2">အက္ခရာပန်းခြံ ဆေးရောင်ခြယ်</h1>
+        <div class="bg-emerald-500 text-white font-black px-5 py-1.5 rounded-full text-xs mb-4 shadow-sm">
+            သင်ခန်းစာ (Level 2) : စ၊ ဆ၊ ဇ၊ ဈ၊ ည
+        </div>
+        <p class="text-slate-600 text-sm max-w-sm mb-8 font-medium px-4">ပန်းခြံထဲက ကွက်လပ်လေးတွေကြားမှာ සැඟနေတဲ့ မှန်ကန်တဲ့ အက္ခရာတွေကို ရှာဖွေပြီး လှပတဲ့ ဆေးရောင်စုံ ခြယ်သကြရအောင်။</p>
+        
+        <button onclick="startGame()" class="btn-action">ဂိမ်းစတင်ကစားမည် 🚀</button>
+    </div>
+
+    <!-- Ultimate Victory Screen (စ-ည အကုန်အောင်မြင်ချိန်) -->
+    <div id="victory-screen" class="hidden absolute inset-0 bg-slate-950/85 backdrop-blur-md z-[110] flex flex-col items-center justify-center text-center p-6">
+        <div class="text-7xl mb-4 animate-bounce">🏆✨🎉</div>
+        <h2 class="text-4xl font-black text-white mb-2">ထူးချွန်လိုက်တာကွယ်!</h2>
+        <p class="text-amber-300 text-lg font-bold mb-8">Level 2 (စ မှ ည အထိ) ဆေးရောင်ခြယ်စိန်ခေါ်မှု အားလုံးကို အောင်မြင်သွားပါပြီ။</p>
+        
+        <button onclick="exitToMain()" class="px-14 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-xl rounded-full shadow-lg border-b-4 border-orange-700 active:scale-95 transition-all">
+            နောက်သင်ခန်းစာသို့ သွားမည် 🚀
+        </button>
+    </div>
+
+    <script>
+        // Sound FX & Procedural BGM Management via Web Audio API
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Master Gain Nodes for Control Routing
+        const sfxGain = audioCtx.createGain();
+        const bgmGain = audioCtx.createGain();
+        sfxGain.connect(audioCtx.destination);
+        bgmGain.connect(audioCtx.destination);
+
+        // Audio Level Defaults
+        let currentVolume = 0.4;
+        let isMuted = false;
+        bgmGain.gain.setValueAtTime(currentVolume * 0.25, audioCtx.currentTime); // Keep BGM softer than SFX
+        sfxGain.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); 
+            gain.connect(sfxGain); // Route SFX through master sfxGain node
+            const now = audioCtx.currentTime;
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(550, now);
+                osc.frequency.exponentialRampToValueAtTime(1100, now + 0.08);
+                gain.gain.setValueAtTime(0.5, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                osc.start(now); osc.stop(now + 0.08);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.linearRampToValueAtTime(80, now + 0.2);
+                gain.gain.setValueAtTime(0.4, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                osc.start(now); osc.stop(now + 0.2);
+            } else if (type === 'victory') {
+                const fanfare = [523.25, 659.25, 783.99, 1046.50];
+                fanfare.forEach((f, i) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g); g.connect(sfxGain);
+                    o.frequency.setValueAtTime(f, now + i * 0.08);
+                    g.gain.setValueAtTime(0.3, now + i * 0.08);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    o.start(now + i * 0.08); o.stop(now + 0.5);
+                });
+            }
+        }
+
+        // Procedural Infinite Background Music Sequencer
+        let bgmIntervalId = null;
+        function startBackgroundMusic() {
+            if (bgmIntervalId) return; 
+            
+            const melody = [523.25, 587.33, 659.25, 698.46, 783.99, 880.00, 987.77, 1046.50]; // C Major Scale
+            // Cute, bright nursery-like chord progression loop
+            const sequence = [0, 2, 4, 3, 4, 6, 7, 4, 5, 3, 2, 4, 1, 3, 0, 2];
+            let step = 0;
+
+            bgmIntervalId = setInterval(() => {
+                if (isMuted) return;
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'triangle'; // Smooth, retro warm tone suitable for kids game
+                const noteIndex = sequence[step % sequence.length];
+                osc.frequency.setValueAtTime(melody[noteIndex] * 0.5, now); // Shift down 1 octave for warmth
+                
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                
+                osc.connect(gain);
+                gain.connect(bgmGain);
+                
+                osc.start(now);
+                osc.stop(now + 0.45);
+                step++;
+            }, 500); // 120 BPM rhythmic pulse
+        }
+
+        // Live Audio Parameters Mutators
+        function updateVolume(val) {
+            currentVolume = parseFloat(val);
+            if (isMuted) return; // don't override gain values if currently muted
+            
+            bgmGain.gain.setValueAtTime(currentVolume * 0.25, audioCtx.currentTime);
+            sfxGain.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const muteBtn = document.getElementById('mute-btn');
+            
+            if (isMuted) {
+                muteBtn.innerText = '🔇';
+                bgmGain.gain.setValueAtTime(0, audioCtx.currentTime);
+                sfxGain.gain.setValueAtTime(0, audioCtx.currentTime);
+            } else {
+                muteBtn.innerText = '🔊';
+                updateVolume(document.getElementById('volume-slider').value);
+            }
+        }
+
+        // Game Configuration Settings
+        const targetSequence = ['စ', 'ဆ', 'ဇ', 'ဈ', 'ည'];
+        const alphabetDistractors = [
+            'က', 'ခ', 'ဂ', 'ဃ', 'င', 'ဋ', 'ဌ', 'ဍ', 'ဎ', 'ဏ', 
+            'တ', 'ထ', 'ဒ', 'ဓ', 'န', 'ပ', 'ဖ', 'ဗ', 'ဘ', 'မ', 
+            'ယ', 'ရ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ'
+        ];
+
+        let currentTargetIndex = 0;
+        let currentTargetLetter = 'စ';
+        let foundCount = 0;
+        let totalTargetCount = 0;
+        let selectedColor = '#ef4444';
+
+        const canvas = document.getElementById('paintCanvas');
+        const foundDisplay = document.getElementById('found-display');
+        const totalDisplay = document.getElementById('total-display');
+        const targetDisplay = document.getElementById('target-display');
+
+        function exitToMain() {
+            window.location.href = 'index.html?fromGame=true';
+        }
+
+        function changePaintColor(color, element) {
+            selectedColor = color;
+            document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function startGame() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            document.getElementById('start-screen').classList.add('hide');
+            
+            startBackgroundMusic(); // Start dynamic music track seamlessly
+            currentTargetIndex = 0;
+            setupRound();
+        }
+
+        function setupRound() {
+            foundCount = 0;
+            totalTargetCount = 0;
+            currentTargetLetter = targetSequence[currentTargetIndex];
+            
+            targetDisplay.innerText = currentTargetLetter;
+            foundDisplay.innerText = '0';
+            canvas.innerHTML = '';
+
+            // Generate 36 Matrix Grid Elements (6x6)
+            for (let i = 0; i < 36; i++) {
+                const seg = document.createElement('div');
+                seg.className = 'segment';
+                
+                // 35% probability of spawning target letter
+                const isTarget = Math.random() < 0.35;
+                const letter = isTarget ? currentTargetLetter : alphabetDistractors[Math.floor(Math.random() * alphabetDistractors.length)];
+                
+                if (letter === currentTargetLetter) totalTargetCount++;
+                
+                seg.innerText = letter;
+                seg.onclick = () => handleSegmentClick(seg, letter);
+                canvas.appendChild(seg);
+            }
+
+            // Safety mechanism: Ensure at least 3 target letters spawn per round
+            if (totalTargetCount < 3) return setupRound();
+            totalDisplay.innerText = totalTargetCount;
+        }
+
+        function handleSegmentClick(seg, letter) {
+            if (seg.classList.contains('painted')) return;
+
+            if (letter === currentTargetLetter) {
+                playSound('correct');
+                seg.style.background = selectedColor;
+                seg.classList.add('painted');
+                foundCount++;
+                foundDisplay.innerText = foundCount;
+
+                // Checking Round Completion
+                if (foundCount === totalTargetCount) {
+                    setTimeout(() => {
+                        advanceNextProgress();
+                    }, 600);
+                }
+            } else {
+                playSound('wrong');
+                seg.classList.add('wrong');
+                setTimeout(() => seg.classList.remove('wrong'), 400);
+            }
+        }
+
+        function advanceNextProgress() {
+            currentTargetIndex++;
+            if (currentTargetIndex < targetSequence.length) {
+                setupRound();
+            } else {
+                // All Level 2 Letters (စ - ည) Cleared
+                playSound('victory');
+                document.getElementById('victory-screen').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

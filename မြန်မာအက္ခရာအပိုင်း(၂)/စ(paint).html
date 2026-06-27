@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paint the Burmese Letter စ - Magical Space Galaxy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    
+    /* စကြာဝဠာ ဂလက်ဆီ ကာတွန်းနောက်ခံ */
+    body {
+      font-family: 'Fredoka', system-ui, sans-serif;
+      background: linear-gradient(to bottom, #0f172a 0%, #1e1b4b 40%, #311042 70%, #4c1d95 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #ddd6fe;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ==========================================================================
+       SPACE GALAXY LIVE ANIMATIONS (အသက်ဝင်သော စကြာဝဠာ အထူးပြုလုပ်ချက်များ)
+       ========================================================================== */
+    .nebula {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(139,92,246,0.2) 0%, rgba(236,72,153,0.1) 50%, transparent 70%);
+      top: -10%;
+      right: -10%;
+      z-index: 1;
+      pointer-events: none;
+      animation: cosmicRotate 25s linear infinite;
+    }
+    @keyframes cosmicRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .space-floaters {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .rocket {
+      position: absolute;
+      font-size: 45px;
+      top: 20%;
+      left: 8%;
+      animation: rocketFly 8s ease-in-out infinite alternate;
+    }
+    .ufo {
+      position: absolute;
+      font-size: 50px;
+      bottom: 25%;
+      right: 8%;
+      animation: ufoHover 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes rocketFly {
+      0% { transform: translate(0, 0) rotate(0deg) scale(0.9); }
+      100% { transform: translate(30px, -40px) rotate(15deg) scale(1.05); }
+    }
+    @keyframes ufoHover {
+      0% { transform: translate(0, 0) scale(1); filter: drop-shadow(0 0 5px #a855f7); }
+      100% { transform: translate(-25px, 25px) scale(0.95); filter: drop-shadow(0 0 20px #f43f5e); }
+    }
+
+    .stars-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
+      background-size: 240px 240px, 350px 350px;
+      background-position: 0 0, 40px 60px;
+      animation: starsTwinkle 4s ease-in-out infinite alternate;
+    }
+    @keyframes starsTwinkle {
+      0% { opacity: 0.5; }
+      100% { opacity: 0.9; }
+    }
+
+    .space-horizon {
+      position: absolute;
+      bottom: -30px;
+      width: 120%;
+      height: 120px;
+      background: #1e1b4b;
+      z-index: 3;
+      border-radius: 50% 50% 0 0;
+      box-shadow: inset 0 12px 0 #4c1d95, 0 0 30px rgba(139, 92, 246, 0.3);
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       GAME UI INTERFACE (အသုံးချစနစ်များ)
+       ========================================================================== */
+    .intro-screen {
+      position: fixed; inset: 0; background-color: #09090b; z-index: 1000;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center; color: #ffffff; transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .intro-screen.hide { opacity: 0; pointer-events: none; transform: scale(1.05); }
+    .intro-emojis { font-size: clamp(32px, 5vw, 48px); margin-bottom: 15px; letter-spacing: 8px; }
+    .intro-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(28px, 4.5vw, 46px); font-weight: 800; margin-bottom: 10px; color: #c084fc; }
+    .intro-badge { font-family: 'Noto Sans Myanmar', sans-serif; background-color: #6d28d9; padding: 6px 18px; border-radius: 20px; font-size: clamp(13px, 2vw, 16px); font-weight: 700; margin-bottom: 25px; display: inline-block; }
+    .intro-desc { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(14px, 2.2vw, 18px); max-width: 600px; line-height: 1.8; color: #ddd6fe; margin-bottom: 40px; }
+    
+    .btn-start {
+      font-family: 'Noto Sans Myanmar', sans-serif; background-color: #a855f7; color: white; border: none; padding: 14px 45px; font-size: clamp(18px, 2.5vw, 22px); font-weight: 700; border-radius: 30px; cursor: pointer; box-shadow: 0 6px 0 #6d28d9; transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+    .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #6d28d9; }
+
+    /* Top Navigation (Back & Home) Buttons */
+    .top-navigation {
+      position: absolute; top: 20px; left: 20px; display: flex; gap: 12px; z-index: 100;
+    }
+    .nav-btn {
+      padding: 10px 16px; border-radius: 12px; border: 1px solid #a855f7;
+      background: rgba(76, 29, 149, 0.85); color: white; font-weight: 700; font-size: 14px;
+      cursor: pointer; box-shadow: 0 4px 0 #4c1d95; display: flex; align-items: center; gap: 6px;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .nav-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #4c1d95; }
+
+    .game-container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 15px; opacity: 0; transform: scale(0.95); transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; }
+    .game-container.show { opacity: 1; transform: scale(1); }
+
+    h1 { font-size: 26px; font-weight: 700; margin-bottom: 15px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.3); background: rgba(76, 29, 149, 0.85); padding: 8px 25px; border-radius: 20px; border: 1px solid #a855f7; }
+    h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #67e8f9; font-size: 1.3em; text-shadow: 0 0 10px #22d3ee; }
+    
+    .stage { display: flex; gap: 20px; width: 100%; max-width: 950px; justify-content: center; }
+    
+    .wood-frame {
+      position: relative; padding: 18px; border-radius: 24px;
+      background: linear-gradient(180deg, #4c1d95 0%, #1e1b4b 100%);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.4), inset 0 0 0 3px #a855f7, 0 0 20px rgba(168, 85, 247, 0.4);
+    }
+    .canvas-container { background: #ffffff; border-radius: 14px; overflow: hidden; position: relative; box-shadow: inset 0 4px 10px rgba(0,0,0,0.15); }
+    canvas { display: block; cursor: crosshair; touch-action: none; }
+    
+    /* Controls Panel */
+    .panel {
+      width: 150px; background: linear-gradient(180deg, #ffffff 0%, #faf5ff 100%); border-radius: 24px;
+      padding: 15px; display: flex; flex-direction: column; gap: 12px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.2), inset 0 0 0 3px #e9d5ff;
+    }
+    .panel-title { font-size: 14px; font-weight: 700; text-align: center; color: #6d28d9; letter-spacing: 1px; }
+
+    /* Volume Layout Component */
+    .volume-control {
+      background: #f3e8ff; border: 2px solid #e9d5ff; border-radius: 16px;
+      padding: 8px; display: flex; flex-direction: column; align-items: center; gap: 5px;
+    }
+    .volume-header { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #6d28d9; }
+    .btn-mute { background: none; border: none; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: transform 0.1s; }
+    .btn-mute:active { transform: scale(0.9); }
+    .volume-slider {
+      width: 100%; -webkit-appearance: none; appearance: none; height: 6px;
+      border-radius: 3px; background: #cbd5e1; outline: none; cursor: pointer;
+    }
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none; width: 14px; height: 14px;
+      border-radius: 50%; background: #a855f7; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .volume-slider::-moz-range-thumb {
+      width: 14px; height: 14px; border: none; border-radius: 50%;
+      background: #a855f7; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .eraser {
+      height: 55px; border-radius: 16px; background: white;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 4px 0 #e9d5ff; font-weight: 700; font-size: 13px; user-select: none; border: 2px solid #e9d5ff;
+    }
+    .eraser.selected { background: #e9d5ff; border-color: #a855f7; box-shadow: inset 0 0 0 2px #a855f7; }
+    
+    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .brush {
+      aspect-ratio: 1/1; border-radius: 14px; cursor: pointer; position: relative;
+      box-shadow: 0 3px 0 rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #e2e8f0;
+    }
+    .brush.selected { transform: scale(1.05); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #a855f7; }
+    .swatch { position: absolute; inset: 4px; border-radius: 10px; }
+    
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; }
+    .btn { height: 55px; border-radius: 14px; border: none; color: white; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .btn-reset { background: #a855f7; box-shadow: 0 4px 0 #6d28d9; }
+    .btn-next { background: #06b6d4; box-shadow: 0 4px 0 #0891b2; }
+    
+    #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+    .star { position: absolute; font-size: 28px; animation: fall 1.5s ease-out forwards; }
+    @keyframes fall {
+      0% { transform: translate(0,0) rotate(0deg) scale(0.5); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(1.4); opacity: 0; }
+    }
+
+    @media (max-width: 760px) {
+      body { overflow-y: auto; justify-content: flex-start; padding-top: 80px; }
+      .top-navigation { width: calc(100% - 40px); justify-content: space-between; }
+      .stage { flex-direction: column-reverse; align-items: center; }
+      .panel { width: 100%; max-width: 400px; }
+      .brush-grid { grid-template-columns: repeat(5, 1fr); }
+      .nebula, .space-floaters, .stars-layer, .space-horizon { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AUDIO ELEMENTS (အသံစနစ်များ) -->
+  <audio id="bgmAudio" src="main-bgm.mp3" loop></audio>
+  <audio id="sfxVictory" src="space-victory.mp3"></audio>
+
+  <!-- TOP BACK & HOME NAVIGATION BUTTONS -->
+  <div class="top-navigation">
+    <button class="nav-btn" id="btnBack">⬅️ Back</button>
+    <button class="nav-btn" id="btnHome">🏠 Home</button>
+  </div>
+
+  <!-- LIVE SPACE GALAXY ANIMATIONS BACKGROUND -->
+  <div class="stars-layer"></div>
+  <div class="nebula"></div>
+
+  <div class="space-floaters">
+    <div class="rocket">🚀</div>
+    <div class="ufo">🛸</div>
+  </div>
+  
+  <div class="space-horizon"></div>
+
+  <!-- 1. INTRO SCREEN -->
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-emojis">🚀🛸🌌🌟✨</div>
+    <div class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</div>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "စ" စကြာဝဠာစွန့်စားခန်း</div>
+    <div class="intro-desc">
+      ကလေးတို့ရေ... အဆုံးအစမရှိ ကျယ်ပြောပြီး လှပတဲ့ ဂလက်ဆီစကြာဝဠာကြီးထဲကို ရောက်လာခဲ့ပြီနော်။ ပျံသန်းနေတဲ့ ဒုံးပျံလေးတွေနဲ့အတူ မြန်မာအက္ခရာ ဆဋ္ဌမမြောက်လုံး "စ" လေးကို အမှောင်ထဲမှာ လင်းထိန်နေမယ့် နီယွန်လေဆာစုတ်တံလေး သုံးပြီး ဆန်းဆန်းပြားပြား ခြယ်သလိုက်ရအောင်။
+    </div>
+    <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
+  </div>
+
+  <!-- 2. MAIN GAME INTERFACE -->
+  <div class="game-container" id="gameContainer">
+    <h1>Paint the letter <span class="glyph">စ</span> !</h1>
+
+    <div class="stage">
+      <div class="wood-frame">
+        <div class="canvas-container">
+          <canvas id="paintCanvas" width="550" height="550"></canvas>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <!-- AUDIO CONTROLLER COMPONENT -->
+        <div class="volume-control">
+          <div class="volume-header">
+            <button class="btn-mute" id="btnMute">🔊</button>
+            <span>VOLUME</span>
+          </div>
+          <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.5">
+        </div>
+
+        <div class="panel-title">BRUSHES</div>
+        <div class="eraser" id="eraser">
+          <span style="font-size:24px">🧽</span><div>Eraser</div>
+        </div>
+        <div class="brush-grid" id="brushGrid"></div>
+        <div class="actions">
+          <button class="btn btn-reset" id="btnReset">↻<br>Reset</button>
+          <button class="btn btn-next" id="btnNext">→<br>Next</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div id="confetti"></div>
+
+  <script>
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    let isPainting = false;
+    let currentColor = '#22d3ee';
+    let currentType = 'glow'; 
+    let currentPattern = '';
+    let isEraser = false;
+    let brushSize = 32;
+    let lastX = 0, lastY = 0;
+
+    // Audio Engine Reference
+    const bgm = document.getElementById('bgmAudio');
+    const sfxVictory = document.getElementById('sfxVictory');
+    const btnMute = document.getElementById('btnMute');
+    const volumeSlider = document.getElementById('volumeSlider');
+    let preMuteVolume = 0.5;
+
+    const brushes = [
+      { id: 'glow-brush', type: 'glow', color: '#22d3ee' }, 
+      { id: 'purple', type: 'solid', color: '#a855f7' },
+      { id: 'pink', type: 'solid', color: '#ec4899' },
+      { id: 'yellow', type: 'solid', color: '#facc15' },
+      { id: 'deepblue', type: 'solid', color: '#2563eb' },
+      { id: 'lime', type: 'solid', color: '#84cc16' },
+      { id: 'white', type: 'solid', color: '#ffffff' },
+      { id: 'rainbow', type: 'rainbow', color: 'linear-gradient(45deg, #ff3366, #ff9933, #ffff33, #33cc66, #3399ff, #9933ff)' },
+      { id: 'pat-dots', type: 'pattern', color: '#ec4899', pattern: 'dots' },
+      { id: 'pat-stripes', type: 'pattern', color: '#a855f7', pattern: 'stripes' }
+    ];
+
+    function getPattern(type, color, pName) {
+      if (type === 'solid' || type === 'glow') return color;
+      if (type === 'rainbow') {
+        const grad = ctx.createLinearGradient(60, 60, 490, 490);
+        grad.addColorStop(0, '#ff3366');
+        grad.addColorStop(0.2, '#ff9933');
+        grad.addColorStop(0.4, '#ffff33');
+        grad.addColorStop(0.6, '#33cc66');
+        grad.addColorStop(0.8, '#3399ff');
+        grad.addColorStop(1, '#9933ff');
+        return grad;
+      }
+      const pCanvas = document.createElement('canvas');
+      pCanvas.width = 20; pCanvas.height = 20;
+      const pCtx = pCanvas.getContext('2d');
+      pCtx.fillStyle = color; pCtx.fillRect(0,0,20,20);
+      if (pName === 'dots') {
+        pCtx.fillStyle = '#ffffff'; pCtx.beginPath(); pCtx.arc(10,10,3,0,Math.PI*2); pCtx.fill();
+      } else if (pName === 'stripes') {
+        pCtx.strokeStyle = '#ffffff'; pCtx.lineWidth = 3; pCtx.beginPath(); pCtx.moveTo(0,0); pCtx.lineTo(20,20); pCtx.stroke();
+      }
+      return ctx.createPattern(pCanvas, 'repeat');
+    }
+
+    function startDrawing(e) {
+      isPainting = true;
+      const rect = canvas.getBoundingClientRect();
+      lastX = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
+      lastY = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+    }
+    
+    function stopDrawing() { isPainting = false; ctx.beginPath(); }
+
+    function draw(e) {
+      if (!isPainting) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
+      const y = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+
+      ctx.lineWidth = brushSize;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      if (isEraser) {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.lineWidth = 48;
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+        
+        if (currentType === 'glow') {
+          ctx.shadowBlur = 15;
+          ctx.shadowColor = currentColor;
+        } else {
+          ctx.shadowBlur = 0;
+        }
+        
+        ctx.strokeStyle = getPattern(currentType, currentColor, currentPattern);
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      
+      ctx.shadowBlur = 0;
+
+      if (!isEraser && Math.random() < 0.45) {
+        ctx.save();
+        ctx.globalCompositeOperation = 'source-over';
+        if (currentType === 'glow') {
+          ctx.fillStyle = '#ffffff';
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = currentColor;
+          ctx.beginPath();
+          ctx.arc(x + (Math.random() * 26 - 13), y + (Math.random() * 26 - 13), Math.random() * 4 + 2, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(x + (Math.random() * 24 - 12), y + (Math.random() * 24 - 12), Math.random() * 3 + 1, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      lastX = x; lastY = y;
+    }
+
+    function initUI() {
+      // Back Button Logic: Intro ပြန်သွားမယ်၊ သီချင်းရပ်မယ်
+      document.getElementById('btnBack').onclick = () => {
+        document.getElementById('gameContainer').classList.remove('show');
+        document.getElementById('introScreen').classList.remove('hide');
+        bgm.pause();
+        bgm.currentTime = 0;
+      };
+
+      // Home Button Logic: index.html ကို parameter နဲ့ လှမ်းပို့မယ်
+      document.getElementById('btnHome').onclick = () => {
+        window.location.href = 'index.html?fromGame=true';
+      };
+
+      document.getElementById('btnStart').onclick = () => {
+        document.getElementById('introScreen').classList.add('hide');
+        document.getElementById('gameContainer').classList.add('show');
+        
+        bgm.volume = volumeSlider.value;
+        sfxVictory.volume = volumeSlider.value;
+        bgm.play().catch(err => console.log("Audio play deferred"));
+      };
+
+      // Audio Logic Controls
+      volumeSlider.oninput = (e) => {
+        const val = e.target.value;
+        bgm.volume = val;
+        sfxVictory.volume = val;
+        if (val == 0) {
+          btnMute.textContent = '🔇';
+        } else if (val < 0.4) {
+          btnMute.textContent = '🔉';
+        } else {
+          btnMute.textContent = '🔊';
+        }
+      };
+
+      btnMute.onclick = () => {
+        if (bgm.volume > 0) {
+          preMuteVolume = volumeSlider.value;
+          volumeSlider.value = 0;
+          bgm.volume = 0;
+          sfxVictory.volume = 0;
+          btnMute.textContent = '🔇';
+        } else {
+          volumeSlider.value = preMuteVolume;
+          bgm.volume = preMuteVolume;
+          sfxVictory.volume = preMuteVolume;
+          btnMute.textContent = preMuteVolume < 0.4 ? '🔉' : '🔊';
+        }
+      };
+
+      const grid = document.getElementById('brushGrid');
+      brushes.forEach((b, i) => {
+        const div = document.createElement('div');
+        div.className = 'brush' + (i === 0 ? ' selected' : '');
+        
+        if(b.type === 'glow') {
+          div.innerHTML = `<div class="swatch" style="background:${b.color}; display:flex; align-items:center; justify-content:center; font-size:16px; box-shadow: 0 0 10px ${b.color};">✨</div>`;
+        } else {
+          div.innerHTML = `<div class="swatch" style="background:${b.color}"></div>`;
+        }
+        
+        if(b.pattern === 'dots') div.firstChild.style.backgroundImage = 'radial-gradient(circle, #fff 20%, transparent 20%)';
+        if(b.pattern === 'stripes') div.firstChild.style.backgroundImage = 'linear-gradient(45deg, #fff 25%, transparent 25%)';
+        
+        div.onclick = () => {
+          isEraser = false;
+          currentColor = b.color; currentType = b.type; currentPattern = b.pattern || '';
+          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+          document.getElementById('eraser').classList.remove('selected');
+          div.classList.add('selected');
+        };
+        grid.appendChild(div);
+      });
+
+      document.getElementById('eraser').onclick = () => {
+        isEraser = true;
+        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+        document.getElementById('eraser').classList.add('selected');
+      };
+
+      document.getElementById('btnReset').onclick = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      };
+
+      document.getElementById('btnNext').onclick = () => {
+        sfxVictory.currentTime = 0;
+        sfxVictory.play().catch(err => console.log("SFX error"));
+
+        const host = document.getElementById('confetti');
+        const items = ['🚀', '🛸', '✨', '🌌', '🪐', '🌟', '☄️'];
+        for (let i = 0; i < 55; i++) {
+          const el = document.createElement('div');
+          el.className = 'star';
+          el.textContent = items[Math.floor(Math.random() * items.length)];
+          el.style.left = '50%'; el.style.top = '50%';
+          const angle = Math.random() * Math.PI * 2;
+          const dist = 120 + Math.random() * 320;
+          el.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+          el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+          host.appendChild(el);
+          setTimeout(() => el.remove(), 1500);
+        }
+      };
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
+
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>စ</text></svg>\")";
+    canvas.style.backgroundSize = "100% 100%";
+
+    initUI();
+  </script>
+</body>
+</html>

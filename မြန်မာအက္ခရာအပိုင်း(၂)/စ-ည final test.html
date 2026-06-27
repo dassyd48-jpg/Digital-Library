@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hidden Alphabet Safari - Difficulty Levels 1-6</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=600;700&family=Noto+Sans+Myanmar:wght=700;900&display=swap" rel="stylesheet" />
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0c4a6e; 
+            font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .burmese-text {
+            font-family: 'Noto Sans Myanmar', sans-serif;
+        }
+
+        /* ==========================================================================
+           SUPER ANIMATED INTRO SCREEN SYSTEM
+           ========================================================================= */
+        .intro-screen {
+            position: absolute; inset: 0; 
+            background: linear-gradient(to bottom, #b3e5fc 0%, #0284c7 60%, #0c4a6e 100%);
+            z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; text-align: center; overflow: hidden; transition: opacity 0.4s ease, pointer-events 0.4s;
+        }
+        .intro-screen.hide { opacity: 0; pointer-events: none; }
+        
+        .intro-sun {
+            position: absolute; top: 30px; right: 40px; width: 75px; height: 75px;
+            background: #ffb300; border-radius: 50%; border: 6px dashed #ff6f00;
+            animation: rotateSun 16s linear infinite;
+        }
+        @keyframes rotateSun { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .intro-cloud-decor {
+            position: absolute; background: white; border-radius: 40px; opacity: 0.85; z-index: 1;
+            animation: introCloudMove 12s infinite alternate ease-in-out;
+        }
+        .ic-1 { top: 60px; left: -20px; width: 140px; height: 45px; box-shadow: 30px -15px 0 white; }
+        .ic-2 { bottom: 120px; right: -30px; width: 150px; height: 50px; box-shadow: -30px 10px 0 white; }
+        @keyframes introCloudMove { 0% { transform: translateX(-10px); } 100% { transform: translateX(30px); } }
+
+        .intro-sparkle { position: absolute; font-size: 24px; color: #ffca28; animation: floatSparkle 3s infinite ease-in-out; opacity: 0.8; }
+        .sp-1 { top: 25%; left: 15%; animation-delay: 0s; }
+        .sp-2 { top: 55%; left: 10%; animation-delay: 0.8s; color: #ff7043; }
+        .sp-3 { top: 20%; right: 20%; animation-delay: 0.4s; color: #4caf50; }
+        .sp-4 { bottom: 30%; right: 12%; animation-delay: 1.2s; }
+        @keyframes floatSparkle { 0%, 100% { transform: translateY(0) scale(0.8); opacity: 0.5; } 50% { transform: translateY(-15px) scale(1.2); opacity: 1; } }
+
+        .intro-title-container { position: relative; z-index: 5; margin-bottom: 15px; }
+        .intro-title { 
+            font-family: 'Noto Sans Myanmar', sans-serif; font-size: 38px; font-weight: 900; 
+            color: white; text-shadow: 3px 3px 0px #0284c7, 5px 5px 0px #0c4a6e;
+            margin-bottom: 8px; animation: welcomeBounce 1.2s infinite alternate ease-in-out; 
+        }
+        @keyframes welcomeBounce { 0% { transform: translateY(0); } 100% { transform: translateY(-12px); } }
+
+        .intro-avatar-area { position: relative; font-size: 70px; margin-bottom: 25px; z-index: 5; animation: introMascotJump 0.6s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955); }
+        @keyframes introMascotJump { 0% { transform: translateY(10px) scale(0.95); } 100% { transform: translateY(-20px) scale(1.05); } }
+
+        .btn-action {
+            font-family: 'Noto Sans Myanmar', sans-serif; padding: 14px 50px; font-size: 22px; font-weight: 900;
+            color: white; background: #06b6d4; border: none; border-radius: 50px; cursor: pointer; 
+            box-shadow: 0 8px 0 #0891b2, 0 12px 25px rgba(6,182,212,0.4); transition: transform 0.1s; z-index: 5;
+            animation: autoWiggleBtn 3s infinite ease-in-out;
+        }
+        .btn-action:active { transform: translateY(4px); box-shadow: 0 4px 0 #0891b2; animation: none; }
+        
+        @keyframes autoWiggleBtn {
+            0%, 80%, 100% { transform: rotate(0deg); }
+            85% { transform: rotate(3deg) scale(1.03); }
+            90% { transform: rotate(-3deg) scale(1.03); }
+            95% { transform: rotate(2deg) scale(1.03); }
+        }
+
+        .stats-container { background: #f0f9ff; padding: 12px; border-radius: 16px; margin-bottom: 15px; border: 2px dashed #bae6fd; font-size: 15px; color: #334155; text-align: left; width: 100%; max-width: 320px; }
+        .stats-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-family: 'Noto Sans Myanmar', sans-serif; }
+    </style>
+</head>
+<body class="relative">
+
+    <div class="absolute top-4 left-4 right-4 pointer-events-none z-30 flex justify-between items-center">
+        <div class="flex flex-col space-y-1">
+            <div id="level-indicator" class="bg-cyan-500 text-white text-[11px] font-black px-4 py-1 rounded-full w-max shadow-md uppercase tracking-wider burmese-text">
+                Level 1 : စ - ည (လွယ်ကူ)
+            </div>
+            <div class="flex items-center space-x-3 bg-white/95 backdrop-blur-md px-5 py-2 rounded-3xl border-4 border-cyan-400 shadow-xl">
+                <span class="text-xs font-black text-sky-900 uppercase tracking-wide burmese-text">ရှာရမယ့်စာလုံး:</span>
+                <span id="target-display" class="text-3xl font-black text-cyan-600 burmese-text">စ</span>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-3 pointer-events-auto mt-2">
+            <div class="bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-2xl border-2 border-cyan-400 flex items-center space-x-2 shadow-lg">
+                <span class="text-lg">⭐</span>
+                <span id="score-display" class="text-lg font-black text-sky-900">0</span>
+                <span class="text-xs text-cyan-600 font-bold">/100</span>
+            </div>
+            <button onclick="exitToMain()" class="bg-red-500 hover:bg-red-600 text-white font-black px-4 py-2 rounded-2xl border-b-4 border-red-700 shadow-md text-sm transition-all active:scale-95 burmese-text">
+                🚪 ထွက်မည်
+            </button>
+        </div>
+    </div>
+
+    <canvas id="safariCanvas"></canvas>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="intro-screen">
+        <div class="intro-sun"></div>
+        <div class="intro-cloud-decor ic-1"></div>
+        <div class="intro-cloud-decor ic-2"></div>
+        
+        <div class="intro-sparkle sp-1">⭐</div>
+        <div class="intro-sparkle sp-2">✨</div>
+        <div class="intro-sparkle sp-3">🐙</div>
+        <div class="intro-sparkle sp-4">🐬</div>
+
+        <div class="intro-title-container">
+            <h1 class="intro-title">မှော်ဝင်ရေအောက်ကမ္ဘာစွန့်စားခန်း</h1>
+            <div id="start-level-title" class="bg-cyan-500/90 text-white font-black px-6 py-1.5 rounded-full text-xs tracking-wide uppercase burmese-text">
+                သင်ခန်းစာ (Level 1) : စ၊ ဆ၊ ဇ၊ ဈ၊ ည
+            </div>
+        </div>
+
+        <div class="intro-avatar-area">🧜‍♀️</div>
+
+        <p id="level-desc" class="text-sky-100 text-sm max-w-md mb-8 font-medium burmese-text px-4">ရေအောက်ကမ္ဘာက သန္တာကျောက်တန်းတွေကြားထဲမှာ အက္ခရာရေပူဖောင်းလေးတွေနဲ့ ကူးခတ်နေတဲ့ ရေနေသတ္တဝါလေးတွေကို ရှာဖွေကယ်တင်ကြရအောင်။</p>
+        
+        <button id="play-btn" class="btn-action">စတင်ကစားမည်</button>
+    </div>
+
+    <!-- Victory Screen -->
+    <div id="victory-screen" class="hidden absolute inset-0 bg-slate-900/85 backdrop-blur-md z-[100] flex flex-col items-center justify-center text-center p-6">
+        <div class="text-7xl mb-4 animate-bounce">🏆✨🧜‍♀️</div>
+        <h2 id="victory-title" class="text-4xl sm:text-5xl font-black text-white mb-2 drop-shadow-md burmese-text">တော်လိုက်တာကွယ်!</h2>
+        <p id="victory-desc" class="text-amber-300 text-lg font-bold mb-4 burmese-text">Level 1 ကို ၁၀၀ မှတ်အပြည့်ဖြင့် အောင်မြင်သွားပါပြီ။</p>
+        
+        <div class="stats-container">
+            <div class="stats-row"><span>အောင်မြင်မှုရမှတ်:</span><span style="color:#06b6d4; font-weight:bold;">၁၀၀ မှတ်အပြည့်</span></div>
+            <div class="stats-row"><span>မှားယွင်းနှိပ်မိမှု:</span><span id="statWrongCount" style="color:#ef4444; font-weight:bold;">0 ကြိမ်</span></div>
+        </div>
+
+        <button id="next-level-btn" onclick="nextLevel()" class="px-12 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-xl rounded-full shadow-lg border-b-4 border-orange-700 active:scale-95 transition-all burmese-text">
+            နောက်တစ်ဆင့်သို့ သွားမည် 🚀
+        </button>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
+                gain.gain.setValueAtTime(0.06, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                osc.start(now); osc.stop(now + 0.1);
+            } else if (type === 'wrong') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.linearRampToValueAtTime(90, now + 0.25);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                osc.start(now); osc.stop(now + 0.25);
+            } else if (type === 'victory') {
+                const notes = [587.33, 698.46, 880.00, 1174.66];
+                notes.forEach((f, i) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g); g.connect(audioCtx.destination);
+                    o.frequency.setValueAtTime(f, now + i*0.07);
+                    g.gain.setValueAtTime(0.04, now + i*0.07);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+                    o.start(now + i*0.07); o.stop(now + 0.6);
+                });
+            }
+        }
+
+        const canvas = document.getElementById('safariCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        const levelTargets = ['စ', 'ဆ', 'ဇ', 'ဈ', 'ည'];
+        const distractorPool = [
+            'က', 'ခ', 'ဂ', 'ဃ', 'င', 'ဋ', 'ဌ', 'ဍ', 'ဎ', 'ဏ', 
+            'တ', 'ထ', 'ဒ', 'ဓ', 'န', 'ပ', 'ဖ', 'ဗ', 'ဘ', 'မ', 
+            'ယ', 'ရ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ'
+        ];
+
+        // 6 Difficulty Levels Config
+        const difficultyLevels = {
+            1: { name: "Level 1 : စ - ည (အလွန်လွယ်)", speedMin: 0.8, speedMax: 1.5, spawnRate: 1500, targetChance: 0.50, desc: "အက္ခရာလေးတွေ ဖြည်းဖြည်းချင်းပဲ ကူးခတ်နေပါတယ်။ သေချာကြည့်ပြီး ဖမ်းယူကြည့်ရအောင်။" },
+            2: { name: "Level 2 : စ - ည (လွယ်ကူ)",     speedMin: 1.2, speedMax: 2.2, spawnRate: 1200, targetChance: 0.42, desc: "သတ္တဝါလေးတွေ နည်းနည်း ပိုမြန်လာပါပြီ။ အနှောင့်အယှက် စာလုံးတွေလည်း ပါလာမယ်နော်။" },
+            3: { name: "Level 3 : စ - ည (အသင့်အတင့်)", speedMin: 1.6, speedMax: 2.8, spawnRate: 1000, targetChance: 0.36, desc: "လှုပ်ရှားမှုတွေ ပိုသွက်လာပါပြီ။ မျက်စိရှင်ရှင်ထားပြီး စ၊ ဆ၊ ဇ၊ ဈ၊ ည ကိုပဲ ရွေးနှိပ်ပါ။" },
+            4: { name: "Level 4 : စ - ည (စိန်ခေါ်မှု)",   speedMin: 2.0, speedMax: 3.5, spawnRate: 850,  targetChance: 0.32, desc: "အရှိန်တော်တော် မြန်လာပါပြီ။ စာလုံးအမှားတွေကြားထဲက မှန်ကန်တဲ့စာလုံးကို အမိအရဖမ်းပါ။" },
+            5: { name: "Level 5 : စ - ည (ခက်ခဲ)",       speedMin: 2.5, speedMax: 4.2, spawnRate: 700,  targetChance: 0.28, desc: "အလွန်မြန်တဲ့အဆင့်ဖြစ်ပါတယ်။ အမှားမနှိပ်မိအောင် အာရုံစိုက်ပြီး ကစားပါ။" },
+            6: { name: "Level 6 : စ - ည (ကျွမ်းကျင်)",   speedMin: 3.2, speedMax: 5.0, spawnRate: 550,  targetChance: 0.24, desc: "အမြင့်ဆုံး ကျွမ်းကျင်သူအဆင့်။ သတ္တဝါတွေ အများကြီး အမြန်ကူးခတ်နေပါလိမ့်မယ်။" }
+        };
+
+        const marineSpecies = [
+            { emoji: '🐬', mode: 'swim' },
+            { emoji: '🐋', mode: 'swim' },
+            { emoji: '🦈', mode: 'swim' },
+            { emoji: '🐢', mode: 'swim' },
+            { emoji: '🐠', mode: 'swim' },
+            { emoji: '🐙', mode: 'crawl' },
+            { emoji: '🦀', mode: 'crawl' }
+        ];
+
+        const gameState = {
+            currentLevel: 1,
+            isPlaying: false,
+            score: 0,
+            wrongCount: 0,
+            targetIndex: 0,
+            targetLetter: 'စ',
+            animals: [],
+            particles: [],
+            bgScenery: [],  
+            fgScenery: []   
+        };
+
+        let spawnIntervalId = null;
+
+        function exitToMain() {
+            window.location.href = 'index.html?fromGame=true';
+        }
+
+        function initUnderseaScenery() {
+            gameState.bgScenery = [];
+            gameState.fgScenery = [];
+            
+            for (let i = 0; i < 28; i++) {
+                const isRock = Math.random() > 0.4;
+                gameState.bgScenery.push({
+                    x: Math.random() * canvas.width,
+                    y: canvas.height - 15 - Math.random() * 55, 
+                    emoji: isRock ? '🪨' : '🪸',
+                    size: 32 + Math.random() * 35,
+                    swayOffset: isRock ? 0 : Math.random() * Math.PI,
+                    isStatic: isRock
+                });
+            }
+
+            for (let i = 0; i < 16; i++) {
+                const rand = Math.random();
+                let emoji = '🪸'; 
+                let isStatic = false;
+
+                if (rand < 0.35) {
+                    emoji = '🪨'; 
+                    isStatic = true;
+                } else if (rand < 0.55) {
+                    emoji = '🐚'; 
+                    isStatic = true;
+                }
+
+                gameState.fgScenery.push({
+                    x: Math.random() * canvas.width,
+                    y: canvas.height + 5 - Math.random() * 30,
+                    emoji: emoji,
+                    size: 55 + Math.random() * 30,
+                    swayOffset: isStatic ? 0 : Math.random() * Math.PI,
+                    isStatic: isStatic
+                });
+            }
+        }
+
+        function rotateTarget() {
+            gameState.targetIndex = (gameState.targetIndex + 1) % levelTargets.length;
+            gameState.targetLetter = levelTargets[gameState.targetIndex];
+            document.getElementById('target-display').innerText = gameState.targetLetter;
+        }
+
+        function spawnMarineLife() {
+            if (!gameState.isPlaying) return;
+
+            const config = difficultyLevels[gameState.currentLevel];
+            const fromLeft = Math.random() > 0.5;
+            const x = fromLeft ? -95 : canvas.width + 95;
+            const species = marineSpecies[Math.floor(Math.random() * marineSpecies.length)];
+            
+            let y;
+            let speed = (config.speedMin + Math.random() * (config.speedMax - config.speedMin)) * (fromLeft ? 1 : -1);
+
+            if (species.mode === 'crawl') {
+                y = canvas.height - 85 - Math.random() * 25; 
+                speed *= 0.8;
+            } else {
+                y = canvas.height * 0.25 + Math.random() * (canvas.height * 0.45);
+            }
+            
+            const isTarget = Math.random() < config.targetChance;
+            let letter = gameState.targetLetter;
+            
+            if (!isTarget) {
+                // Mix of other target group letters or pure distractors based on level
+                if (Math.random() > 0.5) {
+                    const pool = levelTargets.filter(l => l !== gameState.targetLetter);
+                    letter = pool[Math.floor(Math.random() * pool.length)];
+                } else {
+                    letter = distractorPool[Math.floor(Math.random() * distractorPool.length)];
+                }
+            }
+
+            gameState.animals.push({
+                x, y, speed,
+                emoji: species.emoji,
+                mode: species.mode,
+                letter,
+                animTime: Math.random() * 100, 
+                isFleeing: false,
+                waveY: 0
+            });
+        }
+
+        function createBubbleSparks(x, y) {
+            for (let i = 0; i < 15; i++) {
+                gameState.particles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 4,
+                    vy: -Math.random() * 4 - 1,
+                    size: 4 + Math.random() * 8,
+                    alpha: 1
+                });
+            }
+        }
+
+        function handleInteraction(clientX, clientY) {
+            if (!gameState.isPlaying) return;
+
+            for (let i = gameState.animals.length - 1; i >= 0; i--) {
+                const animal = gameState.animals[i];
+                const currentY = animal.y + animal.waveY;
+                const dx = animal.x - clientX;
+                const dy = (currentY - 20) - clientY; 
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 65 && !animal.isFleeing) {
+                    if (animal.letter === gameState.targetLetter) {
+                        playSound('correct');
+                        createBubbleSparks(animal.x, currentY);
+                        gameState.score += 10;
+                        document.getElementById('score-display').innerText = gameState.score;
+                        
+                        gameState.animals.splice(i, 1);
+
+                        if (gameState.score >= 100) {
+                            gameState.isPlaying = false;
+                            playSound('victory');
+                            clearInterval(spawnIntervalId);
+                            document.getElementById('statWrongCount').innerText = gameState.wrongCount + " ကြိမ်";
+                            
+                            document.getElementById('victory-desc').innerText = `Level ${gameState.currentLevel} ကို ၁၀၀ မှတ်အပြည့်ဖြင့် အောင်မြင်သွားပါပြီ။`;
+                            
+                            if (gameState.currentLevel >= 6) {
+                                document.getElementById('victory-title').innerText = "ထူးချွန်လှပါတယ် အောင်နိုင်သူကြီး ရေ! 🎉";
+                                document.getElementById('victory-desc').innerText = "အမြင့်ဆုံးအဆင့်အထိ အောင်မြင်စွာ ဆော့ကစားပြီးပါပြီ။ တကယ့်ပါရမီရှင်ပါပဲ။";
+                                document.getElementById('next-level-btn').innerText = "အစကနေ ပြန်ဆော့မည် 🔄";
+                            } else {
+                                document.getElementById('victory-title').innerText = "တော်လိုက်တာကွယ်!";
+                                document.getElementById('next-level-btn').innerText = "နောက်တစ်ဆင့် (ပိုခက်သောအဆင့်) သို့ 🚀";
+                            }
+                            
+                            document.getElementById('victory-screen').classList.remove('hidden');
+                        } else {
+                            rotateTarget();
+                        }
+                    } else {
+                        playSound('wrong');
+                        gameState.wrongCount++;
+                        animal.isFleeing = true;
+                        animal.speed *= 3.5; 
+                    }
+                    break;
+                }
+            }
+        }
+
+        canvas.addEventListener('mousedown', (e) => handleInteraction(e.clientX, e.clientY));
+        canvas.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            handleInteraction(touch.clientX, touch.clientY);
+        }, { passive: true });
+
+        function update() {
+            for (let i = gameState.animals.length - 1; i >= 0; i--) {
+                const animal = gameState.animals[i];
+                animal.animTime += 0.05;
+
+                if (animal.mode === 'swim') {
+                    animal.waveY = Math.sin(animal.animTime * 2.0) * 18;
+                } else {
+                    animal.waveY = 0;
+                }
+
+                animal.x += animal.speed;
+
+                if (animal.speed > 0 && animal.x > canvas.width + 120) {
+                    gameState.animals.splice(i, 1);
+                } else if (animal.speed < 0 && animal.x < -120) {
+                    gameState.animals.splice(i, 1);
+                }
+            }
+
+            for (let i = gameState.particles.length - 1; i >= 0; i--) {
+                const p = gameState.particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= 0.015;
+                if (p.alpha <= 0 || p.y < 0) {
+                    gameState.particles.splice(i, 1);
+                }
+            }
+        }
+
+        function drawSceneryLayer(items) {
+            items.forEach(item => {
+                ctx.save();
+                const sway = item.isStatic ? 0 : Math.sin(Date.now() * 0.0015 + item.swayOffset) * 0.06;
+                ctx.translate(item.x, item.y);
+                ctx.rotate(sway);
+                ctx.font = `${item.size}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText(item.emoji, 0, 0);
+                ctx.restore();
+            });
+        }
+
+        function draw() {
+            let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#0ea5e9'); 
+            gradient.addColorStop(0.5, '#0284c7');
+            gradient.addColorStop(1, '#0c4a6e'); 
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            drawSceneryLayer(gameState.bgScenery);
+
+            gameState.animals.forEach(animal => {
+                const finalY = animal.y + animal.waveY;
+
+                ctx.save();
+                ctx.translate(animal.x, finalY);
+
+                if (animal.speed > 0) {
+                    ctx.scale(-1, 1);
+                }
+
+                const swimSquish = 1.0 + Math.sin(animal.animTime * 3) * 0.04;
+                ctx.scale(1.0, swimSquish);
+
+                ctx.font = '56px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(animal.emoji, 0, 0);
+                ctx.restore();
+
+                // Oxygen Bubble
+                ctx.save();
+                ctx.translate(animal.x, finalY - 58);
+                
+                ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+                ctx.lineWidth = 3;
+                ctx.fillStyle = 'rgba(186,230,253,0.45)'; 
+                ctx.beginPath();
+                ctx.arc(0, 0, 24, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(-8, -8, 4, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = levelTargets.includes(animal.letter) ? '#0891b2' : '#1e293b';
+                ctx.font = 'bold 24px "Noto Sans Myanmar", "Pyidaungsu", Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(animal.letter, 0, 0);
+                ctx.restore();
+            });
+
+            drawSceneryLayer(gameState.fgScenery);
+
+            gameState.particles.forEach(p => {
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+                ctx.lineWidth = 1.5;
+                ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                ctx.restore();
+            });
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function updateLevelUI() {
+            const currentCfg = difficultyLevels[gameState.currentLevel];
+            document.getElementById('level-indicator').innerText = currentCfg.name;
+            document.getElementById('start-level-title').innerText = `သင်ခန်းစာ (${currentCfg.name.split(" : ")[0]}) : စ၊ ဆ၊ ဇ၊ ဈ၊ ည`;
+            document.getElementById('level-desc').innerText = currentCfg.desc;
+            document.getElementById('target-display').innerText = gameState.targetLetter;
+        }
+
+        function startGame() {
+            gameState.score = 0;
+            gameState.wrongCount = 0;
+            gameState.targetIndex = 0;
+            gameState.targetLetter = levelTargets[0];
+            gameState.animals = [];
+            gameState.particles = [];
+            
+            document.getElementById('score-display').innerText = '0';
+            updateLevelUI();
+            
+            document.getElementById('victory-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.add('hide');
+            initUnderseaScenery();
+            
+            gameState.isPlaying = true;
+
+            // Start spawning with dynamic interval based on difficulty
+            if (spawnIntervalId) clearInterval(spawnIntervalId);
+            spawnIntervalId = setInterval(spawnMarineLife, difficultyLevels[gameState.currentLevel].spawnRate);
+        }
+
+        function nextLevel() {
+            if (gameState.currentLevel >= 6) {
+                gameState.currentLevel = 1;
+            } else {
+                gameState.currentLevel++;
+            }
+            
+            updateLevelUI();
+            document.getElementById('victory-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hide');
+        }
+
+        document.getElementById('play-btn').onclick = startGame;
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>

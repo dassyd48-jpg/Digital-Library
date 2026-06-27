@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>"သားသားမီးမီးတို့ရဲ့ အက္ခရာရှာပုံတော်" - အပိုင်း ၂ စွန့်စားခန်းကမ္ဘာ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght=400;700;900&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #1e1b4b 0%, #311042 50%, #0f172a 100%);
+        }
+        /* ကလေးကြိုက် ဖောင်းကြွ 3D နှင့် Glow Effect ကတ်များ */
+        .adventure-card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .adventure-card:hover {
+            transform: scale(1.03) translateY(-5px) rotate(0.5deg);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        /* 3D Game Buttons */
+        .game-btn-3d {
+            transition: all 0.1s ease;
+        }
+        .game-btn-3d:active {
+            transform: translateY(4px);
+        }
+        /* Splash Screen Graphic */
+        .splash-screen {
+            position: fixed; inset: 0; 
+            background: radial-gradient(circle, #2e1065 0%, #090514 100%); 
+            z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; text-align: center; transition: opacity 0.5s ease, pointer-events 0.5s;
+        }
+        .splash-screen.hide { opacity: 0; pointer-events: none; }
+        
+        .audio-controls {
+            position: fixed; top: 20px; right: 20px; background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px); border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 16px; border-radius: 30px; display: flex; align-items: center; gap: 10px; z-index: 100;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+        /* Floating Animation for Header Icons */
+        @keyframes float {
+            0 { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating-icon { animation: float 3s ease-in-out infinite; }
+    </style>
+</head>
+<body class="text-white min-h-screen flex flex-col items-center p-4 md:p-8 relative overflow-x-hidden">
+
+    <div class="splash-screen" id="splashScreen">
+        <div class="bg-indigo-950/90 border-[4px] border-amber-400 backdrop-blur-2xl p-8 md:p-12 rounded-[36px] shadow-[0_0_5px_rgba(251,191,36,0.5)] max-w-md w-full mb-6 relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-400/10 rounded-full blur-2xl"></div>
+            
+<div class="text-6xl mb-4 floating-icon">🚀</div>
+<h1 class="text-xl md:text-2xl font-black text-amber-400 mb-2 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] leading-tight">
+    "မြန်မာအက္ခရာ ရှာပုံတော်"
+</h1>
+<p class="text-purple-200 font-bold text-sm mb-8">အပိုင်း (၂) - စွန့်စားခန်းအသစ်များ ကမ္ဘာ</p>
+
+<div id="splashActionArea">
+
+                <button onclick="unmuteIntroVideo()" class="game-btn-3d font-black py-4 px-8 text-xl text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-2xl shadow-[0_6px_0_#b45309] hover:shadow-[0_6px_0_#d97706] active:shadow-[0_2px_0_#b45309] text-center w-full block">
+                    🔊 အသံဖွင့်ပြီး စတင်မည်
+                </button>
+            </div>
+        </div>
+        <div class="text-[13px] font-black text-white/40 tracking-widest uppercase bg-black/20 px-4 py-1.5 rounded-full backdrop-blur-sm border border-white/5">
+            DESIGNED BY DASSY. DIGITAL ACADEMY
+        </div>
+    </div>
+
+    <div class="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none" id="videoBgWrapper">
+        <video id="bgVideo" autoplay muted loop playsinline class="w-full h-full object-cover opacity-30">
+            <source src="main-bg.mp4" type="video/mp4" />
+        </video>
+    </div>
+
+    <div class="audio-controls">
+        <button id="muteBtn" onclick="toggleMuteState()" class="text-xl focus:outline-none active:scale-90 transition-transform">🔊</button>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5" oninput="updateVolumeLevel(this.value)" class="w-20 h-2 bg-purple-950 rounded-lg appearance-none cursor-pointer accent-amber-400" />
+    </div>
+
+    <audio id="mainAudio" src="main-bgm.mp3" loop></audio>
+
+    <header class="w-full max-w-4xl text-center my-6 z-10">
+        <div class="inline-flex items-center gap-3 bg-white/5 px-6 py-2 rounded-full border border-white/10 backdrop-blur-md mb-4 shadow-inner">
+            <span class="text-amber-400 text-lg">✨</span>
+            <span class="text-xs md:text-sm font-black tracking-wider text-purple-300 uppercase">Level 2: စ မှ ည စွန့်စားခန်းမြေပုံ</span>
+            <span class="text-amber-400 text-lg">✨</span>
+        </div>
+
+        <h1 class="text-2xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-300 tracking-wide drop-shadow-[0_6px_12px_rgba(0,0,0,0.6)] py-1">
+    မြန်မာစာအက္ခရာ စွန့်စားခန်း
+</h1>
+
+        <p class="text-purple-200/80 text-sm md:text-base mt-3 font-bold max-w-xl mx-auto drop-shadow">
+            သားသားမီးမီးတို့ရေ... အပိုင်း(၂) ဂိမ်းကမ္ဘာမှာ အက္ခရာလေးတွေကို တူတူလိုက်ရှာပြီး ကြယ်ပွင့်လေးတွေ စုကြရအောင်။ 🌟
+        </p>
+    </header>
+
+    <main class="w-full max-w-4xl space-y-8 z-10 mb-16 px-2">
+
+        <!-- STAGE 01 -->
+        <section class="adventure-card p-5 rounded-[28px] shadow-2xl relative overflow-hidden">
+            <div class="absolute -right-6 -bottom-6 text-7xl opacity-10">🎧</div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4 mb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 flex items-center justify-center text-2xl border border-cyan-400/30 shadow-inner">🎧</div>
+                    <div>
+                        <span class="text-[11px] font-black tracking-wider text-cyan-400 block uppercase">STAGE 01</span>
+                        <h3 class="text-lg font-black text-white">အက္ခရာအသံနှင့် အရေးလေ့ကျင့်ခန်း</h3>
+                    </div>
+                </div>
+                <div class="flex gap-1 text-yellow-400 text-lg bg-black/20 px-3 py-1 rounded-full w-max">⭐ ⭐ ⭐</div>
+            </div>
+            <div class="max-w-xl">
+                <a href="level2.html" class="game-btn-3d block bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 border-b-[6px] border-blue-800 p-5 rounded-2xl text-left shadow-lg">
+                    <span class="text-xl font-black text-white flex items-center gap-2">✍️ (စ မှ ည) စာရေးသားခြင်းကမ္ဘာ</span>
+                    <p class="text-xs text-cyan-100 mt-1 font-medium">စ၊ ဆ၊ ဇ၊ ဈ၊ ည အက္ခရာများ၏ အသံထွက်များကို နားထောင်ပြီး လက်ရေးလှလှလေး စတင်ရေးဆွဲကြမယ်။</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- STAGE 02 -->
+        <section class="adventure-card p-5 rounded-[28px] shadow-2xl relative overflow-hidden">
+            <div class="absolute -right-6 -bottom-6 text-7xl opacity-10">🎨</div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4 mb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/20 flex items-center justify-center text-2xl border border-amber-400/30 shadow-inner">🎨</div>
+                    <div>
+                        <span class="text-[11px] font-black tracking-wider text-amber-400 block uppercase">STAGE 02</span>
+                        <h3 class="text-lg font-black text-white">အက္ခရာ ဆေးရောင်ခြယ်ကမ္ဘာ</h3>
+                    </div>
+                </div>
+                <div class="flex gap-1 text-yellow-400 text-lg bg-black/20 px-3 py-1 rounded-full w-max">⭐ ⭐ ⭐</div>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
+                <a href="စ(paint).html" class="game-btn-3d block bg-gradient-to-b from-amber-500 to-orange-600 border-b-[6px] border-orange-800 p-4 rounded-2xl text-center shadow-md group">
+                    <span class="block text-3xl font-black text-white drop-shadow group-hover:scale-110 transition-transform">စ</span>
+                    <span class="text-[10px] text-amber-100 font-bold bg-black/20 px-2 py-0.5 rounded-full mt-1 inline-block">ဆေးခြယ်မယ်</span>
+                </a>
+                <a href="ဆ(paint).html" class="game-btn-3d block bg-gradient-to-b from-amber-500 to-orange-600 border-b-[6px] border-orange-800 p-4 rounded-2xl text-center shadow-md group">
+                    <span class="block text-3xl font-black text-white drop-shadow group-hover:scale-110 transition-transform">ဆ</span>
+                    <span class="text-[10px] text-amber-100 font-bold bg-black/20 px-2 py-0.5 rounded-full mt-1 inline-block">ဆေးခြယ်မယ်</span>
+                </a>
+                <a href="ဇ(paint).html" class="game-btn-3d block bg-gradient-to-b from-amber-500 to-orange-600 border-b-[6px] border-orange-800 p-4 rounded-2xl text-center shadow-md group">
+                    <span class="block text-3xl font-black text-white drop-shadow group-hover:scale-110 transition-transform">ဇ</span>
+                    <span class="text-[10px] text-amber-100 font-bold bg-black/20 px-2 py-0.5 rounded-full mt-1 inline-block">ဆေးခြယ်မယ်</span>
+                </a>
+                <a href="ဈ(paint).html" class="game-btn-3d block bg-gradient-to-b from-amber-500 to-orange-600 border-b-[6px] border-orange-800 p-4 rounded-2xl text-center shadow-md group">
+                    <span class="block text-3xl font-black text-white drop-shadow group-hover:scale-110 transition-transform">ဈ</span>
+                    <span class="text-[10px] text-amber-100 font-bold bg-black/20 px-2 py-0.5 rounded-full mt-1 inline-block">ဆေးခြယ်မယ်</span>
+                </a>
+                <a href="ည(paint).html" class="game-btn-3d block bg-gradient-to-b from-amber-500 to-orange-600 border-b-[6px] border-orange-800 p-4 rounded-2xl text-center shadow-md group">
+                    <span class="block text-3xl font-black text-white drop-shadow group-hover:scale-110 transition-transform">ည</span>
+                    <span class="text-[10px] text-amber-100 font-bold bg-black/20 px-2 py-0.5 rounded-full mt-1 inline-block">ဆေးခြယ်မယ်</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- STAGE 03 -->
+        <section class="adventure-card p-5 rounded-[28px] shadow-2xl relative overflow-hidden">
+            <div class="absolute -right-6 -bottom-6 text-7xl opacity-10">🏹</div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4 mb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-2xl border border-emerald-400/30 shadow-inner">🏹</div>
+                    <div>
+                        <span class="text-[11px] font-black tracking-wider text-emerald-400 block uppercase">STAGE 03</span>
+                        <h3 class="text-lg font-black text-white">အက္ခရာဖမ်းခြင်း စွန့်စားခန်းဂိမ်း</h3>
+                    </div>
+                </div>
+                <div class="flex gap-1 text-yellow-400 text-lg bg-black/20 px-3 py-1 rounded-full w-max">⭐ ⭐ ⭐</div>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
+                <a href="စ.html" class="game-btn-3d block bg-gradient-to-b from-emerald-600 to-teal-700 border-b-[6px] border-teal-900 p-4 rounded-2xl text-center shadow-md group">
+                    <span class="block text-3xl font-black text-white drop-shadow group-hover:scale-110 transition-transform">စ</span>
+                    <span class="text-[10px] text-emerald-200 font-bold bg-black/20 px-2 py-0.5 rounded-full mt-1 inline-block">ပစ်ခတ်ဂိမ်း</span>
+                </a>
+                <a href="ဆ.html" class="game-btn-3d block bg-gradient-to-b from-emerald-600 to-teal-700 border-b-[6px] border-teal-900 p-4 rounded-2xl text-center shadow-md group">
+                    <span class="block text-3xl font-black text-white drop-shadow group-hover:scale-110 transition-transform">ဆ</span>
+                    <span class="text-[10px] text-emerald-200 font-bold bg-black/20 px-2 py-0.5 rounded-full mt-1 inline-block">ပစ်ခတ်ဂိမ်း</span>
+                </a>
+                <a href="ဇ.html" class="game-btn-3d block bg-gradient-to-b from-emerald-600 to-teal-700 border-b-[6px] border-teal-900 p-4 rounded-2xl text-center shadow-md group">
+                    <span class="block text-3xl font-black text-white drop-shadow group-hover:scale-110 transition-transform">ဇ</span>
+                    <span class="text-[10px] text-emerald-200 font-bold bg-black/20 px-2 py-0.5 rounded-full mt-1 inline-block">ပစ်ခတ်ဂိမ်း</span>
+                </a>
+                <a href="ဈ.html" class="game-btn-3d block bg-gradient-to-b from-emerald-600 to-teal-700 border-b-[6px] border-teal-900 p-4 rounded-2xl text-center shadow-md group">
+                    <span class="block text-3xl font-black text-white drop-shadow group-hover:scale-110 transition-transform">ဈ</span>
+                    <span class="text-[10px] text-emerald-200 font-bold bg-black/20 px-2 py-0.5 rounded-full mt-1 inline-block">ပစ်ခတ်ဂိမ်း</span>
+                </a>
+                <a href="ည.html" class="game-btn-3d block bg-gradient-to-b from-emerald-600 to-teal-700 border-b-[6px] border-teal-900 p-4 rounded-2xl text-center shadow-md group">
+                    <span class="block text-3xl font-black text-white drop-shadow group-hover:scale-110 transition-transform">ည</span>
+                    <span class="text-[10px] text-emerald-200 font-bold bg-black/20 px-2 py-0.5 rounded-full mt-1 inline-block">ပစ်ခတ်ဂိမ်း</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- STAGE 04 -->
+        <section class="adventure-card p-5 rounded-[28px] shadow-2xl relative overflow-hidden">
+            <div class="absolute -right-6 -bottom-6 text-7xl opacity-10">🔍</div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4 mb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center text-2xl border border-purple-400/30 shadow-inner">🔍</div>
+                    <div>
+                        <span class="text-[11px] font-black tracking-wider text-purple-400 block uppercase">STAGE 04</span>
+                        <h3 class="text-lg font-black text-white">အက္ခရာ တူတူပုန်းတမ်းနှင့် စုံထောက်ဂိမ်း</h3>
+                    </div>
+                </div>
+                <div class="flex gap-1 text-yellow-400 text-lg bg-black/20 px-3 py-1 rounded-full w-max">⭐ ⭐ ⭐</div>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a href="စ-ညhide and seek.html" class="game-btn-3d block bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 border-b-[6px] border-purple-900 p-5 rounded-2xl shadow-lg text-left">
+                    <span class="text-lg font-black text-white block mb-1">🌳 ချုံပုတ်အတွင်း သူငယ်ချင်းရှာဖွေစနစ်</span>
+                    <p class="text-xs text-purple-100 font-medium">ချုံပုတ်၊ အိမ်နှင့် သစ်ပင်နောက်ကွယ်မှာ ပုန်းနေတဲ့ စ၊ ဆ၊ ဇ၊ ဈ၊ ည တို့ကို အဆင့်ဆင့် လိုက်ရှာပါ။</p>
+                </a>
+                
+                <a href="စ-ည(detective).html" class="game-btn-3d block bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 border-b-[6px] border-indigo-900 p-5 rounded-2xl shadow-lg text-left">
+                    <span class="text-lg font-black text-white block mb-1">🕵️‍♂️ ပူပေါင်းစုံထောက်ကြီး ဂိမ်းအသစ်</span>
+                    <p class="text-xs text-sky-100 font-medium">ဝှက်ထားတဲ့ ပူပေါင်းလေးတွေထဲက သတ်မှတ်ထားတဲ့ အက္ခရာတွေကို အချိန်မပြည့်ခင် လျှင်မြန်စွာ လိုက်လံခွဲကြမယ်။</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- FINAL STAGE -->
+        <section class="adventure-card p-6 rounded-[32px] shadow-2xl border-4 border-amber-400/60 bg-gradient-to-br from-indigo-950 via-amber-950/40 to-slate-900 relative overflow-hidden shadow-[0_0_25px_rgba(245,158,11,0.2)]">
+            <div class="absolute -right-4 -bottom-4 text-8xl opacity-10 floating-icon">🏆</div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-amber-500/20 pb-4 mb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center text-3xl font-black shadow-lg animate-bounce">🏆</div>
+                    <div>
+                        <span class="text-[11px] font-black tracking-widest text-amber-400 block uppercase">FINAL STAGE</span>
+                        <h3 class="text-xl font-black text-amber-300">Ultimate သစ်တောစွန့်စားခန်းကြီး</h3>
+                    </div>
+                </div>
+                <div class="text-xs font-black bg-amber-400 text-slate-950 px-4 py-1.5 rounded-full shadow-md uppercase tracking-wider">Super Test</div>
+            </div>
+            
+            <div class="max-w-xl">
+                <a href="စ-ည final test.html" class="game-btn-3d block bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 border-b-[6px] border-orange-700 p-5 rounded-2xl text-center shadow-[0_10px_25px_rgba(245,158,11,0.3)]">
+                    <span class="text-xl font-black text-slate-950 flex items-center justify-center gap-2">🦁 Safari Final Ultimate Stage</span>
+                    <p class="text-xs text-slate-900 mt-1 font-black">ရွေ့လျားနေတဲ့ တိရိစ္ဆာန်လေးတွေဆီက စ-ည အက္ခရာအားလုံးကို ကယ်တင်ပြီး ဂိမ်းသူရဲကောင်း ဖြစ်လာအောင် ဆော့ကြမယ်။</p>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="w-full text-center pb-6 text-[11px] font-black tracking-widest uppercase z-50 relative mt-auto">
+        <span class="bg-slate-950/80 text-amber-400 px-5 py-2.5 rounded-full backdrop-blur-md shadow-2xl border border-amber-500/20">
+            DESIGNED BY DASSY. DIGITAL ACADEMY
+        </span>
+        <div class="mt-4 text-[9px] text-purple-300/40 font-bold tracking-normal">
+            &copy; 2026 Alphabet Quest Ecosystem . Curriculum Based Structure
+        </div>
+    </footer>
+
+    <script>
+        const backgroundVideoElement = document.getElementById('bgVideo');
+        const videoBgWrapper = document.getElementById('videoBgWrapper');
+        const mainAudioMusicElement = document.getElementById('mainAudio');
+        const muteStateToggleButton = document.getElementById('muteBtn');
+        const audioVolumeSliderControl = document.getElementById('volumeSlider');
+        const splashActionArea = document.getElementById('splashActionArea');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('fromGame') === 'true') {
+                document.getElementById('splashScreen').style.display = 'none';
+                if (videoBgWrapper) videoBgWrapper.style.display = 'none';
+                
+                mainAudioMusicElement.volume = audioVolumeSliderControl.value;
+                mainAudioMusicElement.play().catch(e => console.log("Audio autoplay alert:", e));
+            }
+        });
+
+        function unmuteIntroVideo() {
+            backgroundVideoElement.muted = false;
+            backgroundVideoElement.play();
+            
+            splashActionArea.innerHTML = `
+                <button onclick="initializeEcosystem()" class="game-btn-3d font-black py-4 px-10 text-xl text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 rounded-2xl shadow-[0_6px_0_#065f46] active:shadow-[0_2px_0_#065f46] w-full text-center block">
+                    စွန့်စားခန်းစတင်မယ် 🚀
+                </button>
+            `;
+        }
+
+        function initializeEcosystem() {
+            document.getElementById('splashScreen').classList.add('hide');
+            
+            backgroundVideoElement.pause();
+            backgroundVideoElement.src = "";
+            backgroundVideoElement.load();
+            if (videoBgWrapper) {
+                videoBgWrapper.style.display = 'none';
+            }
+            
+            mainAudioMusicElement.volume = audioVolumeSliderControl.value;
+            mainAudioMusicElement.play().catch(error => {
+                console.log("Audio autoplay restriction triggered: ", error);
+            });
+        }
+
+        function updateVolumeLevel(targetVolume) {
+            mainAudioMusicElement.volume = targetVolume;
+            if (targetVolume == 0) {
+                mainAudioMusicElement.muted = true;
+                muteStateToggleButton.textContent = '🔇';
+            } else {
+                mainAudioMusicElement.muted = false;
+                muteStateToggleButton.textContent = '🔊';
+            }
+        }
+
+        function toggleMuteState() {
+            if (mainAudioMusicElement.muted) {
+                mainAudioMusicElement.muted = false;
+                muteStateToggleButton.textContent = '🔊';
+                if(mainAudioMusicElement.volume === 0) {
+                    mainAudioMusicElement.volume = 0.5;
+                    audioVolumeSliderControl.value = 0.5;
+                }
+            } else {
+                mainAudioMusicElement.muted = true;
+                muteStateToggleButton.textContent = '🔇';
+            }
+        }
+    </script>
+</body>
+</html>
