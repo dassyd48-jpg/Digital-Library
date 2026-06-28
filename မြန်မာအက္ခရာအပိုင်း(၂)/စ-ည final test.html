@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- ဖုန်း Browser များမှ အရောင်ကို အတင်းပြောင်းလဲခြင်း (Dark Mode Inversion) ကို လုံးဝတားဆီးရန် -->
+    <meta name="color-scheme" content="light">
     <title>Hidden Alphabet Safari - Difficulty Levels 1-6</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -20,6 +22,7 @@
             user-select: none;
             -webkit-user-select: none;
             touch-action: none;
+            color-scheme: light !important;
         }
         canvas {
             display: block;
@@ -28,6 +31,16 @@
         }
         .burmese-text {
             font-family: 'Noto Sans Myanmar', sans-serif;
+        }
+
+        /* --------------------------------------------------------------------------
+           Force Light Mode Styles / Prevent Dark Mode Inversion Filters
+        -------------------------------------------------------------------------- */
+        @media (prefers-color-scheme: dark) {
+            html, body, canvas, .intro-screen, div, button, span {
+                filter: none !important;
+                -webkit-filter: none !important;
+            }
         }
 
         /* ==========================================================================
@@ -231,7 +244,7 @@
             { emoji: '🐬', mode: 'swim' },
             { emoji: '🐋', mode: 'swim' },
             { emoji: '🦈', mode: 'swim' },
-            { emoji: '🐢', mode: 'swim' },
+            { emoji: 'TURTLE', mode: 'swim' }, // '🐢' Emoji အတွက် သီးသန့် ID ပေးထားခြင်း
             { emoji: '🐠', mode: 'swim' },
             { emoji: '🐙', mode: 'crawl' },
             { emoji: '🦀', mode: 'crawl' }
@@ -324,7 +337,6 @@
             let letter = gameState.targetLetter;
             
             if (!isTarget) {
-                // Mix of other target group letters or pure distractors based on level
                 if (Math.random() > 0.5) {
                     const pool = levelTargets.filter(l => l !== gameState.targetLetter);
                     letter = pool[Math.floor(Math.random() * pool.length)];
@@ -451,7 +463,8 @@
                 const sway = item.isStatic ? 0 : Math.sin(Date.now() * 0.0015 + item.swayOffset) * 0.06;
                 ctx.translate(item.x, item.y);
                 ctx.rotate(sway);
-                ctx.font = `${item.size}px Arial`;
+                // Font Family တွင် "Apple Color Emoji" နှင့် "Segoe UI Emoji" ကို အတင်းသတ်မှတ်ပေးခြင်းဖြင့် ဖုန်းပေါ်တွင် အရောင်ပျက်ခြင်းကို ကာကွယ်သည်
+                ctx.font = `${item.size}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", Arial`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'bottom';
                 ctx.fillText(item.emoji, 0, 0);
@@ -482,10 +495,15 @@
                 const swimSquish = 1.0 + Math.sin(animal.animTime * 3) * 0.04;
                 ctx.scale(1.0, swimSquish);
 
-                ctx.font = '56px Arial';
+                // 'TURTLE' ဖြစ်ခဲ့လျှင် လိပ်ရုပ်ဆွဲရန်၊ မဟုတ်ပါက မူရင်းအတိုင်း Emoji ဆွဲရန်
+                ctx.font = '56px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", Arial';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(animal.emoji, 0, 0);
+                if (animal.emoji === 'TURTLE') {
+                    ctx.fillText('🐢', 0, 0);
+                } else {
+                    ctx.fillText(animal.emoji, 0, 0);
+                }
                 ctx.restore();
 
                 // Oxygen Bubble
@@ -560,7 +578,6 @@
             
             gameState.isPlaying = true;
 
-            // Start spawning with dynamic interval based on difficulty
             if (spawnIntervalId) clearInterval(spawnIntervalId);
             spawnIntervalId = setInterval(spawnMarineLife, difficultyLevels[gameState.currentLevel].spawnRate);
         }
