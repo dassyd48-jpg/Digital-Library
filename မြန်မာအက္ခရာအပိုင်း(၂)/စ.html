@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dassy's Alphabet Quest - Mobile Portrait</title>
+    <title>Dassy's Alphabet Quest - Level 1-4</title>
     <!-- Tailwind CSS for sleek UI overlay -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght=400;700;900&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
@@ -37,19 +37,17 @@
 
     <!-- VERTICAL MOBILE HUD OVERLAY -->
     <div id="hud" class="absolute top-4 left-3 right-3 pointer-events-none z-30 flex flex-col gap-2">
-        <!-- Top Status: Target, Level and Score split row -->
         <div class="flex justify-between items-center gap-2">
-            <!-- Left: Target Indicator -->
+            <!-- Target Indicator & Progress Bar -->
             <div class="flex items-center gap-2 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 flex-1">
                 <span class="text-white font-black text-[10px] uppercase tracking-wider">Get:</span>
                 <span id="target-letter-display" class="burmese-font text-xl text-amber-400 font-bold">စ</span>
-                <!-- XP Bar inside target box for clean design -->
                 <div class="relative flex-1 h-2 bg-white/10 rounded-full overflow-hidden ml-1">
                     <div id="xp-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-amber-500 to-pink-500 w-0 transition-all"></div>
                 </div>
             </div>
 
-            <!-- Right: Score & Level -->
+            <!-- Score & Level Display -->
             <div class="flex items-center gap-2 flex-1 justify-end">
                 <div class="bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-center min-w-[70px]">
                     <span id="score-display" class="text-white text-sm font-black block">0</span>
@@ -58,7 +56,7 @@
             </div>
         </div>
 
-        <!-- Second Row: Hearts & Exit button -->
+        <!-- Hearts & Exit button -->
         <div class="flex justify-between items-center gap-2">
             <div id="health-grid" class="bg-black/50 backdrop-blur-md px-3 py-2 rounded-xl border border-white/10 flex gap-1 items-center flex-1 h-[38px]">
                 <!-- Hearts fill here -->
@@ -72,31 +70,32 @@
     <!-- MOBILE CANVAS LAYER -->
     <canvas id="gameCanvas"></canvas>
 
-    <!-- OVERLAY START/GAMEOVER SCREEN -->
+    <!-- OVERLAY START/GAMEOVER/VICTORY SCREEN -->
     <div id="overlay-screen" class="absolute inset-0 bg-slate-950/90 backdrop-blur-lg z-50 flex items-center justify-center p-6">
         <div class="w-full max-w-sm bg-gradient-to-b from-indigo-950 to-slate-900 border border-indigo-500/30 rounded-[28px] p-6 text-center shadow-2xl relative overflow-hidden">
             <h1 id="menu-title" class="text-2xl md:text-3xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-rose-400 to-pink-500 mb-1">SUNSET HILLS</h1>
             <p id="menu-subtitle" class="text-indigo-200/60 font-bold text-[10px] uppercase tracking-widest mb-6">Mobile Alphabet Quest</p>
 
-            <!-- STATS FOR MOBILE -->
+            <!-- STATS CONTAINER -->
             <div id="game-stats" class="hidden bg-black/40 border border-white/5 rounded-xl p-4 mb-6 text-left space-y-2.5 burmese-font text-sm">
                 <div class="flex justify-between items-center border-b border-white/5 pb-1.5">
-                    <span class="text-emerald-400 font-bold">🟢 မှန်ကန်သော အက္ခရာများ :</span>
+                    <span class="text-emerald-400 font-bold">🟢 ဖမ်းမိသော "စ" အရေအတွက် :</span>
                     <span id="stat-coins" class="text-white font-black">0</span>
                 </div>
                 <div class="flex justify-between items-center border-b border-white/5 pb-1.5">
-                    <span class="text-rose-400 font-bold">🔴 မှားယွင်းသော အက္ခရာများ :</span>
+                    <span class="text-rose-400 font-bold">🔴 မှားဖျက်မိသော အက္ခရာများ :</span>
                     <span id="stat-kills" class="text-white font-black">0</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-amber-400 font-bold">👑 ရောက်ရှိသွားသော အဆင့် :</span>
+                    <span class="text-amber-400 font-bold">👑 ရောက်ရှိခဲ့သော အဆင့် :</span>
                     <span id="stat-level" class="text-white font-black">Lvl 1</span>
                 </div>
             </div>
 
+            <!-- LEVEL UP / VICTORY ALERT -->
             <div id="levelup-alert" class="hidden mb-6 animate-bounce">
-                <div class="text-4xl mb-1">🌅✨</div>
-                <h3 class="text-xl font-black text-amber-400 uppercase">Sunset Level Up!</h3>
+                <div id="alert-emoji" class="text-4xl mb-1">🌅✨</div>
+                <h3 id="alert-title" class="text-xl font-black text-amber-400 uppercase">Level Up!</h3>
             </div>
 
             <div class="space-y-2.5">
@@ -114,7 +113,6 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         
-        // Mobile Dynamic Aspect Ratio (ဖုန်း Screen အလိုက် Dynamic ဖြစ်စေရန်)
         let CANVAS_WIDTH = window.innerWidth;
         let CANVAS_HEIGHT = window.innerHeight;
 
@@ -130,7 +128,7 @@
         }
         window.addEventListener('resize', updateCanvasSize);
 
-        // Sound System
+        // Sound Engine
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playSound(type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -155,30 +153,38 @@
                 osc.start(); osc.stop(audioCtx.currentTime + 0.25);
             } else if (type === 'levelUp') {
                 osc.type = 'triangle';
-                const notes = [523.25, 659.25, 783.99];
+                const notes = [523.25, 659.25, 783.99, 1046.50];
                 notes.forEach((freq, idx) => {
                     const localOsc = audioCtx.createOscillator();
                     const localGain = audioCtx.createGain();
                     localOsc.type = 'triangle';
                     localOsc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.08);
                     localGain.gain.setValueAtTime(0.1, audioCtx.currentTime + idx * 0.08);
-                    localGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + idx * 0.08 + 0.15);
+                    localGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + idx * 0.08 + 0.2);
                     localOsc.connect(localGain);
                     localGain.connect(audioCtx.destination);
                     localOsc.start(audioCtx.currentTime + idx * 0.08);
-                    localOsc.stop(audioCtx.currentTime + idx * 0.08 + 0.15);
+                    localOsc.stop(audioCtx.currentTime + idx * 0.08 + 0.2);
                 });
             }
         }
 
-        let game = { running: false, score: 0, correctPops: 0, incorrectPops: 0 };
+        let game = { running: false, score: 0, correctPops: 0, incorrectPops: 0, isWon: false };
         let player = { x: 0, y: 0, radius: 20, hp: 5, maxHp: 5, xp: 0, xpToNextLevel: 100, level: 1 };
         let entities = { letterBubbles: [], projectiles: [] };
         let input = { left: false, right: false, isMouseOrTouch: false, targetX: 0 };
         let scenery = { mountains: [], stars: [] };
 
-        let TARGET_LETTER = "စ";
-        const ALL_BURMESE_LETTERS = ["က", "ခ", "ဂ", "ဃ", "င", "စ", "ဆ", "ဇ", "ဈ", "ည", "တ", "ထ", "ဒ", "န", "ပ", "ဖ", "ဗ", "မ", "ယ", "ရ", "လ", "ဝ", "သ", "အ"];
+        const TARGET_LETTER = "စ"; // Fixed Target for Dassy
+        const ALL_BURMESE_LETTERS = ["က", "ခ", "ဂ", "င", "ဆ", "ည", "တ", "ထ", "န", "ပ", "ဖ", "မ", "လ", "ဝ", "သ", "အ"];
+
+        // 🌟 LEVEL 1 TO 4 CONFIGURATIONS MATRIX
+        const LEVEL_CONFIGS = {
+            1: { minSpeed: 1.2, maxSpeed: 1.8, spawnRate: 1.6, targetChance: 0.60, fireRate: 0.40 }, // Easy
+            2: { minSpeed: 1.8, maxSpeed: 2.5, spawnRate: 1.2, targetChance: 0.45, fireRate: 0.35 }, // Medium
+            3: { minSpeed: 2.5, maxSpeed: 3.5, spawnRate: 0.9, targetChance: 0.35, fireRate: 0.30 }, // Hard
+            4: { minSpeed: 3.6, maxSpeed: 4.8, spawnRate: 0.6, targetChance: 0.30, fireRate: 0.25 }  // Super Fast
+        };
 
         function initScenery() {
             scenery.mountains = [];
@@ -198,16 +204,19 @@
         }
 
         function createBubble() {
-            const radius = 24; // Mobile optimized size
+            const config = LEVEL_CONFIGS[player.level] || LEVEL_CONFIGS[1];
+            const radius = 24;
             const x = radius + Math.random() * (CANVAS_WIDTH - radius * 2);
             const y = -radius;
-            const isTarget = Math.random() < 0.4;
+            
+            // Level အလိုက် "စ" ထွက်လာမယ့် ရာခိုင်နှုန်း တွက်ချက်ခြင်း
+            const isTarget = Math.random() < config.targetChance;
             const letter = isTarget ? TARGET_LETTER : ALL_BURMESE_LETTERS[Math.floor(Math.random() * ALL_BURMESE_LETTERS.length)];
-            const colorHue = isTarget ? 35 : 275;
+            const colorHue = isTarget ? 35 : 275; // Gold for target, Purple for obstacle
             
             entities.letterBubbles.push({
                 x, y, radius, letter, isTarget,
-                speed: (1.5 + Math.random() * 1.0) * (1 + (player.level - 1) * 0.12),
+                speed: config.minSpeed + Math.random() * (config.maxSpeed - config.minSpeed),
                 hue: colorHue, pulse: 0, pulseSpeed: 0.05
             });
         }
@@ -218,7 +227,6 @@
             return ((clientX - rect.left) / rect.width) * CANVAS_WIDTH;
         }
 
-        // Touch input handling
         canvas.addEventListener('mousemove', (e) => { input.isMouseOrTouch = true; input.targetX = getCanvasCoords(e); });
         canvas.addEventListener('touchstart', (e) => { input.isMouseOrTouch = true; input.targetX = getCanvasCoords(e); }, { passive: true });
         canvas.addEventListener('touchmove', (e) => { input.isMouseOrTouch = true; input.targetX = getCanvasCoords(e); }, { passive: true });
@@ -230,18 +238,16 @@
             game.timeAcc += dt;
             if (game.timeAcc >= 1.0) { game.score += 1; game.timeAcc = 0; updateHUD(); }
 
-            if (input.isMouseOrTouch) {
-                player.x = input.targetX;
-            }
-
+            if (input.isMouseOrTouch) player.x = input.targetX;
             if (player.x < player.radius) player.x = player.radius;
             if (player.x > CANVAS_WIDTH - player.radius) player.x = CANVAS_WIDTH - player.radius;
 
-            // Projectile auto-fire
+            // Projectile timers mapped to dynamic Level Config
+            const config = LEVEL_CONFIGS[player.level] || LEVEL_CONFIGS[1];
             if (!player.lastShot) player.lastShot = 0;
             player.lastShot += dt;
-            if (player.lastShot >= 0.35) {
-                entities.projectiles.push({ x: player.x, y: player.y - player.radius, radius: 4, speed: 500 });
+            if (player.lastShot >= config.fireRate) {
+                entities.projectiles.push({ x: player.x, y: player.y - player.radius, radius: 4, speed: 550 });
                 player.lastShot = 0;
             }
 
@@ -251,15 +257,15 @@
                 if (p.y < -p.radius) entities.projectiles.splice(i, 1);
             }
 
-            // Spawning
+            // Spawning mapped to dynamic Level Config
             if (!game.lastSpawn) game.lastSpawn = 0;
             game.lastSpawn += dt;
-            if (game.lastSpawn >= Math.max(0.7, 1.5 - (player.level * 0.1))) {
+            if (game.lastSpawn >= config.spawnRate) {
                 createBubble();
                 game.lastSpawn = 0;
             }
 
-            // Bubble math & interaction
+            // Interactions
             for (let i = entities.letterBubbles.length - 1; i >= 0; i--) {
                 const b = entities.letterBubbles[i];
                 b.y += b.speed;
@@ -296,8 +302,14 @@
         }
 
         function handleCorrectCollection() {
-            playSound('pop'); game.score += 10; game.correctPops++; player.xp += 20;
-            if (player.xp >= player.xpToNextLevel) triggerLevelUp();
+            playSound('pop'); game.score += 10 * player.level; game.correctPops++; player.xp += 20;
+            if (player.xp >= player.xpToNextLevel) {
+                if (player.level >= 4) {
+                    triggerVictory(); // Level 4 ပြီးရင် နိုင်ပြီ
+                } else {
+                    triggerLevelUp();
+                }
+            }
             updateHUD();
         }
 
@@ -309,10 +321,31 @@
         function triggerLevelUp() {
             player.level++; player.xp = 0; playSound('levelUp');
             game.running = false;
-            document.getElementById('menu-title').innerText = "LEVEL UP!";
+            document.getElementById('menu-title').innerText = `LEVEL ${player.level} သို့!`;
+            document.getElementById('menu-subtitle').innerText = "ပိုမိုမြန်ဆန်လာပါပြီ သတိထားပါ ကလေးတို့ရေ။";
+            document.getElementById('alert-emoji').innerText = "🌅🚀✨";
+            document.getElementById('alert-title').innerText = `LEVEL ${player.level} တက်လှမ်းပါပြီ`;
             document.getElementById('levelup-alert').classList.remove('hidden');
             document.getElementById('game-stats').classList.add('hidden');
             document.getElementById('start-btn').innerText = "နောက်တစ်ဆင့် သွားမည်";
+            document.getElementById('overlay-screen').classList.remove('hidden');
+        }
+
+        function triggerVictory() {
+            game.running = false; game.isWon = true; playSound('levelUp');
+            document.getElementById('exit-btn').classList.add('hidden');
+            
+            document.getElementById('stat-coins').innerText = game.correctPops;
+            document.getElementById('stat-kills').innerText = game.incorrectPops;
+            document.getElementById('stat-level').innerText = "Lvl 4 (Completed)";
+            document.getElementById('game-stats').classList.remove('hidden');
+
+            document.getElementById('menu-title').innerText = "🏆 WINNER! 🏆";
+            document.getElementById('menu-subtitle').innerText = "အဆင့်အားလုံးကို အောင်မြင်စွာ ဆော့ပြီးပါပြီ။";
+            document.getElementById('alert-emoji').innerText = "👑👑👑";
+            document.getElementById('alert-title').innerText = "ထူးချွန်လှပါတယ် ကလေးတို့ရေ";
+            document.getElementById('levelup-alert').classList.remove('hidden');
+            document.getElementById('start-btn').innerText = "🔄 ပြန်လည်ကစားမည်";
             document.getElementById('overlay-screen').classList.remove('hidden');
         }
 
@@ -335,18 +368,15 @@
         function render() {
             ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-            // Sky Background
             let skyGrad = ctx.createLinearGradient(0, 0, 0, CANVAS_HEIGHT);
             skyGrad.addColorStop(0, '#0c1033'); skyGrad.addColorStop(0.5, '#2e1065'); skyGrad.addColorStop(1, '#f97316');
             ctx.fillStyle = skyGrad; ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-            // Stars
             scenery.stars.forEach(s => {
                 ctx.fillStyle = `rgba(254, 240, 138, ${s.alpha})`;
                 ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
             });
 
-            // Mountains
             scenery.mountains.forEach(m => {
                 ctx.fillStyle = m.color; ctx.beginPath(); ctx.moveTo(m.x, CANVAS_HEIGHT);
                 for (let i = 0; i <= CANVAS_WIDTH + 100; i += 20) {
@@ -355,18 +385,14 @@
                 ctx.lineTo(CANVAS_WIDTH, CANVAS_HEIGHT); ctx.closePath(); ctx.fill();
             });
 
-            // Green Ground Line
             ctx.fillStyle = '#15803d'; ctx.fillRect(0, CANVAS_HEIGHT - 25, CANVAS_WIDTH, 25);
 
-            // Draw Vector Player Ship (ဝိုင်းစက်စက် အချိုးကျ ပုံစံမှန်ဖြစ်အောင် ရေးဆွဲထားသည်)
+            // Ship drawing
             ctx.save();
             ctx.translate(player.x, player.y);
-            
             ctx.fillStyle = '#ffffff'; ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.moveTo(0, -24); ctx.lineTo(16, 12); ctx.lineTo(0, 4); ctx.lineTo(-16, 12);
+            ctx.beginPath(); ctx.moveTo(0, -24); ctx.lineTo(16, 12); ctx.lineTo(0, 4); ctx.lineTo(-16, 12);
             ctx.closePath(); ctx.fill(); ctx.stroke();
-
             ctx.fillStyle = '#38bdf8'; ctx.beginPath(); ctx.arc(0, -4, 6, 0, Math.PI*2); ctx.fill();
             ctx.restore();
 
@@ -376,7 +402,7 @@
                 ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
             });
 
-            // Draw Letters Inside PERFECT ROUND CIRCLES (လုံးဝ ဝိုင်းစက်နေစေရန် မူရင်း Canvas Coords ဖြင့်သာဆွဲသည်)
+            // Perfect Circles Letter Bubble Engine
             entities.letterBubbles.forEach(b => {
                 ctx.save();
                 ctx.translate(b.x, b.y);
@@ -392,7 +418,6 @@
                 
                 ctx.beginPath(); ctx.arc(0, 0, b.radius, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
-                // Letter text
                 ctx.fillStyle = '#ffffff';
                 ctx.font = "bold 24px 'Pyidaungsu', sans-serif";
                 ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -415,15 +440,26 @@
 
         function startGame() {
             updateCanvasSize();
-            player.hp = player.maxHp; player.xp = 0; player.level = 1;
-            player.x = CANVAS_WIDTH / 2; player.y = CANVAS_HEIGHT - 65;
-            game.score = 0; game.correctPops = 0; game.incorrectPops = 0;
-            entities.letterBubbles = []; entities.projectiles = [];
+            if (game.isWon || player.hp <= 0) {
+                player.level = 1;
+                game.score = 0;
+                game.correctPops = 0;
+                game.incorrectPops = 0;
+            }
+            game.isWon = false;
+            player.hp = player.maxHp; 
+            player.xp = 0;
+            player.x = CANVAS_WIDTH / 2; 
+            player.y = CANVAS_HEIGHT - 65;
+            
+            entities.letterBubbles = []; 
+            entities.projectiles = [];
             input.targetX = CANVAS_WIDTH / 2;
             
             initScenery(); updateHUD();
             document.getElementById('exit-btn').classList.remove('hidden');
             document.getElementById('overlay-screen').classList.add('hidden');
+            document.getElementById('levelup-alert').classList.add('hidden');
             game.running = true;
         }
 
@@ -436,6 +472,7 @@
             document.getElementById('game-stats').classList.remove('hidden');
             
             document.getElementById('menu-title').innerText = "GAME OVER";
+            document.getElementById('menu-subtitle').innerText = "ထပ်မံကြိုးစားကြည့်ရအောင် ကလေးတို့ရေ။";
             document.getElementById('start-btn').innerText = "🔄 ပြန်လည်ကစားမည်";
             document.getElementById('overlay-screen').classList.remove('hidden');
         }
