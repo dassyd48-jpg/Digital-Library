@@ -3,13 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Paint the Burmese Letter စ - Intro and Game</title>
+  <title>"ဈ" ကိုအရောင်ခြယ်ပါ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; width: 100%; overflow: hidden; }
+    
+    /* Screen Scroll လုံးဝပိတ်ခြင်း (touch-action: none နှင့် overflow: hidden) */
+    html, body { 
+      height: 100%; 
+      width: 100%; 
+      overflow: hidden; 
+      touch-action: none; 
+    }
     
     body {
       font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
@@ -30,336 +37,289 @@
       top: 20px;
       right: 20px;
       z-index: 150;
-      background: rgba(136, 19, 55, 0.85);
-      border: 2px solid #f472b6;
+      background: rgba(30, 41, 59, 0.85);
+      border: 2px solid #ff477e;
       border-radius: 20px;
       padding: 6px 14px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     .btn-audio-toggle {
       background: none; border: none; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-    }
-    .audio-slider {
-      width: 85px; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; background: #4c0519; outline: none; cursor: pointer;
-    }
-    .audio-slider::-webkit-slider-thumb {
-      -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #f472b6; cursor: pointer;
-    }
-    .audio-slider::-moz-range-thumb {
-      width: 14px; height: 14px; border: none; border-radius: 50%; background: #f472b6; cursor: pointer;
     }
 
     .top-navigation {
       position: absolute; top: 20px; left: 20px; display: flex; gap: 12px; z-index: 100;
     }
     .nav-btn {
-      padding: 10px 16px; border-radius: 12px; border: 1px solid #f472b6;
-      background: rgba(136, 19, 55, 0.85); color: white; font-weight: 700; font-size: 14px;
-      cursor: pointer; box-shadow: 0 4px 0 #4c0519; display: flex; align-items: center; gap: 6px;
+      font-family: 'Noto Sans Myanmar', sans-serif; padding: 10px 16px; border-radius: 12px; border: 1px solid #f472b6;
+      background: rgba(30, 41, 59, 0.85); color: white; font-weight: 700; font-size: 14px;
+      cursor: pointer; box-shadow: 0 4px 0 #1e293b; display: flex; align-items: center; gap: 6px;
       transition: transform 0.1s, box-shadow 0.1s;
     }
-    .nav-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #4c0519; }
+    .nav-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #1e293b; }
 
     /* ==========================================================================
-       INTRO SCREEN
+       INTRO SCREEN (ဂိမ်းမစတင်မီ လမ်းညွှန်မျက်နှာပြင်သစ်)
        ========================================================================== */
     .intro-screen {
-      position: fixed;
-      inset: 0;
-      background-color: #0f172a;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      text-align: center;
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      position: fixed; inset: 0; background-color: #0f172a; z-index: 1000;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center; color: #ffffff; transition: opacity 0.5s ease, transform 0.5s ease;
     }
     .intro-screen.hide { opacity: 0; pointer-events: none; transform: scale(1.05); }
-
-    .intro-emojis { font-size: 42px; margin-bottom: 25px; letter-spacing: 10px; }
-    .intro-title { font-size: 46px; font-weight: 800; color: #38bdf8; margin-bottom: 25px; line-height: 1.4; }
-    .intro-badge { background-color: #0284c7; color: white; font-size: 18px; font-weight: 600; padding: 10px 24px; border-radius: 50px; margin-bottom: 30px; display: inline-block; border: 2px solid #075985; }
-    .intro-description { color: #cbd5e1; font-size: 20px; line-height: 1.8; max-width: 650px; margin-bottom: 40px; font-weight: 600; }
-
+    .intro-emojis { font-size: clamp(32px, 5vw, 48px); margin-bottom: 15px; letter-spacing: 8px; }
+    .intro-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(28px, 4.5vw, 46px); font-weight: 800; margin-bottom: 10px; color: #f472b6; }
+    .intro-badge { font-family: 'Noto Sans Myanmar', sans-serif; background-color: #1e293b; padding: 6px 18px; border-radius: 20px; font-size: clamp(13px, 2vw, 16px); font-weight: 700; margin-bottom: 25px; display: inline-block; border: 1px solid #ff477e; color: #ff477e; }
+    .intro-desc { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(14px, 2.2vw, 18px); max-width: 600px; line-height: 1.8; color: #cbd5e1; margin-bottom: 40px; }
+    
     .btn-start {
-      background-color: #f97316; color: white; font-size: 24px; font-weight: 800; padding: 16px 48px; border: none; border-radius: 24px; cursor: pointer; box-shadow: 0 6px 0 #ea580c, 0 10px 20px rgba(0,0,0,0.3); transition: transform 0.1s ease;
+      font-family: 'Noto Sans Myanmar', sans-serif; background-color: #ff477e; color: white; border: none; padding: 14px 45px; font-size: clamp(18px, 2.5vw, 22px); font-weight: 700; border-radius: 30px; cursor: pointer; box-shadow: 0 6px 0 #b91c1c; transition: transform 0.1s ease, box-shadow 0.1s ease;
     }
-    .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #ea580c; }
+    .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #b91c1c; }
 
     /* ==========================================================================
-       MAIN GAME INTERFACE
+       MAIN GAME INTERFACE (ဂိမ်းကစားကွင်း ဒီဇိုင်းစနစ်)
        ========================================================================== */
-    .game-wrapper {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(to bottom, #f43f5e 0%, #ec4899 40%, #db2777 100%);
-      opacity: 0;
-      transform: scale(0.95);
-      transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s;
-    }
-    .game-wrapper.active { opacity: 1; transform: scale(1); }
+    .game-container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 15px; opacity: 0; transform: scale(0.95); transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; min-height: 100vh; justify-content: center; }
+    .game-container.show { opacity: 1; transform: scale(1); }
 
-    /* Classroom Background Setup */
-    .classroom-bg { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
-    .bunting-flags {
-      position: absolute; top: 0; left: 0; right: 0; height: 42px;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'><polygon points='0,0 10,0 5,15' fill='%23ef4444'/><polygon points='10,0 20,0 15,15' fill='%23f97316'/><polygon points='20,0 30,0 25,15' fill='%23eab308'/><polygon points='30,0 40,0 35,15' fill='%2322c55e'/><polygon points='40,0 50,0 45,15' fill='%2306b6d4'/><polygon points='50,0 60,0 55,15' fill='%233b82f6'/><polygon points='60,0 70,0 65,15' fill='%236366f1'/><polygon points='70,0 80,0 75,15' fill='%23a855f7'/><polygon points='80,0 90,0 85,15' fill='%23ec4899'/><polygon points='90,0 100,0 95,15' fill='%23ef4444'/></svg>");
-      background-size: 280px 100%; background-repeat: repeat-x;
+    h1 { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 26px; font-weight: 700; margin-bottom: 15px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.3); background: rgba(30, 41, 59, 0.85); padding: 8px 25px; border-radius: 20px; border: 1px solid #f472b6; flex-shrink: 0; }
+    
+    .stage { display: flex; gap: 20px; width: 100%; max-width: 950px; justify-content: center; align-items: center; flex: 1; min-height: 0; }
+    
+    .wood-frame {
+      position: relative; padding: 18px; border-radius: 24px;
+      background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.5), inset 0 0 0 3px #f472b6;
+      max-height: 100%; display: flex; align-items: center; justify-content: center;
     }
-    .wood-floor {
-      position: absolute; left: 0; right: 0; bottom: 0; height: 16vh;
-      background: #c2410c linear-gradient(to bottom, #ea580c 0%, #c2410c 100%);
-      box-shadow: inset 0 8px 16px rgba(0,0,0,0.25); border-top: 6px solid #9a3412;
+    .canvas-container { background: #ffffff; border-radius: 14px; overflow: hidden; position: relative; box-shadow: inset 0 4px 10px rgba(0,0,0,0.15); width: 100%; aspect-ratio: 1/1; max-height: calc(100vh - 220px); }
+    canvas { display: block; cursor: crosshair; touch-action: none; width: 100%; height: 100%; }
+    
+    .panel {
+      font-family: 'Noto Sans Myanmar', sans-serif; width: 150px; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); border-radius: 24px;
+      padding: 15px; display: flex; flex-direction: column; gap: 12px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.3), inset 0 0 0 3px #f1f5f9;
     }
-    .wood-floor::after {
-      content: ''; position: absolute; inset: 0;
-      background-image: linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px); background-size: 45px 100%;
+    .panel-title { font-size: 14px; font-weight: 700; text-align: center; color: #334155; letter-spacing: 1px; }
+    .eraser {
+      height: 65px; border-radius: 16px; background: white;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 4px 0 #cbd5e1; font-weight: 700; font-size: 13px; user-select: none; border: 2px solid #cbd5e1; color: #475569;
     }
-    .blackboard { position: absolute; left: 4%; top: 14%; width: 48%; height: 42%; background-color: #0f766e; border: 10px solid #7c2d12; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.25); }
-    .bookshelf { position: absolute; left: 2%; bottom: 14vh; width: 14%; height: 48%; background: #d97706; border: 4px solid #92400e; border-radius: 6px; }
-    .bookshelf::before { content: '📚 📘\nA 📕 📙'; white-space: pre; font-size: 18px; position: absolute; top: 15%; left: 15%; letter-spacing: 1px; line-height: 2; }
-    .teacher-desk { position: absolute; right: 0; bottom: 12vh; width: 40%; height: 24%; background: #7c2d12; border-top: 8px solid #9a3412; }
-    .desk-items { position: absolute; right: 12%; bottom: 36vh; font-size: 42px; display: flex; gap: 8px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); }
-    .wall-clock { position: absolute; right: 14%; top: 10%; width: 70px; height: 70px; background: #e2e8f0; border: 6px solid #06b6d4; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; }
-    .wall-clock::before { content: '🕒'; font-size: 36px; }
-
-    .student-desks-zone { position: absolute; left: 8%; bottom: 2vh; width: 50%; display: flex; gap: 20px; z-index: 2; }
-    .student-desk { width: 110px; height: 75px; background: #b45309; border: 3px solid #78350f; border-radius: 8px 8px 4px 4px; box-shadow: 0 6px 12px rgba(0,0,0,0.3); position: relative; }
-    .student-desk::before { content: '📝🎒'; font-size: 22px; position: absolute; top: -20px; left: 15%; }
-    .student-desk::after { content: ''; position: absolute; bottom: -12px; left: 10%; right: 10%; height: 12px; background: rgba(0,0,0,0.15); }
-
-    .bottom-decorations { position: absolute; bottom: 8px; left: 5%; right: 5%; display: flex; justify-content: space-between; font-size: 28px; z-index: 3; opacity: 0.85; }
-
-    /* Game Interface Layout */
-    .game-container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 1000px; padding: 10px; }
-    .heading-box { background-color: #881337; border: 3px solid #f472b6; border-radius: 16px; padding: 12px 35px; margin-bottom: 25px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px; }
-    .heading-text { font-size: 24px; font-weight: 700; color: #ffffff; }
-    .heading-glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #ffffff; font-size: 32px; font-weight: 800; background: rgba(255,255,255,0.2); padding: 0 10px; border-radius: 8px; }
+    .eraser.selected { background: #e2e8f0; border-color: #ff477e; box-shadow: inset 0 0 0 2px #ff477e; color: #ff477e; }
     
-    .stage { display: flex; gap: 25px; align-items: stretch; justify-content: center; width: 100%; }
-    .wood-frame { position: relative; padding: 14px; border-radius: 24px; background-color: #881337; box-shadow: 0 16px 35px rgba(0,0,0,0.35); }
-    .canvas-container { background: #ffffff; border-radius: 16px; overflow: hidden; position: relative; }
-    canvas { display: block; cursor: crosshair; touch-action: none; }
+    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .brush {
+      aspect-ratio: 1/1; border-radius: 14px; cursor: pointer; position: relative;
+      box-shadow: 0 3px 0 rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #e2e8f0;
+    }
+    .brush.selected { transform: scale(1.05); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #ff477e; }
+    .swatch { position: absolute; inset: 4px; border-radius: 10px; }
     
-    /* Panel Settings */
-    .panel { width: 125px; background-color: #fff1f2; border-radius: 28px; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; gap: 12px; box-shadow: 0 16px 35px rgba(0,0,0,0.25); }
-    .panel-title { font-size: 12px; font-weight: 700; text-align: center; color: #9f1239; margin-bottom: 2px; }
-    .eraser { width: 100%; height: 50px; border-radius: 20px; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #fbcfe8; box-shadow: 0 3px 0 #fbcfe8; }
-    .eraser.selected { border-color: #db2777; background: #ffe4e6; }
-    .eraser-icon { font-size: 24px; transform: rotate(-10deg); }
-    
-    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
-    .brush { aspect-ratio: 1/1; border-radius: 14px; cursor: pointer; position: relative; background: white; border: 2px solid #f1f5f9; box-shadow: 0 3px 0 #e2e8f0; }
-    .brush.selected { border-color: #db2777; transform: scale(1.05); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #db2777; }
-    .swatch { position: absolute; inset: 0; border-radius: 11px; }
-    
-    .action-container { display: flex; gap: 8px; width: 100%; margin-top: auto; }
-    .btn { flex: 1; height: 48px; border-radius: 16px; border: none; color: white; font-weight: 700; font-size: 11px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-family: 'Noto Sans Myanmar', sans-serif; }
-    .btn-reset { background-color: #f472b6; box-shadow: 0 4px 0 #db2777; }
-    .btn-complete { background-color: #db2777; box-shadow: 0 4px 0 #9d174d; }
+    .actions { display: flex; flex-direction: column; gap: 8px; margin-top: auto; width: 100%; }
+    .btn { height: 55px; border-radius: 14px; border: none; color: white; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans Myanmar', sans-serif; width: 100%; }
+    .btn-reset { background: #22c55e; box-shadow: 0 4px 0 #166534; }
+    .btn-complete { background: #ff477e; box-shadow: 0 4px 0 #d91b5c; }
     
     #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
-    .star { position: absolute; font-size: 28px; animation: fall 1.5s ease-out forwards; }
+    .star { position: absolute; font-size: 24px; animation: fall 1.5s ease-out forwards; }
     @keyframes fall {
       0% { transform: translate(0,0) rotate(0deg) scale(0.5); opacity: 1; }
       100% { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(1.4); opacity: 0; }
     }
 
-    /* CONGRATULATIONS POPUP WINDOW BOX (ဂုဏ်ပြုလွှာ ပေါ့ပ်အပ်) */
+    /* REWARD POPUP WINDOW BOX (ဆုလာဘ် ပေါ့ပ်အပ် ဝင်းဒိုး) */
     .congrats-backdrop {
-      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); z-index: 2000;
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.9); z-index: 2000;
       display: flex; align-items: center; justify-content: center; padding: 20px;
       opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
     }
     .congrats-backdrop.show { opacity: 1; pointer-events: auto; }
     .congrats-box {
-      background: linear-gradient(135deg, #ffffff 0%, #fff1f2 100%);
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
       width: 100%; max-width: 480px; border-radius: 32px; padding: 30px; text-align: center;
-      box-shadow: 0 24px 50px rgba(0,0,0,0.4), inset 0 0 0 4px #db2777;
+      box-shadow: 0 24px 50px rgba(0,0,0,0.5), inset 0 0 0 4px #ff477e;
       transform: scale(0.85); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .congrats-backdrop.show .congrats-box { transform: scale(1); }
     .congrats-badge { font-size: 64px; margin-bottom: 15px; animation: pulse 1.5s infinite alternate; }
     @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
-    .congrats-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 28px; font-weight: 800; color: #881337; margin-bottom: 12px; }
-    .congrats-text { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 16px; color: #9f1239; line-height: 1.6; margin-bottom: 25px; font-weight: 600; }
+    .congrats-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 20px; font-weight: 800; color: #1e293b; margin-bottom: 25px; line-height: 1.6; }
+    
     .btn-done {
-      font-family: 'Noto Sans Myanmar', sans-serif; background: #db2777; color: white; border: none;
-      padding: 12px 40px; font-size: 18px; font-weight: 700; border-radius: 25px; cursor: pointer;
-      box-shadow: 0 5px 0 #9d174d; transition: all 0.1s;
+      font-family: 'Noto Sans Myanmar', sans-serif; background: #ff477e; color: white; border: none;
+      padding: 12px 40px; font-size: 16px; font-weight: 700; border-radius: 25px; cursor: pointer;
+      box-shadow: 0 5px 0 #b91c1c; transition: all 0.1s;
     }
-    .btn-done:active { transform: translateY(3px); box-shadow: 0 2px 0 #9d174d; }
+    .btn-done:active { transform: translateY(3px); box-shadow: 0 2px 0 #b91c1c; }
 
+    /* Responsive Canvas Fluid Layout (Flexbox Column-reverse စနစ်) */
     @media (max-width: 760px) {
-      body { overflow-y: auto; justify-content: flex-start; padding-top: 80px; }
+      body { overflow: hidden; justify-content: center; padding: 0; }
+      .game-container { padding: 10px; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
+      h1 { margin-top: 65px; margin-bottom: 5px; padding: 6px 15px; font-size: 20px; }
       .top-navigation { width: calc(100% - 40px); justify-content: space-between; }
-      .stage { flex-direction: column; align-items: center; }
-      .panel { width: 100%; max-width: 320px; }
-      .brush-grid { grid-template-columns: repeat(5, 1fr); }
-      .classroom-bg, .student-desks-zone, .bottom-decorations { display: none; }
-      .intro-title { font-size: 32px; }
-      .intro-description { font-size: 16px; }
+      
+      .stage { 
+        flex-direction: column-reverse; 
+        gap: 10px; 
+        width: 100%; 
+        flex: 1; 
+        min-height: 0; 
+        justify-content: center; 
+      }
+      
+      .wood-frame { padding: 8px; width: 100%; max-width: 380px; flex: 1; min-height: 0; display: flex; align-items: center; }
+      .canvas-container { max-height: calc(100% - 4px); width: 100%; }
+      
+      .panel { 
+        width: 100%; 
+        max-width: 380px; 
+        padding: 8px; 
+        gap: 6px; 
+        flex-shrink: 0;
+      }
+      .panel-title { display: none; }
+      .eraser { height: 38px; flex-direction: row; gap: 8px; font-size: 12px; box-shadow: 0 3px 0 #cbd5e1; }
+      .eraser span { font-size: 18px !important; }
+      .brush-grid { grid-template-columns: repeat(5, 1fr); gap: 4px; }
+      .actions { flex-direction: row; margin-top: 0; width: 100%; gap: 6px; }
+      .btn { height: 38px; font-size: 12px; flex: 1; }
     }
   </style>
 </head>
 <body>
 
   <audio id="mainBackgroundAudio" src="main-bgm.mp3" loop></audio>
-  <audio id="victoryAudioSound" src="classroom-victory.mp3"></audio>
+  <audio id="victoryAudioSound" src="victory-sfx.mp3"></audio>
 
   <div class="top-audio-control">
     <button class="btn-audio-toggle" id="audioToggleBtn">🔊</button>
-    <input type="range" class="audio-slider" id="audioSliderControl" min="0" max="1" step="0.05" value="0.3">
   </div>
 
   <div class="top-navigation">
-    <button class="nav-btn" id="btnBack">⬅️ Back</button>
-    <button class="nav-btn" id="btnHome">🏠 Home</button>
+    <button class="nav-btn" id="btnBack">⬅️ နောက်သို့</button>
+    <button class="nav-btn" id="btnHome">🏠 ပင်မစာမျက်နှာ</button>
   </div>
 
   <div class="intro-screen" id="introScreen">
-    <div class="intro-emojis">🦋🎨✨🌈🎈</div>
-    <h1 class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</h1>
-    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "စ" လိပ်ပြာလေးကို အရောင်ခြယ်ကြစို့</div>
-    <p class="intro-description">
-      ကလေးတို့ရေ... ဥယျာဉ်ထဲမှာ လှပတဲ့ လိပ်ပြာလေးတစ်ကောင် ပျံသန်းနေတယ်နော်။ 
-      အဲဒီလိပ်ပြာလေးရဲ့ ပုံသဏ္ဌာန်က မြန်မာအက္ခရာ "စ" လေးနဲ့ တူတူပဲ။ ကဲ... စုတ်တံလေးတွေကို ကိုင်ပြီး 
-      "စ" လမ်းကြောင်းအတိုင်း ရောင်စုံဆေးလေးတွေ ခြယ်သပြီး လိပ်ပြာလေးကို လှအောင် ပြင်ဆင်ကြရအောင်။
-    </p>
+    <div class="intro-emojis">🎨✨🦄🌟✏️</div>
+    <div class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</div>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဈ" လေးကို ခြယ်ကြစို့</div>
+    <div class="intro-desc">
+      ကလေးတို့ရေ... မြန်မာအက္ခရာ "ဈ" လေးကို လှပတဲ့ ဆေးရောင်စုံ စုတ်တံလေးတွေ သုံးပြီး သဘာဝအတိုင်း အသက်ဝင်အောင် အရောင်ခြယ်သကြည့်ရအောင်။
+    </div>
     <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
   </div>
 
-  <div class="game-wrapper" id="gameWrapper">
-    <div class="classroom-bg">
-      <div class="bunting-flags"></div>
-      <div class="blackboard"></div>
-      <div class="bookshelf"></div>
-      <div class="wall-clock"></div>
-      <div class="teacher-desk"></div>
-      <div class="wood-floor"></div>
-      
-      <div class="student-desks-zone">
-        <div class="student-desk"></div>
-        <div class="student-desk"></div>
-        <div class="student-desk"></div>
-      </div>
-    </div>
+  <div class="game-container" id="gameContainer">
+    <h1>"ဈ" ကို အရောင်ခြယ်ကြစို့။</h1>
 
-    <div class="desk-items">
-      <span>🌍</span>
-      <span>📚</span>
-    </div>
-
-    <div class="bottom-decorations">
-      <span>🎨</span><span>🖌️</span><span>🖍️</span><span>✏️</span><span>🎨</span><span>🖌️</span><span>🖍️</span>
-    </div>
-
-    <div class="game-container">
-      <div class="heading-box">
-        <span class="heading-text">Paint the letter</span>
-        <span class="heading-glyph">စ</span>
-        <span class="heading-text">!</span>
-      </div>
-
-      <div class="stage">
-        <div class="wood-frame">
-          <div class="canvas-container">
-            <canvas id="paintCanvas" width="500" height="500"></canvas>
-          </div>
+    <div class="stage">
+      <div class="wood-frame">
+        <div class="canvas-container">
+          <canvas id="paintCanvas" width="500" height="500"></canvas>
         </div>
-
-        <aside class="panel">
-          <div class="panel-title">BRUSHES</div>
-          <div class="eraser" id="eraser">
-            <span class="eraser-icon">🧼</span>
-          </div>
-          <div class="brush-grid" id="brushGrid"></div>
-          <div class="action-container">
-            <button class="btn btn-reset" id="btnReset">↻<br>Reset</button>
-            <button class="btn btn-complete" id="btnComplete">✓<br>ပြီးပြီ</button>
-          </div>
-        </aside>
       </div>
+
+      <aside class="panel">
+        <div class="panel-title">စုတ်တံများ</div>
+        <div class="eraser" id="eraser">
+          <span style="font-size:24px">🧽</span><div>ခဲဖျက်</div>
+        </div>
+        <div class="brush-grid" id="brushGrid"></div>
+        <div class="actions">
+          <button class="btn btn-reset" id="btnReset">↻<br>ပြန်စမည်</button>
+          <button class="btn btn-complete" id="btnComplete">✓<br>ပြီးပြီ</button>
+        </div>
+      </aside>
     </div>
   </div>
 
   <div class="congrats-backdrop" id="congratsWindowBox">
     <div class="congrats-box">
-      <div class="congrats-badge">🦋✨🎉</div>
-      <div class="congrats-title">အရမ်းထူးချွန်တယ် ကလေးတို့ရေ။</div>
-      <div class="congrats-text">အက္ခရာ "စ" ပုံစံလေးကို စိတ်ကြိုက်လှလှပပ ဆေးရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ။ နောက်ထပ် ပျော်စရာဂိမ်းတွေမှာ ဆက်လက်ဆော့ကစားကြမယ်နော်။</div>
-      <button class="btn-done" id="btnDone">ပြီးပြီ</button>
+      <div class="congrats-badge">✨🎉🏆🎈</div>
+      <div class="congrats-title">🎉 ဂုဏ်ယူပါတယ်! သင်ခန်းစာ ပြီးဆုံးပါပြီ။<br>ရမှတ်: ၁၀၀/၁၀၀ 🏆</div>
+      <button class="btn-done" id="btnDone">🏠 Home သို့သွားမည်</button>
     </div>
   </div>
 
   <div id="confetti"></div>
 
   <script>
-    // Painting Canvas Elements Setup
     const canvas = document.getElementById('paintCanvas');
     const ctx = canvas.getContext('2d');
     let isPainting = false;
-    let currentColor = '#ec4899';
+    let currentColor = '#ff477e';
     let currentType = 'solid';
     let currentPattern = '';
     let isEraser = false;
-    let brushSize = 30;
+    let brushSize = 28;
     let lastX = 0, lastY = 0;
 
-    // Audio Elements Configuration
     const mainBgm = document.getElementById('mainBackgroundAudio');
     const victorySfx = document.getElementById('victoryAudioSound');
     const audioToggleBtn = document.getElementById('audioToggleBtn');
-    const audioSliderControl = document.getElementById('audioSliderControl');
-    let historicalVolume = 0.3;
+    let isMuted = false;
+    let defaultVolume = 0.3;
+
+    // ဆေးရောင်ခြယ်မှုအပေါ်ကနေ "ဈ" လမ်းညွှန်လိုင်း Outline အမြဲထပ်နေအောင် ဆွဲပေးမည့် function
+    function drawLetterOutline() {
+      ctx.save();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.font = "800 360px 'Noto Sans Myanmar', sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      
+      ctx.strokeStyle = "#cbd5e1";
+      ctx.lineWidth = 4;
+      ctx.setLineDash([10, 8]);
+      ctx.strokeText("ဈ", canvas.width / 2, canvas.height / 2 + 10);
+      
+      ctx.restore();
+    }
 
     window.addEventListener('DOMContentLoaded', () => {
-      mainBgm.volume = audioSliderControl.value;
-      victorySfx.volume = audioSliderControl.value;
-      mainBgm.play().catch(() => console.log("Audio waiting for user handshake"));
+      mainBgm.volume = defaultVolume;
+      victorySfx.volume = defaultVolume;
+      mainBgm.play().catch(() => console.log("Audio deferred awaiting interaction"));
     });
 
+    // Mobile UI Screen Touch Scrolling မတော်တဆဖြစ်ခြင်းကို JS ဖြင့် ကာကွယ်ခြင်း
+    document.addEventListener('touchmove', function(e) {
+      if (e.scale !== 1) { e.preventDefault(); }
+    }, { passive: false });
+
     const brushes = [
-      { id: 'p1', type: 'solid', color: '#ec4899' },
-      { id: 'p2', type: 'solid', color: '#a855f7' },
-      { id: 'p3', type: 'solid', color: '#3b82f6' },
-      { id: 'p4', type: 'solid', color: '#eab308' },
-      { id: 'p5', type: 'solid', color: '#22c55e' },
-      { id: 'p6', type: 'solid', color: '#f97316' },
-      { id: 'p7', type: 'solid', color: '#06b6d4' },
-      { id: 'p8', type: 'rainbow', color: 'linear-gradient(45deg, #ff3366, #eab308, #3b82f6, #22c55e)' },
-      { id: 'p9', type: 'pattern', color: '#a855f7', pattern: 'dots' },
-      { id: 'p10', type: 'pattern', color: '#db2777', pattern: 'stripes' }
+      { id: 'b-pink', type: 'solid', color: '#ff477e' },
+      { id: 'b-purple', type: 'solid', color: '#9333ea' },
+      { id: 'b-blue', type: 'solid', color: '#3b82f6' },
+      { id: 'b-teal', type: 'solid', color: '#0d9488' },
+      { id: 'b-green', type: 'solid', color: '#22c55e' },
+      { id: 'b-yellow', type: 'solid', color: '#eab308' },
+      { id: 'b-orange', type: 'solid', color: '#ea580c' },
+      { id: 'b-white', type: 'solid', color: '#ffffff' },
+      { id: 'b-dots', type: 'pattern', color: '#3b82f6', pattern: 'dots' },
+      { id: 'b-rainbow', type: 'rainbow', color: 'linear-gradient(45deg, #ff3366, #ff9933, #ffff33, #33cc66, #3399ff, #9933ff)' }
     ];
 
     function getPattern(type, color, pName) {
       if (type === 'solid') return color;
       if (type === 'rainbow') {
         const grad = ctx.createLinearGradient(50, 50, 450, 450);
-        grad.addColorStop(0, '#ff3366');
-        grad.addColorStop(0.3, '#eab308');
-        grad.addColorStop(0.7, '#3b82f6');
-        grad.addColorStop(1, '#22c55e');
+        grad.addColorStop(0, '#ff3366'); grad.addColorStop(0.2, '#ff9933'); grad.addColorStop(0.4, '#ffff33');
+        grad.addColorStop(0.6, '#33cc66'); grad.addColorStop(0.8, '#3399ff'); grad.addColorStop(1, '#9933ff');
         return grad;
       }
       const pCanvas = document.createElement('canvas');
       pCanvas.width = 16; pCanvas.height = 16;
       const pCtx = pCanvas.getContext('2d');
       pCtx.fillStyle = color; pCtx.fillRect(0,0,16,16);
-      if (pName === 'dots') {
-        pCtx.fillStyle = '#ffffff'; pCtx.beginPath(); pCtx.arc(8,8,2.5,0,Math.PI*2); pCtx.fill();
-      } else if (pName === 'stripes') {
-        pCtx.strokeStyle = '#ffffff'; pCtx.lineWidth = 2.5; pCtx.beginPath(); pCtx.moveTo(0,0); pCtx.lineTo(16,16); pCtx.stroke();
-      }
+      pCtx.fillStyle = '#ffffff'; pCtx.beginPath(); pCtx.arc(8,8,2.5,0,Math.PI*2); pCtx.fill();
       return ctx.createPattern(pCanvas, 'repeat');
     }
 
@@ -384,7 +344,7 @@
 
       if (isEraser) {
         ctx.globalCompositeOperation = 'destination-out';
-        ctx.lineWidth = 42;
+        ctx.lineWidth = 40;
       } else {
         ctx.globalCompositeOperation = 'source-over';
         ctx.strokeStyle = getPattern(currentType, currentColor, currentPattern);
@@ -395,7 +355,18 @@
       ctx.lineTo(x, y);
       ctx.stroke();
 
+      if (!isEraser && Math.random() < 0.4) {
+        ctx.save();
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(x + (Math.random() * 20 - 10), y + (Math.random() * 20 - 10), Math.random() * 2.5 + 1, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
       lastX = x; lastY = y;
+      drawLetterOutline();
     }
 
     function jumpToLevelsView() {
@@ -403,58 +374,39 @@
     }
 
     function initUI() {
-      // ၁။ Back Navigation Button
+      drawLetterOutline();
+
       document.getElementById('btnBack').onclick = () => {
-        document.getElementById('gameWrapper').classList.remove('active');
+        document.getElementById('gameContainer').classList.remove('show');
         document.getElementById('introScreen').classList.remove('hide');
       };
 
-      // ၂။ Home Navigation Button
       document.getElementById('btnHome').onclick = () => {
         jumpToLevelsView();
       };
 
-      // Intro Screen Transition
       document.getElementById('btnStart').onclick = () => {
         document.getElementById('introScreen').classList.add('hide');
-        document.getElementById('gameWrapper').classList.add('active');
+        document.getElementById('gameContainer').classList.add('show');
         mainBgm.play().catch(() => {});
       };
 
-      // Volume Range Controls Slider Engine
-      audioSliderControl.oninput = (e) => {
-        const val = e.target.value;
-        mainBgm.volume = val;
-        victorySfx.volume = val;
-        if(val == 0) audioToggleBtn.textContent = '🔇';
-        else if(val < 0.4) audioToggleBtn.textContent = '🔉';
-        else audioToggleBtn.textContent = '🔊';
-      };
-
       audioToggleBtn.onclick = () => {
-        if (mainBgm.volume > 0) {
-          historicalVolume = audioSliderControl.value;
-          audioSliderControl.value = 0;
-          mainBgm.volume = 0;
-          victorySfx.volume = 0;
-          audioToggleBtn.textContent = '🔇';
+        if (!isMuted) {
+          mainBgm.volume = 0; victorySfx.volume = 0;
+          audioToggleBtn.textContent = '🔇'; isMuted = true;
         } else {
-          audioSliderControl.value = historicalVolume;
-          mainBgm.volume = historicalVolume;
-          victorySfx.volume = historicalVolume;
-          audioToggleBtn.textContent = historicalVolume < 0.4 ? '🔉' : '🔊';
+          mainBgm.volume = defaultVolume; victorySfx.volume = defaultVolume;
+          audioToggleBtn.textContent = '🔊'; isMuted = false;
         }
       };
 
-      // Render Brush Elements
       const grid = document.getElementById('brushGrid');
       brushes.forEach((b, i) => {
         const div = document.createElement('div');
         div.className = 'brush' + (i === 0 ? ' selected' : '');
         div.innerHTML = `<div class="swatch" style="background:${b.color}"></div>`;
-        
         if(b.pattern === 'dots') div.firstChild.style.backgroundImage = 'radial-gradient(circle, #fff 20%, transparent 20%)';
-        if(b.pattern === 'stripes') div.firstChild.style.backgroundImage = 'linear-gradient(45deg, #fff 25%, transparent 25%)';
         
         div.onclick = () => {
           isEraser = false;
@@ -474,16 +426,18 @@
 
       document.getElementById('btnReset').onclick = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawLetterOutline();
       };
 
-      // ၃။ Complete Button Handler & Confetti Elements Burst Effect
       document.getElementById('btnComplete').onclick = () => {
         mainBgm.pause();
         victorySfx.currentTime = 0;
-        victorySfx.play().catch(() => {});
+        if (!isMuted) {
+          victorySfx.play().catch(e => console.log("SFX Blocked"));
+        }
 
         const host = document.getElementById('confetti');
-        const items = ['🎉', '✨', '⭐', '🎈', '🎒', '📝', '🌈', '🎨', '🦋'];
+        const items = ['✨', '🎉', '🌟', '🎈', '🎨'];
         for (let i = 0; i < 50; i++) {
           const el = document.createElement('div');
           el.className = 'star';
@@ -497,11 +451,9 @@
           setTimeout(() => el.remove(), 1500);
         }
 
-        // Active Congrats Backdrop View Window
         document.getElementById('congratsWindowBox').classList.add('show');
       };
 
-      // Done Redirect Action Event
       document.getElementById('btnDone').onclick = () => {
         jumpToLevelsView();
       };
@@ -513,9 +465,6 @@
     canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
-
-    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='360' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='5' stroke-dasharray='12,10'>စ</text></svg>\")";
-    canvas.style.backgroundSize = "100% 100%";
 
     initUI();
   </script>
