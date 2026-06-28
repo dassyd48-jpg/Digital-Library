@@ -19,14 +19,13 @@
             -webkit-user-select: none;
             touch-action: none; /* Prevents mobile browser bouncing */
             
-            /* ဖုန်း Screen တစ်ခုလုံးရဲ့ ဗဟိုအလယ်တည့်တည့်မှာ ဂိမ်းကွက်ပေါ်စေရန် Alignment ညှိထားခြင်း */
+            /* Screen အပြည့် ကွက်တိဖြစ်စေရန် Center Alignment ထားရှိခြင်း */
             display: flex;
             align-items: center;
             justify-content: center;
         }
         canvas {
             display: block;
-            /* Aspect Ratio အတိုင်း ကွက်တိဖြစ်စေရန် တိုက်ရိုက် width/height ကို JS ထဲက ထိန်းချုပ်မည် */
         }
         .burmese-font {
             font-family: 'Pyidaungsu', 'Myanmar3', 'Yunghkio', sans-serif;
@@ -160,7 +159,7 @@
         let scenery = { mountains: [], stars: [] };
 
         let TARGET_LETTER = "စ";
-        const ALL_BURMESE_LETTERS = ["က", "ခ", "ဂ", "ဃ", "င", "စ", "ဆ", "ဇ", "ဇ", "ည", "ဋ", "ဌ", "ဍ", "ဎ", "ဏ", "တ", "ထ", "ဒ", "ဓ", "န", "ပ", "ဖ", "ဗ", "ဘ", "မ", "ယ", "ရ", "လ", "ဝ", "သ", "ဟ", "ဠ", "အ"];
+        const ALL_BURMESE_LETTERS = ["က", "ခ", "ဂ", "ဃ", "င", "စ", "ဆ", "ဇ", "ဈ", "ည", "ဋ", "ဌ", "ဍ", "ဎ", "ဏ", "တ", "ထ", "ဒ", "ဓ", "န", "ပ", "ဖ", "ဗ", "ဘ", "မ", "ယ", "ရ", "လ", "ဝ", "သ", "ဟ", "ဠ", "အ"];
 
         function changeTargetLetter() {
             TARGET_LETTER = "စ";
@@ -204,19 +203,10 @@
             });
         }
 
+        // ဖုန်း screen တစ်ခုလုံးကို ကွက်တိပြည့်သွားစေရန် Resize စနစ်ကို ပြင်ဆင်ထားပါသည်
         function resizeMatrix() {
-            const windowWidth = window.innerWidth;
-            const windowHeight = window.innerHeight;
-            let targetWidth = windowWidth;
-            let targetHeight = windowWidth * (CANVAS_HEIGHT / CANVAS_WIDTH);
-
-            if (targetHeight > windowHeight) {
-                targetHeight = windowHeight;
-                targetWidth = windowHeight * (CANVAS_WIDTH / CANVAS_HEIGHT); // CANWIDTH ကို CANVAS_WIDTH သို့ အမှားပြင်ဆင်ပြီးဖြစ်သည်
-            }
-
-            canvas.style.width = `${targetWidth}px`;
-            canvas.style.height = `${targetHeight}px`;
+            canvas.style.width = '100vw';
+            canvas.style.height = '100vh';
         }
         window.addEventListener('resize', resizeMatrix);
         setTimeout(resizeMatrix, 100);
@@ -269,7 +259,7 @@
             if (input.isMouseOrTouch) {
                 player.x = input.targetX;
             } else {
-                const moveSpeed = 500 * dt; // Slightly increased keyboard acceleration
+                const moveSpeed = 500 * dt;
                 if (input.left) player.x -= moveSpeed;
                 if (input.right) player.x += moveSpeed;
             }
@@ -555,7 +545,6 @@
             entities.letterBubbles = [];
             entities.projectiles = [];
             
-            // Start listening from center point smoothly
             input.targetX = CANVAS_WIDTH / 2;
             
             initScenery();
