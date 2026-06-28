@@ -347,6 +347,23 @@
     const audioSliderControl = document.getElementById('audioSliderControl');
     let historicalVolume = 0.3;
 
+    // ပြင်ဆင်ချက် ၁။ ဆေးရောင်ခြယ်မှုအပေါ်ကနေ "ဇ" လမ်းညွှန်လိုင်း Outline အမြဲထပ်နေအောင် ဆွဲပေးမည့် function
+    function drawLetterOutline() {
+      ctx.save();
+      ctx.globalCompositeOperation = 'source-over'; // ဆေးရောင်တွေရဲ့ ထိပ်ဆုံးကနေ အမြဲပေါ်နေစေရန်
+      ctx.font = "800 410px 'Noto Sans Myanmar', sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      
+      // အတွင်းလိုင်းအစက်ကလေးများ (Dashed Line Guide)
+      ctx.strokeStyle = "#cbd5e1";
+      ctx.lineWidth = 4;
+      ctx.setLineDash([10, 8]);
+      ctx.strokeText("ဇ", canvas.width / 2, canvas.height / 2 + 10);
+      
+      ctx.restore();
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       mainBgm.volume = audioSliderControl.value;
       victorySfx.volume = audioSliderControl.value;
@@ -446,6 +463,9 @@
       }
 
       lastX = x; lastY = y;
+      
+      // ပြင်ဆင်ချက် ၂။ ဆေးခြယ်ပြီးတိုင်း အပေါ်ကနေ အက္ခရာလိုင်း ထပ်ဆွဲပေးခြင်း
+      drawLetterOutline();
     }
 
     function returnToMainPage() {
@@ -453,6 +473,9 @@
     }
 
     function initUI() {
+      // ပထမဆုံး စတင်ချိန်တွင် "ဇ" လိုင်းကို တစ်ခါတည်းဆွဲထားမည်
+      drawLetterOutline();
+
       // Back ခလုတ် - Intro Screen သို့ ပြန်သွားမည်
       document.getElementById('btnBack').onclick = () => {
         document.getElementById('gameContainer').classList.remove('show');
@@ -529,6 +552,8 @@
 
       document.getElementById('btnReset').onclick = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // ပြင်ဆင်ချက် ၃။ ပြန်စဥ်၌ Canvas ရှင်းလင်းပြီးနောက် အက္ခရာပုံစံကို ချက်ချင်းပြန်ဆွဲပေးခြင်း
+        drawLetterOutline();
       };
 
       // ၅။ ပြီးပြီး (Complete) ခလုတ်နှိပ်ခြင်း၊ Confetti ဖြန်းခြင်းနှင့် Popup ဝင်းဒိုးပြသခြင်း
@@ -569,7 +594,7 @@
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
 
-    // "ဇ" အက္ခရာ လမ်းညွှန်ချက် Font Guide Layout
+    // Background SVG Guideline ကို အောက်ခံအဖြစ် ဆက်ထားပေးပါသည်
     canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>ဇ</text></svg>\")";
     canvas.style.backgroundSize = "100% 100%";
 
