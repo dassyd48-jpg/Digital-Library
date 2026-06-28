@@ -17,253 +17,346 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       height: 100vh;
-      padding: 10px;
+      padding: 12px;
+      position: relative;
     }
 
     /* ==========================================================================
-       HEADER PANEL & INSTRUCTIONS (Responsive Friendly)
+       INTRO COVER SCREEN (ဂိမ်းမစခင် ပထမဆုံးပြသမည့် မိတ်ဆက်စာမျက်နှာ)
        ========================================================================= */
-    .header-panel {
-      width: 100%; max-width: 800px; background: white; border: 4px solid #8bc34a;
-      border-radius: 20px; padding: 8px 16px; display: flex; align-items: center;
-      justify-content: space-between; gap: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.06);
-      z-index: 10; margin-bottom: 10px; flex-wrap: wrap;
+    .game-intro-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, #e8f5e9 0%, #c8e6c9 100%);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: opacity 0.4s ease, pointer-events 0.4s ease;
     }
-    .instruction { font-size: 18px; font-weight: 700; color: #33691e; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .target-box {
-      font-family: 'Noto Sans Myanmar', sans-serif; font-size: 28px; font-weight: 900;
-      color: white; background: #ff9800; padding: 2px 20px; border-radius: 14px;
-      box-shadow: 0 4px 0 #f57c00; animation: pulseTarget 1s infinite alternate;
+    .game-intro-overlay.hide {
+      opacity: 0;
+      pointer-events: none;
     }
-    @keyframes pulseTarget { 0% { transform: scale(1); } 100% { transform: scale(1.06); } }
-    .score-stars { font-size: 24px; color: #ffca28; letter-spacing: 3px; white-space: nowrap; }
+    .intro-welcome-box {
+      background: white;
+      border: 5px solid #4caf50;
+      border-radius: 28px;
+      padding: 30px 20px;
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    }
+    .intro-welcome-emoji {
+      font-size: 50px;
+      margin-bottom: 10px;
+      animation: waveHand 1s infinite alternate;
+      display: inline-block;
+    }
+    @keyframes waveHand { 0% { transform: rotate(0deg); } 100% { transform: rotate(15deg); } }
     
-    /* Exit Button Style */
+    .intro-title-main {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: #2e7d32;
+      margin-bottom: 6px;
+    }
+    .intro-badge-lesson {
+      display: inline-block;
+      background: #ffecb3;
+      color: #ff8f00;
+      padding: 4px 16px;
+      border-radius: 15px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      border: 1.5px solid #ffb300;
+    }
+    .intro-description-card {
+      background: #f1f8e9;
+      border-radius: 16px;
+      padding: 15px;
+      text-align: left;
+      margin-bottom: 25px;
+      border-left: 5px solid #8bc34a;
+    }
+    .intro-instruction-item {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 15px;
+      color: #455a64;
+      line-height: 1.6;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .intro-instruction-item:last-child { margin-bottom: 0; }
+    
+    .btn-start-game {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      font-size: 20px;
+      font-weight: 900;
+      border-radius: 18px;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #2e7d32;
+      transition: transform 0.1s;
+      width: 100%;
+    }
+    .btn-start-game:active { transform: translateY(3px); box-shadow: 0 3px 0 #2e7d32; }
+
+    /* ==========================================================================
+       TOP INTRO CARD (ဂိမ်းထဲတွင် ထိပ်ဆုံး၌ ဆက်လက်ပြသမည့် ခေါင်းစဉ်တို)
+       ========================================================================= */
+    .intro-card {
+      width: 100%;
+      max-width: 650px;
+      background: white;
+      border: 3.5px solid #8bc34a;
+      border-radius: 18px;
+      padding: 12px 16px;
+      text-align: center;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+      margin-bottom: 12px;
+    }
+    .intro-main-title {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: #2e7d32;
+      text-shadow: 1px 1px 0px white;
+      margin-bottom: 4px;
+    }
+    .intro-sub-badge {
+      display: inline-block;
+      background: #e8f5e9;
+      color: #388e3c;
+      padding: 3px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       LESSON CARD PANEL (သင်ခန်းစာ အခြေအနေပြ ကတ်ပြား)
+       ========================================================================= */
+    .lesson-card {
+      width: 100%;
+      max-width: 650px;
+      background: #fffdf7;
+      border: 3.5px solid #ffb300;
+      border-radius: 20px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+      z-index: 10;
+      margin-bottom: 12px;
+    }
+    .lesson-info-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .instruction-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: #5d4037;
+    }
+    
+    .target-box {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: white;
+      background: #ff9800;
+      width: 44px;  
+      height: 44px;
+      border-radius: 12px;
+      box-shadow: 0 4px 0 #f57c00;
+      display: flex;
+      align-items: center;
+      justify-content: center; 
+      padding: 0; 
+      animation: pulseTarget 1s infinite alternate;
+    }
+    @keyframes pulseTarget { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+    
+    .score-stars { font-size: 20px; color: #ffca28; letter-spacing: 2px; white-space: nowrap; }
+    
     .btn-exit {
-      background: #e53935; color: white; border: none; padding: 6px 14px; 
-      font-family: 'Noto Sans Myanmar', sans-serif; font-size: 14px; font-weight: 700;
-      border-radius: 12px; cursor: pointer; box-shadow: 0 4px 0 #b71c1c;
-      transition: transform 0.1s; z-index: 15;
+      background: #e53935;
+      color: white;
+      border: none;
+      padding: 8px 16px; 
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #b71c1c;
+      transition: transform 0.1s;
     }
     .btn-exit:active { transform: translateY(2px); box-shadow: 0 2px 0 #b71c1c; }
 
     /* ==========================================================================
-       GAME STAGE (POND & GARDEN THEME)
+       GAME STAGE (ဂိမ်းကစားမည့် ဧရိယာ)
        ========================================================================= */
     .game-stage {
-      position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/10;
+      position: relative;
+      width: 100%;
+      max-width: 650px;
+      aspect-ratio: 16/11; 
       background: linear-gradient(to bottom, #b3e5fc 0%, #e1f5fe 40%, #fff9c4 75%);
-      border: 6px solid #558b2f; border-radius: 24px; overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+      border: 5px solid #558b2f;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      flex-grow: 0; 
     }
 
-    /* Lawn Background Grass */
     .garden-lawn {
-      position: absolute; bottom: 0; left: 0; width: 100%; height: 50%;
+      position: absolute; bottom: 0; left: 0; width: 100%; height: 48%;
       background: linear-gradient(to bottom, #7cb342 0%, #558b2f 100%);
-      z-index: 2; box-shadow: inset 0 6px 0 #a2d85b;
+      z-index: 2; box-shadow: inset 0 5px 0 #a2d85b;
     }
 
-    /* Pretty Cartoon Pond */
     .garden-pond {
-      position: absolute; bottom: -10px; left: -20px; width: 340px; height: 160px;
+      position: absolute; bottom: -15px; left: -20px; width: 280px; height: 140px;
       background: linear-gradient(to bottom, #29b6f6 0%, #0288d1 100%);
-      border-radius: 50%; border: 6px solid #81d4fa; z-index: 3;
-      box-shadow: inset 0 10px 20px rgba(0,0,0,0.15), 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 50%; border: 5px solid #81d4fa; z-index: 3;
+      box-shadow: inset 0 8px 16px rgba(0,0,0,0.15);
     }
 
-    /* Sky Fluffy Clouds */
     .sky-cloud { position: absolute; background: white; border-radius: 50%; opacity: 0.85; z-index: 1; }
-    .cloud-1 { top: 12%; left: 8%; width: 95px; height: 35px; box-shadow: 40px 0 0 -5px white, -30px 5px 0 -2px white; animation: floatCloud 6s infinite alternate ease-in-out; }
-    .cloud-2 { top: 18%; right: 12%; width: 115px; height: 40px; box-shadow: 45px 5px 0 -5px white, -35px 0 0 0 white; opacity: 0.7; animation: floatCloud 8s infinite alternate-reverse ease-in-out; }
-    
-    @keyframes floatCloud { 0% { transform: translateX(0px); } 100% { transform: translateX(25px); } }
+    .cloud-1 { top: 12%; left: 8%; width: 80px; height: 28px; box-shadow: 30px 0 0 -4px white, -25px 4px 0 -2px white; animation: floatCloud 6s infinite alternate ease-in-out; }
+    .cloud-2 { top: 18%; right: 12%; width: 95px; height: 32px; box-shadow: 35px 4px 0 -4px white, -30px 0 0 0 white; opacity: 0.7; animation: floatCloud 8s infinite alternate-reverse ease-in-out; }
+    @keyframes floatCloud { 0% { transform: translateX(0px); } 100% { transform: translateX(18px); } }
 
     /* ==========================================================================
-       HIDING SLOTS & SCENERY GRAPHICS
+       HIDING SLOTS & ORGANIC GRAPHICS
        ========================================================================= */
     .spot-container { position: absolute; z-index: 4; cursor: pointer; }
     .object-layer { position: absolute; inset: 0; z-index: 6; pointer-events: none; }
 
-    .spot-lotus { bottom: 6%; left: 8%; width: 120px; height: 75px; z-index: 4; }
-    .organic-lotus {
-      position: absolute; inset: 0; background: #00897b; border-radius: 50%;
-      box-shadow: inset -10px -8px 0 #004d40, 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .organic-lotus-cut {
-      position: absolute; top: 0; left: 45px; width: 30px; height: 35px;
-      background: #0288d1; clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
-    }
+    .spot-lotus { bottom: 6%; left: 6%; width: 100px; height: 65px; z-index: 4; }
+    .organic-lotus { position: absolute; inset: 0; background: #00897b; border-radius: 50%; box-shadow: inset -8px -6px 0 #004d40; }
+    .organic-lotus-cut { position: absolute; top: 0; left: 38px; width: 24px; height: 30px; background: #0288d1; clip-path: polygon(50% 100%, 0% 0%, 100% 0%); }
 
-    .spot-sunflower { bottom: 34%; left: 32%; width: 100px; height: 160px; }
-    .organic-flower-stem { position: absolute; bottom: 0; left: 44px; width: 12px; height: 110px; background: #4caf50; border-radius: 6px; }
-    .organic-flower-leaf { position: absolute; bottom: 50px; left: 20px; width: 30px; height: 16px; background: #388e3c; border-radius: 15px 0 15px 0; transform: rotate(-15deg); }
-    .organic-flower-head { position: absolute; top: 0; left: 0; width: 100px; height: 100px; background: #ffeb3b; border-radius: 50%; border: 8px dashed #fbc02d; box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-    .organic-flower-center { position: absolute; top: 20px; left: 20px; width: 44px; height: 44px; background: #5d4037; border-radius: 50%; }
+    .spot-sunflower { bottom: 32%; left: 30%; width: 85px; height: 135px; }
+    .organic-flower-stem { position: absolute; bottom: 0; left: 37px; width: 10px; height: 95px; background: #4caf50; border-radius: 4px; }
+    .organic-flower-leaf { position: absolute; bottom: 45px; left: 16px; width: 26px; height: 14px; background: #388e3c; border-radius: 12px 0 12px 0; transform: rotate(-15deg); }
+    .organic-flower-head { position: absolute; top: 0; left: 0; width: 85px; height: 85px; background: #ffeb3b; border-radius: 50%; border: 6px dashed #fbc02d; }
+    .organic-flower-center { position: absolute; top: 18px; left: 18px; width: 37px; height: 37px; background: #5d4037; border-radius: 50%; }
 
-    .spot-well { bottom: 30%; right: 28%; width: 130px; height: 130px; }
-    .organic-well-brick { position: absolute; bottom: 0; left: 10px; width: 110px; height: 75px; background: #b0bec5; border: 4px solid #78909c; border-radius: 12px 12px 4px 4px; box-shadow: inset -15px -10px 0 #90a4ae; }
-    .organic-well-roof-post { position: absolute; bottom: 70px; left: 22px; width: 8px; height: 50px; background: #8d6e63; box-shadow: 78px 0 0 #8d6e63; }
-    .organic-well-roof { position: absolute; top: 0; left: 0; width: 130px; height: 36px; background: #b22222; border-radius: 20px 20px 4px 4px; }
+    .spot-well { bottom: 28%; right: 26%; width: 110px; height: 110px; }
+    .organic-well-brick { position: absolute; bottom: 0; left: 8px; width: 94px; height: 65px; background: #b0bec5; border: 3.5px solid #78909c; border-radius: 10px 10px 4px 4px; box-shadow: inset -12px -8px 0 #90a4ae; }
+    .organic-well-roof-post { position: absolute; bottom: 60px; left: 18px; width: 7px; height: 42px; background: #8d6e63; box-shadow: 66px 0 0 #8d6e63; }
+    .organic-well-roof { position: absolute; top: 0; left: 0; width: 110px; height: 32px; background: #b22222; border-radius: 16px 16px 4px 4px; }
 
-    .spot-fence { bottom: 26%; right: 4%; width: 150px; height: 90px; }
-    .organic-fence-board { position: absolute; bottom: 0; width: 22px; height: 85px; background: #ffe0b2; border: 3px solid #b78d65; border-radius: 6px 6px 0 0; box-shadow: inset -4px 0 0 #f5cda2; }
-    .fb-1 { left: 10px; } .fb-2 { left: 45px; } .fb-3 { left: 80px; } .fb-4 { left: 115px; }
-    .organic-fence-rail { position: absolute; bottom: 20px; left: 0; width: 150px; height: 12px; background: #d7ccc8; border: 2px solid #b78d65; box-shadow: 0 24px 0 #d7ccc8; }
+    .spot-fence { bottom: 24%; right: 4%; width: 130px; height: 80px; }
+    .organic-fence-board { position: absolute; bottom: 0; width: 18px; height: 75px; background: #ffe0b2; border: 2.5px solid #b78d65; border-radius: 5px 5px 0 0; }
+    .fb-1 { left: 8px; } .fb-2 { left: 38px; } .fb-3 { left: 68px; } .fb-4 { left: 98px; }
+    .organic-fence-rail { position: absolute; bottom: 18px; left: 0; width: 130px; height: 10px; background: #d7ccc8; border: 2px solid #b78d65; box-shadow: 0 20px 0 #d7ccc8; }
 
-    .spot-mushroom { bottom: 4%; right: 6%; width: 150px; height: 125px; }
-    .organic-shroom-stem { position: absolute; bottom: 0; left: 40px; width: 70px; height: 75px; background: #fff9c4; border: 3px solid #fbc02d; border-radius: 30px 30px 10px 10px; }
-    .organic-shroom-door { position: absolute; bottom: 0; left: 62px; width: 26px; height: 42px; background: #ffb74d; border-radius: 10px 10px 0 0; }
-    .organic-shroom-cap { position: absolute; top: 0; left: 0; width: 150px; height: 60px; background: #e53935; border-radius: 75px 75px 15px 15px; box-shadow: inset -15px -10px 0 #b71c1c, 0 6px 10px rgba(0,0,0,0.12); }
+    .spot-mushroom { bottom: 4%; right: 5%; width: 130px; height: 110px; }
+    .organic-shroom-stem { position: absolute; bottom: 0; left: 35px; width: 60px; height: 65px; background: #fff9c4; border: 2.5px solid #fbc02d; border-radius: 25px 25px 8px 8px; }
+    .organic-shroom-door { position: absolute; bottom: 0; left: 53px; width: 22px; height: 36px; background: #ffb74d; border-radius: 8px 8px 0 0; }
+    .organic-shroom-cap { position: absolute; top: 0; left: 0; width: 130px; height: 55px; background: #e53935; border-radius: 65px 65px 12px 12px; box-shadow: inset -12px -8px 0 #b71c1c; }
     .organic-shroom-dot { position: absolute; background: white; border-radius: 50%; }
-    .sd-1 { top: 14%; left: 25px; width: 16px; height: 16px; }
-    .sd-2 { top: 25%; left: 65px; width: 22px; height: 22px; }
-    .sd-3 { top: 16%; right: 25px; width: 18px; height: 18px; }
+    .sd-1 { top: 14%; left: 20px; width: 14px; height: 14px; }
+    .sd-2 { top: 25%; left: 55px; width: 18px; height: 18px; }
+    .sd-3 { top: 16%; right: 20px; width: 15px; height: 15px; }
 
     /* ==========================================================================
-       KIDS CHARACTER SYSTEM
+       KIDS CHARACTER & PRECISE HELD LETTER
        ========================================================================= */
     .kid-character {
-      position: absolute; width: 70px; height: 100px; display: flex; flex-direction: column; align-items: center;
+      position: absolute; width: 60px; height: 90px; display: flex; flex-direction: column; align-items: center;
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.25); z-index: 3; pointer-events: none;
     }
     
-    .spot-lotus .kid-character { left: 25px; bottom: 5px; }
-    .spot-sunflower .kid-character { left: 15px; bottom: 30px; }
-    .spot-well .kid-character { right: -15px; bottom: 10px; }
-    .spot-fence .kid-character { left: 40px; bottom: -10px; }
-    .spot-mushroom .kid-character { left: 5px; bottom: 20px; }
+    .spot-lotus .kid-character { left: 20px; bottom: 5px; }
+    .spot-sunflower .kid-character { left: 12px; bottom: 25px; }
+    .spot-well .kid-character { right: -12px; bottom: 8px; }
+    .spot-fence .kid-character { left: 35px; bottom: -8px; }
+    .spot-mushroom .kid-character { left: 5px; bottom: 18px; }
 
     .held-letter {
       position: absolute; top: -46px; left: 50%; transform: translateX(-50%) scale(0);
-      font-family: 'Noto Sans Myanmar', sans-serif; font-size: 26px; font-weight: 900;
+      font-family: 'Noto Sans Myanmar', sans-serif; 
+      font-size: 22px; 
+      font-weight: 900;
       background: #fffde7; color: #d84315; border: 3px solid #ff5722;
-      padding: 2px 14px; border-radius: 14px; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.12); line-height: 1.2; z-index: 9;
+      width: 42px; 
+      height: 42px;
+      border-radius: 12px; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+      z-index: 9;
     }
     .held-letter::after {
-      content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
-      border-width: 8px 8px 0; border-style: solid; border-color: #ff5722 transparent; display: block; width: 0;
+      content: ''; position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%);
+      border-width: 7px 7px 0; border-style: solid; border-color: #ff5722 transparent; display: block; width: 0;
     }
 
-    .kid-head { width: 42px; height: 42px; background: #ffebd2; border-radius: 50%; position: relative; border: 2px solid #5d4037; z-index: 4; }
-    .kid-hair { position: absolute; top: -2px; left: -2px; right: -2px; height: 18px; background: #3e2723; border-radius: 20px 20px 0 0; }
-    .kid-eyes { position: absolute; top: 16px; left: 8px; right: 8px; display: flex; justify-content: space-between; }
-    .kid-eyes::before, .kid-eyes::after { content: ''; width: 6px; height: 6px; background: #212121; border-radius: 50%; }
-    .kid-smile { position: absolute; bottom: 6px; left: 16px; width: 10px; height: 6px; border-bottom: 2px solid #212121; border-radius: 0 0 5px 5px; }
+    .kid-head { width: 36px; height: 36px; background: #ffebd2; border-radius: 50%; position: relative; border: 2px solid #5d4037; z-index: 4; }
+    .kid-hair { position: absolute; top: -2px; left: -2px; right: -2px; height: 15px; background: #3e2723; border-radius: 15px 15px 0 0; }
+    .kid-eyes { position: absolute; top: 14px; left: 6px; right: 6px; display: flex; justify-content: space-between; }
+    .kid-eyes::before, .kid-eyes::after { content: ''; width: 5px; height: 5px; background: #212121; border-radius: 50%; }
+    .kid-smile { position: absolute; bottom: 5px; left: 13px; width: 8px; height: 5px; border-bottom: 2px solid #212121; border-radius: 0 0 4px 4px; }
     
     .kid-body { 
-      width: 38px; height: 45px; background: #e91e63; border-radius: 12px 12px 0 0; margin-top: -2px; position: relative; z-index: 3;
+      width: 34px; height: 40px; background: #e91e63; border-radius: 10px 10px 0 0; margin-top: -2px; position: relative; z-index: 3;
       opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
-    /* Peeking & Success States */
-    .spot-lotus.peek .kid-character { transform: translateY(-45px); }
-    .spot-sunflower.peek .kid-character { transform: translateX(45px) translateY(-25px); }
-    .spot-well.peek .kid-character { transform: translateX(35px) translateY(-15px); }
-    .spot-fence.peek .kid-character { transform: translateY(-48px); }
-    .spot-mushroom.peek .kid-character { transform: translateX(-35px) translateY(-25px); }
+    /* Peeking States */
+    .spot-lotus.peek .kid-character { transform: translateY(-40px); }
+    .spot-sunflower.peek .kid-character { transform: translateX(40px) translateY(-20px); }
+    .spot-well.peek .kid-character { transform: translateX(30px) translateY(-12px); }
+    .spot-fence.peek .kid-character { transform: translateY(-42px); }
+    .spot-mushroom.peek .kid-character { transform: translateX(-30px) translateY(-20px); }
 
     .spot-container.peek .held-letter { transform: translateX(-50%) scale(1); }
     .spot-container.peek .kid-body { opacity: 1; transform: translateY(0); }
 
+    /* Success states animations */
     .spot-lotus.success .kid-character { animation: winJumpL 0.4s infinite alternate; }
-    @keyframes winJumpL { 0% { transform: translateY(-40px); } 100% { transform: translateY(-62px); } }
+    @keyframes winJumpL { 0% { transform: translateY(-35px); } 100% { transform: translateY(-55px); } }
     .spot-sunflower.success .kid-character { animation: winJumpSF 0.4s infinite alternate; }
-    @keyframes winJumpSF { 0% { transform: translateX(45px) translateY(-25px); } 100% { transform: translateX(45px) translateY(-48px); } }
+    @keyframes winJumpSF { 0% { transform: translateX(40px) translateY(-20px); } 100% { transform: translateX(40px) translateY(-40px); } }
     .spot-well.success .kid-character { animation: winJumpW 0.4s infinite alternate; }
-    @keyframes winJumpW { 0% { transform: translateX(35px) translateY(-15px); } 100% { transform: translateX(35px) translateY(-38px); } }
+    @keyframes winJumpW { 0% { transform: translateX(30px) translateY(-12px); } 100% { transform: translateX(30px) translateY(-32px); } }
     .spot-fence.success .kid-character { animation: winJumpF 0.4s infinite alternate; }
-    @keyframes winJumpF { 0% { transform: translateY(-45px); } 100% { transform: translateY(-68px); } }
+    @keyframes winJumpF { 0% { transform: translateY(-40px); } 100% { transform: translateY(-60px); } }
     .spot-mushroom.success .kid-character { animation: winJumpM 0.4s infinite alternate; }
-    @keyframes winJumpM { 0% { transform: translateX(-35px) translateY(-25px); } 100% { transform: translateX(-35px) translateY(-48px); } }
+    @keyframes winJumpM { 0% { transform: translateX(-30px) translateY(-20px); } 100% { transform: translateX(-30px) translateY(-40px); } }
 
     .spot-container.success .kid-body { opacity: 1; transform: translateY(0); }
 
-    /* Shaking Errors */
+    /* Shaking Animations */
     .spot-lotus.wrong .kid-character, .spot-fence.wrong .kid-character { animation: shakeV 0.4s ease; }
-    @keyframes shakeV { 0%, 100% { transform: translateY(-45px); } 25% { transform: translateX(-6px) translateY(-45px); } 75% { transform: translateX(6px) translateY(-45px); } }
+    @keyframes shakeV { 0%, 100% { transform: translateY(-40px); } 25% { transform: translateX(-5px) translateY(-40px); } 75% { transform: translateX(5px) translateY(-40px); } }
     .spot-sunflower.wrong .kid-character { animation: shakeSF 0.4s ease; }
-    @keyframes shakeSF { 0%, 100% { transform: translateX(45px) translateY(-25px); } 25% { transform: translateX(39px) translateY(-25px); } 75% { transform: translateX(51px) translateY(-25px); } }
+    @keyframes shakeSF { 0%, 100% { transform: translateX(40px) translateY(-20px); } 25% { transform: translateX(35px) translateY(-20px); } 75% { transform: translateX(45px) translateY(-20px); } }
     .spot-well.wrong .kid-character { animation: shakeW 0.4s ease; }
-    @keyframes shakeW { 0%, 100% { transform: translateX(35px) translateY(-15px); } 25% { transform: translateX(29px) translateY(-15px); } 75% { transform: translateX(41px) translateY(-15px); } }
+    @keyframes shakeW { 0%, 100% { transform: translateX(30px) translateY(-12px); } 25% { transform: translateX(25px) translateY(-12px); } 75% { transform: translateX(35px) translateY(-12px); } }
     .spot-mushroom.wrong .kid-character { animation: shakeM 0.4s ease; }
-    @keyframes shakeM { 0%, 100% { transform: translateX(-35px) translateY(-25px); } 25% { transform: translateX(-41px) translateY(-25px); } 75% { transform: translateX(-29px) translateY(-25px); } }
-
-    /* ==========================================================================
-       SUPER ANIMATED INTRO SCREEN SYSTEM (Full Overhaul)
-       ========================================================================= */
-    .intro-screen {
-      position: absolute; inset: 0; 
-      background: linear-gradient(to bottom, #b3e5fc 0%, #e1f5fe 50%, #fff9c4 100%);
-      z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 20px; text-align: center; overflow: hidden; transition: opacity 0.4s ease, pointer-events 0.4s;
-    }
-    .intro-screen.hide { opacity: 0; pointer-events: none; }
-    
-    /* Sun Graphic Element in Intro */
-    .intro-sun {
-      position: absolute; top: 30px; right: 40px; width: 75px; height: 75px;
-      background: #ffb300; border-radius: 50%; border: 6px dashed #ff6f00;
-      animation: rotateSun 16s linear infinite;
-    }
-    @keyframes rotateSun { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-    /* Moving clouds just for Intro */
-    .intro-cloud-decor {
-      position: absolute; background: white; border-radius: 40px; opacity: 0.9; z-index: 1;
-      animation: introCloudMove 12s infinite alternate ease-in-out;
-    }
-    .ic-1 { top: 60px; left: -20px; width: 140px; height: 45px; box-shadow: 30px -15px 0 white; }
-    .ic-2 { bottom: 80px; right: -30px; width: 16px; height: 50px; box-shadow: -30px 10px 0 white, -70px 0 0 white; }
-    @keyframes introCloudMove { 0% { transform: translateX(-10px); } 100% { transform: translateX(30px); } }
-
-    /* Floating Sparkle Stars decor */
-    .intro-sparkle { position: absolute; font-size: 24px; color: #ffca28; animation: floatSparkle 3s infinite ease-in-out; opacity: 0.8; }
-    .sp-1 { top: 25%; left: 18%; animation-delay: 0s; }
-    .sp-2 { top: 60%; left: 12%; animation-delay: 0.8s; color: #ff7043; }
-    .sp-3 { top: 20%; right: 22%; animation-delay: 0.4s; color: #4caf50; }
-    .sp-4 { bottom: 25%; right: 15%; animation-delay: 1.2s; }
-    @keyframes floatSparkle { 0%, 100% { transform: translateY(0) scale(0.8); opacity: 0.5; } 50% { transform: translateY(-15px) scale(1.2); opacity: 1; } }
-
-    /* Welcome Title Package */
-    .intro-title-container { position: relative; z-index: 5; margin-bottom: 5px; }
-    .intro-title { 
-      font-family: 'Noto Sans Myanmar', sans-serif; font-size: 38px; font-weight: 900; 
-      color: #2e7d32; text-shadow: 3px 3px 0px white, 5px 5px 0px #a2d85b;
-      margin-bottom: 4px; animation: welcomeBounce 1.2s infinite alternate ease-in-out; 
-    }
-    @keyframes welcomeBounce { 0% { transform: translateY(0); } 100% { transform: translateY(-12px); } }
-
-    .intro-badge { 
-      background: #ff9800; color: white; padding: 6px 24px; border-radius: 20px; 
-      font-weight: 700; font-size: 18px; display: inline-block;
-      box-shadow: 0 5px 0 #f57c00; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    }
-
-    /* Animated Welcome Character Avatar */
-    .intro-avatar-area { position: relative; width: 100px; height: 130px; margin-bottom: 20px; z-index: 5; }
-    .intro-kid { animation: introKidJump 0.6s infinite alternate cubic-bezier(0.455, 0.03, 0.515, 0.955); }
-    .intro-kid .kid-body { opacity: 1; transform: translateY(0); }
-    @keyframes introKidJump { 0% { transform: translateY(10px) scaleQ(0.95); } 100% { transform: translateY(-25px) scaleQ(1.05); } }
-
-    /* Premium Big Wiggle Play Action Button */
-    .btn-action {
-      font-family: 'Noto Sans Myanmar', sans-serif; padding: 14px 45px; font-size: 22px; font-weight: 900;
-      color: white; background: #8bc34a; border: none; border-radius: 20px; cursor: pointer; 
-      box-shadow: 0 8px 0 #558b2f; transition: transform 0.1s; z-index: 5;
-      animation: autoWiggleBtn 3s infinite ease-in-out;
-    }
-    .btn-action:active { transform: translateY(4px); box-shadow: 0 4px 0 #558b2f; animation: none; }
-    
-    @keyframes autoWiggleBtn {
-      0%, 80%, 100% { transform: rotate(0deg); }
-      85% { transform: rotate(3deg) scale(1.03); }
-      90% { transform: rotate(-3deg) scale(1.03); }
-      95% { transform: rotate(2deg) scale(1.03); }
-    }
+    @keyframes shakeM { 0%, 100% { transform: translateX(-30px) translateY(-20px); } 25% { transform: translateX(-35px) translateY(-20px); } 75% { transform: translateX(-25px) translateY(-20px); } }
 
     /* ==========================================================================
        REWARD OVERLAYS
@@ -275,59 +368,83 @@
     }
     .reward-backdrop.show { opacity: 1; pointer-events: auto; }
     .reward-box {
-      background: white; border: 5px solid #ffca28; border-radius: 24px; padding: 30px;
-      width: 90%; max-width: 440px; text-align: center; transform: scale(0.7); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+      background: white; border: 5px solid #ffca28; border-radius: 24px; padding: 25px;
+      width: 90%; max-width: 400px; text-align: center; transform: scale(0.7); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.25);
     }
     .reward-backdrop.show .reward-box { transform: scale(1); }
-    .reward-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 26px; font-weight: 900; color: #e64a19; margin-bottom: 8px; }
-    .reward-letter-display { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 58px; font-weight: 900; color: #8bc34a; margin: 8px 0; }
+    .reward-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 24px; font-weight: 900; color: #e64a19; margin-bottom: 6px; }
+    
+    .reward-letter-display { 
+      font-family: 'Noto Sans Myanmar', sans-serif; 
+      font-size: 52px; 
+      font-weight: 900; 
+      color: #8bc34a; 
+      margin: 10px auto; 
+      width: 80px;
+      height: 80px;
+      background: #f1f8e9;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     
     .stats-container { background: #f9f9f9; padding: 10px; border-radius: 12px; margin-bottom: 15px; border: 1px dashed #ccc; font-size: 14px; color: #555; text-align: left; }
     .stats-row { display: flex; justify-content: space-between; margin-bottom: 4px; font-family: 'Noto Sans Myanmar', sans-serif; }
+    .btn-action {
+      font-family: 'Noto Sans Myanmar', sans-serif; padding: 12px 35px; font-size: 18px; font-weight: 900;
+      color: white; background: #8bc34a; border: none; border-radius: 16px; cursor: pointer; 
+      box-shadow: 0 6px 0 #558b2f; transition: transform 0.1s;
+    }
+    .btn-action:active { transform: translateY(3px); box-shadow: 0 3px 0 #558b2f; }
   </style>
 </head>
 <body>
 
-  <!-- Dashboard Top Menu -->
-  <div class="header-panel">
-    <div class="instruction">
-      <span>ရှာဖွေရမည့် အက္ခရာ:</span>
-      <div class="target-box" id="targetDisplay">စ</div>
-      <span style="color:#666; font-size:15px;">(တိုးတက်မှုအခြေအနေ:)</span>
-    </div>
-    <div class="score-stars" id="starContainer">☆☆☆☆☆</div>
-    <button class="btn-exit" onclick="exitToMain()">🚪 ထွက်မည်</button>
-  </div>
-
-  <!-- Main Game Frame -->
-  <div class="game-stage">
-    <!-- Intro Splash View Screen with Rich Graphics -->
-    <div class="intro-screen" id="welcomePanel">
-      <div class="intro-sun"></div>
-      <div class="intro-cloud-decor ic-1"></div>
-      <div class="intro-cloud-decor ic-2"></div>
+  <!-- 🌟 NEW INTRO SCREEN OVERLAY: ပထမဆုံးပေါ်လာမည့် မိတ်ဆက်စာမျက်နှာ -->
+  <div class="game-intro-overlay" id="introGameOverlay">
+    <div class="intro-welcome-box">
+      <div class="intro-welcome-emoji">👋</div>
+      <h2 class="intro-title-main">မင်္ဂလာပါ သားသားမီးမီးတို့ရေ...</h2>
+      <div class="intro-badge-lesson">သင်ခန်းစာ ၂ : စ ၊ ဆ ၊ ဇ ၊ ဈ ၊ ည</div>
       
-      <div class="intro-sparkle sp-1">★</div>
-      <div class="intro-sparkle sp-2">✦</div>
-      <div class="intro-sparkle sp-3">★</div>
-      <div class="intro-sparkle sp-4">✦</div>
-
-      <div class="intro-title-container">
-        <h1 class="intro-title">မြန်မာအက္ခရာ ပုန်းတမ်းကစားနည်း</h1>
-        <div class="intro-badge">သင်ခန်းစာ ၂ : စ ၊ ဆ ၊ ဇ ၊ ဈ ၊ ည</div>
-      </div>
-
-      <!-- Jumping Welcome Mascot -->
-      <div class="intro-avatar-area">
-        <div class="kid-character intro-kid" style="left:15px; top:15px;">
-          <div class="kid-head"><div class="kid-hair" style="background:#ff6f00;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
-          <div class="kid-body" style="background:#ff7043;"></div>
+      <div class="intro-description-card">
+        <div class="intro-instruction-item">
+          <span>🎯</span>
+          <span>အပေါ်က "ရှာဖွေရမည့် အက္ခရာ" အကွက်လေးကို အရင်ကြည့်ပါ။</span>
+        </div>
+        <div class="intro-instruction-item">
+          <span>🌸</span>
+          <span>ဥယျာဉ်ထဲက ကြာပန်း၊ နေကြာပန်း၊ ရေတွင်းလေးတွေထဲမှာ သူငယ်ချင်းလေးတွေ ပုန်းနေကြတယ်နော်။</span>
+        </div>
+        <div class="intro-instruction-item">
+          <span>🔍</span>
+          <span>သူငယ်ချင်းလေးတွေကို နှိပ်ပြီး တို့ရှာခိုင်းတဲ့ အက္ခရာကို မှန်အောင်လိုက်ရှာကြည့်ရအောင်။</span>
         </div>
       </div>
 
-      <button class="btn-action" onclick="startGame()">ဂိမ်းစတင်ဆော့မည်</button>
+      <button class="btn-start-game" onclick="startGameNow()">ဂိမ်းစကစားမည် 🎮</button>
     </div>
+  </div>
 
+  <!-- ၁။ TOP INTRO CARD -->
+  <div class="intro-card">
+    <h1 class="intro-main-title">မြန်မာအက္ခရာ ပုန်းတမ်းကစားနည်း</h1>
+    <div class="intro-sub-badge">သင်ခန်းစာ ၂ : စ ၊ ဆ ၊ ဇ ၊ ဈ ၊ ည</div>
+  </div>
+
+  <!-- ၂။ LESSON CARD -->
+  <div class="lesson-card">
+    <div class="lesson-info-box">
+      <span class="instruction-text">ရှာဖွေရမည့် အက္ခရာ:</span>
+      <div class="target-box" id="targetDisplay">စ</div>
+    </div>
+    <div class="score-stars" id="starContainer">☆☆☆☆•</div>
+    <button class="btn-exit" onclick="exitToMain()">🚪 ထွက်မည်</button>
+  </div>
+
+  <!-- ၃။ MAIN GAME FRAMESTAGE -->
+  <div class="game-stage">
     <div class="sky-cloud cloud-1"></div>
     <div class="sky-cloud cloud-2"></div>
     <div class="garden-lawn"></div>
@@ -409,24 +526,22 @@
     </div>
   </div>
 
-  <!-- Victory / Status Reward Overlay Panel -->
+  <!-- Victory Reward Overlay Panel -->
   <div class="reward-backdrop" id="rewardPanel">
     <div class="reward-box">
       <h2 class="reward-title" id="rewardTitleText">မှန်သွားပြီ! ထူးချွန်တယ်! 🎉</h2>
-      <p style="font-family:'Noto Sans Myanmar'; color:#546e7a;" id="rewardSubText">သူငယ်ချင်းလေးဆီက ရှာတွေ့လိုက်တဲ့ အက္ခရာကတော့ -</p>
+      <p style="font-family:'Noto Sans Myanmar'; color:#546e7a; font-size: 14px;" id="rewardSubText">သူငယ်ချင်းလေးဆီက ရှာတွေ့လိုက်တဲ့ အက္ခရာကတော့ -</p>
       <div class="reward-letter-display" id="rewardLetterBox">စ</div>
       
-      <!-- Performance Evaluation Box -->
       <div class="stats-container" id="statsContainer" style="display:none;">
         <div class="stats-row"><span>ရှာဖွေမှု အောင်မြင်မှုနှုန်း:</span><span id="statSuccessCount" style="color:#4caf50; font-weight:bold;">5 ကြိမ်</span></div>
         <div class="stats-row"><span>မှားယွင်းနှိပ်မိမှု အကြိမ်ရေ:</span><span id="statWrongCount" style="color:#f44336; font-weight:bold;">0 ကြိမ်</span></div>
       </div>
 
-      <button class="btn-action" id="rewardActionBtn" style="background:#ff9800; box-shadow:0 6px 0 #e65100; margin-top: 5px;" onclick="advanceToNextRound()">နောက်တစ်ဆင့်သို့</button>
+      <button class="btn-action" id="rewardActionBtn" style="background:#ff9800; box-shadow:0 5px 0 #e65100; margin-top: 5px;" onclick="advanceToNextRound()">နောက်တစ်ဆင့်သို့</button>
     </div>
   </div>
 
-  <!-- AUDIO GENERATOR AND APPLICATION LOGIC -->
   <script>
     const lettersPoolList = ['စ', 'ဆ', 'ဇ', 'ဈ', 'ည'];
     let assignedPositions = [];
@@ -435,7 +550,6 @@
     let isTransitioning = false;
     let wrongClicksCounter = 0;
 
-    // Web Audio API Synthesizer Sound Engine
     const AudioEngineCtx = new (window.AudioContext || window.webkitAudioContext)();
 
     function triggerAudioEffect(type) {
@@ -483,12 +597,18 @@
       window.location.href = 'index.html?fromGame=true';
     }
 
-    function startGame() {
-      document.getElementById('welcomePanel').classList.add('hide');
+    // Window load တွင် နောက်ကွယ်က Game Setup ကိုသာလုပ်ထားပြီး Overlay ပြထားမည်
+    window.onload = function() {
       scoreProgress = 0;
       wrongClicksCounter = 0;
       document.getElementById('statsContainer').style.display = 'none';
       setupNewTargetRound();
+    };
+
+    // "ဂိမ်းစကစားမည်" ခလုတ်နှိပ်မှ Overlay ကိုပိတ်ပြီး Web Audio ကို အလုပ်ပေးမည်
+    function startGameNow() {
+      if (AudioEngineCtx.state === 'suspended') AudioEngineCtx.resume();
+      document.getElementById('introGameOverlay').classList.add('hide');
     }
 
     function setupNewTargetRound() {
@@ -545,7 +665,7 @@
               triggerAudioEffect('victoryFanfare');
               document.getElementById('rewardTitleText').textContent = "🌟 ဂိမ်းတစ်ခုလုံး အောင်မြင်သွားပါပြီ! 🌟";
               document.getElementById('rewardSubText').textContent = "အက္ခရာသူငယ်ချင်း (၅) လုံးလုံးကို ရှာဖွေတွေ့ရှိသွားပါပြီ။";
-              document.getElementById('rewardLetterBox').textContent = "⭐⭐⭐⭐•";
+              document.getElementById('rewardLetterBox').textContent = "🎉";
               
               document.getElementById('statSuccessCount').textContent = "5 ကြိမ် ကွက်တိ";
               document.getElementById('statWrongCount').textContent = wrongClicksCounter + " ကြိမ်";
