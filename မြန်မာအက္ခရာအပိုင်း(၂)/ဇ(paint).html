@@ -103,20 +103,11 @@
       padding: 6px 14px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
     .btn-audio-toggle {
       background: none; border: none; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-    }
-    .audio-slider {
-      width: 85px; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; background: #166534; outline: none; cursor: pointer;
-    }
-    .audio-slider::-webkit-slider-thumb {
-      -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #fcd34d; cursor: pointer;
-    }
-    .audio-slider::-moz-range-thumb {
-      width: 14px; height: 14px; border: none; border-radius: 50%; background: #fcd34d; cursor: pointer;
     }
 
     .intro-screen {
@@ -268,7 +259,6 @@
 
   <div class="top-audio-control">
     <button class="btn-audio-toggle" id="audioToggleBtn">🔊</button>
-    <input type="range" class="audio-slider" id="audioSliderControl" min="0" max="1" step="0.05" value="0.3">
   </div>
 
   <div class="top-navigation">
@@ -344,8 +334,8 @@
     const mainBgm = document.getElementById('mainBackgroundAudio');
     const victorySfx = document.getElementById('victoryAudioSound');
     const audioToggleBtn = document.getElementById('audioToggleBtn');
-    const audioSliderControl = document.getElementById('audioSliderControl');
-    let historicalVolume = 0.3;
+    let isMuted = false;
+    let defaultVolume = 0.3;
 
     // ပြင်ဆင်ချက် ၁။ ဆေးရောင်ခြယ်မှုအပေါ်ကနေ "ဇ" လမ်းညွှန်လိုင်း Outline အမြဲထပ်နေအောင် ဆွဲပေးမည့် function
     function drawLetterOutline() {
@@ -365,8 +355,8 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      mainBgm.volume = audioSliderControl.value;
-      victorySfx.volume = audioSliderControl.value;
+      mainBgm.volume = defaultVolume;
+      victorySfx.volume = defaultVolume;
       mainBgm.play().catch(() => console.log("Audio deferred awaiting interaction"));
     });
 
@@ -494,28 +484,18 @@
         mainBgm.play().catch(() => {});
       };
 
-      // Audio Level Range Controls
-      audioSliderControl.oninput = (e) => {
-        const val = e.target.value;
-        mainBgm.volume = val;
-        victorySfx.volume = val;
-        if(val == 0) audioToggleBtn.textContent = '🔇';
-        else if(val < 0.4) audioToggleBtn.textContent = '🔉';
-        else audioToggleBtn.textContent = '🔊';
-      };
-
+      // Audio Click Toggle Controls
       audioToggleBtn.onclick = () => {
-        if (mainBgm.volume > 0) {
-          historicalVolume = audioSliderControl.value;
-          audioSliderControl.value = 0;
+        if (!isMuted) {
           mainBgm.volume = 0;
           victorySfx.volume = 0;
           audioToggleBtn.textContent = '🔇';
+          isMuted = true;
         } else {
-          audioSliderControl.value = historicalVolume;
-          mainBgm.volume = historicalVolume;
-          victorySfx.volume = historicalVolume;
-          audioToggleBtn.textContent = historicalVolume < 0.4 ? '🔉' : '🔊';
+          mainBgm.volume = defaultVolume;
+          victorySfx.volume = defaultVolume;
+          audioToggleBtn.textContent = '🔊';
+          isMuted = false;
         }
       };
 
@@ -560,7 +540,9 @@
       document.getElementById('btnComplete').onclick = () => {
         mainBgm.pause();
         victorySfx.currentTime = 0;
-        victorySfx.play().catch(e => console.log("SFX Blocked"));
+        if (!isMuted) {
+          victorySfx.play().catch(e => console.log("SFX Blocked"));
+        }
 
         const host = document.getElementById('confetti');
         const items = ['🌾', '🦋', '🌅', '🚜', '✨', '🎉', '🌟', '🎈'];
@@ -593,10 +575,6 @@
     canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
-
-    // Background SVG Guideline ကို အောက်ခံအဖြစ် ဆက်ထားပေးပါသည်
-    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>ဇ</text></svg>\")";
-    canvas.style.backgroundSize = "100% 100%";
 
     initUI();
   </script>
