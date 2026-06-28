@@ -271,14 +271,14 @@
     function drawLetterOutline() {
       ctx.save();
       ctx.globalCompositeOperation = 'source-over';
-      ctx.font = "800 360px 'Noto Sans Myanmar', sans-serif";
+      ctx.font = "800 260px 'Noto Sans Myanmar', sans-serif"; // Font size ကို 360 ကနေ 260 သို့ သေးလိုက်သည်
       ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
+      ctx.textBaseline = "middle"; // ဗဟိုချက် အလယ်တည့်တည့်ကျစေရန် ညှိသည်
       
       ctx.strokeStyle = "#cbd5e1";
       ctx.lineWidth = 4;
       ctx.setLineDash([10, 8]);
-      ctx.strokeText("ဈ", canvas.width / 2, canvas.height / 2 + 10);
+      ctx.strokeText("ဈ", canvas.width / 2, canvas.height / 2); // vertical offset (+10) ကို ဖယ်ရှားပြီး ကွက်တိအလယ်ချသည်
       
       ctx.restore();
     }
@@ -465,6 +465,10 @@
     canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
+
+    // SVG Background အက္ခရာ လုံးဝအလယ်ဗဟိုကျပြီး Canvas ထဲ ကွက်တိဝင်အောင် Size နှင့် Position ညှိခြင်း
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='50%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='260' text-anchor='middle' dominant-baseline='central' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='12,10'>ဈ</text></svg>\")";
+    canvas.style.backgroundSize = "100% 100%";
 
     initUI();
   </script>
