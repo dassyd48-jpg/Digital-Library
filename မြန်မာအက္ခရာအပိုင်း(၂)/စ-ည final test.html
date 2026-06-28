@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- ဖုန်း Browser များမှ အရောင်ကို အတင်းပြောင်းလဲခြင်း (Dark Mode Inversion) ကို လုံးဝတားဆီးရန် -->
     <meta name="color-scheme" content="light">
-    <title>Hidden Alphabet Safari - Difficulty Levels 1-6</title>
+    <title>Hidden Alphabet Safari - Difficulty Levels 1-5</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -133,7 +132,6 @@
 
     <canvas id="safariCanvas"></canvas>
 
-    <!-- Start Screen -->
     <div id="start-screen" class="intro-screen">
         <div class="intro-sun"></div>
         <div class="intro-cloud-decor ic-1"></div>
@@ -158,7 +156,6 @@
         <button id="play-btn" class="btn-action">စတင်ကစားမည်</button>
     </div>
 
-    <!-- Victory Screen -->
     <div id="victory-screen" class="hidden absolute inset-0 bg-slate-900/85 backdrop-blur-md z-[100] flex flex-col items-center justify-center text-center p-6">
         <div class="text-7xl mb-4 animate-bounce">🏆✨🧜‍♀️</div>
         <h2 id="victory-title" class="text-4xl sm:text-5xl font-black text-white mb-2 drop-shadow-md burmese-text">တော်လိုက်တာကွယ်!</h2>
@@ -230,14 +227,13 @@
             'ယ', 'ရ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ'
         ];
 
-        // 6 Difficulty Levels Config
+        // 5 Difficulty Levels Config (Level 6 Removed)
         const difficultyLevels = {
             1: { name: "Level 1 : စ - ည (အလွန်လွယ်)", speedMin: 0.8, speedMax: 1.5, spawnRate: 1500, targetChance: 0.50, desc: "အက္ခရာလေးတွေ ဖြည်းဖြည်းချင်းပဲ ကူးခတ်နေပါတယ်။ သေချာကြည့်ပြီး ဖမ်းယူကြည့်ရအောင်။" },
-            2: { name: "Level 2 : စ - ည (လွယ်ကူ)",     speedMin: 1.2, speedMax: 2.2, spawnRate: 1200, targetChance: 0.42, desc: "သတ္တဝါလေးတွေ နည်းနည်း ပိုမြန်လာပါပြီ။ အနှောင့်အယှက် စာလုံးတွေလည်း ပါလာမယ်နော်။" },
+            2: { name: "Level 2 : စ - ည (လွယ်ကူ)",      speedMin: 1.2, speedMax: 2.2, spawnRate: 1200, targetChance: 0.42, desc: "သတ္တဝါလေးတွေ နည်းနည်း ပိုမြန်လာပါပြီ။ အနှောင့်အယှက် စာလုံးတွေလည်း ပါလာမယ်နော်။" },
             3: { name: "Level 3 : စ - ည (အသင့်အတင့်)", speedMin: 1.6, speedMax: 2.8, spawnRate: 1000, targetChance: 0.36, desc: "လှုပ်ရှားမှုတွေ ပိုသွက်လာပါပြီ။ မျက်စိရှင်ရှင်ထားပြီး စ၊ ဆ၊ ဇ၊ ဈ၊ ည ကိုပဲ ရွေးနှိပ်ပါ။" },
             4: { name: "Level 4 : စ - ည (စိန်ခေါ်မှု)",   speedMin: 2.0, speedMax: 3.5, spawnRate: 850,  targetChance: 0.32, desc: "အရှိန်တော်တော် မြန်လာပါပြီ။ စာလုံးအမှားတွေကြားထဲက မှန်ကန်တဲ့စာလုံးကို အမိအရဖမ်းပါ။" },
-            5: { name: "Level 5 : စ - ည (ခက်ခဲ)",       speedMin: 2.5, speedMax: 4.2, spawnRate: 700,  targetChance: 0.28, desc: "အလွန်မြန်တဲ့အဆင့်ဖြစ်ပါတယ်။ အမှားမနှိပ်မိအောင် အာရုံစိုက်ပြီး ကစားပါ။" },
-            6: { name: "Level 6 : စ - ည (ကျွမ်းကျင်)",   speedMin: 3.2, speedMax: 5.0, spawnRate: 550,  targetChance: 0.24, desc: "အမြင့်ဆုံး ကျွမ်းကျင်သူအဆင့်။ သတ္တဝါတွေ အများကြီး အမြန်ကူးခတ်နေပါလိမ့်မယ်။" }
+            5: { name: "Level 5 : စ - ည (ခက်ခဲ)",       speedMin: 2.5, speedMax: 4.2, spawnRate: 700,  targetChance: 0.28, desc: "အလွန်မြန်တဲ့အဆင့်ဖြစ်ပါတယ်။ အမှားမနှိပ်မိအောင် အာရုံစိုက်ပြီး ကစားပါ။" }
         };
 
         const marineSpecies = [
@@ -396,9 +392,9 @@
                             
                             document.getElementById('victory-desc').innerText = `Level ${gameState.currentLevel} ကို ၁၀၀ မှတ်အပြည့်ဖြင့် အောင်မြင်သွားပါပြီ။`;
                             
-                            if (gameState.currentLevel >= 6) {
+                            if (gameState.currentLevel >= 5) {
                                 document.getElementById('victory-title').innerText = "ထူးချွန်လှပါတယ် အောင်နိုင်သူကြီး ရေ! 🎉";
-                                document.getElementById('victory-desc').innerText = "အမြင့်ဆုံးအဆင့်အထိ အောင်မြင်စွာ ဆော့ကစားပြီးပါပြီ။ တကယ့်ပါရမီရှင်ပါပဲ။";
+                                document.getElementById('victory-desc').innerText = "အဆင့်အားလုံး (Level 1 မှ 5) ကို အောင်မြင်စွာ ဆော့ကစားပြီးပါပြီ။ တကယ့်ပါရမီရှင်ပါပဲ။";
                                 document.getElementById('next-level-btn').innerText = "အစကနေ ပြန်ဆော့မည် 🔄";
                             } else {
                                 document.getElementById('victory-title').innerText = "တော်လိုက်တာကွယ်!";
@@ -463,7 +459,9 @@
                 const sway = item.isStatic ? 0 : Math.sin(Date.now() * 0.0015 + item.swayOffset) * 0.06;
                 ctx.translate(item.x, item.y);
                 ctx.rotate(sway);
-                // Font Family တွင် "Apple Color Emoji" နှင့် "Segoe UI Emoji" ကို အတင်းသတ်မှတ်ပေးခြင်းဖြင့် ဖုန်းပေါ်တွင် အရောင်ပျက်ခြင်းကို ကာကွယ်သည်
+                
+                // Dark Mode ကြောင့် အပြာရောင်အရိပ်မဖြစ်စေရန် ကာလာစစ်စစ် ဆွဲခိုင်းခြင်း
+                ctx.fillStyle = '#ffffff';
                 ctx.font = `${item.size}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", Arial`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'bottom';
@@ -495,7 +493,8 @@
                 const swimSquish = 1.0 + Math.sin(animal.animTime * 3) * 0.04;
                 ctx.scale(1.0, swimSquish);
 
-                // 'TURTLE' ဖြစ်ခဲ့လျှင် လိပ်ရုပ်ဆွဲရန်၊ မဟုတ်ပါက မူရင်းအတိုင်း Emoji ဆွဲရန်
+                // Dark Mode ကြောင့် အပြာရောင်အရိပ်မဖြစ်စေရန် ကာလာစစ်စစ် ဆွဲခိုင်းခြင်း
+                ctx.fillStyle = '#ffffff';
                 ctx.font = '56px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", Arial';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
@@ -583,7 +582,7 @@
         }
 
         function nextLevel() {
-            if (gameState.currentLevel >= 6) {
+            if (gameState.currentLevel >= 5) {
                 gameState.currentLevel = 1;
             } else {
                 gameState.currentLevel++;
