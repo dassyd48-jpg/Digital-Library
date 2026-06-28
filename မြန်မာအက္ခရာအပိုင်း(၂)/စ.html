@@ -13,19 +13,20 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #1e1b4b; /* Twilight Indigo Base */
+            background-color: #0c1033; /* Deep Indigo Void */
             font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
             user-select: none;
             -webkit-user-select: none;
-            touch-action: none; /* Prevents mobile browser bouncing */
+            touch-action: none;
             
-            /* Screen အပြည့် ကွက်တိဖြစ်စေရန် Center Alignment ထားရှိခြင်း */
+            /* Center the canvas beautifully without distortion */
             display: flex;
             align-items: center;
             justify-content: center;
         }
         canvas {
             display: block;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
         }
         .burmese-font {
             font-family: 'Pyidaungsu', 'Myanmar3', 'Yunghkio', sans-serif;
@@ -102,6 +103,7 @@
     </div>
 
     <script>
+        // မူရင်း Game Logic ရဲ့ Dimensions ကို သတ်မှတ်ထားခြင်း
         const CANVAS_WIDTH = 1024;
         const CANVAS_HEIGHT = 576;
         
@@ -203,21 +205,39 @@
             });
         }
 
-        // ဖုန်း screen တစ်ခုလုံးကို ကွက်တိပြည့်သွားစေရန် Resize စနစ်ကို ပြင်ဆင်ထားပါသည်
+        // 🌟 Aspect Ratio ကို ထိန်းသိမ်းပြီး Screen အကြီးဆုံးဖြစ်အောင် ချဲ့ပေးမည့် စနစ်သစ်
         function resizeMatrix() {
-            canvas.style.width = '100vw';
-            canvas.style.height = '100vh';
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            const baseRatio = CANVAS_WIDTH / CANVAS_HEIGHT;
+            const windowRatio = windowWidth / windowHeight;
+            
+            let newWidth, newHeight;
+            
+            // Screen ပုံစံအလိုက် အချိုးကျ တွက်ချက်ခြင်း
+            if (windowRatio > baseRatio) {
+                newHeight = windowHeight;
+                newWidth = windowHeight * baseRatio;
+            } else {
+                newWidth = windowWidth;
+                newHeight = windowWidth / baseRatio;
+            }
+            
+            canvas.style.width = newWidth + 'px';
+            canvas.style.height = newHeight + 'px';
         }
         window.addEventListener('resize', resizeMatrix);
         setTimeout(resizeMatrix, 100);
 
+        // Responsive ဖြစ်သွားတဲ့အတွက် Touch Coords တွေကို မှန်ကန်အောင် ပြန်လည်ညှိယူခြင်း
         function getCanvasCoords(e) {
             const rect = canvas.getBoundingClientRect();
             const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX);
             return ((clientX - rect.left) / rect.width) * CANVAS_WIDTH;
         }
 
-        // Keyboard inputs
+        // Controls
         window.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft' || e.key === 'a') { input.left = true; input.isMouseOrTouch = false; }
             if (e.key === 'ArrowRight' || e.key === 'd') { input.right = true; input.isMouseOrTouch = false; }
@@ -227,13 +247,11 @@
             if (e.key === 'ArrowRight' || e.key === 'd') input.right = false;
         });
 
-        // Mouse inputs
         canvas.addEventListener('mousemove', (e) => {
             input.isMouseOrTouch = true;
             input.targetX = getCanvasCoords(e);
         });
 
-        // Mobile Touch inputs - Smoothly mapped 1:1 response
         canvas.addEventListener('touchstart', (e) => {
             input.isMouseOrTouch = true;
             input.targetX = getCanvasCoords(e);
@@ -255,7 +273,6 @@
                 updateHUD();
             }
 
-            // Fixed Lag Problem: Direct & Instant responsive tracking for smooth motion
             if (input.isMouseOrTouch) {
                 player.x = input.targetX;
             } else {
@@ -267,7 +284,6 @@
             if (player.x < player.radius) player.x = player.radius;
             if (player.x > CANVAS_WIDTH - player.radius) player.x = CANVAS_WIDTH - player.radius;
 
-            // Projectile timers
             if (!player.lastShot) player.lastShot = 0;
             player.lastShot += dt;
             const fireInterval = Math.max(0.22, 0.45 - (player.level * 0.03));
@@ -284,7 +300,6 @@
                 }
             }
 
-            // Spawning rates
             if (!game.lastSpawn) game.lastSpawn = 0;
             game.lastSpawn += dt;
             const currentSpawnRate = Math.max(0.6, 1.6 - (player.level * 0.1));
@@ -293,7 +308,6 @@
                 game.lastSpawn = 0;
             }
 
-            // Letter bubbles processing
             for (let i = entities.letterBubbles.length - 1; i >= 0; i--) {
                 const b = entities.letterBubbles[i];
                 b.y += b.speed;
