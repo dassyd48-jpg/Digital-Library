@@ -3,13 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Paint the Burmese Letter ဇ - Golden Paddy Field</title>
+  <title>"ဇ" ကိုအရောင်ခြယ်ပါ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; width: 100%; overflow: hidden; }
+    
+    /* ၆။ Screen Scroll လုံးဝပိတ်ခြင်း (touch-action: none နှင့် overflow: hidden) */
+    html, body { 
+      height: 100%; 
+      width: 100%; 
+      overflow: hidden; 
+      touch-action: none; 
+    }
     
     /* လှပသော လယ်ကွင်းပြင်နှင့် နေထွက်ချိန်နောက်ခံ */
     body {
@@ -85,7 +92,6 @@
     /* ==========================================================================
        GAME UI INTERFACE (အသုံးချစနစ်များ)
        ========================================================================== */
-    /* ညာဘက်အပေါ်ထောင့် အသံထိန်းချုပ်မှုစနစ် */
     .top-audio-control {
       position: absolute;
       top: 20px;
@@ -134,7 +140,7 @@
       position: absolute; top: 20px; left: 20px; display: flex; gap: 12px; z-index: 100;
     }
     .nav-btn {
-      padding: 10px 16px; border-radius: 12px; border: 1px solid #fde047;
+      font-family: 'Noto Sans Myanmar', sans-serif; padding: 10px 16px; border-radius: 12px; border: 1px solid #fde047;
       background: rgba(22, 101, 52, 0.85); color: white; font-weight: 700; font-size: 14px;
       cursor: pointer; box-shadow: 0 4px 0 #14532d; display: flex; align-items: center; gap: 6px;
       transition: transform 0.1s, box-shadow 0.1s;
@@ -144,22 +150,23 @@
     .game-container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 15px; opacity: 0; transform: scale(0.95); transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; min-height: 100vh; justify-content: center; }
     .game-container.show { opacity: 1; transform: scale(1); }
 
-    h1 { font-size: 26px; font-weight: 700; margin-bottom: 15px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.2); background: rgba(22, 101, 52, 0.85); padding: 8px 25px; border-radius: 20px; border: 1px solid #fde047; }
-    h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #fef08a; font-size: 1.3em; text-shadow: 0 0 10px rgba(254, 240, 138, 0.6); }
+    /* ၃။ ဂိမ်းခေါင်းစဉ်စာသား ပြောင်းလဲခြင်း */
+    h1 { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 26px; font-weight: 700; margin-bottom: 15px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.2); background: rgba(22, 101, 52, 0.85); padding: 8px 25px; border-radius: 20px; border: 1px solid #fde047; flex-shrink: 0; }
     
-    .stage { display: flex; gap: 20px; width: 100%; max-width: 950px; justify-content: center; }
+    .stage { display: flex; gap: 20px; width: 100%; max-width: 950px; justify-content: center; align-items: center; flex: 1; min-height: 0; }
     
     .wood-frame {
       position: relative; padding: 18px; border-radius: 24px;
       background: linear-gradient(180deg, #15803d 0%, #14532d 100%);
       box-shadow: 0 16px 32px rgba(0,0,0,0.3), inset 0 0 0 3px #fde047;
+      max-height: 100%; display: flex; align-items: center; justify-content: center;
     }
-    .canvas-container { background: #ffffff; border-radius: 14px; overflow: hidden; position: relative; box-shadow: inset 0 4px 10px rgba(0,0,0,0.08); }
-    canvas { display: block; cursor: crosshair; touch-action: none; }
+    .canvas-container { background: #ffffff; border-radius: 14px; overflow: hidden; position: relative; box-shadow: inset 0 4px 10px rgba(0,0,0,0.08); width: 100%; aspect-ratio: 1/1; max-height: calc(100vh - 220px); }
+    canvas { display: block; cursor: crosshair; touch-action: none; width: 100%; height: 100%; }
     
-    /* Controls Panel */
+    /* ၄။ ညာဘက်အကန့် (Sidebar panel) */
     .panel {
-      width: 150px; background: linear-gradient(180deg, #ffffff 0%, #fefce8 100%); border-radius: 24px;
+      font-family: 'Noto Sans Myanmar', sans-serif; width: 150px; background: linear-gradient(180deg, #ffffff 0%, #fefce8 100%); border-radius: 24px;
       padding: 15px; display: flex; flex-direction: column; gap: 12px;
       box-shadow: 0 12px 24px rgba(0,0,0,0.15), inset 0 0 0 3px #fef08a;
     }
@@ -179,8 +186,8 @@
     .brush.selected { transform: scale(1.05); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #eab308; }
     .swatch { position: absolute; inset: 4px; border-radius: 10px; }
     
-    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; }
-    .btn { height: 55px; border-radius: 14px; border: none; color: white; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans Myanmar', sans-serif; }
+    .actions { display: flex; flex-direction: column; gap: 8px; margin-top: auto; width: 100%; }
+    .btn { height: 55px; border-radius: 14px; border: none; color: white; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans Myanmar', sans-serif; width: 100%; }
     .btn-reset { background: #22c55e; box-shadow: 0 4px 0 #166534; }
     .btn-complete { background: #ff477e; box-shadow: 0 4px 0 #d91b5c; }
     
@@ -191,7 +198,7 @@
       100% { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(1.4); opacity: 0; }
     }
 
-    /* CONGRATULATIONS POPUP WINDOW BOX (ဂုဏ်ပြုလွှာ ပေါ့ပ်အပ်) */
+    /* ၅။ ဆုလာဘ် ပေါ့ပ်အပ် ဝင်းဒိုး (Reward Popup Window Box) */
     .congrats-backdrop {
       position: fixed; inset: 0; background: rgba(20, 83, 45, 0.85); z-index: 2000;
       display: flex; align-items: center; justify-content: center; padding: 20px;
@@ -207,22 +214,50 @@
     .congrats-backdrop.show .congrats-box { transform: scale(1); }
     .congrats-badge { font-size: 64px; margin-bottom: 15px; animation: pulse 1.5s infinite alternate; }
     @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
-    .congrats-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 28px; font-weight: 800; color: #166534; margin-bottom: 12px; }
-    .congrats-text { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 16px; color: #15803d; line-height: 1.6; margin-bottom: 25px; font-weight: 600; }
+    .congrats-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 20px; font-weight: 800; color: #166534; margin-bottom: 25px; line-height: 1.6; }
+    
     .btn-done {
       font-family: 'Noto Sans Myanmar', sans-serif; background: #eab308; color: #14532d; border: none;
-      padding: 12px 40px; font-size: 18px; font-weight: 700; border-radius: 25px; cursor: pointer;
+      padding: 12px 40px; font-size: 16px; font-weight: 700; border-radius: 25px; cursor: pointer;
       box-shadow: 0 5px 0 #a16207; transition: all 0.1s;
     }
     .btn-done:active { transform: translateY(3px); box-shadow: 0 2px 0 #a16207; }
 
+    /* ၇။ Responsive Canvas Fluid Layout (ဖုန်းမျက်နှာပြင်အတွက် Flexbox Column-reverse စနစ်) */
     @media (max-width: 760px) {
-      body { overflow-y: auto; justify-content: flex-start; padding-top: 80px; }
+      body { overflow: hidden; justify-content: center; padding: 0; }
+      .game-container { padding: 10px; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
+      h1 { margin-top: 65px; margin-bottom: 5px; padding: 6px 15px; font-size: 20px; }
       .top-navigation { width: calc(100% - 40px); justify-content: space-between; }
-      .stage { flex-direction: column-reverse; align-items: center; }
-      .panel { width: 100%; max-width: 400px; }
-      .brush-grid { grid-template-columns: repeat(5, 1fr); }
-      .nature-sky, .butterfly, .paddy-stalks { display: none; }
+      
+      /* Column-reverse စနစ်ဖြင့် Canvas ကို အပေါ်သို့ပို့ပြီး Sidebar Panel ကို အောက်ခြေသို့ ထားရှိခြင်း */
+      .stage { 
+        flex-direction: column-reverse; 
+        gap: 10px; 
+        width: 100%; 
+        flex: 1; 
+        min-height: 0; 
+        justify-content: center; 
+      }
+      
+      .wood-frame { padding: 8px; width: 100%; max-width: 380px; flex: 1; min-height: 0; display: flex; align-items: center; }
+      .canvas-container { max-height: calc(100% - 4px); width: 100%; }
+      
+      /* Panel ကို မျက်နှာပြင်အမြင့်အလိုက် ကျုံ့/ပွ (Fluid) ဖြစ်စေခြင်း */
+      .panel { 
+        width: 100%; 
+        max-width: 380px; 
+        padding: 8px; 
+        gap: 6px; 
+        flex-shrink: 0;
+      }
+      .panel-title { display: none; }
+      .eraser { height: 38px; flex-direction: row; gap: 8px; font-size: 12px; box-shadow: 0 3px 0 #fef08a; }
+      .eraser span { font-size: 18px !important; }
+      .brush-grid { grid-template-columns: repeat(5, 1fr); gap: 4px; }
+      .actions { flex-direction: row; margin-top: 0; width: 100%; gap: 6px; }
+      .btn { height: 38px; font-size: 12px; flex: 1; }
+      .nature-sky, .paddy-stalks { display: none; }
     }
   </style>
 </head>
@@ -237,8 +272,8 @@
   </div>
 
   <div class="top-navigation">
-    <button class="nav-btn" id="btnBack">⬅️ Back</button>
-    <button class="nav-btn" id="btnHome">🏠 Home</button>
+    <button class="nav-btn" id="btnBack">⬅️ နောက်သို့</button>
+    <button class="nav-btn" id="btnHome">🏠 ပင်မစာမျက်နှာ</button>
   </div>
 
   <div class="nature-sky">
@@ -262,7 +297,7 @@
   </div>
 
   <div class="game-container" id="gameContainer">
-    <h1>Paint the letter <span class="glyph">ဇ</span> !</h1>
+    <h1>”ဇ" ကို အရောင်ခြယ်ကြစို့။</h1>
 
     <div class="stage">
       <div class="wood-frame">
@@ -272,14 +307,14 @@
       </div>
 
       <aside class="panel">
-        <div class="panel-title">BRUSHES</div>
+        <div class="panel-title">စုတ်တံများ</div>
         <div class="eraser" id="eraser">
-          <span style="font-size:24px">🧽</span><div>Eraser</div>
+          <span style="font-size:24px">🧽</span><div>ခဲဖျက်</div>
         </div>
         <div class="brush-grid" id="brushGrid"></div>
         <div class="actions">
-          <button class="btn btn-reset" id="btnReset">↻<br>Reset</button>
-          <button class="btn btn-complete" id="btnComplete">✓<br>ပြီးပြီ</button>
+          <button class="btn btn-reset" id="btnReset">↻<br>ပြန်စမည်</button>
+          <button class="btn btn-complete" id="btnComplete">✓<br>ပြီးပြီး</button>
         </div>
       </aside>
     </div>
@@ -287,10 +322,9 @@
 
   <div class="congrats-backdrop" id="congratsWindowBox">
     <div class="congrats-box">
-      <div class="congrats-badge">🌾✨🎉</div>
-      <div class="congrats-title">အရမ်းတော်သွားပြီ ကလေးတို့ရေ။</div>
-      <div class="congrats-text">အက္ခရာ "ဇ" လေးကို ရွှေရောင်လယ်ကွင်းပြင်ကြီးရဲ့ အလှတရားတွေနဲ့အတူ အောင်မြင်စွာ ခြယ်သပြီးပါပြီ။ နောက်ထပ် စွန့်စားခန်းတွေမှာ ပြန်တွေ့ကြမယ်နော်။</div>
-      <button class="btn-done" id="btnDone">ပြီးပြီ</button>
+      <div class="congrats-badge">🌾✨🎉🏆</div>
+      <div class="congrats-title">🎉 ဂုဏ်ယူပါတယ်! သင်ခန်းစာ ပြီးဆုံးပါပြီ။<br>ရမှတ်: ၁၀၀/၁၀၀ 🏆</div>
+      <button class="btn-done" id="btnDone">🏠 Home သို့သွားမည်</button>
     </div>
   </div>
 
@@ -307,19 +341,22 @@
     let brushSize = 32;
     let lastX = 0, lastY = 0;
 
-    // Audio Engines Link
     const mainBgm = document.getElementById('mainBackgroundAudio');
     const victorySfx = document.getElementById('victoryAudioSound');
     const audioToggleBtn = document.getElementById('audioToggleBtn');
     const audioSliderControl = document.getElementById('audioSliderControl');
     let historicalVolume = 0.3;
 
-    // Auto trigger soft background audio on load
     window.addEventListener('DOMContentLoaded', () => {
       mainBgm.volume = audioSliderControl.value;
       victorySfx.volume = audioSliderControl.value;
       mainBgm.play().catch(() => console.log("Audio deferred awaiting interaction"));
     });
+
+    // ၆။ Mobile UI Screen Touch Scrolling မတော်တဆဖြစ်ခြင်းကို JS ဖြင့် ကာကွယ်ခြင်း
+    document.addEventListener('touchmove', function(e) {
+      if (e.scale !== 1) { e.preventDefault(); }
+    }, { passive: false });
 
     const brushes = [
       { id: 'grain-brush', type: 'grain', color: '#eab308' },
@@ -416,13 +453,13 @@
     }
 
     function initUI() {
-      // ၁။ Back ခလုတ် - Intro Screen သို့ ပြန်သွားမည်
+      // Back ခလုတ် - Intro Screen သို့ ပြန်သွားမည်
       document.getElementById('btnBack').onclick = () => {
         document.getElementById('gameContainer').classList.remove('show');
         document.getElementById('introScreen').classList.remove('hide');
       };
 
-      // ၂။ Home ခလုတ် - index.html သို့ တိုက်ရိုက်သွားမည်
+      // Home ခလုတ် - index.html သို့ တိုက်ရိုက်သွားမည်
       document.getElementById('btnHome').onclick = () => {
         returnToMainPage();
       };
@@ -434,7 +471,7 @@
         mainBgm.play().catch(() => {});
       };
 
-      // ၄။ Audio Level Range Controls
+      // Audio Level Range Controls
       audioSliderControl.oninput = (e) => {
         const val = e.target.value;
         mainBgm.volume = val;
@@ -494,7 +531,7 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       };
 
-      // ၃။ Complete ခလုတ်နှိပ်ခြင်း၊ Confetti ဖြန်းခြင်းနှင့် Clapping Audio စနစ်
+      // ၅။ ပြီးပြီး (Complete) ခလုတ်နှိပ်ခြင်း၊ Confetti ဖြန်းခြင်းနှင့် Popup ဝင်းဒိုးပြသခြင်း
       document.getElementById('btnComplete').onclick = () => {
         mainBgm.pause();
         victorySfx.currentTime = 0;
@@ -532,6 +569,7 @@
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
 
+    // "ဇ" အက္ခရာ လမ်းညွှန်ချက် Font Guide Layout
     canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>ဇ</text></svg>\")";
     canvas.style.backgroundSize = "100% 100%";
 
