@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Paint the Burmese Letter ဆ - Magical Waterfall Adventure</title>
+  <title>"ဆ" ကိုအရောင်ခြယ်ပါ - Magical Waterfall Adventure</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
@@ -163,7 +163,7 @@
       position: absolute; top: 20px; left: 20px; display: flex; gap: 12px; z-index: 100;
     }
     .nav-btn {
-      padding: 10px 16px; border-radius: 12px; border: 1px solid #10b981;
+      font-family: 'Noto Sans Myanmar', sans-serif; padding: 10px 16px; border-radius: 12px; border: 1px solid #10b981;
       background: rgba(6, 78, 59, 0.85); color: white; font-weight: 700; font-size: 14px;
       cursor: pointer; box-shadow: 0 4px 0 #047857; display: flex; align-items: center; gap: 6px;
       transition: transform 0.1s, box-shadow 0.1s;
@@ -173,7 +173,7 @@
     .game-container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 15px; opacity: 0; transform: scale(0.95); transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; min-height: 100vh; justify-content: center; }
     .game-container.show { opacity: 1; transform: scale(1); }
 
-    h1 { font-size: 26px; font-weight: 700; margin-bottom: 15px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.2); background: rgba(6, 78, 59, 0.85); padding: 8px 25px; border-radius: 20px; border: 1px solid #10b981; }
+    h1 { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 26px; font-weight: 700; margin-bottom: 15px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.2); background: rgba(6, 78, 59, 0.85); padding: 8px 25px; border-radius: 20px; border: 1px solid #10b981; }
     h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #a7f3d0; font-size: 1.3em; text-shadow: 0 0 10px rgba(167, 243, 208, 0.6); }
     
     .stage { display: flex; gap: 20px; width: 100%; max-width: 950px; justify-content: center; }
@@ -188,7 +188,7 @@
     
     /* Controls Panel */
     .panel {
-      width: 150px; background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%); border-radius: 24px;
+      font-family: 'Noto Sans Myanmar', sans-serif; width: 150px; background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%); border-radius: 24px;
       padding: 15px; display: flex; flex-direction: column; gap: 12px;
       box-shadow: 0 12px 24px rgba(0,0,0,0.15), inset 0 0 0 3px #bbf7d0;
     }
@@ -266,8 +266,8 @@
   </div>
 
   <div class="top-navigation">
-    <button class="nav-btn" id="btnBack">⬅️ Back</button>
-    <button class="nav-btn" id="btnHome">🏠 Home</button>
+    <button class="nav-btn" id="btnBack">⬅️ နောက်သို့</button>
+    <button class="nav-btn" id="btnHome">🏠 ပင်မစာမျက်နှာ</button>
   </div>
 
   <div class="waterfall-bg"></div>
@@ -295,7 +295,7 @@
   </div>
 
   <div class="game-container" id="gameContainer">
-    <h1>Paint the letter <span class="glyph">ဆ</span> !</h1>
+    <h1>"ဆ" ကို အရောင်ခြယ်ကြစို့။</h1>
 
     <div class="stage">
       <div class="wood-frame">
@@ -305,13 +305,13 @@
       </div>
 
       <aside class="panel">
-        <div class="panel-title">BRUSHES</div>
+        <div class="panel-title">စုတ်တံများ</div>
         <div class="eraser" id="eraser">
-          <span style="font-size:24px">🧽</span><div>Eraser</div>
+          <span style="font-size:24px">🧽</span><div>ခဲဖျက်</div>
         </div>
         <div class="brush-grid" id="brushGrid"></div>
         <div class="actions">
-          <button class="btn btn-reset" id="btnReset">↻<br>Reset</button>
+          <button class="btn btn-reset" id="btnReset">↻<br>ပြန်စမည်</button>
           <button class="btn btn-complete" id="btnComplete">✓<br>ပြီးပြီ</button>
         </div>
       </aside>
