@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Paint the Burmese Letter စ - Magical Space Galaxy</title>
+  <title>"စ" ကိုအရောင်ခြယ်ပါ - Magical Space Galaxy</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
@@ -209,6 +209,28 @@
       100% { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(1.4); opacity: 0; }
     }
 
+    /* Reward Overlay Popup CSS */
+    .reward-overlay {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.9); z-index: 2000;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.4s ease, transform 0.4s ease; transform: scale(0.9);
+      padding: 20px; text-align: center;
+    }
+    .reward-overlay.show { opacity: 1; pointer-events: auto; transform: scale(1); }
+    .reward-box {
+      background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+      padding: 40px 30px; border-radius: 28px; border: 3px solid #a855f7;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(168, 85, 247, 0.3);
+      max-width: 450px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px;
+    }
+    .reward-text { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(20px, 4vw, 24px); font-weight: 800; color: #22d3ee; text-shadow: 0 0 10px rgba(34, 211, 238, 0.5); }
+    .btn-reward-home {
+      font-family: 'Noto Sans Myanmar', sans-serif; background-color: #ec4899; color: white; border: none;
+      padding: 12px 35px; font-size: 18px; font-weight: 700; border-radius: 25px; cursor: pointer;
+      box-shadow: 0 5px 0 #be185d; transition: transform 0.1s, box-shadow 0.1s; display: flex; align-items: center; gap: 8px;
+    }
+    .btn-reward-home:active { transform: translateY(3px); box-shadow: 0 2px 0 #be185d; }
+
     /* ==========================================================================
        MOBILE RESPONSIVE FLEX LAYOUT (ဖုန်းများအတွက် အထူးပြုပြင်ထားသော နေရာချထားမှု)
        ========================================================================== */
@@ -219,10 +241,8 @@
       .game-container { padding: 5px 15px; height: calc(100vh - 85px); height: calc(100svh - 85px); display: flex; flex-direction: column; justify-content: space-between; }
       h1 { font-size: 18px; margin-bottom: 8px; padding: 4px 15px; width: auto; }
       
-      /* Brushes panel ကို အောက်ဆုံးပို့ပြီး Canvas ကို အလယ်မှာ ကြီးကြီးထားမည် */
       .stage { flex-direction: column; gap: 10px; flex: 1; justify-content: center; align-items: center; width: 100%; height: 100%; overflow: hidden; }
       
-      /* Wood Frame ကို ဖုန်း Screen ရဲ့ ကျန်တဲ့နေရာအလိုက် Dynamic Size အချိုးကျ ကျုံ့ပေးမည် */
       .wood-frame { 
         width: 100%; 
         max-width: 320px; 
@@ -230,7 +250,7 @@
         aspect-ratio: 1 / 1; 
         padding: 10px;
         flex: 1; 
-        max-height: calc(100vh - 310px); /* ခေါင်းစဉ်နှင့် အောက်က Panel စာရင်းကိုနုတ်ပြီး Canvas ကွက်တိဖြစ်အောင် ထိန်းခြင်း */
+        max-height: calc(100vh - 310px);
         max-height: calc(100svh - 310px);
       }
       
@@ -242,8 +262,8 @@
         gap: 8px;
         box-shadow: 0 6px 12px rgba(0,0,0,0.15);
       }
-      .panel-title { display: none; } /* ဖုန်းပေါ်တွင် နေရာသက်သာစေရန် စာသားဖျောက်မည် */
-      .volume-control { display: none; } /* ဖုန်းပေါ်တွင် ပိုမိုကျစ်ကျစ်လစ်လစ်ဖြစ်စေရန် ခေတ္တဖျောက်ထားမည် (လိုအပ်က ပြန်ဖော်နိုင်သည်) */
+      .panel-title { display: none; }
+      .volume-control { display: none; }
       
       .brush-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
       .eraser { height: 42px; flex-direction: row; gap: 8px; font-size: 13px; box-shadow: 0 3px 0 #e9d5ff; }
@@ -252,7 +272,7 @@
       
       .actions { margin-top: 0; gap: 8px; }
       .btn { height: 42px; font-size: 12px; box-shadow: 0 3px 0 rgba(0,0,0,0.15); flex-direction: row; gap: 5px; }
-      br { display: none; } /* Reset နဲ့ Next စာသားများကို ဘေးတိုက်ဖြစ်စေရန် */
+      br { display: none; }
 
       .nebula, .space-floaters, .stars-layer, .space-horizon { display: none; }
     }
@@ -264,7 +284,7 @@
   <audio id="sfxVictory" src="space-victory.mp3"></audio>
 
   <div class="top-navigation">
-    <button class="nav-btn" id="btnBack">⬅️ Back</button>
+    <button class="nav-btn" id="btnBack">⬅️ နောက်သို့</button>
     <button class="nav-btn" id="btnHome">🏠 Home</button>
   </div>
 
@@ -313,10 +333,18 @@
         </div>
         <div class="brush-grid" id="brushGrid"></div>
         <div class="actions">
-          <button class="btn btn-reset" id="btnReset">↻ Reset</button>
-          <button class="btn btn-next" id="btnNext">→</button>
+          <button class="btn btn-reset" id="btnReset">↻ ထပ်လုပ်မည်</button>
+          <button class="btn btn-next" id="btnDone">ပြီးပြီး</button>
         </div>
       </aside>
+    </div>
+  </div>
+
+  <div class="reward-overlay" id="rewardOverlay">
+    <div class="reward-box">
+      <div style="font-size: 60px;">🏆✨🌟</div>
+      <div class="reward-text">🎉 ဂုဏ်ယူပါတယ်!<br>သင်ခန်းစာ ပြီးဆုံးပါပြီ။<br>ရမှတ်: ၁၀၀/၁၀၀ 🏆</div>
+      <button class="btn-reward-home" id="btnRewardHome">🏠 Home သို့သွားမည်</button>
     </div>
   </div>
 
@@ -451,9 +479,11 @@
       };
 
       // Home Button Logic
-      document.getElementById('btnHome').onclick = () => {
+      const goHome = () => {
         window.location.href = 'index.html?fromGame=true';
       };
+      document.getElementById('btnHome').onclick = goHome;
+      document.getElementById('btnRewardHome').onclick = goHome;
 
       document.getElementById('btnStart').onclick = () => {
         document.getElementById('introScreen').classList.add('hide');
@@ -527,10 +557,12 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       };
 
-      document.getElementById('btnNext').onclick = () => {
+      // ပြီးပြီး Button Logic ပြင်ဆင်မှု
+      document.getElementById('btnDone').onclick = () => {
         sfxVictory.currentTime = 0;
         sfxVictory.play().catch(err => console.log("SFX error"));
 
+        // Confetti effect Triggering
         const host = document.getElementById('confetti');
         const items = ['🚀', '🛸', '✨', '🌌', '🪐', '🌟', '☄️'];
         for (let i = 0; i < 55; i++) {
@@ -547,6 +579,11 @@
           host.appendChild(el);
           setTimeout(() => el.remove(), 1500);
         }
+
+        // ပြိုင်ပွဲအောင်မြင်မှု Reward စာသားနှင့် Home ခလုတ်ကို Overlay အနေဖြင့် ပြသပေးခြင်း
+        setTimeout(() => {
+          document.getElementById('rewardOverlay').classList.add('show');
+        }, 300);
       };
     }
 
