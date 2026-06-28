@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Paint the Burmese Letter ဈ - Intro and Game</title>
+  <title>Paint the Burmese Letter စ - Intro and Game</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
@@ -213,36 +213,31 @@
 </head>
 <body>
 
-  <!-- AUDIO ENGINE CONTROLLER (နောက်ခံတေးဂီတစနစ်) -->
   <audio id="mainBackgroundAudio" src="main-bgm.mp3" loop></audio>
   <audio id="victoryAudioSound" src="classroom-victory.mp3"></audio>
 
-  <!-- VOLUME SLIDER CONTROL PANEL -->
   <div class="top-audio-control">
     <button class="btn-audio-toggle" id="audioToggleBtn">🔊</button>
     <input type="range" class="audio-slider" id="audioSliderControl" min="0" max="1" step="0.05" value="0.3">
   </div>
 
-  <!-- NAVIGATION DIRECTION BUTTONS -->
   <div class="top-navigation">
     <button class="nav-btn" id="btnBack">⬅️ Back</button>
     <button class="nav-btn" id="btnHome">🏠 Home</button>
   </div>
 
-  <!-- 1. INTRO SCREEN -->
   <div class="intro-screen" id="introScreen">
-    <div class="intro-emojis">⛰️🎨✨🌈🎈</div>
+    <div class="intro-emojis">🦋🎨✨🌈🎈</div>
     <h1 class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</h1>
-    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဈ" သက်တံဆုံးလေးကို အရောင်ခြယ်ကြစို့</div>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "စ" လိပ်ပြာလေးကို အရောင်ခြယ်ကြစို့</div>
     <p class="intro-description">
-      ကလေးတို့ရေ... မိုးကောင်းကင်ကြီးထဲမှာ လှပတဲ့ သက်တံဆုံးကြီးက ပျောက်ကွယ်နေတယ်နော်။ 
-      အဲဒီသက်တံဆုံးကြီးက မြန်မာအက္ခရာ "ဈ" လေးနဲ့ တူတူပဲ။ ကဲ... စုတ်တံလေးတွေကို ကိုင်ပြီး 
-      "ဈ" လမ်းကြောင်းအတိုင်း ရောင်စုံဆေးလေးတွေ ခြယ်သပြီး သက်တံကြီးကို ပြန်ဖော်ထုတ်ကြရအောင်။
+      ကလေးတို့ရေ... ဥယျာဉ်ထဲမှာ လှပတဲ့ လိပ်ပြာလေးတစ်ကောင် ပျံသန်းနေတယ်နော်။ 
+      အဲဒီလိပ်ပြာလေးရဲ့ ပုံသဏ္ဌာန်က မြန်မာအက္ခရာ "စ" လေးနဲ့ တူတူပဲ။ ကဲ... စုတ်တံလေးတွေကို ကိုင်ပြီး 
+      "စ" လမ်းကြောင်းအတိုင်း ရောင်စုံဆေးလေးတွေ ခြယ်သပြီး လိပ်ပြာလေးကို လှအောင် ပြင်ဆင်ကြရအောင်။
     </p>
     <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
   </div>
 
-  <!-- 2. MAIN GAME SCREEN -->
   <div class="game-wrapper" id="gameWrapper">
     <div class="classroom-bg">
       <div class="bunting-flags"></div>
@@ -271,7 +266,7 @@
     <div class="game-container">
       <div class="heading-box">
         <span class="heading-text">Paint the letter</span>
-        <span class="heading-glyph">ဈ</span>
+        <span class="heading-glyph">စ</span>
         <span class="heading-text">!</span>
       </div>
 
@@ -297,12 +292,11 @@
     </div>
   </div>
 
-  <!-- CONGRATULATIONS POPUP BOX WINDOW -->
   <div class="congrats-backdrop" id="congratsWindowBox">
     <div class="congrats-box">
-      <div class="congrats-badge">🌈✨🎉</div>
+      <div class="congrats-badge">🦋✨🎉</div>
       <div class="congrats-title">အရမ်းထူးချွန်တယ် ကလေးတို့ရေ။</div>
-      <div class="congrats-text">အက္ခရာ "ဈ" သက်တံပုံစံလေးကို စိတ်ကြိုက်လှလှပပ ဆေးရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ။ နောက်ထပ် ပျော်စရာဂိမ်းတွေမှာ ဆက်လက်ဆော့ကစားကြမယ်နော်။</div>
+      <div class="congrats-text">အက္ခရာ "စ" ပုံစံလေးကို စိတ်ကြိုက်လှလှပပ ဆေးရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ။ နောက်ထပ် ပျော်စရာဂိမ်းတွေမှာ ဆက်လက်ဆော့ကစားကြမယ်နော်။</div>
       <button class="btn-done" id="btnDone">ပြီးပြီ</button>
     </div>
   </div>
@@ -489,7 +483,7 @@
         victorySfx.play().catch(() => {});
 
         const host = document.getElementById('confetti');
-        const items = ['🎉', '✨', '⭐', '🎈', '🎒', '📝', '🌈', '🎨'];
+        const items = ['🎉', '✨', '⭐', '🎈', '🎒', '📝', '🌈', '🎨', '🦋'];
         for (let i = 0; i < 50; i++) {
           const el = document.createElement('div');
           el.className = 'star';
@@ -520,7 +514,7 @@
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
 
-    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='360' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='5' stroke-dasharray='12,10'>ဈ</text></svg>\")";
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='360' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='5' stroke-dasharray='12,10'>စ</text></svg>\")";
     canvas.style.backgroundSize = "100% 100%";
 
     initUI();
