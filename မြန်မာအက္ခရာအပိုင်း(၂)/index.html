@@ -47,7 +47,7 @@
         }
         /* Floating Animation for Header Icons */
         @keyframes float {
-            0 { transform: translateY(0px); }
+            0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
@@ -57,17 +57,26 @@
 <body class="text-white min-h-screen flex flex-col items-center p-4 md:p-8 relative overflow-x-hidden">
 
     <div class="splash-screen" id="splashScreen">
-        <div class="bg-indigo-950/90 border-[4px] border-amber-400 backdrop-blur-2xl p-8 md:p-12 rounded-[36px] shadow-[0_0_5px_rgba(251,191,36,0.5)] max-w-md w-full mb-6 relative overflow-hidden">
+        <div class="bg-indigo-950/90 border-[4px] border-amber-400 backdrop-blur-2xl p-8 md:p-12 rounded-[36px] shadow-[0_0_25px_rgba(251,191,36,0.3)] max-w-md w-full mb-6 relative overflow-hidden">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-400/10 rounded-full blur-2xl"></div>
             
-<div class="text-6xl mb-4 floating-icon">🚀</div>
-<h1 class="text-xl md:text-2xl font-black text-amber-400 mb-2 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] leading-tight">
-    "မြန်မာအက္ခရာ ရှာပုံတော်"
-</h1>
-<p class="text-purple-200 font-bold text-sm mb-8">အပိုင်း (၂) - စွန့်စားခန်းအသစ်များ ကမ္ဘာ</p>
+            <div class="text-6xl mb-4 floating-icon">🔑</div>
+            <h1 class="text-xl md:text-2xl font-black text-amber-400 mb-2 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] leading-tight">
+                "မြန်မာအက္ခရာ ရှာပုံတော်"
+            </h1>
+            <p class="text-purple-200 font-bold text-sm mb-6">အပိုင်း (၂) - စွန့်စားခန်းအသစ်များ ကမ္ဘာ</p>
 
-<div id="splashActionArea">
+            <div id="passwordArea" class="space-y-4">
+                <p class="text-xs text-amber-300/90 font-bold">ဂိမ်းကမ္ဘာထဲဝင်ဖို့ "မှော်ဝင်သော့စာလုံး" ထည့်ပေးပါဦးနော် ✨</p>
+                <input type="password" id="passInput" placeholder="Password ရိုက်ထည့်ပါ..." 
+                    class="w-full px-4 py-3 rounded-xl bg-purple-950/80 border-2 border-purple-500/50 text-white text-center font-bold focus:outline-none focus:border-amber-400 transition-all shadow-inner text-base">
+                <p id="errorMsg" class="text-xs text-red-400 font-bold hidden">❌ သော့စာလုံး မှားနေပါတယ်၊ ပြန်ကြိုးစားကြည့်ပါ!</p>
+                <button onclick="checkGamePassword()" class="game-btn-3d font-black py-3.5 px-6 text-lg text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-xl shadow-[0_4px_0_#b45309] active:shadow-[0_1px_0_#b45309] text-center w-full block">
+                    သော့ဖွင့်ပြီး ဝင်မည် 🚀
+                </button>
+            </div>
 
+            <div id="splashActionArea" class="hidden">
                 <button onclick="unmuteIntroVideo()" class="game-btn-3d font-black py-4 px-8 text-xl text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-2xl shadow-[0_6px_0_#b45309] hover:shadow-[0_6px_0_#d97706] active:shadow-[0_2px_0_#b45309] text-center w-full block">
                     🔊 အသံဖွင့်ပြီး စတင်မည်
                 </button>
@@ -99,8 +108,8 @@
         </div>
 
         <h1 class="text-2xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-300 tracking-wide drop-shadow-[0_6px_12px_rgba(0,0,0,0.6)] py-1">
-    မြန်မာစာအက္ခရာ စွန့်စားခန်း
-</h1>
+            မြန်မာစာအက္ခရာ စွန့်စားခန်း
+        </h1>
 
         <p class="text-purple-200/80 text-sm md:text-base mt-3 font-bold max-w-xl mx-auto drop-shadow">
             သားသားမီးမီးတို့ရေ... အပိုင်း(၂) ဂိမ်းကမ္ဘာမှာ အက္ခရာလေးတွေကို တူတူလိုက်ရှာပြီး ကြယ်ပွင့်လေးတွေ စုကြရအောင်။ 🌟
@@ -109,7 +118,6 @@
 
     <main class="w-full max-w-4xl space-y-8 z-10 mb-16 px-2">
 
-        <!-- STAGE 01 -->
         <section class="adventure-card p-5 rounded-[28px] shadow-2xl relative overflow-hidden">
             <div class="absolute -right-6 -bottom-6 text-7xl opacity-10">🎧</div>
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4 mb-4">
@@ -125,12 +133,11 @@
             <div class="max-w-xl">
                 <a href="level2.html" class="game-btn-3d block bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 border-b-[6px] border-blue-800 p-5 rounded-2xl text-left shadow-lg">
                     <span class="text-xl font-black text-white flex items-center gap-2">✍️ (စ မှ ည) စာရေးသားခြင်းကမ္ဘာ</span>
-                    <p class="text-xs text-cyan-100 mt-1 font-medium">စ၊ ဆ၊ ဇ၊ ဈ၊ ည အက္ခရာများ၏ အသံထွက်များကို နားထောင်ပြီး လက်ရေးလှလှလေး စတင်ရေးဆွဲကြမယ်။</p>
+                    <p class="text-xs text-cyan-100 mt-1 font-medium">စ၊ ဆ၊ ဇ၊ ဈ၊ ည အက္ခရာများ၏ အသံထွက်များကို นားထောင်ပြီး လက်ရေးလှလှလေး စတင်ရေးဆွဲကြမယ်။</p>
                 </a>
             </div>
         </section>
 
-        <!-- STAGE 02 -->
         <section class="adventure-card p-5 rounded-[28px] shadow-2xl relative overflow-hidden">
             <div class="absolute -right-6 -bottom-6 text-7xl opacity-10">🎨</div>
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4 mb-4">
@@ -168,7 +175,6 @@
             </div>
         </section>
 
-        <!-- STAGE 03 -->
         <section class="adventure-card p-5 rounded-[28px] shadow-2xl relative overflow-hidden">
             <div class="absolute -right-6 -bottom-6 text-7xl opacity-10">🏹</div>
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4 mb-4">
@@ -206,7 +212,6 @@
             </div>
         </section>
 
-        <!-- STAGE 04 -->
         <section class="adventure-card p-5 rounded-[28px] shadow-2xl relative overflow-hidden">
             <div class="absolute -right-6 -bottom-6 text-7xl opacity-10">🔍</div>
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4 mb-4">
@@ -233,7 +238,6 @@
             </div>
         </section>
 
-        <!-- FINAL STAGE -->
         <section class="adventure-card p-6 rounded-[32px] shadow-2xl border-4 border-amber-400/60 bg-gradient-to-br from-indigo-950 via-amber-950/40 to-slate-900 relative overflow-hidden shadow-[0_0_25px_rgba(245,158,11,0.2)]">
             <div class="absolute -right-4 -bottom-4 text-8xl opacity-10 floating-icon">🏆</div>
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-amber-500/20 pb-4 mb-4">
@@ -241,7 +245,7 @@
                     <div class="w-14 h-14 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center text-3xl font-black shadow-lg animate-bounce">🏆</div>
                     <div>
                         <span class="text-[11px] font-black tracking-widest text-amber-400 block uppercase">FINAL STAGE</span>
-                        <h3 class="text-xl font-black text-amber-300">မှော်ဝင်ရေအောက်ကမ္ဘာစွန့်စားခန်း</h3>
+                        <h3 class="text-xl font-black text-amber-300">မှော်ဝင်ရေအောက်ကမ္ဘာစွန့်စားခန်း</h3>
                     </div>
                 </div>
                 <div class="text-xs font-black bg-amber-400 text-slate-950 px-4 py-1.5 rounded-full shadow-md uppercase tracking-wider">Super Test</div>
@@ -273,6 +277,42 @@
         const muteStateToggleButton = document.getElementById('muteBtn');
         const audioVolumeSliderControl = document.getElementById('volumeSlider');
         const splashActionArea = document.getElementById('splashActionArea');
+        const passwordArea = document.getElementById('passwordArea');
+        const passInput = document.getElementById('passInput');
+        const errorMsg = document.getElementById('errorMsg');
+
+        // SHA-256 Hash algorithm
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);                    
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        // Check Password securely
+        async function checkGamePassword() {
+            const hashedInput = await sha256(passInput.value);
+            // Hashed version of "Dassy123"
+            const correctHash = "809e5b07851d023f2ec49767f404dc7b29314c9c41a4a49c40212db3f6b98616";
+
+            if (hashedInput === correctHash) {
+                errorMsg.classList.add('hidden');
+                passwordArea.classList.add('hidden');
+                splashActionArea.classList.remove('hidden');
+            } else {
+                errorMsg.classList.remove('hidden');
+                passInput.value = "";
+                passInput.focus();
+            }
+        }
+
+        // Allow pressing Enter key to unlock
+        passInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkGamePassword();
+            }
+        });
 
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
