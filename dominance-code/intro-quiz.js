@@ -1,6 +1,6 @@
 // --- THE MIRROR OF TRUTH: INTRO QUIZ DATA ---
 const introQuiz = {
-    "1": {
+    "2": {
         title: "THE MIRROR OF TRUTH: INTRO QUIZ",
         isIntro: true,
         scenarios: [
