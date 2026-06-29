@@ -115,13 +115,22 @@
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            padding-bottom: 35px; /* အောက်ခြေ space ကို ပိုကျုံ့ပြီး စာအုပ်ကို ပိုရှည်စေသည် */
+            padding-bottom: 35px;
         }
         
-        #flipbook .page { background-color: #000; background-size: 100% 100%; }
+        #flipbook .page { background-color: #000; background-size: 100% 100%; position: relative; }
         
-        /* Quiz Styles */
-        #quiz-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 4000; justify-content: center; align-items: center; padding: 15px; }
+        /* 🛠️ Quiz Styles (Fixed မှ Absolute သို့ ပြောင်းလဲပြင်ဆင်ထားသည်) */
+        #quiz-overlay { 
+            display: none; 
+            position: absolute; 
+            inset: 0; 
+            background: rgba(0,0,0,0.85); 
+            z-index: 4000; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 15px; 
+        }
         #quiz-content { width: 100%; max-width: 420px; background: #0a0a0a; padding: 18px; border: 1px solid var(--gold); border-radius: 12px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
         #options-container { overflow-y: auto; flex-grow: 1; margin-top: 5px; }
         #test-question { font-size: 13.5px; line-height: 1.6; margin-bottom: 15px; color: #ddd; }
@@ -174,7 +183,8 @@
 
     <script>
     const totalPages = 84; 
-    const quizPages = [2, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80];
+    // 🛠️ Array ထဲမှ 2 ကို ဖယ်ထုတ်ထားပြီး ကျန်သော Interactive Tests များကိုသာ ချန်ထားသည်
+    const quizPages = [12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80];
     let isQuizLocked = false;
     const myPassword = "DC@MIRROR";
 
@@ -188,27 +198,32 @@
         }
     });
 
-    // 🚨 စာမျက်နှာကို ဖုန်းမျက်နှာပြင်အမြင့်အတိုင်း အပြည့်အဝ ဆွဲဆန့်ပေးမည့် တွက်ချက်မှုစနစ်အသစ်
     function getBookSize() {
         let w = window.innerWidth;
-        let h = window.innerHeight - 40; // အောက်ခြေဘားတန်းလွတ်ရုံသာ ချန်ထားသည်
+        let h = window.innerHeight - 40;
 
         if (window.innerWidth < 768) {
-            // ဖုန်းများအတွက် - မည်သည့် Ratio ကန့်သတ်ချက်မှ မထားဘဲ Screen အမြင့်အတိုင်း အပြည့်ဆွဲဆန့်သည်
             w = window.innerWidth; 
         } else {
-            // Tablet နှင့် Desktop များအတွက် ပုံပျက်ခြင်းမရှိစေရန် မူလအတိုင်းထားသည်
             const tabletRatio = 0.72;
             if (w / h > tabletRatio) { w = h * tabletRatio; } else { h = w / tabletRatio; }
         }
         return { w, h };
     }
 
+    // 🛠️ Unlock ဖြစ်သည်နှင့် စာအုပ်ကိုဆောက်ပြီး Page 2 သို့ တိုက်ရိုက်လှန်ပေးမည့် စနစ်သစ်
     function unlock() {
         if(document.getElementById("pass").value === myPassword) {
             localStorage.setItem("dc_unlocked", "true");
             requestFullscreenMode();
-            startIntroQuiz();
+            
+            $("#lock, #bg-video").fadeOut(500);
+            $("#book-container").show().css("opacity", 1);
+            loadAndInit(); 
+            
+            setTimeout(() => {
+                $("#flipbook").turn("page", 2);
+            }, 400);
         } else {
             alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။");
         }
@@ -225,13 +240,23 @@
         }
     }
 
+    // 🛠️ Quiz Content ကို စာအုပ်၏ Page 2 'div' ထဲသို့ ရွှေ့ပြောင်းထည့်သွင်းပေးသည့် စနစ်
     function startIntroQuiz() {
         const data = introQuiz["2"];
         if(!data) { initBook(); return; }
-        $("#lock, #bg-video").fadeOut(500);
+        
         $("#test-title").text(data.title);
         renderIntroScenario(data, 0);
-        $("#quiz-overlay").fadeIn().css("display", "flex");
+        
+        const page2El = $("#flipbook .page").eq(1); 
+        if(page2El.length > 0) {
+            page2El.append($("#quiz-overlay"));
+            $("#quiz-overlay").css({
+                "display": "flex",
+                "width": "100%",
+                "height": "100%"
+            }).fadeIn(300);
+        }
     }
 
     function renderIntroScenario(data, index) {
@@ -258,13 +283,10 @@
 
     function initBook() {
         requestFullscreenMode();
-        $("#quiz-overlay").fadeOut(400);
-        $("#lock, #bg-video").fadeOut(400, function() {
-            $(this).remove();
+        $("#quiz-overlay").fadeOut(400, function() {
+            // Intro Quiz ပြီးသွားလျှင် စာအုပ် နောက်တစ်မျက်နှာသို့ အလိုအလျောက် ရွှေ့ပေးမည်
+            $("#flipbook").turn("next");
         });
-        $("#book-container").show().animate({ opacity: 1 }, 800);
-        
-        loadAndInit();
         document.getElementById("bgm-dark").play().catch(()=>{});
     }
 
@@ -298,6 +320,10 @@
                     if (quizPages.includes(page)) {
                         triggerPsychologyTest(page);
                     }
+                    // 🛠️ အကယ်၍ User သည် စာမျက်နှာလှန်ရင်း Page 2 သို့ ရောက်လာပါက Quiz ကို Inline နှိုးပေးမည့် စနစ်
+                    if (page === 2) {
+                        startIntroQuiz();
+                    }
                 }
             }
         });
@@ -320,6 +346,10 @@
         if (!test) return;
         
         isQuizLocked = true;
+        // တခြားသော Quiz overlay များကို Body အောက်သို့ ပြန်ပို့ပြီး Fixed Overlay အဖြစ် ပြသခြင်း
+        $("body").append($("#quiz-overlay"));
+        $("#quiz-overlay").css({"position": "fixed", "width": "100%", "height": "100%"});
+        
         $("#test-title").text(test.title);
         $("#test-question").text(test.q);
         $("#options-container").empty();
