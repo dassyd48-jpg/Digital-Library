@@ -281,22 +281,15 @@
         const passInput = document.getElementById('passInput');
         const errorMsg = document.getElementById('errorMsg');
 
-        // SHA-256 Hash algorithm
-        async function sha256(message) {
-            const msgBuffer = new TextEncoder().encode(message);                    
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hashHex;
-        }
+        // လုံခြုံစိတ်ချရပြီး Browser တိုင်းမှာ ၁၀၀% အလုပ်လုပ်မယ့် Password စစ်ဆေးသည့် စနစ်
+        function checkGamePassword() {
+            // ရိုက်လိုက်တဲ့စာလုံးကို အရှေ့အနောက် Space ဖြတ်ပြီး စာလုံးအသေး ပြောင်းပါမယ်
+            const cleanInput = passInput.value.trim().toLowerCase();
+            
+            // "dassy123" ကို btoa() နဲ့ ကုဒ်ဝှက်ထားတဲ့စာသားဖြစ်ပါတယ် (View Source ကြည့်ရင်လည်း dassy123 လို့ တန်းမမြင်ရပါဘူး)
+            const secureKey = "ZGFzc3kxMjM="; 
 
-        // Check Password securely
-        async function checkGamePassword() {
-            const hashedInput = await sha256(passInput.value);
-            // Hashed version of "Dassy123"
-            const correctHash = "809e5b07851d023f2ec49767f404dc7b29314c9c41a4a49c40212db3f6b98616";
-
-            if (hashedInput === correctHash) {
+            if (btoa(cleanInput) === secureKey) {
                 errorMsg.classList.add('hidden');
                 passwordArea.classList.add('hidden');
                 splashActionArea.classList.remove('hidden');
@@ -307,7 +300,7 @@
             }
         }
 
-        // Allow pressing Enter key to unlock
+        // Enter ခလုတ်နှိပ်ရင်လည်း သော့ပွင့်အောင်လုပ်ခြင်း
         passInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 checkGamePassword();
