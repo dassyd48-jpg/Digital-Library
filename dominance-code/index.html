@@ -174,7 +174,7 @@
 
     <script>
     const totalPages = 84; 
-    const quizPages = [1, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80];
+    const quizPages = [2, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80];
     let isQuizLocked = false;
     const myPassword = "DC@MIRROR";
 
@@ -226,7 +226,7 @@
     }
 
     function startIntroQuiz() {
-        const data = introQuiz["1"];
+        const data = introQuiz["2"];
         if(!data) { initBook(); return; }
         $("#lock, #bg-video").fadeOut(500);
         $("#test-title").text(data.title);
