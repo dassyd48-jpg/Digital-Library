@@ -123,29 +123,11 @@
     }
     .star-counter { font-size: 1.3rem; color: #eab308; display: flex; gap: 2px; }
 
-    /* Bottom Toolbar Container */
-    .bottom-bar {
+    /* Puzzle Score Toolbar Container (Top Right under Level on Mobile) */
+    .puzzle-bar {
       position: absolute; bottom: 4vh; left: 50%; transform: translateX(-50%);
       display: flex; gap: 16px; align-items: center;
     }
-    .palette-card {
-      background: #ffffff; border: 3px solid #15803d; border-radius: 32px;
-      padding: 8px 16px; display: flex; gap: 12px; box-shadow: 0 8px 0 #14532d;
-    }
-    .color-swatch {
-      width: 44px; height: 44px; border-radius: 50%; border: 3px solid #e2e8f0;
-      cursor: pointer; transition: transform 0.2s; position: relative;
-    }
-    .color-swatch.active { border-color: #0f172a; transform: scale(1.15) translateY(-4px); }
-    
-    .action-pill {
-      background: #22c55e; border: 3px solid #15803d; border-radius: 20px;
-      padding: 8px 20px; color: #ffffff; font-family: 'Noto Sans Myanmar', sans-serif;
-      font-size: clamp(0.95rem, 2.8vw, 1.2rem); font-weight: 800;
-      cursor: pointer; box-shadow: 0 4px 0 #14532d; transition: all 0.1s; white-space: nowrap;
-    }
-    .action-pill:active { transform: translateY(4px); box-shadow: 0 2px 0 #14532d; }
-
     #scoreValue { font-size: clamp(1.1rem, 3.2vw, 1.4rem) !important; font-weight: 800; }
 
     /* ==========================================================================
@@ -164,11 +146,11 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 16px;
       width: 100%;
     }
 
-    /* Game Header Title (Requested Style) */
+    /* Game Header Title */
     .game-title {
       font-family: 'Noto Sans Myanmar', sans-serif;
       font-weight: 800;
@@ -183,9 +165,49 @@
     #paintCanvas {
       background-color: rgba(255, 255, 255, 0.88); border-radius: 40px;
       border: 6px dashed #16a34a; box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-      max-width: 90vw; max-height: 55vh; aspect-ratio: 1/1;
+      max-width: 90vw; max-height: 52vh; aspect-ratio: 1/1;
       background-repeat: no-repeat; background-position: center; background-size: 80%;
     }
+
+    /* Palette & Controls Wrapper (Canvas ၏အောက်နားလေးတွင် တိုက်ရိုက်ကပ်လျက်ပေါ်စေရန်) */
+    .controls-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      pointer-events: auto;
+    }
+
+    .palette-card {
+      background: #ffffff; border: 3px solid #15803d; border-radius: 32px;
+      padding: 8px 16px; display: flex; gap: 12px; box-shadow: 0 8px 0 #14532d;
+    }
+    .color-swatch {
+      width: 44px; height: 44px; border-radius: 50%; border: 3px solid #e2e8f0;
+      cursor: pointer; transition: transform 0.2s; position: relative;
+    }
+    .color-swatch.active { border-color: #0f172a; transform: scale(1.15) translateY(-4px); }
+    
+    /* Action Buttons Row Container */
+    .action-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .action-pill {
+      background: #22c55e; border: 3px solid #15803d; border-radius: 20px;
+      padding: 8px 24px; color: #ffffff; font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: clamp(0.95rem, 2.8vw, 1.2rem); font-weight: 800;
+      cursor: pointer; box-shadow: 0 4px 0 #14532d; transition: all 0.1s; white-space: nowrap;
+    }
+    .action-pill:active { transform: translateY(4px); box-shadow: 0 2px 0 #14532d; }
+
+    /* အသစ်ပြန်စမယ့် Clear Canvas ခလုတ်ပုံစံ */
+    .action-pill.btn-clear {
+      background: #f97316; border-color: #c2410c; box-shadow: 0 4px 0 #7c2d12;
+    }
+    .action-pill.btn-clear:active { box-shadow: 0 2px 0 #7c2d12; }
 
     /* Falling Leaves Catching Challenge */
     .puzzle-grid { position: absolute; inset: 0; overflow: hidden; pointer-events: auto; }
@@ -261,60 +283,28 @@
     .big-action-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #14532d; }
 
     /* ==========================================================================
-        📱 MOBILE RESPONSIVE MEDIA QUERIES (ပုံစံအတိုင်း လှပစွာဗဟိုညှိခြင်း)
+        📱 MOBILE RESPONSIVE MEDIA QUERIES (သေသေချာချာ ဗဟိုညှိပေးခြင်း)
        ========================================================================== */
     @media (max-width: 760px) {
-  .stage-wrapper { 
-    align-items: center; 
-    justify-content: center; 
-    padding-top: 20px; 
-  }
-  
-  .paint-container { 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px; 
-    width: 100%;
-  }
-  
-  .game-title { 
-    margin-top: 10px; 
-    font-size: 1.4rem; 
-  }
-  
-  #paintCanvas { 
-    max-width: 260px; 
-    max-height: 260px; 
-    border-radius: 24px; 
-  }
-  
-  .palette-card { 
-    display: flex !important; /* ဖျောက်ထားမိပါက ပြန်ဖော်ရန် */
-    padding: 6px 10px; 
-    gap: 8px; 
-    border-radius: 24px; 
-    box-shadow: 0 5px 0 #14532d; 
-  }
-  
-  .color-swatch { 
-    width: 32px; 
-    height: 32px; 
-    border-width: 2px; 
-  }
-  
-  /* ၅။ ပြီးပါပြီ ခလုတ်အား ကာလာအကွက်အောက်တွင် ကပ်လျက် ထားရှိခြင်း */
-  .action-pill { 
-    padding: 6px 24px; 
-    border-radius: 14px; 
-    box-shadow: 0 4px 0 #14532d; 
-    font-size: 1rem; 
-  }
-
-  #paintToolbar { 
-    display: none !important; 
-  }
-}
+      .stage-wrapper { align-items: center; justify-content: center; padding-top: 30px; }
+      .paint-container { gap: 12px; }
+      .game-title { margin-top: 15px; font-size: 1.5rem; }
+      #paintCanvas { max-width: 270px; max-height: 270px; border-radius: 24px; }
+      
+      .controls-wrapper { gap: 10px; }
+      .palette-card { padding: 6px 10px; gap: 8px; border-radius: 24px; box-shadow: 0 5px 0 #14532d; }
+      .color-swatch { width: 34px; height: 34px; border-width: 2px; }
+      .color-swatch.active { transform: scale(1.15) translateY(-2px); }
+      
+      .action-pill { padding: 6px 20px; border-radius: 14px; box-shadow: 0 3px 0 #14532d; font-size: 0.95rem; }
+      .action-pill.btn-clear { box-shadow: 0 3px 0 #7c2d12; }
+      
+      .puzzle-bar { bottom: auto; top: 76px; }
+      .leaf-node { width: 62px; height: 62px; font-size: 1.4rem; border-width: 2px; }
+      .top-bar { top: 12px; left: 12px; right: 12px; }
+      .circle-btn { width: 42px; height: 42px; font-size: 1.2rem; box-shadow: 0 4px 0 #14532d; }
+      .badge-box { padding: 4px 10px; border-radius: 14px; }
+    }
   </style>
 </head>
 <body>
@@ -340,12 +330,7 @@
       </div>
     </div>
 
-    <div class="bottom-bar interactive" id="paintToolbar">
-      <div class="palette-card" id="colorPalette"></div>
-      <button class="action-pill" id="btnCheck">ပြီးပါပြီ</button>
-    </div>
-
-    <div class="bottom-bar" id="puzzleToolbar" style="display: none;">
+    <div class="puzzle-bar interactive" id="puzzleToolbar" style="display: none;">
       <div class="badge-box">
         <span class="badge-title">ဖမ်းမိသည့် 'ဎ' အရေအတွက်:</span>
         <span class="badge-title" id="scoreValue" style="color:#eab308;">0</span>
@@ -354,14 +339,19 @@
   </div>
 
   <div class="stage-wrapper" id="paintWrapper">
-  <div class="paint-container">
-    <h1 class="game-title">ဎ ကို ဆေးရောင်ခြယ်ကြမယ်</h1>
-    <canvas id="paintCanvas" width="500" height="500"></canvas>
-    
-    <div class="palette-card" id="colorPalette"></div>
-    <button class="action-pill" id="btnCheck">ပြီးပါပြီ</button>
+    <div class="paint-container">
+      <h1 class="game-title">ဎ ကို ဆေးရောင်ခြယ်ကြမယ်</h1>
+      <canvas id="paintCanvas" width="500" height="500"></canvas>
+      
+      <div class="controls-wrapper">
+        <div class="palette-card" id="colorPalette"></div>
+        <div class="action-row">
+          <button class="action-pill btn-clear" id="btnClear">အသစ်ပြန်စမည်</button>
+          <button class="action-pill" id="btnCheck">ပြီးပါပြီ</button>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
   <div class="stage-wrapper" id="puzzleWrapper">
     <div class="puzzle-grid" id="leafSpawnerGrid"></div>
@@ -572,7 +562,6 @@
       
       document.getElementById('paintWrapper').classList.add('active');
       document.getElementById('puzzleWrapper').classList.remove('active');
-      document.getElementById('paintToolbar').style.display = 'flex';
       document.getElementById('puzzleToolbar').style.display = 'none';
 
       const headerBox = document.getElementById('levelIndicator');
@@ -585,7 +574,6 @@
     function setupPuzzleStage() {
       document.getElementById('paintWrapper').classList.remove('active');
       document.getElementById('puzzleWrapper').classList.add('active');
-      document.getElementById('paintToolbar').style.display = 'none';
       document.getElementById('puzzleToolbar').style.display = 'flex';
 
       score = 0;
@@ -721,6 +709,11 @@
       document.getElementById('introScreen').style.opacity = '0';
       document.getElementById('introScreen').style.visibility = 'hidden';
       setupPaintingStage();
+    };
+
+    document.getElementById('btnClear').onclick = () => {
+      playSFX('click');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
     };
 
     document.getElementById('btnCheck').onclick = () => {
