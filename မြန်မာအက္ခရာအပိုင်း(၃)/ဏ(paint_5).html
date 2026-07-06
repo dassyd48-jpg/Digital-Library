@@ -151,12 +151,14 @@
       display: flex; flex-direction: column; align-items: center; gap: 16px;
       max-width: 90vw; max-height: 75vh; margin-left: 120px; /* Shift to clear witch character */
     }
+    
     #paintCanvas {
-      background-color: rgba(255, 255, 255, 0.94); border-radius: 32px;
-      border: 6px dashed #a855f7; box-shadow: 0 20px 45px rgba(0,0,0,0.3);
-      width: min(55vw, 55vh, 440px); height: min(55vw, 55vh, 440px);
-      background-repeat: no-repeat; background-position: center; background-size: 80%;
-    }
+  background-color: rgba(255, 255, 255, 0.94); border-radius: 32px;
+  border: 6px dashed #a855f7; box-shadow: 0 20px 45px rgba(0,0,0,0.3);
+  /* Size ကို 440px ကနေ 480px သို့ တိုးမြှင့်ထားပါတယ် */
+  width: min(70vw, 70vh, 480px); height: min(70vw, 70vh, 480px);
+  background-repeat: no-repeat; background-position: center; background-size: 85%;
+}
 
     /* Controls Group inside Canvas Box Container */
     .controls-wrapper {
@@ -287,7 +289,7 @@
     @media (max-width: 820px) {
       .stage-wrapper { align-items: center; justify-content: center; padding-top: 40px; }
       .canvas-frame-container { margin-left: 0; gap: 12px; }
-      #paintCanvas { max-width: 270px; max-height: 270px; border-radius: 24px; }
+      #paintCanvas { max-width: 340px; max-height: 340px; border-radius: 24px; }
       
       .controls-wrapper { gap: 10px; }
       .palette-card { padding: 6px 10px; gap: 8px; border-radius: 24px; box-shadow: 0 5px 0 #581c87; }
@@ -746,7 +748,8 @@
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
 
     // SVG Layout Trace Vector Image Definition Configuration
-    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='52%' font-family='Noto Sans Myanmar' font-size='330' font-weight='800' fill='none' stroke='%23cbd5e1' stroke-width='5' stroke-dasharray='12,12' text-anchor='middle' dominant-baseline='middle'>ဏ</text></svg>\")";
+    // Script ရဲ့ အောက်ဆုံးပိတ်လိုင်းမှာ အစားထိုးရန်
+canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='54%' font-family='Noto Sans Myanmar' font-size='390' font-weight='800' fill='none' stroke='%23cbd5e1' stroke-width='5' stroke-dasharray='12,12' text-anchor='middle' dominant-baseline='middle'>ဏ</text></svg>\")";
   </script>
 </body>
 </html>
