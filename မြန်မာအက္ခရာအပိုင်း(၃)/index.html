@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>မြန်မာအက္ခရာ ရှင်းလင်းချက် - ကျောင်းတော်ကြီး စွန့်စားခန်းမြေပုံ</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        .burmese-font {
+            font-family: 'Pyidaungsu', sans-serif;
+        }
+        .title-font {
+            font-family: 'Fredoka One', 'Pyidaungsu', sans-serif;
+        }
+        .game-map-container {
+            background: radial-gradient(circle at center, #230c4f, #110826, #070814);
+        }
+
+        /* ========================================================================= */
+        /* 🏫 PREMIUM CARTOON SCHOOL BUILDING STRUCTURE */
+        /* ========================================================================= */
+        .school-card-container {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto;
+            filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5));
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        .school-card-container:hover {
+            transform: scale(1.03) translateY(-5px);
+        }
+
+        /* 🏠 PREMIUM 3-PEAK ROOF */
+        .school-cartoon-roof {
+            width: 100%;
+            height: 46px;
+            background: linear-gradient(to bottom, #fcd34d 0%, #f59e0b 20%, #b45309 100%);
+            clip-path: polygon(0% 100%, 0% 45%, 28% 45%, 50% 0%, 72% 45%, 100% 45%, 100% 100%);
+            margin-bottom: -4px;
+            position: relative;
+            z-index: 15;
+        }
+
+        /* 🏢 BUILDING MAIN WALLS */
+        .school-building-body {
+            width: 100%;
+            border-radius: 0 0 28px 28px;
+            padding: 16px;
+            display: grid;
+            grid-template-columns: 50px 1fr 50px;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 10;
+            box-shadow: inset 0 4px 10px rgba(255, 255, 255, 0.25);
+        }
+
+        /* 🪟 CARTOON WINDOWS */
+        .window-glass {
+            background: #67e8f9;
+            border: 3px solid #0f172a;
+            border-radius: 6px;
+            width: 24px;
+            height: 24px;
+            box-shadow: inset 2px 2px 0px rgba(255,255,255,0.5);
+        }
+
+        /* 🚪 CENTER ARCHED DOOR */
+        .arched-door {
+            width: 32px;
+            height: 38px;
+            background: #38bdf8;
+            border: 3px solid #0f172a;
+            border-bottom: none;
+            border-radius: 16px 16px 0 0;
+            position: relative;
+            box-shadow: inset 2px 2px 0px rgba(255,255,255,0.4);
+        }
+        .arched-door::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0; left: 50%;
+            width: 3px;
+            background: #0f172a;
+            transform: translateX(-50%);
+        }
+
+        /* 🎨 THEME COLORS BY STAGES */
+        .theme-stage1-body { background: #ea580c; border: 4px solid #f97316; }
+        .theme-stage2-body { background: #eab308; border: 4px solid #fde047; }
+        .theme-stage3-body { background: #10b981; border: 4px solid #34d399; }
+        .theme-stage4-body { background: #8b5cf6; border: 4px solid #a78bfa; cursor: default; }
+        .theme-final-body  { background: linear-gradient(135deg, #451a03 0%, #7c2d12 100%); border: 4px solid #fbbf24; }
+
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .float-mascot {
+            animation: bounce-slow 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="game-map-container text-white min-h-screen flex flex-col items-center justify-start burmese-font overflow-x-hidden p-4 pb-24">
+
+    <!-- 🔐 Password Screen -->
+    <main id="passwordScreen" class="fixed inset-0 bg-slate-950/90 backdrop-blur-2xl flex items-center justify-center z-50 p-4">
+        <div class="w-full max-w-md p-8 bg-purple-900/40 border-2 border-purple-500/30 rounded-3xl shadow-2xl text-center">
+            <div class="text-6xl mb-4 float-mascot inline-block">🗺️</div>
+            <h1 class="title-font text-3xl font-black bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-300 bg-clip-text text-transparent drop-shadow mb-2 tracking-wide uppercase">
+                Alphabet Quest
+            </h1>
+            <p class="text-sm text-purple-300/90 font-bold mb-6">မြန်မာအက္ခရာ ရှာပုံတော် - အပိုင်း ၃ (ဋ - ဏ)</p>
+            <hr class="border-purple-500/20 mb-6">
+
+            <div id="passwordArea" class="space-y-5">
+                <p class="text-xs text-amber-300/90 font-black">ဂိမ်းမြေပုံထဲဝင်ဖို့ "မှော်ဝင်သော့စာလုံး" ထည့်ပေးပါဦးနော် ✨</p>
+                <input type="password" id="passInput" placeholder="Password ရိုက်ထည့်ပါ..." 
+                    class="w-full px-4 py-3.5 rounded-xl bg-purple-950/90 border-2 border-purple-500/50 text-white text-center font-bold focus:outline-none focus:border-amber-400 transition-all text-base tracking-wider">
+                <p id="errorMsg" class="text-xs text-red-400 font-bold hidden">❌ သော့စာလုံး မှားနေပါတယ်၊ ပြန်ကြိုးစားကြည့်ပါ!</p>
+                <button onclick="checkGamePassword()" class="w-full py-4 px-6 text-lg font-black text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-xl shadow-[0_4px_0_#b45309] active:translate-y-1 active:shadow-none transition-all cursor-pointer">
+                    သော့ဖွင့်ပြီး မြေပုံဖွင့်မည် 🗺️
+                </button>
+            </div>
+
+            <div id="splashActionArea" class="hidden space-y-6">
+                <p class="text-sm text-emerald-400 font-bold">✨ သော့ပွင့်သွားပါပြီ! စွန့်စားခန်းမြေပုံ အဆင်သင့်ပါပဲ။</p>
+                <button onclick="unlockDashboardMap()" class="w-full py-4 px-6 text-xl font-black text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 rounded-xl shadow-[0_4px_0_#065f46] active:translate-y-1 active:shadow-none transition-all cursor-pointer">
+                    🔊 အသံဖွင့်ပြီး စတင်မည်
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 🗺️ Main Game Dashboard -->
+    <div id="gameDashboard" class="w-full max-w-xl flex flex-col items-center hidden relative z-10 px-4">
+        
+        <div id="audioControllerPanel" class="w-full bg-purple-900/80 border border-white/10 backdrop-blur-md px-4 py-2 rounded-2xl flex items-center justify-between gap-4 shadow-xl my-4 z-30">
+            <button id="muteBtn" onclick="toggleMuteState()" class="text-lg bg-purple-950/60 p-2 rounded-lg hover:bg-purple-950 transition-colors cursor-pointer">🔊</button>
+            <div class="flex-1 flex items-center gap-2">
+                <span class="text-xs text-purple-200 font-black">MUSIC VOL</span>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5" oninput="updateVolumeLevel(this.value)"
+                    class="w-full h-2 bg-purple-950 rounded-lg appearance-none cursor-pointer accent-amber-400">
+            </div>
+        </div>
+
+        <header class="w-full text-center mb-6">
+            <div class="inline-flex items-center gap-3 bg-white/5 px-5 py-1.5 rounded-full border border-white/10 backdrop-blur-md mb-3">
+                <span class="text-xs font-black tracking-wider text-purple-300 uppercase">LEVEL 3: ဋ မှ ဏ စွန့်စားခန်းမြေပုံ</span>
+            </div>
+            <h1 class="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-300 tracking-wide drop-shadow py-1">
+                မြန်မာစာအက္ခရာ စွန့်စားခန်း
+            </h1>
+        </header>
+
+        <!-- Map Nodes Container -->
+        <div class="w-full relative py-12 grid grid-cols-12 gap-y-14 px-6 border border-white/5 rounded-[40px] bg-purple-950/10 overflow-hidden">
+            
+            <!-- SVG Roadmap path Line -->
+            <div class="absolute top-[85px] bottom-[115px] left-0 right-0 z-0 pointer-events-none px-10 overflow-hidden">
+                <svg class="w-full h-full" viewBox="0 0 400 1320" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 70 1270 C 330 1120, 330 970, 80 870 C 80 720, 330 620, 320 470 C 320 320, 110 220, 210 50" stroke="#06030e" stroke-width="60" stroke-linecap="round" fill="none"/>
+                    <path d="M 70 1270 C 330 1120, 330 970, 80 870 C 80 720, 330 620, 320 470 C 320 320, 110 220, 210 50" stroke="#4a455e" stroke-width="48" stroke-linecap="round" fill="none"/>
+                    <path d="M 70 1270 C 330 1120, 330 970, 80 870 C 80 720, 330 620, 320 470 C 320 320, 110 220, 210 50" stroke="#252233" stroke-width="42" stroke-linecap="round" fill="none"/>
+                    <path d="M 70 1270 C 330 1120, 330 970, 80 870 C 80 720, 330 620, 320 470 C 320 320, 110 220, 210 50" stroke="#ffffff" stroke-width="2" stroke-dasharray="10 14" stroke-linecap="round" fill="none" opacity="0.3"/>
+                </svg>
+            </div>
+
+            <!-- Stage 1 Card -->
+            <div class="col-span-11 sm:col-span-9 col-start-1 text-slate-900">
+                <div class="school-card-container" onclick="location.href='level3.html'">
+                    <div class="school-cartoon-roof"></div>
+                    <div class="school-building-body theme-stage1-body">
+                        <div class="flex flex-col gap-1.5 justify-center items-center">
+                            <div class="window-glass"></div>
+                            <div class="window-glass"></div>
+                        </div>
+                        <div class="flex flex-col items-center justify-center text-center">
+                            <div class="bg-white border-2 border-slate-900 rounded-md px-3 py-0.5 shadow-sm mb-2">
+                                <span class="text-[9px] font-black tracking-tight block">STAGE 01</span>
+                            </div>
+                            <h3 class="text-xs font-black text-white mb-2 leading-tight">အက္ခရာအသံနှင့် အရေး</h3>
+                            <span class="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white border-2 border-slate-900 rounded-xl text-[10px] font-black shadow-[0_3px_0_#0f172a]">✍️ ဝင်မည် ➡️</span>
+                        </div>
+                        <div class="flex flex-col justify-between items-center h-full pt-1">
+                            <div class="window-glass"></div>
+                            <div class="arched-door mt-auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 2 Card -->
+            <div class="col-span-11 sm:col-span-9 col-start-2 sm:col-start-4 text-slate-900">
+                <div class="school-card-container" onclick="openLessonPopup('stage2')">
+                    <div class="school-cartoon-roof" style="background: linear-gradient(to bottom, #fde047 0%, #ca8a04 20%, #854d0e 100%);"></div>
+                    <div class="school-building-body theme-stage2-body">
+                        <div class="flex flex-col gap-1.5 justify-center items-center">
+                            <div class="window-glass"></div>
+                            <div class="window-glass"></div>
+                        </div>
+                        <div class="flex flex-col items-center justify-center text-center">
+                            <div class="bg-white border-2 border-slate-900 rounded-md px-3 py-0.5 shadow-sm mb-2">
+                                <span class="text-[9px] font-black tracking-tight block">STAGE 02</span>
+                            </div>
+                            <h3 class="text-xs font-black text-slate-950 mb-2 leading-tight">ဆေးရောင်ခြယ်ကမ္ဘာ</h3>
+                            <span class="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white border-2 border-slate-900 rounded-xl text-[10px] font-black shadow-[0_3px_0_#0f172a] mb-1">🎨 ရွေးချယ်မည်</span>
+                        </div>
+                        <div class="flex flex-col justify-between items-center h-full pt-1">
+                            <div class="window-glass"></div>
+                            <div class="arched-door mt-auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 3 Card -->
+            <div class="col-span-11 sm:col-span-9 col-start-1 text-slate-900">
+                <div class="school-card-container" onclick="openLessonPopup('stage3')">
+                    <div class="school-cartoon-roof" style="background: linear-gradient(to bottom, #6ee7b7 0%, #059669 20%, #064e3b 100%);"></div>
+                    <div class="school-building-body theme-stage3-body">
+                        <div class="flex flex-col gap-1.5 justify-center items-center">
+                            <div class="window-glass"></div>
+                            <div class="window-glass"></div>
+                        </div>
+                        <div class="flex flex-col items-center justify-center text-center">
+                            <div class="bg-white border-2 border-slate-900 rounded-md px-3 py-0.5 shadow-sm mb-2">
+                                <span class="text-[9px] font-black tracking-tight block">STAGE 03</span>
+                            </div>
+                            <h3 class="text-xs font-black text-white mb-2 leading-tight">အက္ခရာပစ်ခတ်ဂိမ်း</h3>
+                            <span class="px-4 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-2 border-slate-900 rounded-xl text-[10px] font-black shadow-[0_3px_0_#0f172a]">🚀 ရွေးချယ်မည်</span>
+                        </div>
+                        <div class="flex flex-col justify-between items-center h-full pt-1">
+                            <div class="window-glass"></div>
+                            <div class="arched-door mt-auto"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 4 Card -->
+<div class="col-span-11 sm:col-span-9 col-start-2 sm:col-start-4 text-slate-900">
+    <div class="school-card-container">
+        <div class="school-cartoon-roof" style="background: linear-gradient(to bottom, #c084fc 0%, #7c3aed 20%, #4c1d95 100%);"></div>
+        <div class="school-building-body theme-stage4-body">
+            <div class="flex flex-col gap-1.5 justify-center items-center">
+                <div class="window-glass"></div>
+                <div class="window-glass"></div>
+            </div>
+            <div class="flex flex-col items-center justify-center text-center w-full relative z-20">
+                <div class="bg-white border-2 border-slate-900 rounded-md px-3 py-0.5 shadow-sm mb-1.5">
+                    <span class="text-[9px] font-black block">STAGE 04</span>
+                </div>
+                <h3 class="text-[11px] font-black text-white mb-1.5 leading-tight">တူတူပုန်းတမ်းကျောင်း</h3>
+                
+                <!-- ခလုတ်များနေရာ (ကမ်းခြေ၊ ချုံပုတ်၊ စုံထောက် ဂိမ်းအားလုံး စုံလင်စွာ ထည့်သွင်းပြီး) -->
+                <div class="flex flex-col gap-1 w-full max-w-[120px]">
+                    <a href="🏖️ကမ်းခြေတူတူပုန်းတမ်း.html" class="block bg-purple-950 text-white py-1 rounded border border-slate-900 text-[9px] font-bold text-center shadow-[0_1.5px_0_#0f172a] hover:bg-purple-900 transition-colors">🏖️ ကမ်းခြေ</a>
+                    <a href="ဋ-ဏ(detective).html" class="block bg-purple-950 text-white py-1 rounded border border-slate-900 text-[9px] font-bold text-center shadow-[0_1.5px_0_#0f172a] hover:bg-purple-900 transition-colors">🕵️‍♂️ စုံထောက်အသစ်</a>
+                </div>
+            </div>
+            <div class="flex flex-col justify-between items-center h-full pt-1">
+                <div class="window-glass"></div>
+                <div class="arched-door mt-auto"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <!-- Final Boss Stage Card -->
+            <div class="col-span-12 mt-4 text-slate-900">
+                <div class="school-card-container max-w-[340px]" onclick="location.href='ဋ-ဏ final test.html'">
+                    <div class="school-cartoon-roof" style="height: 52px; background: linear-gradient(to bottom, #fef08a 0%, #eab308 25%, #78350f 100%); clip-path: polygon(0% 100%, 0% 45%, 26% 45%, 50% 0%, 74% 45%, 100% 45%, 100% 100%);"></div>
+                    <div class="school-building-body theme-final-body px-5 py-5">
+                        <div class="flex flex-col gap-2 justify-center items-center">
+                            <div class="window-glass" style="background: #fde047;"></div>
+                            <div class="window-glass" style="background: #fde047;"></div>
+                        </div>
+                        <div class="flex flex-col items-center justify-center text-center">
+                            <div class="bg-amber-400 border-2 border-slate-950 rounded-md px-3 py-0.5 mb-2 shadow-sm">
+                                <span class="text-[9px] font-black text-slate-950 block">FINAL STAGE</span>
+                            </div>
+                            <h3 class="text-xs font-black text-amber-300 mb-3">🏆 အာကာသနှင့်ကြယ်တာရာစွန့်စားခန်း</h3>
+                            <span class="w-full bg-gradient-to-r from-amber-400 via-orange-500 to-yellow-400 border-2 border-slate-950 py-2 rounded-xl text-[10px] font-black text-slate-950 shadow-[0_4px_0_#0f172a] block text-center">💥 BOSS STAGE 🚢</span>
+                        </div>
+                        <div class="flex flex-col justify-between items-center h-full pt-1">
+                            <div class="window-glass" style="background: #fde047;"></div>
+                            <div class="arched-door mt-auto" style="background: #f59e0b; width: 34px; height: 40px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 🏆 Dynamic Lesson Popup Panel -->
+    <div id="lessonPopup" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-40 p-4 transition-all">
+        <div class="w-full max-w-sm bg-gradient-to-b from-amber-700 to-amber-900 border-4 border-amber-950 rounded-3xl p-6 shadow-[0_16px_0_#451a03] text-center relative">
+            
+            <h2 id="popupTitle" class="title-font text-2xl font-black text-amber-100 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] mb-6">သင်ခန်းစာများ</h2>
+            
+            <div id="lessonsContainer" class="flex flex-col gap-3.5 mb-8"></div>
+
+            <button onclick="closeLessonPopup()" class="w-16 h-16 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-400 hover:to-rose-500 border-4 border-slate-950 rounded-full shadow-[0_5px_0_#0f172a] active:translate-y-1 active:shadow-none transition-all inline-flex items-center justify-center cursor-pointer text-2xl">
+                🏠
+            </button>
+            <div class="text-[10px] font-black text-amber-200/80 mt-1 uppercase tracking-wider">Home</div>
+        </div>
+    </div>
+
+    <audio id="mainAudio" src="main-bgm.mp3" loop></audio>
+
+    <script>
+        const mainAudio = document.getElementById('mainAudio');
+        const muteBtn = document.getElementById('muteBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const passwordScreen = document.getElementById('passwordScreen');
+        const gameDashboard = document.getElementById('gameDashboard');
+        const passwordArea = document.getElementById('passwordArea');
+        const splashActionArea = document.getElementById('splashActionArea');
+        const passInput = document.getElementById('passInput');
+        const errorMsg = document.getElementById('errorMsg');
+        
+        const lessonPopup = document.getElementById('lessonPopup');
+        const popupTitle = document.getElementById('popupTitle');
+        const lessonsContainer = document.getElementById('lessonsContainer');
+
+        const secureKey = "QGRhc3N5NDMy"; 
+
+        const stageLessonsData = {
+            stage2: {
+                title: "🎨 ဆေးရောင်ခြယ်ကမ္ဘာ",
+                buttonStyle: "from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 shadow-orange-950 text-slate-950",
+                links: [
+                    { name: "သင်ခန်းစာ (၁)", url: "ဋ(paint_1).html" },
+                    { name: "သင်ခန်းစာ (၂)", url: "ဌ(paint_2).html" },
+                    { name: "သင်ခန်းစာ (၃)", url: "ဍ(paint_3).html" },
+                    { name: "သင်ခန်းစာ (၄)", url: "ဎ(paint_4).html" },
+                    { name: "သင်ခန်းစာ (၅)", url: "ဏ(paint_5).html" }
+                ]
+            },
+            stage3: {
+                title: "🚀 အက္ခရာပစ်ခတ်ဂိမ်း",
+                buttonStyle: "from-emerald-400 to-teal-600 hover:from-emerald-300 hover:to-teal-500 shadow-teal-950 text-white",
+                links: [
+                    { name: "သင်ခန်းစာ (၁)", url: "ဋ.html" },
+                    { name: "သင်ခန်းစာ (၂)", url: "ဌ.html" },
+                    { name: "သင်ခန်းစာ (၃)", url: "ဍ.html" },
+                    { name: "သင်ခန်းစာ (၄)", url: "ဎ.html" },
+                    { name: "သင်ခန်းစာ (၅)", url: "ဏ.html" }
+                ]
+            }
+        };
+
+        function openLessonPopup(stageKey) {
+            const data = stageLessonsData[stageKey];
+            if (!data) return;
+
+            popupTitle.textContent = data.title;
+            lessonsContainer.innerHTML = ""; 
+
+            data.links.forEach((lesson) => {
+                const btn = document.createElement('a');
+                btn.href = lesson.url;
+                btn.className = `w-full py-3 px-6 text-sm font-black rounded-2xl bg-gradient-to-r ${data.buttonStyle} border-2 border-slate-950 shadow-[0_4px_0_rgba(0,0,0,0.6)] active:translate-y-1 active:shadow-none transition-all block text-center`;
+                btn.textContent = lesson.name;
+                lessonsContainer.appendChild(btn);
+            });
+
+            lessonPopup.classList.remove('hidden');
+            lessonPopup.classList.add('flex');
+            
+            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?showPopup=${stageKey}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+        }
+
+        function closeLessonPopup() {
+            lessonPopup.classList.add('hidden');
+            lessonPopup.classList.remove('flex');
+            
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.pushState({ path: cleanUrl }, '', cleanUrl);
+        }
+
+        function checkGamePassword() {
+            const cleanInput = passInput.value.trim(); // Fixed case-sensitive logic bug
+            if (btoa(cleanInput) === secureKey) {
+                errorMsg.classList.add('hidden');
+                passwordArea.classList.add('hidden');
+                splashActionArea.classList.remove('hidden');
+            } else {
+                errorMsg.classList.remove('hidden');
+                passInput.value = "";
+                passInput.focus();
+            }
+        }
+
+        passInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkGamePassword();
+        });
+
+        function unlockDashboardMap() {
+            passwordScreen.classList.add('hidden');
+            gameDashboard.classList.remove('hidden');
+            mainAudio.volume = volumeSlider.value;
+            mainAudio.play().catch(e => console.log("Audio play blocked", e));
+            
+            checkUrlParametersForPopup();
+        }
+
+        function updateVolumeLevel(targetVolume) {
+            mainAudio.volume = targetVolume;
+            if (targetVolume == 0) {
+                mainAudio.muted = true;
+                muteBtn.textContent = '🔇';
+            } else {
+                mainAudio.muted = false;
+                muteBtn.textContent = '🔊';
+            }
+        }
+
+        function toggleMuteState() {
+            if (mainAudio.muted) {
+                mainAudio.muted = false;
+                muteBtn.textContent = '🔊';
+                if (mainAudio.volume === 0) {
+                    mainAudio.volume = 0.5;
+                    volumeSlider.value = 0.5;
+                }
+            } else {
+                mainAudio.muted = true;
+                muteBtn.textContent = '🔇';
+            }
+        }
+
+        function checkUrlParametersForPopup() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetPopup = urlParams.get('showPopup');
+            if (targetPopup === 'stage2' || targetPopup === 'stage3') {
+                openLessonPopup(targetPopup);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('fromGame') === 'true' || urlParams.get('showPopup')) {
+                passwordScreen.classList.add('hidden');
+                gameDashboard.classList.remove('hidden');
+                mainAudio.volume = volumeSlider.value;
+                mainAudio.play().catch(e => console.log("Audio play blocked", e));
+                
+                checkUrlParametersForPopup();
+            }
+        });
+    </script>
+
+    <!-- ========================================================================= -->
+    <!-- 🏃‍♂️ DASSY "LITTLE BRAINS" ANIMATED LOGO SYSTEM -->
+    <!-- ========================================================================= -->
+    <style>
+        .dassy-logo-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            padding: 20px 0;
+            margin-top: 25px;
+            position: relative;
+            z-index: 10;
+            user-select: none;
+        }
+
+        .dassy-logo-line {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            font-family: 'Fredoka One', sans-serif;
+        }
+
+        .dassy-space {
+            width: 10px;
+        }
+
+        .animated-char {
+            display: inline-block;
+            font-weight: 900;
+            cursor: pointer;
+            opacity: 0;
+            animation: 
+                walkInLetters 2s cubic-bezier(0.25, 1, 0.5, 1) forwards,
+                continuousJiggle 0.6s ease-in-out infinite alternate;
+        }
+
+        .line-top .animated-char {
+            font-size: 0.95rem;
+            color: #d8b4fe; 
+            text-shadow: 0 2px 0 #701a75;
+            letter-spacing: 1px;
+        }
+
+        .line-bottom .animated-char {
+            font-size: 1.65rem;
+            color: #fbbf24; 
+            text-shadow: 0 3px 0 #b45309, 0 6px 12px rgba(0,0,0,0.4);
+            letter-spacing: 1.5px;
+        }
+
+        @keyframes walkInLetters {
+            0% {
+                opacity: 0;
+                transform: translateX(var(--x-start, -100px)) translateY(0) scale(0.4) rotate(-30deg);
+            }
+            25% { opacity: 1; transform: translateX(calc(var(--x-start, -100px) * 0.75)) translateY(-12px) scale(1.1) rotate(20deg); }
+            50% { transform: translateX(calc(var(--x-start, -100px) * 0.5)) translateY(0) scale(0.9) rotate(-15deg); }
+            75% { transform: translateX(calc(var(--x-start, -100px) * 0.25)) translateY(-10px) scale(1.05) rotate(10deg); }
+            100% {
+                opacity: 1;
+                transform: translateX(0) translateY(0) scale(1) rotate(0deg);
+            }
+        }
+
+        @keyframes continuousJiggle {
+            0% { transform: translateY(0) scale(1) rotate(-2deg); }
+            50% { transform: translateY(-3px) scale(1.03) rotate(2.5deg); }
+            100% { transform: translateY(0) scale(0.98) rotate(-1deg); }
+        }
+    </style>
+
+    <div class="dassy-logo-wrapper">
+        <div class="dassy-logo-line line-top" id="textLine1">IMAGINED FOR</div>
+        <div class="dassy-logo-line line-bottom" id="textLine2">LITTLE BRAINS BY DASSY</div>
+    </div>
+
+    <script>
+        function setupAnimatedText(elementId) {
+            const targetElement = document.getElementById(elementId);
+            const rawText = targetElement.innerText;
+            targetElement.innerHTML = '';
+
+            let delayCounter = 0;
+
+            [...rawText].forEach((char) => {
+                if (char === ' ') {
+                    const spaceSpan = document.createElement('div');
+                    const spaceSpanClass = 'dassy-space';
+                    spaceSpan.className = spaceSpanClass;
+                    targetElement.appendChild(spaceSpan);
+                } else {
+                    const charSpan = document.createElement('span');
+                    charSpan.className = 'animated-char';
+                    charSpan.innerText = char;
+
+                    const startingX = -120 - (delayCounter * 12); 
+                    const animationDelay = delayCounter * 0.06; 
+
+                    charSpan.style.setProperty('--x-start', `${startingX}px`);
+                    charSpan.style.animationDelay = `${animationDelay}s, ${animationDelay + 1.8}s`;
+
+                    targetElement.appendChild(charSpan);
+                    delayCounter++;
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+    // လက်ရှိ ရှိပြီးသား စာသား Animation ကုဒ်များ
+    setupAnimatedText('textLine1');
+    setupAnimatedText('textLine2');
+
+    // ✨ URL ကနေ stage နံပါတ်ကို ဖတ်မယ်
+    const urlParams = new URLSearchParams(window.location.search);
+    const stage = urlParams.get('stage'); // ဥပမာ- 2, 3, 4 စသဖြင့် ဝင်လာမယ်
+
+    // တကယ်လို့ URL မှာ stage ပါလာခဲ့ရင် (stage 2 ပဲဖြစ်ဖြစ်၊ 3 ပဲဖြစ်ဖြစ်၊ 4 ပဲဖြစ်ဖြစ်)
+    if (stage) {
+        // 'stage' ရဲ့ နောက်မှာ နံပါတ်လေး တွဲပြီး openLessonPopup('stage2') သို့မဟုတ် ('stage3') ဆိုပြီး dynamic ခေါ်သွားလိမ့်မယ်
+        openLessonPopup(`stage${stage}`); 
+    }
+});
+    </script>
+
+</body>
+</html>

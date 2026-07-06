@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dassy's Alphabet Quest - Park Skateboard Ride (ဎ)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght=400;700;900&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0f172a;
+            font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .burmese-font {
+            font-family: 'Pyidaungsu', 'Myanmar3', 'Yunghkio', sans-serif;
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- HUD အပေါ်ဘက် သတင်းအချက်အလက်ပြကွက် နှင့် Navigation ခလုတ်များ -->
+    <div id="hud" class="absolute top-4 left-4 right-4 pointer-events-none z-30 flex flex-col space-y-2 max-w-md">
+        <!-- 🏠 Home နှင့် 🔙 Back ခလုတ်များ -->
+        <div class="flex items-center space-x-2 pointer-events-auto">
+            <button id="home-btn" class="flex items-center justify-center bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-3 py-2 rounded-xl active:scale-95 transition-all shadow-lg cursor-pointer burmese-font">
+                🏠 <span class="ml-1">Home</span>
+            </button>
+            <button id="back-btn" class="flex items-center justify-center bg-slate-900/90 border border-amber-500/40 text-white text-xs font-bold px-3 py-2 rounded-xl active:scale-95 transition-all shadow-lg cursor-pointer burmese-font">
+                🔙 <span class="ml-1">Back</span>
+            </button>
+        </div>
+
+        <!-- တိုးတက်မှု Level Bar -->
+        <div class="flex items-center space-x-3 bg-slate-950/90 backdrop-blur-md p-3 rounded-2xl border border-amber-500/20 shadow-lg">
+            <span class="text-xs font-black text-amber-400 tracking-wider burmese-font">စကိတ်စီး တိုးတက်မှု:</span>
+            <div class="flex-1 bg-black/40 h-4 rounded-full overflow-hidden p-0.5 border border-white/5">
+                <div id="xp-bar" class="bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-400 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <span id="level-display" class="bg-amber-600 text-white text-[10px] font-black px-3 py-1 rounded-full burmese-font uppercase tracking-widest">အဆင့် ၁</span>
+        </div>
+        
+        <!-- ရမှတ်နှင့် ဖမ်းရမည့်အက္ခရာ -->
+        <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2 bg-slate-950/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-amber-500/20 shadow-lg">
+                <span class="text-xl">⭐</span>
+                <span id="cash-display" class="text-white font-black tracking-widest text-sm">0</span>
+            </div>
+            <div class="flex items-center space-x-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 backdrop-blur-md px-4 py-2 rounded-2xl border border-amber-500/40 shadow-lg">
+                <span class="text-xs font-bold text-amber-400 tracking-wider burmese-font">ဖမ်းယူရမည့်အက္ခရာ:</span>
+                <span id="target-letter-display" class="burmese-font text-3xl font-black text-yellow-300 animate-bounce">ဎ</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ညာဘက်အပေါ် ဒိုင်းကာစွမ်းအင် (HP) -->
+    <div class="absolute top-4 right-4 z-40 flex items-center space-x-3">
+        <div class="pointer-events-none flex items-center space-x-2 bg-slate-950/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-amber-500/20 shadow-lg">
+            <span class="text-lg">❤️</span>
+            <span id="hp-display" class="text-rose-500 font-black tracking-wider text-sm">100 / 100</span>
+        </div>
+    </div>
+
+    <!-- အဆင့်တက်ခြင်း Modal -->
+    <div id="upgrade-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-[100] flex items-center justify-center p-6 transition-all duration-300">
+        <div class="bg-[#0f172a] border-2 border-amber-500/20 rounded-[3rem] p-10 max-w-md w-full text-center shadow-[0_0_100px_rgba(245,158,11,0.15)] scale-95 transition-transform">
+            <div class="relative mb-8">
+                <div class="text-4xl">🛹🌳✨</div>
+            </div>
+            <h2 class="text-2xl font-bold text-amber-400 burmese-font mb-2">အဆင့်တက်ပါပြီ!</h2>
+            <p id="upgrade-subtitle" class="text-neutral-400 text-xs burmese-font mb-8">စကိတ်အရှိန် ပိုမိုမြန်ဆန်လာပြီး စွမ်းအင်ပြန်ပြည့်ပါမည်။</p>
+            <div id="upgrade-options" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- စတင်မျက်နှာပြင် -->
+    <div id="overlay-screen" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md z-[90] flex flex-col items-center justify-center text-center p-8">
+        <h1 id="game-title" class="text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 tracking-wider mb-2 burmese-font drop-shadow-[0_0_30px_rgba(245,158,11,0.3)]">ပန်းခြံစကိတ်စီးစွန့်စားခန်း</h1>
+        <p id="game-subtitle" class="text-amber-400 text-xs font-bold mb-8 burmese-font">မြန်မာစာအက္ခရာခရီးစဉ်: "ဎ" ကို လိုက်လံဖမ်းယူကြစို့</p>
+        
+        <!-- ရလဒ်မှတ်တမ်းဘုတ် -->
+        <div id="game-stats" class="hidden bg-slate-900 border-2 border-amber-500/30 rounded-3xl p-6 mb-10 max-w-sm w-full text-left space-y-4 shadow-xl">
+            <div class="text-center border-b border-white/10 pb-2 mb-2">
+                <span id="stat-header" class="text-amber-400 font-bold burmese-font text-sm">📊 ကစားမှုရလဒ်မှတ်တမ်း</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-neutral-300 burmese-font text-sm">🟢 မှန်ကန်သော "ဎ" အရေအတွက်</span>
+                <span id="stat-coins" class="text-green-400 font-black text-lg">0</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-neutral-300 burmese-font text-sm">🔴 မှားယွင်းသော အက္ခရာများ</span>
+                <span id="stat-kills" class="text-rose-400 font-black text-lg">0</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-neutral-300 burmese-font text-sm">👑 ရောက်ရှိခဲ့သည့် အဆင့်</span>
+                <span id="stat-level" class="text-cyan-400 font-black text-lg">အဆင့် ၁</span>
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center pointer-events-auto w-full max-w-md">
+            <button id="start-btn" class="w-full sm:w-auto px-12 py-5 bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm rounded-full transition-all shadow-lg border-b-4 border-amber-800 active:scale-95 burmese-font cursor-pointer">
+                🛹 စတင်စီးနင်းမည်
+            </button>
+            <button id="main-page-btn" class="w-full sm:w-auto px-12 py-5 bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm rounded-full transition-all shadow-lg border-b-4 border-purple-800 active:scale-95 burmese-font cursor-pointer">
+                🚪 ပင်မမြေပုံကြီးသို့ ပြန်မည်
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function playSound(type) {
+            initAudio();
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+
+            if (type === 'coin') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, now);
+                osc.frequency.setValueAtTime(880, now + 0.08);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
+                osc.start(now); osc.stop(now + 0.22);
+            } else if (type === 'fail') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(130, now);
+                osc.frequency.linearRampToValueAtTime(70, now + 0.25);
+                gainNode.gain.setValueAtTime(0.15, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                osc.start(now); osc.stop(now + 0.25);
+            } else if (type === 'levelup') {
+                const freqs = [440, 554.37, 659.25, 880];
+                freqs.forEach((f, i) => {
+                    const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+                    o.connect(g); g.connect(audioCtx.destination); o.type = 'sine';
+                    o.frequency.setValueAtTime(f, now + i * 0.06);
+                    g.gain.setValueAtTime(0.06, now + i * 0.06);
+                    g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.06 + 0.15);
+                    o.start(now + i * 0.06); o.stop(now + i * 0.06 + 0.15);
+                });
+            } else if (type === 'victory') {
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((f, i) => {
+                    const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+                    o.connect(g); g.connect(audioCtx.destination); o.type = 'triangle';
+                    o.frequency.setValueAtTime(f, now + i * 0.1);
+                    g.gain.setValueAtTime(0.12, now + i * 0.1);
+                    g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.1 + 0.35);
+                    o.start(now + i * 0.1); o.stop(now + i * 0.1 + 0.35);
+                });
+            }
+        }
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const burmeseAlphabets = [
+            'က', 'ခ', 'ဂ', 'ဃ', 'င', 'စ', 'ဆ', 'ဇ', 'ဈ', 'ည',
+            'တ', 'ထ', 'ဒ', 'ဓ', 'န', 'ပ', 'ဖ', 'ဗ', 'ဘ', 'မ',
+            'ယ', 'ရ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ', 'ဋ', 'ဌ'
+        ];
+
+        const game = {
+            running: false, paused: false, score: 0, correctPops: 0, incorrectPops: 0,
+            targetLetter: 'ဎ', roadScrollY: 0, roadSpeed: 3.0, targetMaxLevel: 5
+        };
+
+        const player = { x: 0, y: 0, width: 46, height: 75, hp: 100, maxHp: 100, xp: 0, maxXp: 100, level: 1, tilt: 0 };
+        const keys = {};
+        let isDragging = false;
+        let lastTargetX = 0;
+        const entities = { letterBubbles: [], parkTrees: [] };
+
+        window.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()] = true; });
+        window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+
+        const startDrag = (clientX) => {
+            initAudio();
+            if (!game.running || game.paused) return;
+            if (Math.abs(clientX - player.x) < 80) {
+                isDragging = true;
+                lastTargetX = clientX;
+            }
+        };
+        window.addEventListener('touchstart', (e) => startDrag(e.touches[0].clientX), { passive: true });
+        window.addEventListener('mousedown', (e) => startDrag(e.clientX));
+        
+        window.addEventListener('touchmove', (e) => { 
+            if (isDragging && game.running && !game.paused) {
+                let currentX = e.touches[0].clientX;
+                player.tilt = (currentX - lastTargetX) * 0.05; // ရွေ့လျားမှုအလိုက် စောင်းပေးရန်
+                player.x = currentX;
+                lastTargetX = currentX;
+            }
+        }, { passive: true });
+        
+        window.addEventListener('mousemove', (e) => { 
+            if (isDragging && game.running && !game.paused) {
+                player.tilt = (e.clientX - lastTargetX) * 0.05;
+                player.x = e.clientX;
+                lastTargetX = e.clientX;
+            }
+        });
+
+        const stopDrag = () => { isDragging = false; };
+        window.addEventListener('mouseup', stopDrag);
+        window.addEventListener('touchend', stopDrag);
+
+        function getLaneCenterTarget(laneIndex) {
+            const roadWidth = Math.min(460, canvas.width - 40);
+            const roadLeft = (canvas.width - roadWidth) / 2;
+            return roadLeft + (roadWidth / 3) * laneIndex + (roadWidth / 6);
+        }
+
+        function spawnLetterBubble() {
+            if (!game.running || game.paused) return;
+            const chosenLane = Math.floor(Math.random() * 3);
+            const isTargetSpawn = Math.random() < 0.5;
+            let chosenLetter = game.targetLetter;
+            if (!isTargetSpawn) {
+                const filtered = burmeseAlphabets.filter(char => char !== game.targetLetter);
+                chosenLetter = filtered[Math.floor(Math.random() * filtered.length)];
+            }
+            entities.letterBubbles.push({
+                x: getLaneCenterTarget(chosenLane), y: -50,
+                letter: chosenLetter, radius: 34, speedY: game.roadSpeed, pulseOffset: Math.random() * Math.PI
+            });
+        }
+        setInterval(spawnLetterBubble, 1500);
+
+        function spawnParkTree() {
+            if (!game.running || game.paused) return;
+            const roadWidth = Math.min(460, canvas.width - 40);
+            const roadLeft = (canvas.width - roadWidth) / 2;
+            const side = Math.random() < 0.5 ? 'left' : 'right';
+            const treeX = side === 'left' ? Math.random() * (roadLeft - 40) : (roadLeft + roadWidth + 20) + Math.random() * (canvas.width - (roadLeft + roadWidth) - 40);
+            entities.parkTrees.push({ x: treeX, y: -60, size: 20 + Math.random() * 15 });
+        }
+        setInterval(spawnParkTree, 2000);
+
+        function drawGameEnvironment() {
+            const roadWidth = Math.min(460, canvas.width - 40);
+            const roadLeft = (canvas.width - roadWidth) / 2;
+
+            // ၁။ ပန်းခြံမြက်ခင်းပြင်
+            ctx.fillStyle = '#16a34a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // ၂။ စကိတ်ကွင်းလမ်းကြောင်း (Smooth Neon Purple Track)
+            ctx.fillStyle = '#4c1d95';
+            ctx.fillRect(roadLeft, 0, roadWidth, canvas.height);
+
+            // ဘေးအနားသတ် လိမ္မော်ရောင် လိုင်းများ
+            ctx.fillStyle = '#f97316';
+            ctx.fillRect(roadLeft - 4, 0, 4, canvas.height);
+            ctx.fillRect(roadLeft + roadWidth, 0, 4, canvas.height);
+
+            // ၃။ လမ်းကြား ဖြတ်လိုင်းများ
+            ctx.strokeStyle = 'rgba(249, 115, 22, 0.35)';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([20, 20]);
+            ctx.lineDashOffset = -game.roadScrollY;
+            ctx.beginPath();
+            ctx.moveTo(roadLeft + roadWidth / 3, 0); ctx.lineTo(roadLeft + roadWidth / 3, canvas.height);
+            ctx.moveTo(roadLeft + (roadWidth / 3) * 2, 0); ctx.lineTo(roadLeft + (roadWidth / 3) * 2, canvas.height);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // ၄။ ပန်းခြံသစ်ပင်များ
+            entities.parkTrees.forEach(tree => {
+                ctx.fillStyle = '#064e3b';
+                ctx.beginPath(); ctx.arc(tree.x, tree.y, tree.size, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#10b981';
+                ctx.beginPath(); ctx.arc(tree.x - 2, tree.y - 2, tree.size * 0.9, 0, Math.PI * 2); ctx.fill();
+            });
+        }
+
+        function drawSkateboardPlayer(x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+            
+            // ကွေ့လိုက်တဲ့အခါ ခန္ဓာကိုယ် တိမ်းစောင်းမှု Balance Animation
+            ctx.rotate(player.tilt);
+
+            const bobbing = Math.sin(Date.now() * 0.015) * 1.5;
+
+            // ======= ၁။ စကိတ်ဘုတ် (SKATEBOARD) =======
+            ctx.fillStyle = '#eab308'; // Neon Yellow
+            ctx.beginPath();
+            ctx.roundRect(-12, -34, 24, 68, 10);
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2.5; ctx.stroke();
+
+            // စကိတ်ဘုတ် Griptape အမည်းရောင်အလယ်လိုင်း
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(-9, -15, 18, 30);
+
+            // စကိတ်ဘုတ်ဘီးများ (ဘေးထွက်နေတာ ထင်ရှားအောင် ဆွဲခြင်း)
+            ctx.fillStyle = '#f43f5e';
+            ctx.fillRect(-16, -24, 4, 10);  ctx.fillRect(12, -24, 4, 10); // ရှေ့ဘီး
+            ctx.fillRect(-16, 14, 4, 10);   ctx.fillRect(12, 14, 4, 10);  // နောက်ဘီး
+
+            // ======= ၂။ စကိတ်စီးနေသော လူပုံစံ (FULL SKATER) =======
+            
+            // (က) ခြေထောက်နှစ်ဖက် (နင်းထားပုံ ထင်ရှားစေရန် စကိတ်ဘုတ်ပေါ် ခပ်စောင်းစောင်းလေး တင်ထားခြင်း)
+            ctx.fillStyle = '#1e293b'; // ဘောင်းဘီရှည်/ဖိနပ်အရောင်
+            // ခြေထောက် (ရှေ့)
+            ctx.beginPath(); ctx.roundRect(-8, -20 + bobbing*0.3, 16, 8, 3); ctx.fill();
+            // ခြေထောက် (နောက်)
+            ctx.beginPath(); ctx.roundRect(-6, 10 - bobbing*0.3, 14, 8, 3); ctx.fill();
+
+            // (ခ) ဟန်ချက်ထိန်းထားသော လက်မောင်းနှင့် လက်ဖဝါးနှစ်ဖက် (ဘယ်/ညာ ဖြန့်ထားပုံ)
+            ctx.fillStyle = '#fbcfe8'; // အသားရောင်/လက်
+            ctx.strokeStyle = '#06b6d4'; // အင်္ကျီလက်တိုအရောင်
+            ctx.lineWidth = 7;
+            
+            // ဘယ်ဘက်လက်မောင်း (ဘေးသို့ ဆန့်ထွက်နေပုံ)
+            ctx.beginPath();
+            ctx.moveTo(-10, -3 + bobbing);
+            ctx.lineTo(-26, -6 + bobbing * 2);
+            ctx.stroke();
+            // ညာဘက်လက်မောင်း
+            ctx.beginPath();
+            ctx.moveTo(10, -3 + bobbing);
+            ctx.lineTo(26, 0 - bobbing * 2);
+            ctx.stroke();
+
+            // (ဂ) ခန္ဓာကိုယ် ကိုယ်ထည် (အပေါ်ပိုင်း ပခုံးနှင့် ရင်ဘတ်)
+            ctx.fillStyle = '#06b6d4'; // Bright Cyan Hoodie/T-shirt
+            ctx.beginPath();
+            ctx.roundRect(-15, -12 + bobbing, 30, 22, 6);
+            ctx.fill();
+
+            // ခါးပတ်လိုင်းလေး ထည့်ပေးခြင်း
+            ctx.fillStyle = '#f97316';
+            ctx.fillRect(-15, 8 + bobbing, 30, 3);
+
+            // (ဃ) ဦးခေါင်း နှင့် စကိတ်စီး ဦးထုပ် (Safety Helmet)
+            // အသားရောင် မျက်နှာ/လည်ပင်းရိပ်
+            ctx.fillStyle = '#fbcfe8';
+            ctx.beginPath(); ctx.arc(0, -6 + bobbing, 8, 0, Math.PI * 2); ctx.fill();
+            
+            // လိမ္မော်ရောင် Safety Helmet (အပေါ်က စီးထားပုံ ထင်ထင်ရှားရှား)
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath(); ctx.arc(0, -7 + bobbing, 11, 0, Math.PI * 2); ctx.fill();
+            // ဦးထုပ်၏ အရိပ်အလင်းအစင်းကြောင်း
+            ctx.fillStyle = '#fdba74';
+            ctx.beginPath(); ctx.arc(-2, -9 + bobbing, 9, 0, Math.PI * 2); ctx.fill();
+
+            // ======= ၃။ စကိတ်အရှိန်ပြင်း လေလှိုင်းများ (SPEED LINES) =======
+            if (game.running && !game.paused) {
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(-18, 22 + bobbing); ctx.lineTo(-18, 38 + bobbing);
+                ctx.moveTo(18, 22 - bobbing);  ctx.lineTo(18, 38 - bobbing);
+                ctx.stroke();
+            }
+
+            ctx.restore();
+
+            // တိမ်းစောင်းမှုကို မူလအတိုင်း ဖြည်းဖြည်းချင်း ပြန်လည်ထိန်းညှိခြင်း
+            player.tilt *= 0.85;
+        }
+
+        function drawLetterSign(bubble) {
+            const isTarget = bubble.letter === game.targetLetter;
+            const pulse = Math.sin(Date.now() * 0.004 + bubble.pulseOffset) * 2.5;
+
+            ctx.save();
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = isTarget ? 'rgba(253, 224, 71, 0.8)' : 'rgba(244, 63, 94, 0.5)';
+
+            ctx.fillStyle = isTarget ? '#facc15' : '#f43f5e';
+            ctx.beginPath(); ctx.arc(bubble.x, bubble.y, bubble.radius + pulse, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 3.5; ctx.stroke();
+
+            ctx.fillStyle = isTarget ? '#0f172a' : '#ffffff';
+            ctx.font = `bold 35px Pyidaungsu, "Myanmar3", "Yunghkio", sans-serif`;
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(bubble.letter, bubble.x, bubble.y + 2);
+
+            ctx.restore();
+        }
+
+        function triggerLevelUp() {
+            player.level++;
+            if (player.level >= game.targetMaxLevel) { gameWin(); return; }
+
+            playSound('levelup');
+            player.xp = 0; player.maxXp = Math.round(player.maxXp * 1.4);
+            game.roadSpeed += 0.7;
+
+            const optionsContainer = document.getElementById('upgrade-options');
+            optionsContainer.innerHTML = '';
+            
+            const btn = document.createElement('button');
+            btn.className = "w-full p-5 bg-[#1e293b] border border-white/5 hover:border-amber-500 rounded-2xl flex items-center justify-between text-left transition-all active:scale-95 cursor-pointer";
+            btn.innerHTML = `
+                <div>
+                    <h4 class="text-white font-bold text-sm burmese-font">စကိတ်စွမ်းအင်ဖြည့် အချိုရည်</h4>
+                    <p class="text-neutral-400 text-xs mt-1 burmese-font">စကိတ်အရှိန် ပိုမြန်လာပြီး သွေးအပြည့်ပြန်ဖြည့်ပေးမည်။</p>
+                </div>
+                <span class="text-lg">⚡</span>
+            `;
+            btn.onclick = () => {
+                player.hp = player.maxHp;
+                document.getElementById('upgrade-modal').classList.add('hidden');
+                game.paused = false;
+            };
+            optionsContainer.appendChild(btn);
+
+            document.getElementById('upgrade-modal').classList.remove('hidden');
+            game.paused = true;
+        }
+
+        function updateGame(dt) {
+            if (!game.running || game.paused) return;
+            if (player.hp <= 0) { gameOver(); return; }
+
+            game.roadScrollY += game.roadSpeed * dt;
+            if (game.roadScrollY >= 40) game.roadScrollY = 0;
+
+            for (let i = entities.parkTrees.length - 1; i >= 0; i--) {
+                entities.parkTrees[i].y += game.roadSpeed * dt;
+                if (entities.parkTrees[i].y > canvas.height + 50) entities.parkTrees.splice(i, 1);
+            }
+
+            let moveX = 0;
+            if (keys['a'] || keys['arrowleft']) { moveX = -1; player.tilt = -0.15; }
+            if (keys['d'] || keys['arrowright']) { moveX = 1; player.tilt = 0.15; }
+            if (moveX !== 0) player.x += moveX * 7.0 * dt;
+
+            const roadWidth = Math.min(460, canvas.width - 40);
+            const roadLeft = (canvas.width - roadWidth) / 2;
+            player.x = Math.max(roadLeft + player.width/2 + 8, Math.min(roadLeft + roadWidth - player.width/2 - 8, player.x));
+
+            for (let i = entities.letterBubbles.length - 1; i >= 0; i--) {
+                const bubble = entities.letterBubbles[i];
+                bubble.y += game.roadSpeed * dt;
+
+                const bikeLeft = player.x - player.width / 2; const bikeRight = player.x + player.width / 2;
+                const bikeTop = player.y - player.height / 2; const bikeBottom = player.y + player.height / 2;
+                const closestX = Math.max(bikeLeft, Math.min(bubble.x, bikeRight));
+                const closestY = Math.max(bikeTop, Math.min(bubble.y, bikeBottom));
+                const distSq = (bubble.x - closestX)**2 + (bubble.y - closestY)**2;
+
+                if (distSq < (bubble.radius * bubble.radius)) {
+                    if (bubble.letter === game.targetLetter) {
+                        playSound('coin');
+                        game.correctPops++; game.score += 20; player.xp += 34;
+                        if (player.xp >= player.maxXp) triggerLevelUp();
+                    } else {
+                        playSound('fail');
+                        game.incorrectPops++; player.hp = Math.max(0, player.hp - 15);
+                    }
+                    entities.letterBubbles.splice(i, 1);
+                    continue;
+                }
+
+                if (bubble.y > canvas.height + 50) entities.letterBubbles.splice(i, 1);
+            }
+
+            document.getElementById('xp-bar').style.width = `${(player.xp / player.maxXp) * 100}%`;
+            document.getElementById('level-display').innerText = `အဆင့် ${player.level}`;
+            document.getElementById('cash-display').innerText = game.score;
+            document.getElementById('hp-display').innerText = `${Math.max(0, Math.round(player.hp))} / ${player.maxHp}`;
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGameEnvironment();
+            entities.letterBubbles.forEach(bubble => drawLetterSign(bubble));
+            drawSkateboardPlayer(player.x, player.y);
+        }
+
+        let lastTime = performance.now();
+        function gameLoop(now) {
+            let dt = (now - lastTime) / 16.666; lastTime = now;
+            if (dt > 4) dt = 4;
+            updateGame(dt); render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            initAudio();
+            player.hp = player.maxHp; player.xp = 0; player.level = 1;
+            player.x = canvas.width / 2; player.y = canvas.height - 130;
+            game.score = 0; game.correctPops = 0; game.incorrectPops = 0; game.roadSpeed = 3.0;
+            entities.letterBubbles = []; entities.parkTrees = []; isDragging = false;
+            
+            document.getElementById('game-stats').classList.add('hidden');
+            document.getElementById('overlay-screen').classList.add('hidden');
+            game.running = true; game.paused = false;
+        }
+
+        function gameWin() {
+            game.running = false; playSound('victory');
+            const titleEl = document.getElementById('game-title');
+            titleEl.innerText = "🏆 အောင်မြင်ပါသည်! 🏆";
+            titleEl.className = "text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-400 to-orange-500 tracking-wider mb-2 burmese-font drop-shadow-[0_0_40px_rgba(245,158,11,0.5)]";
+            document.getElementById('game-subtitle').innerText = "ထူးချွန်လှပါပေတယ်။ သားသားမီးမီးတို့ 'ဎ' စာလုံးလေးကို အကုန်လုံး စကိတ်စီးရင်း မှတ်မိသွားပါပြီ။";
+            showStatsDisplay("🎉 အောင်ပွဲရလဒ်မှတ်တမ်း");
+        }
+
+        function gameOver() {
+            game.running = false;
+            const titleEl = document.getElementById('game-title');
+            titleEl.innerText = "နောက်တစ်ကြိမ် ပြန်ကြိုးစားရအောင်";
+            titleEl.className = "text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-red-500 to-orange-500 tracking-wider mb-2 burmese-font";
+            document.getElementById('game-subtitle').innerText = "စိတ်မပျက်ပါနဲ့ဦးနော်။ စကိတ်ဘုတ်လေးကို အရှိန်မြှင့်ပြီး ထပ်စီးကြည့်ရအောင်။";
+            showStatsDisplay("📊 ကျရှုံးမှုရလဒ်မှတ်တမ်း");
+        }
+
+        function showStatsDisplay(headerText) {
+            document.getElementById('stat-header').innerText = headerText;
+            document.getElementById('stat-coins').innerText = game.correctPops + " ကြိမ်";
+            document.getElementById('stat-kills').innerText = game.incorrectPops + " ကြိမ်";
+            document.getElementById('stat-level').innerText = `အဆင့် ${player.level}`;
+            document.getElementById('game-stats').classList.remove('hidden');
+            document.getElementById('start-btn').innerText = "🔄 ပြန်လည်ကစားမည်";
+            document.getElementById('overlay-screen').classList.remove('hidden');
+        }
+
+        document.getElementById('start-btn').onclick = startGame;
+        document.getElementById('home-btn').onclick = () => { game.running = false; window.location.href = 'index.html?fromGame=true'; };
+        document.getElementById('back-btn').onclick = () => { game.running = false; window.location.href = 'index.html?stage=3'; };
+        document.getElementById('main-page-btn').onclick = () => { game.running = false; window.location.href = 'index.html?fromGame=true'; };
+        
+        lastTime = performance.now();
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>

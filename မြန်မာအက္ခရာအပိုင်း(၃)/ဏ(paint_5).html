@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Paint the Burmese Letter ဏ - Spooky Alchemist Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+    
+    body {
+      font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+      min-height: 100vh;
+      position: relative;
+      background-color: #0f051d;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+
+    /* ==========================================================================
+       SPOOKY LAB ENVIRONMENT BACKGROUND COMPONENTS[cite: 3]
+       ========================================================================== */
+    .magic-lab-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(circle at 60% 40%, #2a1145 0%, #17072b 60%, #080112 100%);
+      z-index: 1; overflow: hidden;
+    }
+    .lab-floor {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 22vh;
+      background: linear-gradient(to bottom, #38145c, #1a0630);
+      border-top: 6px solid #6323a6; box-shadow: inset 0 10px 30px rgba(0,0,0,0.7);
+      z-index: 2;
+    }
+    .spiderweb-left {
+      position: absolute; left: 0; top: 0; width: clamp(100px, 20vw, 180px); height: clamp(100px, 20vw, 180px);
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M0,0 L100,100 M0,0 L100,40 M0,0 L40,100 M10,0 Q30,10 40,40 M0,10 Q10,30 40,40 M25,0 Q50,20 65,65 M0,25 Q20,50 65,65 M45,0 Q80,30 90,90 M0,45 Q30,80 90,90' stroke='rgba(255,255,255,0.15)' stroke-width='1' fill='none'/></svg>");
+      background-size: 100% 100%; z-index: 2;
+    }
+    .spiderweb-right {
+      position: absolute; right: 0; top: 0; width: clamp(90px, 18vw, 150px); height: clamp(90px, 18vw, 150px);
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M100,0 L0,100 M100,0 L0,30 M100,0 L30,100 M90,0 Q70,10 60,40 M100,10 Q90,30 60,40' stroke='rgba(255,255,255,0.12)' stroke-width='1' fill='none'/></svg>");
+      background-size: 100% 100%; z-index: 2;
+    }
+    .crawling-spider {
+      position: absolute; left: 8%; top: 35%; width: 35px; height: 35px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><ellipse cx='20' cy='20' rx='6' ry='8' fill='%23111827'/><circle cx='20' cy='11' r='4' fill='%23111827'/><path d='M14,14 Q6,10 4,16 M14,20 Q4,18 2,24 M14,26 Q5,28 6,34 M26,14 Q34,10 36,16 M26,20 Q36,18 38,24 M26,26 Q35,28 34,34' stroke='%23111827' stroke-width='2' fill='none'/></svg>");
+      background-size: 100% 100%; z-index: 2;
+    }
+    .spooky-gecko {
+      position: absolute; right: 10%; top: 20%; width: 50px; height: 25px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 25'><path d='M5,12 Q20,5 35,12 T50,10 M15,9 Q12,2 7,4 M15,15 Q12,22 8,20 M30,9 Q34,2 38,5 M30,15 Q34,22 39,19' stroke='%233f6212' stroke-width='3' stroke-linecap='round' fill='none'/><circle cx='34' cy='10' r='1.5' fill='%23a3e635'/></svg>");
+      background-size: 100% 100%; z-index: 2;
+    }
+    .magic-shelf {
+      position: absolute; right: 22%; bottom: 25vh; width: 130px; height: 12px;
+      background: #5c2d17; border-radius: 4px; box-shadow: 0 8px 12px rgba(0,0,0,0.5); z-index: 2;
+    }
+    .magic-shelf::before { content: "🔮📜📚"; position: absolute; top: -28px; left: 12px; font-size: 24px; letter-spacing: 3px; }
+
+    .cauldron-container {
+      position: absolute; left: 45%; bottom: 10vh; width: 130px; height: 100px; z-index: 3;
+    }
+    .cauldron {
+      position: absolute; bottom: 0; width: 100%; height: 80px;
+      background: radial-gradient(circle at 30% 30%, #581c87 0%, #2e1065 70%, #120424 100%);
+      border-radius: 50% 50% 45% 45%; border: 3px solid #7e22ce;
+    }
+    .cauldron-rim {
+      position: absolute; top: 15px; left: 8px; right: 8px; height: 16px;
+      background: #4c1d95; border-radius: 50%; border: 2.5px solid #9333ea;
+    }
+    .cauldron-glow {
+      position: absolute; top: 18px; left: 16px; right: 16px; height: 10px;
+      background: #a855f7; border-radius: 50%; filter: blur(3px);
+      animation: simmer 0.8s infinite alternate ease-in-out;
+    }
+    @keyframes simmer { 0% { opacity: 0.4; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.1); } }
+
+    .smoke-container { position: absolute; top: 0; left: 20px; right: 20px; height: 40px; }
+    .smoke-puff {
+      position: absolute; bottom: 5px; width: 20px; height: 20px;
+      background: rgba(168, 85, 247, 0.25); border-radius: 50%; filter: blur(4px);
+    }
+
+    .witch-character {
+      position: absolute; left: 5%; bottom: 11vh; width: 150px; height: 190px; z-index: 4;
+      background-size: 100% 100%; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4)); pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 200'><defs><linearGradient id='hatGrad' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='%23581c87'/><stop offset='60%' stop-color='%232e1065'/><stop offset='100%' stop-color='%231e1b4b'/></linearGradient></defs><path d='M30,125 Q45,110 55,122 T75,115 Q95,115 110,135 Q130,120 135,145 Q120,165 105,155 T60,160 Z' fill='%233b1e08'/><path d='M42,120 L118,120 L125,185 L35,185 Z' fill='%231e1b4b'/><path d='M45,125 L115,125 L135,190 L25,190 Z' fill='%232e1065'/><circle cx='80' cy='85' r='24' fill='%23fbcfe8'/><path d='M50,75 Q80,45 110,75 Q80,60 50,75 Z' fill='%233b1e08'/><circle cx='68' cy='84' r='6' fill='%23581c87'/><circle cx='69' cy='83' r='2' fill='%23ffffff'/><circle cx='92' cy='84' r='6' fill='%23581c87'/><circle cx='93' cy='83' r='2' fill='%23ffffff'/><path d='M74,96 Q80,102 86,96' stroke='%23e11d48' stroke-width='2.5' fill='none' stroke-linecap='round'/><path d='M15,62 L145,62 L115,52 L80,0 L45,52 Z' fill='url(%23hatGrad)'/><ellipse cx='80' cy='58' rx='65' ry='10' fill='%232e1065'/><rect x='60' y='52' width='40' height='7' fill='%2378350f'/><rect x='74' y='50' width='12' height='11' fill='%23eab308' rx='2'/><path d='M42,122 Q20,100 12,112' stroke='%23fbcfe8' stroke-width='7' stroke-linecap='round' fill='none'/><path d='M118,122 Q140,105 148,118' stroke='%23fbcfe8' stroke-width='7' stroke-linecap='round' fill='none'/><path d='M144,114 L154,95' stroke='%23eab308' stroke-width='3' stroke-linecap='round' fill='none'/><circle cx='154' cy='95' r='4' fill='%2322c55e' filter='drop-shadow(0 0 4px %2322c55e)'/></svg>");
+    }
+
+    /* Activation Animations */
+    body.game-active .witch-character { animation: witchMagicWave 1.5s infinite alternate ease-in-out; }
+    body.game-active .crawling-spider { animation: spiderWalk 8s infinite linear; }
+    body.game-active .spooky-gecko { animation: geckoTwitch 5s infinite ease-in-out; }
+    body.game-active .smoke-puff:nth-child(1) { left: 15%; animation: smokeRise 2s infinite linear; }
+    body.game-active .smoke-puff:nth-child(2) { left: 45%; animation: smokeRise 2.4s infinite linear; animation-delay: 0.6s; }
+    body.game-active .smoke-puff:nth-child(3) { left: 70%; animation: smokeRise 2.1s infinite linear; animation-delay: 1.2s; }
+
+    @keyframes witchMagicWave { 0% { transform: translateY(0) rotate(-1deg); } 100% { transform: translateY(-6px) rotate(2deg); } }
+    @keyframes spiderWalk { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -20px); } }
+    @keyframes geckoTwitch { 0%, 90%, 100% { transform: scale(1); } 50% { transform: scale(1.05) translate(-3px, 1px); } }
+    @keyframes smokeRise { 0% { transform: translateY(0) scale(0.6); opacity: 0; } 30% { opacity: 0.4; } 100% { transform: translateY(-60px) scale(1.5); opacity: 0; filter: blur(5px); } }
+
+    /* ==========================================================================
+       UI LAYER & NAVIGATION CONTROLS (UNIVERSAL DESIGN)
+       ========================================================================== */
+    .ui-layer { position: absolute; inset: 0; z-index: 10; pointer-events: none; }
+    .interactive { pointer-events: auto; }
+
+    .top-bar {
+      position: absolute; top: 16px; left: 16px; right: 16px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-group { display: flex; gap: 12px; }
+    
+    .circle-btn {
+      width: clamp(48px, 6vw, 54px); height: clamp(48px, 6vw, 54px); border-radius: 50%; background: #ffffff;
+      border: 3px solid #7e22ce; color: #7e22ce; font-size: clamp(1.2rem, 2vw, 1.5rem);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      box-shadow: 0 5px 0 #581c87; transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .circle-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #581c87; }
+
+    .badge-box {
+      background: #ffffff; border: 3px solid #7e22ce; border-radius: 20px;
+      padding: 6px 16px; display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 0 #581c87;
+    }
+    .badge-title { 
+      font-family: 'Noto Sans Myanmar', sans-serif; font-weight: 800; 
+      color: #581c87; font-size: clamp(0.85rem, 2.5vw, 1.1rem); white-space: nowrap; 
+    }
+    .star-counter { font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: #eab308; display: flex; gap: 2px; }
+
+    /* Bottom Control Bar Layouts */
+    .bottom-bar {
+      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 16px; align-items: center;
+    }
+    .palette-card {
+      background: #ffffff; border: 3px solid #7e22ce; border-radius: 32px;
+      padding: 8px 16px; display: flex; gap: 10px; box-shadow: 0 6px 0 #581c87;
+    }
+    .color-swatch {
+      width: clamp(38px, 5vw, 44px); height: clamp(38px, 5vw, 44px); border-radius: 50%; border: 3px solid #e2e8f0;
+      cursor: pointer; transition: transform 0.2s; position: relative;
+    }
+    .color-swatch.active { border-color: #000000; transform: scale(1.15) translateY(-4px); }
+    
+    .action-pill {
+      background: #a855f7; border: 3px solid #7e22ce; border-radius: 20px;
+      padding: 10px 24px; color: #ffffff; font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: clamp(0.95rem, 2.8vw, 1.2rem); font-weight: 800;
+      cursor: pointer; box-shadow: 0 4px 0 #581c87; transition: all 0.1s; white-space: nowrap;
+    }
+    .action-pill:active { transform: translateY(4px); box-shadow: 0 2px 0 #581c87; }
+
+    /* ==========================================================================
+       GAME STAGE CONTAINERS (RESPONSIVE VIEWPORT)
+       ========================================================================== */
+    .stage-wrapper {
+      position: absolute; inset: 0; display: flex; align-items: center;
+      justify-content: center; z-index: 5; opacity: 0; visibility: hidden;
+      transition: opacity 0.4s, visibility 0.4s; padding: 20px;
+    }
+    .stage-wrapper.active { opacity: 1; visibility: visible; }
+
+    /* Level 1 Canvas Framework Box */
+    .canvas-frame-container {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      max-width: 90vw; max-height: 70vh; margin-left: 120px; /* Shift to clear witch character */
+    }
+    #paintCanvas {
+      background-color: rgba(255, 255, 255, 0.94); border-radius: 32px;
+      border: 6px dashed #a855f7; box-shadow: 0 20px 45px rgba(0,0,0,0.3);
+      width: min(60vw, 60vh, 460px); height: min(60vw, 60vh, 460px);
+      background-repeat: no-repeat; background-position: center; background-size: 80%;
+    }
+
+    /* Level 2 Flying Bats Play Zone Area */
+    .puzzle-grid { position: absolute; inset: 0; overflow: hidden; pointer-events: auto; }
+
+    /* ==========================================================================
+       ANIMATED BAT COMPONENT DESIGN (CUTE & HIGH-RESPONSIVE)
+       ========================================================================== */
+    .bat-node {
+      position: absolute; width: clamp(80px, 12vw, 110px); height: clamp(55px, 9vw, 75px);
+      display: flex; align-items: center; justify-content: center;
+      color: #ffffff; font-family: 'Noto Sans Myanmar', sans-serif; font-weight: 800;
+      font-size: clamp(1.4rem, 3vw, 2rem); cursor: pointer; transform-origin: center;
+      touch-action: none; user-select: none; -webkit-user-select: none; z-index: 20;
+    }
+    /* Bat SVG Body Wings System Grid Vector */
+    .bat-node::before {
+      content: ''; position: absolute; inset: 0; z-index: -1;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'><path d='M50,25 Q35,5 15,15 Q5,25 20,40 Q35,35 50,50 Q65,35 80,40 Q95,25 85,15 Q65,5 50,25 Z' fill='%232e1065' stroke='%23a855f7' stroke-width='2.5'/><circle cx='44' cy='25' r='2' fill='%23ef4444'/><circle cx='56' cy='25' r='2' fill='%23ef4444'/></svg>");
+      background-size: 100% 100%; background-repeat: no-repeat;
+      animation: batFlap 0.25s infinite alternate ease-in-out;
+    }
+    @keyframes batFlap {
+      0% { transform: scaleY(0.7); }
+      100% { transform: scaleY(1.1); }
+    }
+    .bat-node.wrong-shake {
+      animation: shakeAnim 0.4s linear !important;
+    }
+    .bat-node.wrong-shake::before {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'><path d='M50,25 Q35,5 15,15 Q5,25 20,40 Q35,35 50,50 Q65,35 80,40 Q95,25 85,15 Q65,5 50,25 Z' fill='%23991b1b' stroke='%23ef4444' stroke-width='2.5'/><circle cx='44' cy='25' r='3' fill='%23eab308'/><circle cx='56' cy='25' r='3' fill='%23eab308'/></svg>");
+    }
+    @keyframes shakeAnim {
+      0%, 100% { transform: translateX(0); }
+      25%, 75% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+    }
+
+    /* Particle Explodes */
+    .magic-particle {
+      position: absolute; font-size: clamp(1.2rem, 2.5vw, 1.6rem); pointer-events: none;
+      animation: particleOut 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; z-index: 30;
+    }
+    @keyframes particleOut { 100% { transform: translate(var(--mx), var(--my)) scale(0); opacity: 0; } }
+
+    .star {
+      position: absolute; font-size: 2.5rem; pointer-events: none; z-index: 99;
+      animation: explodeOut 1.2s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+    }
+    @keyframes explodeOut {
+      0% { transform: translate(0, 0) scale(0.3) rotate(0deg); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(1.3) rotate(360deg); opacity: 0; }
+    }
+
+    /* ==========================================================================
+       MODAL FRAMES SCREEN SYSTEM (COMPACT & BEAUTIFUL FOR MOBILE)
+       ========================================================================== */
+    .screen-overlay {
+      position: absolute; inset: 0; background: rgba(15, 5, 29, 0.9);
+      z-index: 100; display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(8px); transition: all 0.4s; padding: 16px;
+    }
+    .modal-frame {
+      background: #1e1b4b; border: 4px solid #a855f7; border-radius: 28px;
+      padding: clamp(20px, 4vw, 32px) clamp(16px, 3vw, 24px);
+      width: 100%; max-width: 420px; text-align: center; box-shadow: 0 15px 0 #581c87;
+    }
+    .modal-headline {
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(1.25rem, 4vw, 1.6rem);
+      color: #ffffff; font-weight: 800; margin-bottom: 12px; line-height: 1.4;
+      text-shadow: 0 4px 10px rgba(168,85,247,0.5);
+    }
+    .modal-body {
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(0.9rem, 2.8vw, 1.05rem);
+      color: #e2e8f0; line-height: 1.6; margin-bottom: 24px; font-weight: 500;
+    }
+    .big-action-btn {
+      background: linear-gradient(to bottom, #c084fc, #a855f7); border: 2.5px solid #7e22ce;
+      border-radius: 20px; padding: 12px 36px; color: #ffffff; font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: clamp(1rem, 3vw, 1.2rem); font-weight: 800; cursor: pointer;
+      box-shadow: 0 5px 0 #581c87; white-space: nowrap; transition: all 0.1s;
+    }
+    .big-action-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #581c87; }
+
+    /* ==========================================================================
+       RESPONSIVE CONFIGURATION FOR ALL COMPATIBLE DEVICES (PHONE + TABLET + PC)
+       ========================================================================== */
+    @media (max-width: 820px) {
+      .canvas-frame-container { margin-left: 0; }
+      /* Hide background decorations on small phones to maximize play area space */
+      .witch-character, .cauldron-container, .magic-shelf { display: none !important; }
+      .badge-title { font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="magic-lab-bg">
+    <div class="lab-floor"></div>
+    <div class="spiderweb-left"></div>
+    <div class="spiderweb-right"></div>
+    <div class="crawling-spider"></div>
+    <div class="spooky-gecko"></div>
+    <div class="magic-shelf"></div>
+    
+    <div class="cauldron-container">
+      <div class="smoke-container">
+        <div class="smoke-puff"></div>
+        <div class="smoke-puff"></div>
+        <div class="smoke-puff"></div>
+      </div>
+      <div class="cauldron"></div>
+      <div class="cauldron-rim"></div>
+      <div class="cauldron-glow"></div>
+    </div>
+    <div class="witch-character"></div>
+  </div>
+
+  <div class="ui-layer">
+    <div class="top-bar">
+      <div class="nav-group interactive">
+        <button class="circle-btn" id="goBackBtn">⬅️</button>
+        <button class="circle-btn" id="goHomeBtn">🏠</button>
+      </div>
+      <div class="badge-box">
+        <span class="badge-title">LEVEL</span>
+        <div class="star-counter" id="levelIndicator">⭐</div>
+      </div>
+    </div>
+
+    <!-- Toolbar Level 1 -->
+    <div class="bottom-bar interactive" id="paintToolbar">
+      <div class="palette-card" id="colorPalette"></div>
+      <button class="action-pill" id="btnCheck">ပြီးပါပြီ 🔮</button>
+    </div>
+
+    <!-- Toolbar Level 2 -->
+    <div class="bottom-bar" id="puzzleToolbar" style="display: none;">
+      <div class="badge-box">
+        <span class="badge-title">ဖမ်းမိသည့် 'ဏ' အရေအတွက်:</span>
+        <span class="badge-title" id="scoreValue" style="color:#eab308; font-size: 1.4rem;">0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stage 1 Wrapper -->
+  <div class="stage-wrapper" id="paintWrapper">
+    <div class="canvas-frame-container">
+      <canvas id="paintCanvas" width="500" height="500"></canvas>
+    </div>
+  </div>
+
+  <!-- Stage 2 Wrapper -->
+  <div class="stage-wrapper" id="puzzleWrapper">
+    <div class="puzzle-grid" id="batSpawnerGrid"></div>
+  </div>
+
+  <!-- Intro Start Modal Dialog Box[cite: 3] -->
+  <div class="screen-overlay" id="introScreen">
+    <div class="modal-frame">
+      <h2 class="modal-headline">မှော်ဆရာမလေးရဲ့ ဓာတ်ခွဲခန်း 🔮</h2>
+      <p class="modal-body">
+        ကလေးတို့ရေ... လျှို့ဝှက်ဆန်းပြားတဲ့ မှော်ဓာတ်ခွဲခန်းကြီးထဲမှာ "ဏ" (ဏကြီး) အက္ခရာလေးကို ဆေးရောင်လှလှခြယ်သကြမယ်။ <br/><br/>
+        ပြီးရင်တော့ မှော်စာအုပ်ကြီးထဲကနေ ပျံထွက်လာမယ့် "ဏ" လင်းနို့ပျံလေးတွေကို လက်တို့ပြီး လိုက်ဖမ်းကြရအောင်နော်!
+      </p>
+      <button class="big-action-btn" id="btnStartGame">စတင်ကစားမည် ✨</button>
+    </div>
+  </div>
+
+  <!-- Victory Win Celebration Modal Dialog Box -->
+  <div class="screen-overlay" id="victoryScreen" style="opacity: 0; visibility: hidden;">
+    <div class="modal-frame">
+      <h2 class="modal-headline" id="victoryTitle">တကယ့်ကို ထူးချွန်တယ်! 🌟</h2>
+      <p class="modal-body" id="victoryMessage">သင်ခန်းစာ အဆင့်ကို အောင်မြင်စွာ ပြီးဆုံးသွားပါပြီ။</p>
+      <button class="big-action-btn" id="btnNextLevel">နောက်တစ်ဆင့် သွားမည် ➡️</button>
+    </div>
+  </div>
+
+  <script>
+    // Sound Tracks Web Audio API System
+    let audioCtx = null;
+    let bgMusicNode = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        setupSpookyMusic();
+      }
+    }
+
+    function setupSpookyMusic() {
+      if (!audioCtx) return;
+      const notes = [220.00, 233.08, 277.18, 293.66, 349.23]; // Spooky Synth Style Notes
+      let noteIdx = 0;
+
+      function playNode(time) {
+        if (!bgMusicNode) return;
+        let osc = audioCtx.createOscillator();
+        let gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(notes[noteIdx], time);
+        noteIdx = (noteIdx + 1) % notes.length;
+        
+        gain.gain.setValueAtTime(0.04, time);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 1.2);
+        
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(time); osc.stop(time + 1.2);
+        
+        setTimeout(() => playNode(audioCtx.currentTime), 1100);
+      }
+      bgMusicNode = true;
+      playNode(audioCtx.currentTime);
+    }
+
+    function playSFX(type) {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      const t = audioCtx.currentTime;
+
+      if (type === 'click') {
+        osc.type = 'sine'; osc.frequency.setValueAtTime(400, t);
+        gain.gain.setValueAtTime(0.15, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
+        osc.start(t); osc.stop(t + 0.1);
+      } 
+      else if (type === 'pop') { // Bat Flap Catch Squeak Sound
+        osc.type = 'sine'; osc.frequency.setValueAtTime(600, t);
+        osc.frequency.exponentialRampToValueAtTime(1200, t + 0.15);
+        gain.gain.setValueAtTime(0.2, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
+        osc.start(t); osc.stop(t + 0.15);
+      } 
+      else if (type === 'wrong') {
+        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, t);
+        gain.gain.setValueAtTime(0.2, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.3);
+        osc.start(t); osc.stop(t + 0.3);
+      } 
+      else if (type === 'victory') {
+        const arpeggio = [261.63, 329.63, 392.00, 523.25];
+        arpeggio.forEach((freq, i) => {
+          const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+          o.type = 'sine'; o.frequency.setValueAtTime(freq, t + i * 0.1);
+          g.gain.setValueAtTime(0.15, t + i * 0.1); g.gain.exponentialRampToValueAtTime(0.005, t + i * 0.1 + 0.4);
+          o.connect(g); g.connect(audioCtx.destination);
+          o.start(t + i * 0.1); o.stop(t + i * 0.1 + 0.4);
+        });
+      }
+    }
+
+    // Core Game States Configuration
+    let currentLevel = 1;
+    let score = 0;
+    const levelTargets = [5, 10, 15];
+    let loopSpawnerInterval = null;
+
+    // Palette Settings[cite: 3]
+    const swatches = [
+      { color: '#a855f7', type: 'solid' },
+      { color: '#ec4899', type: 'solid' },
+      { color: '#3b82f6', type: 'solid' },
+      { color: '#22c55e', type: 'solid' },
+      { color: '#eab308', type: 'solid' },
+      { color: '#cbd5e1', type: 'eraser' }
+    ];
+    let activeSwatch = swatches[0];
+
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+
+    // Build Palette Swatches
+    const paletteBox = document.getElementById('colorPalette');
+    swatches.forEach(sw => {
+      const btn = document.createElement('div');
+      btn.className = 'color-swatch';
+      if (sw.type === 'solid') btn.style.backgroundColor = sw.color;
+      else if (sw.type === 'eraser') {
+        btn.style.backgroundColor = '#ffffff'; btn.innerText = '🧼';
+        btn.style.display = 'flex'; btn.style.alignItems = 'center'; btn.style.justifyContent = 'center'; btn.style.fontSize = '1.1rem';
+      }
+      btn.onclick = () => {
+        playSFX('click');
+        document.querySelectorAll('.color-swatch').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeSwatch = sw;
+      };
+      paletteBox.appendChild(btn);
+    });
+    paletteBox.children[0].classList.add('active');
+
+    function getEventCoords(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+      return {
+        x: ((clientX - rect.left) / rect.width) * canvas.width,
+        y: ((clientY - rect.top) / rect.height) * canvas.height
+      };
+    }
+
+    function startDrawing(e) {
+      isDrawing = true;
+      const coords = getEventCoords(e);
+      ctx.beginPath(); ctx.moveTo(coords.x, coords.y);
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const coords = getEventCoords(e);
+      ctx.lineWidth = activeSwatch.type === 'eraser' ? 36 : 22;
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+      if (activeSwatch.type === 'eraser') {
+        ctx.globalCompositeOperation = 'destination-out';
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = activeSwatch.color;
+      }
+      ctx.lineTo(coords.x, coords.y); ctx.stroke();
+    }
+    function stopDrawing() { isDrawing = false; ctx.beginPath(); }
+
+    function setupPaintingStage() {
+      if (loopSpawnerInterval) clearInterval(loopSpawnerInterval);
+      document.getElementById('batSpawnerGrid').innerHTML = '';
+      
+      document.getElementById('paintWrapper').classList.add('active');
+      document.getElementById('puzzleWrapper').classList.remove('active');
+      document.getElementById('paintToolbar').style.display = 'flex';
+      document.getElementById('puzzleToolbar').style.display = 'none';
+
+      const headerBox = document.getElementById('levelIndicator');
+      headerBox.innerHTML = '';
+      for(let i=0; i<currentLevel; i++) headerBox.innerHTML += '⭐';
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    function setupPuzzleStage() {
+      document.getElementById('paintWrapper').classList.remove('active');
+      document.getElementById('puzzleWrapper').classList.add('active');
+      document.getElementById('paintToolbar').style.display = 'none';
+      document.getElementById('puzzleToolbar').style.display = 'flex';
+
+      score = 0;
+      document.getElementById('scoreValue').textContent = score;
+
+      if (loopSpawnerInterval) clearInterval(loopSpawnerInterval);
+      // Generate faster based on level difficulty tier
+      const dynamicSpeed = Math.max(500, 1000 - (currentLevel * 150));
+      loopSpawnerInterval = setInterval(spawnBatNode, dynamicSpeed);
+    }
+
+    function spawnBatNode() {
+      const hostGrid = document.getElementById('batSpawnerGrid');
+      if (!hostGrid) return;
+
+      const bat = document.createElement('div');
+      bat.className = 'bat-node';
+      
+      const targetChar = 'ဏ';
+      const noisePool = ['က', 'တ', 'ထ', 'န', 'ဏ'];
+      const isTarget = Math.random() < 0.45;
+      
+      bat.textContent = isTarget ? targetChar : noisePool[Math.floor(Math.random() * noisePool.length)];
+      
+      // Horizontal positioning bounds calculation
+      bat.style.left = (Math.random() * 70 + 5) + 'vw';
+      bat.style.top = (Math.random() * 60 + 20) + 'vh';
+      bat.style.opacity = '0';
+      bat.style.transition = 'opacity 0.3s ease';
+      
+      // Sine-wave drift speed variables
+      let angleX = Math.random() * Math.PI * 2;
+      let angleY = Math.random() * Math.PI * 2;
+      const driftRadius = 2 + currentLevel * 0.6;
+      let isCaptured = false;
+
+      // Animate flight path frame loop pattern
+      function driftFrame() {
+        if (!bat.parentElement || isCaptured) return;
+        angleX += 0.03; angleY += 0.04;
+        
+        let curLeft = parseFloat(bat.style.left);
+        let curTop = parseFloat(bat.style.top);
+        
+        bat.style.left = (curLeft + Math.sin(angleX) * (driftRadius * 0.1)) + 'vw';
+        bat.style.top = (curTop + Math.cos(angleY) * (driftRadius * 0.1)) + 'vh';
+
+        requestAnimationFrame(driftFrame);
+      }
+
+      function handleBatClick(e) {
+        if (isCaptured) return;
+        e.preventDefault(); e.stopPropagation();
+
+        if (isTarget) {
+          isCaptured = true;
+          playSFX('pop');
+          score++;
+          document.getElementById('scoreValue').textContent = score;
+          createMagicExplosionParticles(bat.offsetLeft + 40, bat.offsetTop + 30);
+          bat.remove();
+
+          if (score >= levelTargets[currentLevel - 1]) {
+            triggerLevelVictory();
+          }
+        } else {
+          playSFX('wrong');
+          bat.classList.add('wrong-shake');
+          setTimeout(() => bat.classList.remove('wrong-shake'), 400);
+        }
+      }
+
+      // High Performance Touch Event Binding Engine Configuration
+      bat.addEventListener('pointerdown', handleBatClick, { passive: false });
+      bat.addEventListener('touchstart', handleBatClick, { passive: false });
+
+      hostGrid.appendChild(bat);
+      setTimeout(() => { bat.style.opacity = '1'; }, 50);
+      requestAnimationFrame(driftFrame);
+
+      // Auto clear ghost nodes loop cycle safety line
+      setTimeout(() => { if(bat.parentElement && !isCaptured) bat.remove(); }, 3500);
+    }
+
+    function createMagicExplosionParticles(x, y) {
+      const grid = document.getElementById('batSpawnerGrid');
+      const particleEmojis = ['✨', '🔮', '💜', '⚡'];
+      for (let i = 0; i < 6; i++) {
+        const p = document.createElement('div');
+        p.className = 'magic-particle';
+        p.textContent = particleEmojis[Math.floor(Math.random() * particleEmojis.length)];
+        p.style.left = x + 'px'; p.style.top = y + 'px';
+        const angle = Math.random() * Math.PI * 2;
+        const radius = 50 + Math.random() * 60;
+        p.style.setProperty('--mx', Math.cos(angle) * radius + 'px');
+        p.style.setProperty('--my', Math.sin(angle) * radius + 'px');
+        grid.appendChild(p);
+        setTimeout(() => p.remove(), 600);
+      }
+    }
+
+    function triggerLevelVictory() {
+      if (loopSpawnerInterval) clearInterval(loopSpawnerInterval);
+      document.getElementById('batSpawnerGrid').innerHTML = '';
+      playSFX('victory');
+      triggerExplosionStars();
+
+      const modal = document.getElementById('victoryScreen');
+      const title = document.getElementById('victoryTitle');
+      const msg = document.getElementById('victoryMessage');
+      const nextBtn = document.getElementById('btnNextLevel');
+
+      modal.style.opacity = '1'; modal.style.visibility = 'visible';
+
+      if (currentLevel < 3) {
+        title.textContent = "မီးခိုးလုံးလေးလို တော်လိုက်တာ! 🔮";
+        msg.innerHTML = `အဆင့် ${currentLevel} ကို စွမ်းစွမ်းတမံ ပြီးမြောက်သွားပါပြီ။ <br/> နောက်ထပ် ပိုမြန်တဲ့ စိန်ခေါ်မှုအဆင့်သို့ တက်လှမ်းကြရအောင်။`;
+        nextBtn.textContent = "နောက်တစ်ဆင့် သွားမည် ➡️";
+      } else {
+        title.textContent = "💎 မှော်ဝင်အောင်ပွဲကြီး! 💎";
+        msg.innerHTML = `"ဏ" အက္ခရာကို အဆင့် ၃ ဆင့်စလုံးမှာ ပိုင်နိုင်စွာ ခွဲခြားတတ်မြောက်ပြီး <br/> ဓာတ်ခွဲခန်းရဲ့ လျှို့ဝှက်လင်းနို့အားလုံးကို ဖမ်းဆီးနိုင်ခဲ့ပါပြီ။`;
+        nextBtn.textContent = "အစကနေ ပြန်ကစားမည် 🔄";
+      }
+    }
+
+    function triggerExplosionStars() {
+      const host = document.body;
+      const items = ['✨', '⭐', '🔮', '🦇', '💫'];
+      for (let i = 0; i < 35; i++) {
+        const el = document.createElement('div');
+        el.className = 'star';
+        el.textContent = items[Math.floor(Math.random() * items.length)];
+        el.style.left = '50vw'; el.style.top = '50vh';
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 80 + Math.random() * 250;
+        el.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+        el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+        host.appendChild(el);
+        setTimeout(() => el.remove(), 1200);
+      }
+    }
+
+    // Connect Click Button Triggers
+    document.getElementById('btnStartGame').onclick = () => {
+      initAudio(); playSFX('click');
+      document.getElementById('introScreen').style.opacity = '0';
+      document.getElementById('introScreen').style.visibility = 'hidden';
+      document.body.classList.add('game-active');
+      setupPaintingStage();
+    };
+
+    document.getElementById('btnCheck').onclick = () => { playSFX('click'); setupPuzzleStage(); };
+
+    document.getElementById('btnNextLevel').onclick = () => {
+      playSFX('click');
+      document.getElementById('victoryScreen').style.opacity = '0';
+      document.getElementById('victoryScreen').style.visibility = 'hidden';
+      currentLevel = currentLevel < 3 ? currentLevel + 1 : 1;
+      setupPaintingStage();
+    };
+
+    // Navigation System Route Handling Actions
+    document.getElementById('goHomeBtn').onclick = () => {
+      playSFX('click');
+      if (loopSpawnerInterval) clearInterval(loopSpawnerInterval);
+      window.location.href = 'index.html?fromGame=true';
+    };
+
+    document.getElementById('goBackBtn').onclick = () => {
+      playSFX('click');
+      const isPuzzleActive = document.getElementById('puzzleWrapper').classList.contains('active');
+      if (isPuzzleActive) {
+        if (loopSpawnerInterval) clearInterval(loopSpawnerInterval);
+        setupPaintingStage();
+      } else {
+        window.location.href = 'index.html?stage=2';
+      }
+    };
+
+    // Canvas Desktop Pointer Configurations
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mousemove', draw);
+    
+    // Canvas Mobile Multi-Touch Event Configurations
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
+
+    // SVG Layout Trace Vector Image Definition Configuration
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='52%' font-family='Noto Sans Myanmar' font-size='330' font-weight='800' fill='none' stroke='%23cbd5e1' stroke-width='5' stroke-dasharray='12,12' text-anchor='middle' dominant-baseline='middle'>ဏ</text></svg>\")";
+  </script>
+</body>
+</html>

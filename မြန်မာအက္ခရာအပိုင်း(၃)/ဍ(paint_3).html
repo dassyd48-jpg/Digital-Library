@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Paint & Floating Balloons Lesson - ဍ Rainy Day</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+    
+    body {
+      font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+      min-height: 100vh;
+      position: relative;
+      background-color: #334155;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+
+    /* ==========================================================================
+        NAVIGATION BUTTONS COMPONENT (Home & Back)
+       ========================================================================== */
+    .nav-container {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      right: 15px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .nav-btn {
+      width: 55px;
+      height: 55px;
+      border-radius: 18px;
+      border: 3px solid #ffffff;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+      transition: transform 0.1s ease;
+    }
+    .go-home-btn { background: #ef4444; }
+    .go-back-btn { background: #f59e0b; }
+    .nav-btn:active { transform: scale(0.92); }
+
+    /* ==========================================================================
+        RAINY DAY BACKGROUND COMPONENT
+       ========================================================================== */
+    .rainy-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to bottom, #1e293b 0%, #475569 50%, #64748b 100%);
+      z-index: 1;
+    }
+
+    .green-floor {
+      position: absolute;
+      left: 0; right: 0; bottom: 0; height: 22vh;
+      background-color: #22c55e;
+      border-top: 10px solid #16a34a;
+      box-shadow: inset 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .water-puddle {
+      position: absolute;
+      left: 15%; bottom: 14vh; width: 140px; height: 40px;
+      background: rgba(56, 189, 248, 0.6);
+      border-radius: 50%;
+      border: 3px solid #38bdf8;
+    }
+
+    .tree {
+      position: absolute; bottom: 20vh; width: 50px; height: 140px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 140'><path d='M25,0 L50,90 L35,90 L35,140 L15,140 L15,90 L0,90 Z' fill='%2315803d'/></svg>");
+      background-size: 100% 100%;
+    }
+    .tree-1 { left: 4%; height: 160px; }
+    .tree-2 { right: 5%; height: 180px; }
+
+    .storm-cloud {
+      position: absolute; font-size: 80px; opacity: 0.85; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+    }
+    .cloud-1 { left: 10%; top: 5%; }
+    .cloud-2 { right: 15%; top: 8%; }
+
+    /* REALISTIC GLOWING RAINBOW EFFECT */
+    .rainbow {
+      position: absolute; 
+      left: 50%; 
+      bottom: 22vh; 
+      width: 700px; 
+      height: 350px;
+      transform: translateX(-50%) scale(0);
+      transform-origin: bottom center;
+      background: radial-gradient(ellipse at bottom, 
+        transparent 45%, 
+        rgba(239, 68, 68, 0.6) 49%,   
+        rgba(249, 115, 22, 0.55) 53%,  
+        rgba(234, 179, 8, 0.55) 57%,   
+        rgba(34, 197, 94, 0.5) 61%,   
+        rgba(59, 130, 246, 0.5) 65%,  
+        rgba(168, 85, 247, 0.55) 69%,  
+        transparent 73%
+      );
+      filter: blur(5px); 
+      mix-blend-mode: screen; 
+      opacity: 0; 
+      transition: transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.1), opacity 2s ease-in-out;
+      z-index: 2;
+    }
+    .rainbow.show { transform: translateX(-50%) scale(1); opacity: 0.95; }
+
+    /* Kids Graphics */
+    .happy-kids-container { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+    .kid-3d { position: absolute; width: 80px; height: 140px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.25)); }
+    .kid-boy-3d { left: 18%; bottom: 14vh; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 140'><defs><linearGradient id='b' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='%2338bdf8'/><stop offset='100%' stop-color='%230284c7'/></linearGradient></defs><circle cx='40' cy='25' r='18' fill='%23fed7aa'/><circle cx='40' cy='22' r='20' fill='%237c2d12' clip-path='ellipse(20 15 at 40 10)'/><rect x='25' y='45' width='30' height='45' rx='10' fill='url(%23b)'/><rect x='28' y='90' width='10' height='35' rx='4' fill='%23fed7aa'/><rect x='42' y='90' width='10' height='35' rx='4' fill='%23fed7aa'/><rect x='26' y='120' width='14' height='12' rx='5' fill='%23eab308'/><rect x='40' y='120' width='14' height='12' rx='5' fill='%23eab308'/><rect x='13' y='48' width='10' height='30' rx='4' fill='%23fed7aa' transform='rotate(15 13 48)'/><rect x='57' y='48' width='10' height='30' rx='4' fill='%23fed7aa' transform='rotate(-15 57 48)'/></svg>"); }
+    .kid-girl-3d { right: 20%; bottom: 13vh; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 140'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='%23f43f5e'/><stop offset='100%' stop-color='%23be123c'/></linearGradient></defs><circle cx='40' cy='25' r='18' fill='%23ffedd5'/><path d='M20,25 Q40,5 60,25 Q40,15 20,25 Z' fill='%23111827'/><circle cx='18' cy='20' r='6' fill='%23111827'/><circle cx='62' cy='20' r='6' fill='%23111827'/><path d='M22,45 L58,45 L48,85 L32,85 Z' fill='url(%23s)'/><rect x='28' y='85' width='9' height='40' rx='4' fill='%23ffedd5'/><rect x='43' y='85' width='9' height='40' rx='4' fill='%23ffedd5'/><rect x='25' y='122' width='13' height='12' rx='5' fill='%23ec4899'/><rect x='42' y='122' width='13' height='12' rx='5' fill='%23ec4899'/><rect x='13' y='46' width='9' height='32' rx='4' fill='%23ffedd5' transform='rotate(30 13 46)'/><rect x='58' y='46' width='9' height='32' rx='4' fill='%23ffedd5' transform='rotate(-30 58 46)'/></svg>"); }
+    .frog { position: absolute; font-size: 32px; bottom: 4vh; left: 45%; }
+
+    /* Rain Drops */
+    .rain-container { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+    .drop { position: absolute; background: linear-gradient(transparent, #e0f2fe); width: 2.5px; height: 30px; top: -40px; opacity: 0; }
+
+    /* Animations */
+    body.game-active .kid-boy-3d { animation: kidGentleJump 0.9s infinite alternate ease-in-out; }
+    body.game-active .kid-girl-3d { animation: kidGentleJump 0.9s infinite alternate ease-in-out; animation-delay: 0.45s; }
+    body.game-active .tree { animation: treeSway 6s infinite ease-in-out; }
+    body.game-active .tree:nth-child(even) { animation-delay: 2s; }
+    body.game-active .drop:nth-child(1) { left: 12%; animation: rainFall 1s infinite linear; animation-delay: 0.1s; }
+    body.game-active .drop:nth-child(2) { left: 28%; animation: rainFall 0.8s infinite linear; animation-delay: 0.3s; }
+    body.game-active .drop:nth-child(3) { left: 48%; animation: rainFall 1.1s infinite linear; animation-delay: 0.0s; }
+    body.game-active .drop:nth-child(4) { left: 68%; animation: rainFall 0.7s infinite linear; animation-delay: 0.4s; }
+    body.game-active .drop:nth-child(5) { left: 88%; animation: rainFall 0.9s infinite linear; animation-delay: 0.2s; }
+
+    @keyframes treeSway { 0%, 100% { transform: rotate(0deg); transform-origin: bottom center; } 50% { transform: rotate(3deg); transform-origin: bottom center; } }
+    @keyframes rainFall { 0% { top: -40px; opacity: 0; } 30% { opacity: 0.6; } 100% { top: 85vh; opacity: 0; } }
+    @keyframes kidGentleJump { 0% { transform: translateY(0) scaleY(1); } 100% { transform: translateY(-20px) scaleY(0.98); } }
+
+    /* ==========================================================================
+        INTRO SCREEN
+       ========================================================================== */
+    .intro-screen {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    .intro-emojis { font-size: 42px; margin-bottom: 15px; letter-spacing: 12px; z-index: 10; }
+    .intro-title { font-size: 46px; font-weight: 800; color: #ffffff; margin-bottom: 20px; line-height: 1.4; z-index: 10; text-shadow: 3px 3px 0px #1e293b; }
+    .intro-badge { background-color: #38bdf8; color: white; font-size: 18px; font-weight: 600; padding: 12px 28px; border-radius: 50px; margin-bottom: 25px; display: inline-block; border: 3px solid #ffffff; box-shadow: 0 6px 12px rgba(0,0,0,0.2); z-index: 10; }
+    .intro-description { color: #1e293b; font-size: 20px; line-height: 1.8; max-width: 650px; margin-bottom: 35px; font-weight: 600; z-index: 10; background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .btn-start { background-color: #22c55e; color: white; font-size: 24px; font-weight: 800; padding: 16px 55px; border: none; border-radius: 24px; cursor: pointer; box-shadow: 0 6px 0 #16a34a, 0 10px 20px rgba(0,0,0,0.2); transition: transform 0.1s ease; z-index: 10; }
+    .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #16a34a; }
+
+    /* ==========================================================================
+        MAIN GAME INTERFACE & BALLOONS GAME FIELD
+       ========================================================================== */
+    .game-wrapper {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.5s ease;
+    }
+    .game-wrapper.active { opacity: 1; visibility: visible; }
+    .game-container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 1000px; padding: 10px; }
+    
+    .heading-box { background-color: #475569; border: 3px solid #ffffff; border-radius: 16px; padding: 12px 35px; margin-bottom: 25px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px; }
+    .heading-text { font-size: 24px; font-weight: 700; color: #ffffff; }
+    .heading-glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #475569; font-size: 32px; font-weight: 800; background: #ffffff; padding: 0 15px; border-radius: 8px; }
+    
+    .stage { display: flex; gap: 25px; align-items: stretch; justify-content: center; width: 100%; }
+    .wood-frame { position: relative; padding: 14px; border-radius: 24px; background-color: #475569; box-shadow: 0 16px 35px rgba(0,0,0,0.3); border: 4px solid #ffffff; }
+    .canvas-container { background: #ffffff; border-radius: 16px; overflow: hidden; position: relative; }
+    canvas { display: block; cursor: crosshair; touch-action: none; }
+    
+    .panel { width: 125px; background-color: #f8fafc; border-radius: 28px; border: 3px solid #cbd5e1; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; gap: 12px; box-shadow: 0 16px 35px rgba(0,0,0,0.2); }
+    .panel-title { font-size: 12px; font-weight: 700; text-align: center; color: #475569; margin-bottom: 2px; }
+    
+    .eraser { width: 100%; height: 50px; border-radius: 20px; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #e2e8f0; box-shadow: 0 3px 0 #cbd5e1; }
+    .eraser.selected { border-color: #3b82f6; background: #eff6ff; }
+    .eraser-icon { font-size: 24px; transform: rotate(-10deg); }
+    
+    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
+    .brush { aspect-ratio: 1/1; border-radius: 14px; cursor: pointer; position: relative; background: white; border: 2px solid #f1f5f9; box-shadow: 0 3px 0 #e2e8f0; }
+    .brush.selected { border-color: #3b82f6; transform: scale(1.05); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #3b82f6; }
+    .swatch { position: absolute; inset: 0; border-radius: 11px; }
+    
+    .action-container { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: auto; }
+    .btn { width: 100%; height: 48px; border-radius: 16px; border: none; color: white; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+    .btn-reset { background-color: #38bdf8; box-shadow: 0 4px 0 #0284c7; }
+    .btn-next { background-color: #22c55e; box-shadow: 0 4px 0 #16a34a; }
+    .btn:active { transform: translateY(3px); box-shadow: none; }
+
+    /* Score Header for Balloons game */
+    .score-box {
+      background: rgba(30, 41, 59, 0.9); border: 3px solid #ffffff; border-radius: 16px;
+      padding: 12px 30px; color: #fff; font-size: 20px; font-weight: 700;
+      margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); display: none;
+      backdrop-filter: blur(4px); text-align: center; z-index: 60; position: relative;
+    }
+    .score-box div { font-size: 14px; color: #38bdf8; margin-top: 4px; }
+    
+    /* FLOATING BALLOONS GAMEPLAY STYLING */
+    .balloons-sky-container { position: absolute; inset: 0; overflow: hidden; display: none; z-index: 50; }
+    .balloon {
+      position: absolute; width: 75px; height: 95px; border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: 26px; font-weight: 800; color: white;
+      box-shadow: inset -6px -10px 15px rgba(0,0,0,0.2), 0 10px 20px rgba(0,0,0,0.15);
+      animation: balloonFloatUp linear forwards; touch-action: none;
+    }
+    .balloon::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 8px solid currentColor; filter: brightness(0.9); }
+    @keyframes balloonFloatUp { 0% { transform: translateY(110vh) rotate(0deg); } 100% { transform: translateY(-20vh) rotate(5deg); } }
+    .balloon.shake-wrong { animation: balloonShake 0.4s ease-in-out !important; }
+    @keyframes balloonShake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+
+    /* ==========================================================================
+        LEVEL COMPLETED MODAL BOX (FONT SIZE သေးငယ်ပြီး သေသပ်စွာ ပြင်ဆင်ထားသည်)
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85);
+      z-index: 300; display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; transition: all 0.4s ease;
+    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-content {
+      background: #1e2235; border: 3px solid #3f477c; border-radius: 24px;
+      width: 85%; max-width: 380px; padding: 30px 24px; text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .modal-overlay.active .modal-content { transform: scale(1); }
+    
+    /* Font Size များကို သေးငယ်ပြီး သေသပ်စွာ ပြောင်းလဲထားသောနေရာ */
+    .modal-title { font-size: 22px; font-weight: 700; color: #818cf8; margin-bottom: 8px; }
+    .modal-subtitle { font-size: 14px; color: #94a3b8; margin-bottom: 24px; font-weight: 500; }
+    
+    .modal-btn {
+      background: #4f46e5; color: white; font-size: 16px; font-weight: 700;
+      padding: 12px 30px; border: none; border-radius: 16px; cursor: pointer;
+      box-shadow: 0 4px 0 #3730a3, 0 8px 16px rgba(0,0,0,0.2); width: 100%;
+      transition: transform 0.1s ease, background 0.2s;
+    }
+    .modal-btn:hover { background: #5a52e6; }
+    .modal-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #3730a3; }
+
+    /* Confetti Particle */
+    #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+    .star { position: absolute; font-size: 28px; animation: fall 1.5s ease-out forwards; }
+    @keyframes fall { 0% { transform: translate(0,0) rotate(0deg) scale(0.5); opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) scale(1.4); opacity: 0; } }
+
+    @media (max-width: 760px) {
+      .stage { flex-direction: column; align-items: center; }
+      .panel { width: 100%; max-width: 320px; }
+      .brush-grid { grid-template-columns: repeat(5, 1fr); }
+      .intro-title { font-size: 32px; }
+      .intro-description { font-size: 16px; }
+      .tree, .water-puddle, .green-floor, .storm-cloud, .kid-3d { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav-container">
+    <button class="nav-btn go-home-btn" id="goHomeBtn" title="ပြင်မမြေပုံသို့">🏠</button>
+    <button class="nav-btn go-back-btn" id="goBackBtn" title="နောက်သို့">🔙</button>
+  </div>
+
+  <div class="rainy-bg">
+    <div class="green-floor"></div>
+    <div class="water-puddle"></div>
+    <div class="rainbow" id="rainbow"></div>
+    <div class="tree tree-1"></div>
+    <div class="tree tree-2"></div>
+    <span class="storm-cloud cloud-1">⛈️</span>
+    <span class="storm-cloud cloud-2">🌧️</span>
+
+    <div class="happy-kids-container">
+      <div class="kid-3d kid-boy-3d"></div>
+      <div class="kid-3d kid-girl-3d"></div>
+      <span class="frog">🐸</span>
+    </div>
+
+    <div class="rain-container">
+      <div class="drop"></div>
+      <div class="drop"></div>
+      <div class="drop"></div>
+      <div class="drop"></div>
+      <div class="drop"></div>
+    </div>
+  </div>
+
+  <div class="balloons-sky-container" id="balloonsSkyContainer"></div>
+
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-emojis">🌧️🌈✨👦🏽👧🏻🎵</div>
+    <h1 class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</h1>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဍ" မိုးရေထဲက ပျော်စရာနေ့ရက်</div>
+    <p class="intro-description">
+      ကလေးတို့ရေ... အပြင်မှာ မိုးတွေသည်းသည်းမည်းမည်း ရွာနေတယ်နော်။ 
+      သူငယ်ချင်းလေးတွေက မိုးရေထဲမှာ ပျော်ပျော်ကြီး ခုန်ပေါက်ကစားနေကြတယ်ကွ။ 
+      လှပတဲ့ သက်တံကြီး ပေါ်လာအောင် မြန်မာအက္ခရာ "ဍ" (ဍရင်ကောက်) လေးကို ဆေးရောင်ခြယ်ပြီး ဝိုင်းကူညီပေးကြရအောင်။ 
+      ကဲ... စုတ်တံလှလှလေးတွေ ကိုင်ပြီး တူတူဆော့ကြမယ်။
+    </p>
+    <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
+  </div>
+
+  <div class="game-wrapper" id="gameWrapper">
+    <div class="game-container">
+      <div class="score-box" id="scoreBox">
+        🎯 အဆင့် (<span id="currentLevelText">၁</span>) : ဍ ဖောက်မိသည့်အရေအတွက်: <span id="scoreValue">0</span> / 5
+        <div id="levelTargetText">အဆင့်ဆင့်တက်လှမ်းဖို့ ဍ ပူးဖောင်း ၅ လုံးဖောက်ပါ</div>
+      </div>
+
+      <div class="heading-box" id="headingBox">
+        <span class="heading-text">အက္ခရာကို ဆေးရောင်ခြယ်ပါ</span>
+        <span class="heading-glyph">ဍ</span>
+      </div>
+
+      <div class="stage" id="paintingStage">
+        <div class="wood-frame">
+          <div class="canvas-container">
+            <canvas id="paintCanvas" width="500" height="500"></canvas>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <div class="panel-title">စုတ်တံများ</div>
+          <div class="eraser" id="eraser" title="ခဲဖျက်">
+            <span class="eraser-icon">🧼</span>
+          </div>
+          <div class="brush-grid" id="brushGrid"></div>
+          <div class="action-container">
+            <button class="btn btn-reset" id="btnReset">↻<br>ပြန်စမည်</button>
+            <button class="btn btn-next" id="btnNext">→<br>ရှေ့သို့</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="levelModal">
+    <div class="modal-content">
+      <h2 class="modal-title" id="modalTitle">လေ့ကျင့်ခန်း ၁ အောင်မြင်သည်</h2>
+      <p class="modal-subtitle" id="modalSubtitle">နောက်တစ်ဆင့်သို့ သွားကြရအောင်</p>
+      <button class="modal-btn" id="modalActionBtn">🌌 ဆက်လက်ကစားမည်</button>
+    </div>
+  </div>
+
+  <div id="confetti"></div>
+
+  <script>
+    // Audio SFX Engine
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSFX(type) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain); gain.connect(audioCtx.destination);
+
+      if (type === 'click') {
+        osc.type = 'sine'; osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+      } else if (type === 'pop') {
+        osc.type = 'sine'; osc.frequency.setValueAtTime(150, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.12);
+      } else if (type === 'wrong') {
+        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+      } else if (type === 'victory') {
+        const now = audioCtx.currentTime;
+        [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+          const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+          o.type = 'triangle'; o.frequency.value = f; o.connect(g); g.connect(audioCtx.destination);
+          g.gain.setValueAtTime(0.1, now + i*0.1); g.gain.exponentialRampToValueAtTime(0.01, now + i*0.1 + 0.2);
+          o.start(now + i*0.1); o.stop(now + i*0.1 + 0.2);
+        });
+      }
+    }
+
+    // Navigations
+    document.getElementById('goHomeBtn').onclick = () => {
+      playSFX('click');
+      if (balloonInterval) clearInterval(balloonInterval);
+      window.location.href = 'index.html?fromGame=true';
+    };
+
+    document.getElementById('goBackBtn').onclick = () => {
+      playSFX('click');
+      if (balloonInterval) clearInterval(balloonInterval);
+      const isBalloonsActive = document.getElementById('balloonsSkyContainer').style.display === 'block';
+      if (isBalloonsActive) { location.reload(); } else { window.location.href = 'index.html?stage=2'; }
+    };
+
+    document.getElementById('btnStart').onclick = () => {
+      playSFX('click');
+      document.getElementById('introScreen').style.opacity = '0';
+      document.getElementById('introScreen').style.visibility = 'hidden';
+      document.getElementById('gameWrapper').classList.add('active');
+      document.body.classList.add('game-active');
+    };
+
+    // Canvas Logic
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    let isPainting = false;
+    let currentColor = '#22c55e';
+    let currentType = 'solid';
+    let currentPattern = '';
+    let isEraser = false;
+    let brushSize = 28;
+    let lastX = 0, lastY = 0;
+
+    const brushes = [
+      { id: 'p1', type: 'solid', color: '#f59e0b' },
+      { id: 'p2', type: 'solid', color: '#ef4444' },
+      { id: 'p3', type: 'solid', color: '#38bdf8' },
+      { id: 'p4', type: 'solid', color: '#22c55e' },
+      { id: 'p5', type: 'solid', color: '#ec4899' },
+      { id: 'p6', type: 'solid', color: '#8b5cf6' },
+      { id: 'p7', type: 'solid', color: '#f97316' },
+      { id: 'p8', type: 'rainbow', color: 'linear-gradient(45deg, #ff3366, #eab308, #3b82f6, #22c55e)' },
+      { id: 'p9', type: 'pattern', color: '#f59e0b', pattern: 'dots' },
+      { id: 'p10', type: 'pattern', color: '#ef4444', pattern: 'stripes' }
+    ];
+
+    function getPattern(type, color, pName) {
+      if (type === 'solid') return color;
+      if (type === 'rainbow') {
+        const grad = ctx.createLinearGradient(50, 50, 450, 450);
+        grad.addColorStop(0, '#ff3366'); grad.addColorStop(0.3, '#eab308'); grad.addColorStop(0.7, '#3b82f6'); grad.addColorStop(1, '#22c55e');
+        return grad;
+      }
+      const pCanvas = document.createElement('canvas'); pCanvas.width = 16; pCanvas.height = 16;
+      const pCtx = pCanvas.getContext('2d'); pCtx.fillStyle = color; pCtx.fillRect(0,0,16,16);
+      if (pName === 'dots') { pCtx.fillStyle = '#ffffff'; pCtx.beginPath(); pCtx.arc(8,8,2.5,0,Math.PI*2); pCtx.fill(); }
+      else if (pName === 'stripes') { pCtx.strokeStyle = '#ffffff'; pCtx.lineWidth = 2.5; pCtx.beginPath(); pCtx.moveTo(0,0); pCtx.lineTo(16,16); pCtx.stroke(); }
+      return ctx.createPattern(pCanvas, 'repeat');
+    }
+
+    function startDrawing(e) {
+      isPainting = true;
+      const rect = canvas.getBoundingClientRect();
+      lastX = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
+      lastY = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+    }
+    function stopDrawing() { isPainting = false; ctx.beginPath(); }
+    function draw(e) {
+      if (!isPainting) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
+      const y = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+      ctx.lineWidth = brushSize; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      if (isEraser) { ctx.globalCompositeOperation = 'destination-out'; ctx.lineWidth = 40; }
+      else { ctx.globalCompositeOperation = 'source-over'; ctx.strokeStyle = getPattern(currentType, currentColor, currentPattern); }
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+      lastX = x; lastY = y;
+    }
+
+    function initUI() {
+      const grid = document.getElementById('brushGrid');
+      brushes.forEach((b, i) => {
+        const div = document.createElement('div');
+        div.className = 'brush' + (i === 3 ? ' selected' : '');
+        div.innerHTML = `<div class="swatch" style="background:${b.color}"></div>`;
+        if(b.pattern === 'dots') div.firstChild.style.backgroundImage = 'radial-gradient(circle, #fff 20%, transparent 20%)';
+        if(b.pattern === 'stripes') div.firstChild.style.backgroundImage = 'linear-gradient(45deg, #fff 25%, transparent 25%)';
+        div.onclick = () => {
+          playSFX('click'); isEraser = false;
+          currentColor = b.color; currentType = b.type; currentPattern = b.pattern || '';
+          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+          document.getElementById('eraser').classList.remove('selected'); div.classList.add('selected');
+        };
+        grid.appendChild(div);
+      });
+
+      document.getElementById('eraser').onclick = () => {
+        playSFX('click'); isEraser = true;
+        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+        document.getElementById('eraser').classList.add('selected');
+      };
+
+      document.getElementById('btnReset').onclick = () => { playSFX('click'); ctx.clearRect(0, 0, canvas.width, canvas.height); };
+
+      document.getElementById('btnNext').onclick = () => {
+        playSFX('victory');
+        document.getElementById('rainbow').classList.add('show');
+        const host = document.getElementById('confetti');
+        const items = ['✨', '🎈', '⭐', '🌈'];
+        for (let i = 0; i < 20; i++) createConfettiParticle(host, items, '22%', '75vh');
+        for (let i = 0; i < 20; i++) createConfettiParticle(host, items, '78%', '75vh');
+
+        setTimeout(() => { startBalloonsGame(); }, 1800);
+      };
+    }
+
+    function createConfettiParticle(host, items, leftPos, topPos) {
+      const el = document.createElement('div'); el.className = 'star'; el.textContent = items[Math.floor(Math.random() * items.length)];
+      el.style.left = leftPos; el.style.top = topPos;
+      const angle = -Math.PI/2 + (Math.random() * 2 - 1); const dist = 80 + Math.random() * 200;
+      el.style.setProperty('--dx', Math.cos(angle) * dist + 'px'); el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+      host.appendChild(el); setTimeout(() => el.remove(), 1500);
+    }
+
+    // ==========================================================================
+    // FLOATING BALLOONS MULTI-LEVEL GAME LOGIC
+    // ==========================================================================
+    let score = 0;
+    let currentLevel = 1; 
+    const targetScorePerLevel = 5; 
+    let balloonInterval = null;
+    let baseSpeed = 5; 
+
+    const lettersPool = { target: 'ဍ', wrong: ['ဌ', 'ဋ', 'ဏ', 'ဍ္ဍ', 'ဃ', 'ဓ'] };
+    const balloonColors = ['#ef4444', '#3b82f6', '#22c55e', '#eab308', '#ec4899', '#a855f7', '#f97316'];
+    const myanmarNumbers = { 1: '၁', 2: '၂', 3: '၃' };
+
+    function startBalloonsGame() {
+      document.getElementById('paintingStage').style.display = 'none';
+      document.getElementById('headingBox').style.display = 'none';
+      document.getElementById('scoreBox').style.display = 'block';
+      
+      document.getElementById('balloonsSkyContainer').style.display = 'block';
+      updateScoreUI();
+      resumeBalloonSpawning();
+    }
+
+    function updateScoreUI() {
+      document.getElementById('currentLevelText').textContent = myanmarNumbers[currentLevel];
+      document.getElementById('scoreValue').textContent = score;
+    }
+
+    function resumeBalloonSpawning() {
+      if (balloonInterval) clearInterval(balloonInterval);
+      const spawnRate = Math.max(1000 - (currentLevel * 150), 500);
+      balloonInterval = setInterval(spawnBalloon, spawnRate);
+    }
+
+    function spawnBalloon() {
+      const sky = document.getElementById('balloonsSkyContainer');
+      const balloon = document.createElement('div');
+      balloon.className = 'balloon';
+
+      const isTarget = Math.random() < 0.65;
+      const text = isTarget ? lettersPool.target : lettersPool.wrong[Math.floor(Math.random() * lettersPool.wrong.length)];
+      balloon.textContent = text;
+
+      const randomLeft = Math.random() * (window.innerWidth - 90);
+      const randomColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+      
+      const duration = Math.max((baseSpeed + Math.random() * 2) - (currentLevel * 0.8), 1.8);
+
+      balloon.style.left = randomLeft + 'px';
+      balloon.style.backgroundColor = randomColor;
+      balloon.style.animationDuration = duration + 's';
+
+      const handlePop = (e) => {
+        e.preventDefault();
+        if (text === 'ဍ') {
+          playSFX('pop');
+          score++;
+          updateScoreUI();
+          
+          const host = document.getElementById('confetti');
+          for(let i=0; i<8; i++) {
+            createConfettiParticle(host, ['✨','🎈'], balloon.offsetLeft + 35 + 'px', balloon.offsetTop + 45 + 'px');
+          }
+          balloon.remove();
+
+          if (score >= targetScorePerLevel) {
+            handleLevelComplete();
+          }
+        } else {
+          playSFX('wrong');
+          balloon.classList.add('shake-wrong');
+          setTimeout(() => { balloon.classList.remove('shake-wrong'); }, 400);
+        }
+      };
+
+      balloon.addEventListener('mousedown', handlePop);
+      balloon.addEventListener('touchstart', handlePop);
+      balloon.addEventListener('animationend', () => { balloon.remove(); });
+
+      sky.appendChild(balloon);
+    }
+
+    function handleLevelComplete() {
+      clearInterval(balloonInterval);
+      document.querySelectorAll('.balloon').forEach(b => b.remove());
+      playSFX('victory');
+
+      const modal = document.getElementById('levelModal');
+      const mTitle = document.getElementById('modalTitle');
+      const mSubtitle = document.getElementById('modalSubtitle');
+      const mBtn = document.getElementById('modalActionBtn');
+
+      if (currentLevel < 3) {
+        // Dynamic စာသား ပြောင်းလဲမှု (Font size သေးငယ်ပြီး တိုတိုရှင်းရှင်း ပုံစံ)
+        mTitle.textContent = `လေ့ကျင့်ခန်း ${myanmarNumbers[currentLevel]} အောင်မြင်သည်`;
+        mSubtitle.textContent = `နောက်တစ်ဆင့်သို့ သွားကြရအောင်`;
+        mBtn.textContent = `🌌 ဆက်လက်ကစားမည်`;
+        
+        mBtn.onclick = () => {
+          playSFX('click');
+          modal.classList.remove('active');
+          currentLevel++;
+          score = 0;
+          updateScoreUI();
+          resumeBalloonSpawning();
+        };
+      } else {
+        // Level 3 အောင်မြင်ပြီးဆုံးချိန်
+        mTitle.textContent = `🎉 "ဍ" သင်ခန်းစာ ပြီးဆုံးပါပြီ`;
+        mSubtitle.textContent = `အဆင့်အားလုံးကို အောင်မြင်စွာ ပြီးဆုံးခဲ့ပါပြီ`;
+        mBtn.textContent = `🔜 နောက်အက္ခရာတစ်ခုသို့ သွားမည်`;
+        
+        mBtn.onclick = () => {
+          playSFX('click');
+          window.location.href = 'index.html?stage=2';
+        };
+      }
+
+      setTimeout(() => { modal.classList.add('active'); }, 400);
+    }
+
+    canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mouseup', stopDrawing); canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchend', stopDrawing); canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
+
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='46%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='310' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='5' stroke-dasharray='12,10'>ဍ</text></svg>\")";
+    canvas.style.backgroundSize = "100% 100%";
+
+    initUI();
+  </script>
+</body>
+</html>

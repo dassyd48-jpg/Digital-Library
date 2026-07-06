@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Burmese Letter ဋ Mastery - 3 Levels Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+    
+    body {
+      font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif; min-height: 100vh;
+      position: relative;
+      background-color: #0c4a6e;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+
+    /* ==========================================================================
+        UNDERWATER BACKGROUND COMPONENT
+       ========================================================================== */
+    .ocean-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(to bottom, #38bdf8 0%, #0284c7 40%, #0c4a6e 100%);
+      z-index: 1;
+    }
+    .sea-floor {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 22vh;
+      background-color: #eab308; border-top: 10px solid #ca8a04;
+      box-shadow: inset 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .treasure-chest {
+      position: absolute; left: 12%; bottom: 15vh; width: 120px; height: 90px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 80'><rect x='10' y='30' width='80' height='50' fill='%23713f12' rx='5'/><path d='M10,30 Q50,0 90,30 Z' fill='%23a16207'/><rect x='42' y='25' width='16' height='20' fill='%23eab308'/><circle cx='50' cy='35' r='4' fill='%23000'/></svg>");
+      background-size: 100% 100%; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.3));
+    }
+    .seaweed {
+      position: absolute; bottom: 20vh; width: 40px; height: 160px;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 150'><path d='M20,150 Q10,110 30,80 Q10,40 20,0 Q30,40 10,80 Q30,110 20,150 Z' fill='%2316a34a'/></svg>");
+      background-size: 100% 100%;
+    }
+    .weed-1 { left: 4%; height: 180px; }
+    .weed-2 { left: 24%; height: 140px; opacity: 0.7; }
+    .weed-3 { right: 5%; height: 200px; }
+    .weed-4 { right: 20%; height: 130px; }
+
+    .ocean-creatures { position: absolute; inset: 0; pointer-events: none; }
+    .creature { position: absolute; font-size: 32px; display: inline-block; filter: drop-shadow(3px 3px 4px rgba(0,0,0,0.2)); }
+    .turtle { left: 70%; top: 25%; font-size: 45px; }
+    .fish-1 { left: 20%; top: 40%; }
+    .fish-2 { right: 15%; top: 55%; }
+    .jellyfish { left: 40%; top: 15%; font-size: 38px; }
+
+    .bg-bubbles { position: absolute; inset: 0; pointer-events: none; }
+    .bg-bubble { position: absolute; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 50%; bottom: -20px; opacity: 0; }
+
+    body.game-active .turtle { animation: turtleSwim 22s infinite linear; }
+    body.game-active .fish-1 { animation: fishSwimLeft 12s infinite ease-in-out; }
+    body.game-active .fish-2 { animation: fishSwimRight 15s infinite ease-in-out; }
+    body.game-active .jellyfish { animation: jellyBob 6s infinite ease-in-out; }
+    body.game-active .seaweed { animation: seaweedSway 4s infinite ease-in-out; }
+    body.game-active .seaweed:nth-child(even) { animation-delay: 1s; }
+    body.game-active .bg-bubble:nth-child(1) { width: 15px; height: 15px; left: 15%; animation: bubbleUp 5s infinite linear; }
+    body.game-active .bg-bubble:nth-child(2) { width: 25px; height: 25px; left: 45%; animation: bubbleUp 8s infinite linear; animation-delay: 2s; }
+    body.game-active .bg-bubble:nth-child(3) { width: 12px; height: 12px; left: 75%; animation: bubbleUp 6s infinite linear; animation-delay: 1s; }
+
+    @keyframes seaweedSway { 0%, 100% { transform: rotate(0deg); transform-origin: bottom center; } 50% { transform: rotate(6deg); transform-origin: bottom center; } }
+    @keyframes bubbleUp { 0% { bottom: -20px; transform: translateX(0); opacity: 0; } 20% { opacity: 0.6; } 100% { bottom: 100vh; transform: translateX(20px); opacity: 0; } }
+    @keyframes turtleSwim { 0% { transform: translate(30vw, 0) scaleX(1); } 49% { transform: translate(-80vw, -30px) scaleX(1); } 50% { transform: translate(-80vw, -30px) scaleX(-1); } 100% { transform: translate(30vw, 0) scaleX(-1); } }
+    @keyframes fishSwimLeft { 0%, 100% { transform: translate(0, 0) scaleX(1); } 50% { transform: translate(35vw, -20px) scaleX(-1); } }
+    @keyframes fishSwimRight { 0%, 100% { transform: translate(0, 0) scaleX(-1); } 50% { transform: translate(-35vw, 30px) scaleX(1); } }
+    @keyframes jellyBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+    @keyframes bubbleShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+
+    /* ==========================================================================
+        INTRO SCREEN
+       ========================================================================== */
+    .intro-screen {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center; background: rgba(12, 74, 110, 0.85);
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    .intro-title { font-size: 38px; font-weight: 800; color: #ffffff; margin-bottom: 20px; text-shadow: 3px 3px 0px #0369a1; }
+    .intro-description { color: #0f172a; font-size: 17px; line-height: 1.8; max-width: 650px; margin-bottom: 35px; font-weight: 600; background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 24px; box-shadow: 0 12px 24px rgba(0,0,0,0.3); }
+    .btn-start { background-color: #f97316; color: white; font-size: 24px; font-weight: 800; padding: 16px 55px; border: none; border-radius: 24px; cursor: pointer; box-shadow: 0 6px 0 #ea580c, 0 10px 20px rgba(0,0,0,0.2); }
+    .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #ea580c; }
+
+    /* ==========================================================================
+        STAGE 1: PAINTING AREA
+       ========================================================================== */
+    .game-wrapper {
+      position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.4s ease; z-index: 5;
+    }
+    .game-wrapper.active { opacity: 1; visibility: visible; }
+    .game-container { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 1000px; padding: 10px; }
+    
+    .heading-box { background-color: #0284c7; border: 3px solid #ffffff; border-radius: 16px; padding: 10px 30px; margin-bottom: 18px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px; }
+    .heading-text { font-size: 20px; font-weight: 700; color: #ffffff; }
+    .heading-glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #0284c7; font-size: 28px; font-weight: 800; background: #ffffff; padding: 0 15px; border-radius: 8px; }
+    
+    .stage { display: flex; gap: 20px; align-items: center; justify-content: center; width: 100%; }
+    .wood-frame { padding: 12px; border-radius: 24px; background-color: #0284c7; box-shadow: 0 16px 35px rgba(0,0,0,0.3); border: 4px solid #ffffff; }
+    .canvas-container { background: #ffffff; border-radius: 16px; overflow: hidden; position: relative; width: 450px; height: 450px; max-width: 70vh; max-height: 70vh; }
+    canvas { display: block; cursor: crosshair; touch-action: none; width: 100%; height: 100%; }
+    
+    .panel { width: 130px; background-color: #f0f9ff; border-radius: 28px; border: 3px solid #bae6fd; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; gap: 12px; box-shadow: 0 16px 35px rgba(0,0,0,0.2); }
+    .panel-title { font-size: 12px; font-weight: 700; text-align: center; color: #0369a1; }
+    .eraser { width: 100%; height: 50px; border-radius: 20px; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #e0f2fe; box-shadow: 0 3px 0 #bae6fd; }
+    .eraser.selected { border-color: #0ea5e9; background: #e0f2fe; }
+    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
+    .brush { aspect-ratio: 1/1; border-radius: 14px; cursor: pointer; position: relative; background: white; border: 2px solid #f1f5f9; box-shadow: 0 3px 0 #e2e8f0; }
+    .brush.selected { border-color: #0ea5e9; transform: scale(1.05); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0ea5e9; }
+    .swatch { position: absolute; inset: 0; border-radius: 11px; }
+    
+    .action-container { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+    .btn { width: 100%; height: 48px; border-radius: 16px; border: none; color: white; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .btn-reset { background-color: #38bdf8; box-shadow: 0 4px 0 #0284c7; }
+    .btn-check { background-color: #10b981; box-shadow: 0 4px 0 #059669; }
+    .btn:active { transform: translateY(3px); box-shadow: none; }
+
+    /* ==========================================================================
+        STAGE 2: PUZZLE BUBBLE AREA
+       ========================================================================== */
+    .puzzle-stage {
+      position: absolute; inset: 0; z-index: 20;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      padding-top: 5vh; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.5s ease;
+    }
+    .puzzle-stage.active { opacity: 1; visibility: visible; pointer-events: auto; }
+    
+    .puzzle-header-panel {
+      display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 20px; width: 90%; max-width: 600px;
+    }
+    .puzzle-instruction {
+      background: rgba(255, 255, 255, 0.95); padding: 12px 25px; border-radius: 20px;
+      border: 3px solid #f59e0b; font-size: 18px; font-weight: 800; color: #0369a1;
+      text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.15); width: 100%;
+    }
+    .puzzle-instruction span { color: #ef4444; font-size: 26px; font-weight: 900; background: #e0f2fe; padding: 2px 14px; border-radius: 8px; margin: 0 5px; }
+    
+    .score-counter {
+      background: #1e3a8a; color: #38bdf8; font-size: 20px; font-weight: 800;
+      padding: 6px 25px; border-radius: 50px; border: 2px solid #38bdf8;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .game-bubble-area { position: relative; width: 100%; height: 52vh; overflow: hidden; }
+    .game-bubble {
+      position: absolute; width: 85px; height: 85px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.7) 0%, rgba(56, 189, 248, 0.4) 40%, rgba(2, 132, 199, 0.6) 80%);
+      border: 2px solid rgba(255, 255, 255, 0.6); box-shadow: inset -5px -5px 12px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: 34px; font-weight: 800; color: #0f172a;
+      cursor: pointer; bottom: -100px;
+    }
+    .game-bubble.wrong-shake { animation: bubbleShake 0.4s ease-in-out; }
+
+    .next-nav-container { position: absolute; bottom: 8vh; display: none; z-index: 30; }
+    .btn-next-level {
+      background-color: #f97316; color: white; font-size: 22px; font-weight: 800;
+      padding: 15px 50px; border: none; border-radius: 20px; cursor: pointer;
+      box-shadow: 0 6px 0 #ea580c, 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+    .star { position: absolute; font-size: 28px; animation: fall 1.5s ease-out forwards; }
+    @keyframes fall {
+      0% { transform: translate(0,0) rotate(0deg) scale(0.5); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(1.4); opacity: 0; }
+    }
+
+    /* Navigation HUD */
+    .nav-container {
+      position: fixed; top: 15px; left: 15px; display: none; gap: 10px; z-index: 150;
+    }
+    .btn-nav {
+      background-color: #ffffff; color: #0284c7; border: 3px solid #ffffff; border-radius: 50%;
+      width: 50px; height: 50px; font-size: 22px; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; box-shadow: 0 6px 12px rgba(0,0,0,0.25); transition: transform 0.1s;
+    }
+    .btn-nav:active { transform: translateY(2px); }
+    body.game-active .nav-container { display: flex; }
+
+    /* Responsive Handlers */
+    @media (max-width: 760px) {
+      .stage { flex-direction: column; align-items: center; gap: 12px; }
+      .canvas-container { width: 310px; height: 310px; }
+      .panel { width: 100%; max-width: 310px; flex-direction: row; justify-content: space-between; padding: 8px; }
+      .panel-title { display: none; }
+      .eraser { width: 48px; height: 48px; }
+      .brush-grid { grid-template-columns: repeat(5, 1fr); gap: 5px; width: auto; }
+      .action-container { flex-direction: row; width: auto; gap: 5px; }
+      .btn { width: 55px; height: 48px; font-size: 11px; }
+      .intro-title { font-size: 28px; }
+      .intro-description { font-size: 14px; }
+      .seaweed, .treasure-chest, .sea-floor { display: none; }
+      .game-bubble { width: 75px; height: 75px; font-size: 28px; }
+      .nav-container { top: 10px; left: 10px; }
+      .btn-nav { width: 42px; height: 42px; font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav-container" id="navContainer">
+    <button class="btn-nav" id="goHomeBtn" title="ပင်မစာမျက်နှာ">🏠</button>
+    <button class="btn-nav" id="goBackBtn" title="နောက်သို့">⬅️</button>
+  </div>
+
+  <div class="ocean-bg">
+    <div class="sea-floor"></div>
+    <div class="treasure-chest" id="chest"></div>
+    <div class="seaweed weed-1"></div>
+    <div class="seaweed weed-2"></div>
+    <div class="seaweed weed-3"></div>
+    <div class="seaweed weed-4"></div>
+    <div class="ocean-creatures">
+      <span class="creature turtle">🐢</span>
+      <span class="creature fish-1">🐠</span>
+      <span class="creature fish-2">🐟</span>
+      <span class="creature jellyfish">🪼</span>
+    </div>
+    <div class="bg-bubbles">
+      <div class="bg-bubble"></div>
+      <div class="bg-bubble"></div>
+      <div class="bg-bubble"></div>
+    </div>
+  </div>
+
+  <div class="intro-screen" id="introScreen">
+    <h1 class="intro-title">"ဋ" အက္ခရာ မဟာစွမ်းရည်စိန်ခေါ်ပွဲ</h1>
+    <p class="intro-description">
+      ကလေးတို့ရေ... ရေအောက်ထဲက ရတနာသေတ္တာကြီးကို လုံးဝဖွင့်လှစ်နိုင်ဖို့ "ဋ" စိန်ခေါ်မှု Level ၃ ခုလုံး အောင်နိုင်မှ ဖြစ်မယ်နော်။<br>
+      ★ Level 1 မှာ "ဋ" ပူဖောင်း ၅ လုံး<br>
+      ★ Level 2 မှာ "ဋ" ပူဖောင်း ၁၀ လုံး<br>
+      ★ Level 3 မှာ "ဋ" ပူဖောင်း ၁၅ လုံး ပြည့်အောင် ဆေးခြယ်ပြီး လိုက်ဖောက်ကြရအောင်။
+    </p>
+    <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
+  </div>
+
+  <div class="game-wrapper" id="gameWrapper">
+    <div class="game-container" id="paintStageSection">
+      <div class="heading-box">
+        <span class="heading-text" id="paintLevelTitle">Level 1 - အရောင်ခြယ်ကြစို့</span>
+        <span class="heading-glyph">ဋ</span>
+      </div>
+      <div class="stage">
+        <div class="wood-frame">
+          <div class="canvas-container">
+            <canvas id="paintCanvas" width="500" height="500"></canvas>
+          </div>
+        </div>
+        <aside class="panel">
+          <div class="panel-title">ဆေးရောင်စုံ</div>
+          <div class="eraser" id="eraser"><span class="eraser-icon">🧼</span></div>
+          <div class="brush-grid" id="brushGrid"></div>
+          <div class="action-container">
+            <button class="btn btn-reset" id="btnReset">↻<br>ဖျက်မည်</button>
+            <button class="btn btn-check" id="btnCheck">✓<br>ပြီးပါပြီ</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="puzzle-stage" id="puzzleWrapper">
+    <div class="puzzle-header-panel">
+      <div class="puzzle-instruction">
+        အဆင့် (၂) - ပူဖောင်းလိုက်ဖောက်စို့<br>အက္ခရာ <span>ဋ</span> ပါတဲ့ ရေပူဖောင်းကို ရှာပြီးဖောက်ပေးပါဦး။
+      </div>
+      <div class="score-counter" id="scoreCounterDisplay">ဖောက်ပြီးအရေအတွက် - 0 / 5</div>
+    </div>
+    <div class="game-bubble-area" id="bubbleArea"></div>
+    <div class="next-nav-container" id="nextNavBox">
+      <button class="btn-next-level" id="btnNextLevel">နောက်တစ်ဆင့်သို့ →</button>
+    </div>
+  </div>
+
+  <div id="confetti"></div>
+
+  <script>
+    const levelTargets = [5, 10, 15];
+    let currentLevel = 1;
+    let correctPopsCount = 0;
+    let bubbleSpawningInterval = null;
+
+    // WEB AUDIO ENGINE
+    let audioCtx = null;
+    let bgMusicNode = null;
+    function initAudio() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+    function playBackgroundMusic() {
+      initAudio();
+      if (!audioCtx) return;
+      const bufferSize = audioCtx.sampleRate * 8; 
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      const notes = [261.63, 293.66, 329.63, 392.00, 329.63, 392.00, 440.00, 523.25];
+      const noteLength = audioCtx.sampleRate * 0.4;
+      for (let i = 0; i < bufferSize; i++) {
+        const currentNoteIdx = Math.floor(i / noteLength) % notes.length;
+        const freq = notes[currentNoteIdx];
+        const t = i / audioCtx.sampleRate; const noteTime = (i % noteLength) / audioCtx.sampleRate;
+        data[i] = Math.sin(2 * Math.PI * freq * t) * 0.4 * Math.exp(-5 * noteTime);
+      }
+      bgMusicNode = audioCtx.createBufferSource(); bgMusicNode.buffer = buffer; bgMusicNode.loop = true;
+      const musicGain = audioCtx.createGain();
+      musicGain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+      bgMusicNode.connect(musicGain); musicGain.connect(audioCtx.destination); bgMusicNode.start();
+    }
+    function playSFX(type) {
+      initAudio();
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+      osc.connect(gain); gain.connect(audioCtx.destination); const now = audioCtx.currentTime;
+      if (type === 'click') {
+        osc.frequency.setValueAtTime(587.33, now); gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+        osc.start(now); osc.stop(now + 0.08);
+      } else if (type === 'pop') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(150, now); osc.frequency.exponentialRampToValueAtTime(600, now + 0.1);
+        gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1); osc.start(now); osc.stop(now + 0.1);
+      } else if (type === 'wrong') {
+        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(120, now);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.2); osc.start(now); osc.stop(now + 0.2);
+      } else if (type === 'victory') {
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((f, i) => {
+          const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination);
+          o.type = 'triangle'; o.frequency.setValueAtTime(f, now + (i * 0.08)); g.gain.setValueAtTime(0.15, now + (i * 0.08));
+          g.gain.exponentialRampToValueAtTime(0.01, now + (i * 0.08) + 0.3); o.start(now + (i * 0.08)); o.stop(now + (i * 0.08) + 0.3);
+        });
+      }
+    }
+
+    // GAME START TRIGGER
+    document.getElementById('btnStart').onclick = () => {
+      playBackgroundMusic();
+      playSFX('click');
+      document.getElementById('introScreen').style.opacity = '0';
+      document.getElementById('introScreen').style.visibility = 'hidden';
+      document.getElementById('gameWrapper').classList.add('active');
+      document.body.classList.add('game-active');
+      setupPaintingStage();
+    };
+
+    // CANVAS DRAWING ENGINE
+    const canvas = document.getElementById('paintCanvas'); const ctx = canvas.getContext('2d');
+    let isPainting = false;
+    let currentColor = '#f59e0b'; let currentType = 'solid'; let currentPattern = '';
+    let isEraser = false; let brushSize = 28;
+    let lastX = 0, lastY = 0;
+
+    const brushes = [
+      { id: 'p1', type: 'solid', color: '#f59e0b' }, { id: 'p2', type: 'solid', color: '#ef4444' },
+      { id: 'p3', type: 'solid', color: '#06b6d4' }, { id: 'p4', type: 'solid', color: '#10b981' },
+      { id: 'p5', type: 'solid', color: '#ec4899' }, { id: 'p6', type: 'solid', color: '#8b5cf6' },
+      { id: 'p7', type: 'rainbow', color: 'linear-gradient(45deg, #ff3366, #eab308, #3b82f6, #22c55e)' },
+      { id: 'p8', type: 'pattern', color: '#f59e0b', pattern: 'dots' }, { id: 'p9', type: 'pattern', color: '#ef4444', pattern: 'stripes' }
+    ];
+
+    function getPattern(type, color, pName) {
+      if (type === 'solid') return color;
+      if (type === 'rainbow') {
+        const grad = ctx.createLinearGradient(50, 50, 450, 450);
+        grad.addColorStop(0, '#ff3366'); grad.addColorStop(0.3, '#eab308'); grad.addColorStop(0.7, '#3b82f6'); grad.addColorStop(1, '#22c55e');
+        return grad;
+      }
+      const pCanvas = document.createElement('canvas'); pCanvas.width = 16; pCanvas.height = 16;
+      const pCtx = pCanvas.getContext('2d'); pCtx.fillStyle = color; pCtx.fillRect(0,0,16,16);
+      if (pName === 'dots') { pCtx.fillStyle = '#ffffff'; pCtx.beginPath(); pCtx.arc(8,8,2.5,0,Math.PI*2); pCtx.fill(); }
+      else if (pName === 'stripes') { pCtx.strokeStyle = '#ffffff'; pCtx.lineWidth = 2.5; pCtx.beginPath(); pCtx.moveTo(0,0); pCtx.lineTo(16,16); pCtx.stroke(); }
+      return ctx.createPattern(pCanvas, 'repeat');
+    }
+
+    function startDrawing(e) {
+      initAudio(); isPainting = true; const rect = canvas.getBoundingClientRect();
+      lastX = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
+      lastY = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+    }
+    function stopDrawing() { isPainting = false; ctx.beginPath(); }
+    function draw(e) {
+      if (!isPainting) return; const rect = canvas.getBoundingClientRect();
+      const x = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
+      const y = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+      ctx.lineWidth = brushSize; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      if (isEraser) { ctx.globalCompositeOperation = 'destination-out'; ctx.lineWidth = 42; }
+      else { ctx.globalCompositeOperation = 'source-over'; ctx.strokeStyle = getPattern(currentType, currentColor, currentPattern); }
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke(); lastX = x; lastY = y;
+    }
+
+    canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mouseup', stopDrawing); canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
+    
+    // PAINTING MANAGEMENT
+    function setupPaintingStage() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById('paintLevelTitle').textContent = `Level ${currentLevel} - "ဋ" ကို အရောင်ခြယ်ကြစို့`;
+      canvas.style.backgroundImage = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='36%' y='25%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='310' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='5' stroke-dasharray='12,10'>ဋ</text></svg>")`;
+      document.getElementById('puzzleWrapper').classList.remove('active');
+      document.getElementById('gameWrapper').classList.add('active');
+      document.getElementById('paintStageSection').style.display = 'flex';
+      document.getElementById('nextNavBox').style.display = 'none';
+      document.getElementById('chest').style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 80'><rect x='10' y='30' width='80' height='50' fill='%23713f12' rx='5'/><path d='M10,30 Q50,0 90,30 Z' fill='%23a16207'/><rect x='42' y='25' width='16' height='20' fill='%23eab308'/><circle cx='50' cy='35' r='4' fill='%23000'/></svg>\")";
+    }
+
+    // BUBBLE STAGE LOGIC
+    function startBubbleStage() {
+      document.getElementById('paintStageSection').style.display = 'none';
+      document.getElementById('puzzleWrapper').classList.add('active');
+      
+      correctPopsCount = 0;
+      const targetMax = levelTargets[currentLevel - 1];
+      document.getElementById('scoreCounterDisplay').textContent = `ဖောက်ပြီးအရေအတွက် - 0 / ${targetMax}`;
+      
+      const bubbleArea = document.getElementById('bubbleArea');
+      bubbleArea.innerHTML = '';
+      if (bubbleSpawningInterval) clearInterval(bubbleSpawningInterval);
+      
+      generateSingleBubble(); generateSingleBubble(); generateSingleBubble();
+      bubbleSpawningInterval = setInterval(() => {
+        if (correctPopsCount < targetMax) {
+          generateSingleBubble();
+        }
+      }, 900);
+    }
+
+    function generateSingleBubble() {
+      const bubbleArea = document.getElementById('bubbleArea');
+      if (!bubbleArea || correctPopsCount >= levelTargets[currentLevel - 1]) return;
+
+      const bubble = document.createElement('div'); bubble.className = 'game-bubble';
+      const pool = ['ဋ', 'ဌ', 'ဍ', 'ဏ', 'ဗ'];
+      const chosenLetter = Math.random() < 0.4 ? 'ဋ' : pool[Math.floor(Math.random() * pool.length)];
+      bubble.textContent = chosenLetter;
+      const randomX = 5 + Math.random() * 80; bubble.style.left = `${randomX}%`;
+      
+      const speed = 1.2 + Math.random() * 1.6; let bottomPos = -100;
+      bubble.style.bottom = `${bottomPos}px`; bubbleArea.appendChild(bubble);
+
+      function floatAnimation() {
+        if (!bubble.parentElement) return; bottomPos += speed; bubble.style.bottom = `${bottomPos}px`;
+        if (bottomPos > window.innerHeight * 0.58) { bubble.remove(); } 
+        else { requestAnimationFrame(floatAnimation); }
+      }
+      requestAnimationFrame(floatAnimation);
+
+      bubble.onclick = () => {
+        const targetMax = levelTargets[currentLevel - 1];
+        if (chosenLetter === 'ဋ' && correctPopsCount < targetMax) {
+          playSFX('pop'); createPopBurst(bubble); bubble.remove();
+          correctPopsCount++;
+          document.getElementById('scoreCounterDisplay').textContent = `ဖောက်ပြီးအရေအတွက် - ${correctPopsCount} / ${targetMax}`;
+          
+          if (correctPopsCount === targetMax) {
+            triggerLevelVictory();
+          }
+        } else if (chosenLetter !== 'ဋ') {
+          playSFX('wrong'); bubble.classList.add('wrong-shake');
+          setTimeout(() => bubble.classList.remove('wrong-shake'), 400);
+        }
+      };
+    }
+
+    function createPopBurst(targetBubble) {
+      const rect = targetBubble.getBoundingClientRect(); const burstCount = 8;
+      for (let i = 0; i < burstCount; i++) {
+        const drop = document.createElement('div');
+        drop.style.position = 'fixed'; drop.style.width = '6px'; drop.style.height = '6px';
+        drop.style.background = '#bae6fd'; drop.style.borderRadius = '50%';
+        drop.style.left = `${rect.left + rect.width/2}px`; drop.style.top = `${rect.top + rect.height/2}px`;
+        drop.style.pointerEvents = 'none'; drop.style.zIndex = '99';
+        const angle = (Math.PI * 2 / burstCount) * i; const velocity = 3 + Math.random() * 3;
+        let posX = 0, posY = 0; document.body.appendChild(drop);
+
+        function animateDrop() {
+          posX += Math.cos(angle) * velocity; posY += Math.sin(angle) * velocity + 0.15;
+          drop.style.transform = `translate(${posX}px, ${posY}px)`;
+          if (parseFloat(drop.style.opacity || 1) <= 0.05) { drop.remove(); } 
+          else { drop.style.opacity = (parseFloat(drop.style.opacity || 1) - 0.04); requestAnimationFrame(animateDrop); }
+        }
+        requestAnimationFrame(animateDrop);
+      }
+    }
+
+    // VICTORY EVENTS CONTROL
+    function triggerLevelVictory() {
+      clearInterval(bubbleSpawningInterval);
+      playSFX('victory');
+      document.getElementById('bubbleArea').innerHTML = '';
+      document.getElementById('chest').style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 80'><rect x='10' y='30' width='80' height='50' fill='%23713f12' rx='5'/><path d='M10,15 Q50,-15 90,15 Z' fill='%23a16207'/><circle cx='50' cy='60' r='12' fill='%23eab308'/><text x='42' y='65' font-size='14'>💎</text></svg>\")";
+      
+      const nextBtn = document.getElementById('btnNextLevel');
+      if (currentLevel < 3) {
+        nextBtn.textContent = `Level ${currentLevel + 1} သို့ တက်လှမ်းမည် →`;
+      } else {
+        nextBtn.textContent = "🎉 စွန့်စားခန်း အောင်မြင်ပြီးပါပြီ (Done)";
+      }
+      document.getElementById('nextNavBox').style.display = 'block';
+
+      // Blast Particles Effect
+      const host = document.getElementById('confetti'); const items = ['🪙', '💎', '⭐', '✨', '👑'];
+      for (let i = 0; i < 45; i++) {
+        const el = document.createElement('div'); el.className = 'star'; el.textContent = items[Math.floor(Math.random() * items.length)];
+        el.style.left = '18%'; el.style.top = '80%';
+        const angle = -Math.PI/2 + (Math.random() * 1.4 - 0.7); const dist = 160 + Math.random() * 300;
+        el.style.setProperty('--dx', Math.cos(angle) * dist + 'px'); el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+        host.appendChild(el); setTimeout(() => el.remove(), 1500);
+      }
+    }
+
+    // INITIALIZE HUD & SWATCH ACTIONS
+    function initUI() {
+      const grid = document.getElementById('brushGrid');
+      brushes.forEach((b, i) => {
+        const div = document.createElement('div'); div.className = 'brush' + (i === 0 ? ' selected' : '');
+        div.innerHTML = `<div class="swatch" style="background:${b.color}"></div>`;
+        if(b.pattern === 'dots') div.firstChild.style.backgroundImage = 'radial-gradient(circle, #fff 20%, transparent 20%)';
+        if(b.pattern === 'stripes') div.firstChild.style.backgroundImage = 'linear-gradient(45deg, #fff 25%, transparent 25%)';
+        
+        div.onclick = () => {
+          playSFX('click'); isEraser = false;
+          currentColor = b.color; currentType = b.type; currentPattern = b.pattern || '';
+          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+          document.getElementById('eraser').classList.remove('selected'); div.classList.add('selected');
+        };
+        grid.appendChild(div);
+      });
+
+      document.getElementById('eraser').onclick = () => {
+        playSFX('click'); isEraser = true;
+        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+        document.getElementById('eraser').classList.add('selected');
+      };
+
+      document.getElementById('btnReset').onclick = () => { playSFX('click'); ctx.clearRect(0, 0, canvas.width, canvas.height); };
+      document.getElementById('btnCheck').onclick = () => { playSFX('click'); startBubbleStage(); };
+      
+      document.getElementById('btnNextLevel').onclick = () => {
+        playSFX('click');
+        if (currentLevel < 3) {
+          currentLevel++;
+          setupPaintingStage();
+        } else {
+          // *** ပြင်ဆင်လိုက်သည့်နေရာ- ALERT BOX ကို လုံးဝဖြုတ်ပြီး MAIN MAP သို့ တိုက်ရိုက်ပြန်ပို့ပေးသည် ***
+          currentLevel = 1; 
+          window.location.href = 'index.html?fromGame=true';
+        }
+      };
+
+      // NAVIGATION HUD ACTIONS
+      document.getElementById('goHomeBtn').onclick = () => {
+        playSFX('click');
+        if (bubbleSpawningInterval) clearInterval(bubbleSpawningInterval);
+        window.location.href = 'index.html?fromGame=true';
+      };
+
+      document.getElementById('goBackBtn').onclick = () => {
+        playSFX('click');
+        const isPuzzleActive = document.getElementById('puzzleWrapper').classList.contains('active');
+        if (isPuzzleActive) {
+          if (bubbleSpawningInterval) clearInterval(bubbleSpawningInterval);
+          setupPaintingStage();
+        } else {
+          if (bubbleSpawningInterval) clearInterval(bubbleSpawningInterval);
+          window.location.href = 'index.html?stage=2';
+        }
+      };
+    }
+
+    initUI();
+  </script>
+</body>
+</html>

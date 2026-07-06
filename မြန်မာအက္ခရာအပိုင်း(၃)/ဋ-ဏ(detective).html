@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Letter Detective (ဋ - ဏ) - Dassy Digital Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=600;700&family=Noto+Sans+Myanmar:wght=700;900&display=swap" rel="stylesheet" />
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body, html {
+            width: 100%; height: 100%; overflow: hidden;
+            font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+            user-select: none; -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .game-bg {
+            background: linear-gradient(180deg, #1e1b4b 0%, #311042 50%, #111827 100%);
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1;
+        }
+
+        .canvas-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            gap: 6px;
+            width: 90vw;
+            max-width: 460px;
+            height: 90vw;
+            max-height: 460px;
+            background: #1f2937;
+            border: 8px solid #a855f7;
+            border-radius: 24px;
+            padding: 10px;
+            box-shadow: 0 16px 30px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 10;
+        }
+
+        .segment {
+            background: #374151;
+            border: 2px solid #4b5563;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 900;
+            color: transparent; 
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.1s ease, background 0.3s ease;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.2);
+        }
+        
+        .segment::after {
+            content: '🔍';
+            position: absolute;
+            font-size: 16px;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        .segment:active { transform: scale(0.9); }
+        
+        .segment.found { 
+            color: #ffffff !important; 
+            background: #10b981 !important;
+            border-color: #34d399 !important;
+            animation: popScale 0.35s ease-out; 
+        }
+        .segment.found::after { display: none; }
+
+        .segment.wrong { 
+            background: #ef4444 !important; 
+            color: #ffffff !important; 
+            border-color: #f87171 !important;
+            animation: shake 0.3s ease; 
+        }
+        .segment.wrong::after { display: none; }
+
+        @keyframes popScale {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .intro-screen {
+            position: absolute; inset: 0; 
+            background: linear-gradient(to bottom, #2e1065 0%, #3b0764 60%, #030712 100%);
+            z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; text-align: center; transition: opacity 0.4s ease;
+        }
+        .intro-screen.hide { opacity: 0; pointer-events: none; }
+
+        .btn-action {
+            font-family: 'Noto Sans Myanmar', sans-serif; padding: 14px 45px; font-size: 22px; font-weight: 900;
+            color: white; background: #a855f7; border: none; border-radius: 50px; cursor: pointer; 
+            box-shadow: 0 8px 0 #7e22ce, 0 12px 25px rgba(126,34,206,0.4); transition: transform 0.1s; z-index: 5;
+            animation: wiggleBtn 3s infinite ease-in-out;
+        }
+        .btn-action:active { transform: translateY(4px); box-shadow: 0 4px 0 #7e22ce; animation: none; }
+        @keyframes wiggleBtn {
+            0%, 80%, 100% { transform: rotate(0deg); }
+            85% { transform: rotate(3deg) scale(1.02); }
+            90% { transform: rotate(-3deg) scale(1.02); }
+        }
+
+        input[type="range"] { accent-color: #a855f7; cursor: pointer; }
+    </style>
+</head>
+<body class="relative flex flex-col items-center justify-center min-h-screen select-none">
+
+    <div class="game-bg"></div>
+
+    <!-- HUD Layout Top Panel -->
+    <div class="absolute top-4 left-4 right-4 z-20 pointer-events-none flex justify-between items-start">
+        <div class="bg-slate-900/95 text-white border-4 border-purple-500 p-3 rounded-2xl shadow-xl flex flex-col items-center min-w-[110px]">
+            <span class="text-[10px] font-black text-purple-400 tracking-wider">ရှာရမည့်အက္ခရာ</span>
+            <span id="target-display" class="text-4xl font-black text-amber-400 mt-1">ဋ</span>
+        </div>
+
+        <div class="flex flex-col items-end space-y-2 pointer-events-auto">
+            <div class="bg-slate-900/95 text-white px-4 py-2 rounded-2xl border-2 border-purple-400 shadow-md font-bold flex items-center space-x-2">
+                <span>🕵️‍♂️ ဖော်ထုတ်ပြီး:</span>
+                <span id="found-display" class="text-xl font-black text-green-400">0</span>
+                <span class="text-slate-500">/</span>
+                <span id="total-display" class="text-sm font-bold text-slate-400">0</span>
+            </div>
+            
+            <div class="flex items-center space-x-2 bg-slate-900/95 border border-slate-700 p-2 rounded-xl shadow-md">
+                <button id="mute-btn" onclick="toggleMute()" class="text-lg hover:scale-110 transition-transform">🔊</button>
+                <input id="volume-slider" type="range" min="0" max="1" step="0.05" value="0.4" oninput="updateVolume(this.value)" class="w-16 sm:w-20 h-1.5 bg-slate-700 rounded-lg appearance-none">
+                <div class="w-[1px] h-5 bg-slate-700 mx-1"></div>
+                <button onclick="goBackToSubMap()" class="bg-slate-700 hover:bg-slate-600 text-white font-black px-2.5 py-1.5 rounded-lg text-[11px] transition-all active:scale-95 mr-1">
+                    ⬅️ ပြန်ထွက်
+                </button>
+                <button onclick="goToMainMap()" class="bg-red-500 hover:bg-red-600 text-white font-black px-2.5 py-1.5 rounded-lg text-[11px] transition-all active:scale-95">
+                    🏠 ပင်မမြေပုံ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="paintCanvas" class="canvas-grid"></div>
+
+    <!-- Welcome / Intro Screen -->
+    <div id="start-screen" class="intro-screen">
+        <div class="text-7xl mb-4 z-10 animate-bounce">🕵️‍♂️🔎✨</div>
+        <h1 class="text-3xl sm:text-4xl font-black text-white drop-shadow-md mb-2">အက္ခရာစုံထောက်ကြီး</h1>
+        <div class="bg-purple-600 text-white font-black px-5 py-1.5 rounded-full text-xs mb-4 shadow-sm">
+            သင်ခန်းစာ (Stage 4) : ဋ၊ ဌ၊ ဍ၊ ဎ၊ ဏ
+        </div>
+        <p class="text-slate-300 text-sm max-w-sm mb-8 font-medium px-4">မှန်ဘီလူးလေးတွေနောက်ကွယ်မှာ ပုန်းကွယ်နေတဲ့ (ဋ မှ ဏ) အက္ခရာတွေကို ရှာဖွေဖော်ထုတ်ပေးဖို့ စုံထောက်လေးတွေကို ဖိတ်ခေါ်ပါတယ်!</p>
+        
+        <button onclick="startGame()" class="btn-action">စုံထောက်အဖွဲ့ စတင်မည် 🚀</button>
+    </div>
+
+    <!-- Victory Screen -->
+    <div id="victory-screen" class="hidden absolute inset-0 bg-slate-950/90 backdrop-blur-md z-[110] flex flex-col items-center justify-center text-center p-6">
+        <div class="text-7xl mb-4 animate-bounce">🏆🎩🕵️‍♂️</div>
+        <h2 class="text-4xl font-black text-white mb-2">အမှုအားလုံး ဖြေရှင်းပြီးပြီ!</h2>
+        <p class="text-amber-400 text-lg font-bold mb-8">ဉာဏ်ကောင်းတဲ့ စုံထောက်လေးရေ.. (ဋ မှ ဏ) အက္ခရာအားလုံးကို အောင်မြင်စွာ ရှာဖွေနိုင်ခဲ့ပါပြီ။</p>
+        
+        <button onclick="goBackToSubMap()" class="px-14 py-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-black text-xl rounded-full shadow-lg border-b-4 border-indigo-700 active:scale-95 transition-all">
+            ဂိမ်းမြေပုံသို့ ပြန်သွားမည် 🗺️
+        </button>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const sfxGain = audioCtx.createGain();
+        const bgmGain = audioCtx.createGain();
+        sfxGain.connect(audioCtx.destination);
+        bgmGain.connect(audioCtx.destination);
+
+        let currentVolume = 0.4;
+        let isMuted = false;
+        bgmGain.gain.setValueAtTime(currentVolume * 0.2, audioCtx.currentTime);
+        sfxGain.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(sfxGain);
+            const now = audioCtx.currentTime;
+
+            if (type === 'correct') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
+                gain.gain.setValueAtTime(0.5, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                osc.start(now); osc.stop(now + 0.1);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.linearRampToValueAtTime(90, now + 0.2);
+                gain.gain.setValueAtTime(0.4, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                osc.start(now); osc.stop(now + 0.2);
+            } else if (type === 'victory') {
+                const fanfare = [523.25, 659.25, 783.99, 1046.50];
+                fanfare.forEach((f, i) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g); g.connect(sfxGain);
+                    o.frequency.setValueAtTime(f, now + i * 0.09);
+                    g.gain.setValueAtTime(0.3, now + i * 0.09);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    o.start(now + i * 0.09); o.stop(now + 0.5);
+                });
+            }
+        }
+
+        let bgmIntervalId = null;
+        function startBackgroundMusic() {
+            if (bgmIntervalId) return;
+            const melody = [523.25, 587.33, 659.25, 783.99, 880.00]; 
+            const sequence = [0, 1, 2, 3, 2, 1, 0, 4, 3, 2, 3, 4];
+            let step = 0;
+
+            bgmIntervalId = setInterval(() => {
+                if (isMuted) return;
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine'; 
+                const noteIndex = sequence[step % sequence.length];
+                osc.frequency.setValueAtTime(melody[noteIndex] * 0.4, now); 
+                gain.gain.setValueAtTime(0.12, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+                osc.connect(gain); gain.connect(bgmGain);
+                osc.start(now); osc.stop(now + 0.65);
+                step++;
+            }, 600);
+        }
+
+        function updateVolume(val) {
+            currentVolume = parseFloat(val);
+            if (isMuted) return;
+            bgmGain.gain.setValueAtTime(currentVolume * 0.2, audioCtx.currentTime);
+            sfxGain.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const muteBtn = document.getElementById('mute-btn');
+            if (isMuted) {
+                muteBtn.innerText = '🔇';
+                bgmGain.gain.setValueAtTime(0, audioCtx.currentTime);
+                sfxGain.gain.setValueAtTime(0, audioCtx.currentTime);
+            } else {
+                muteBtn.innerText = '🔊';
+                updateVolume(document.getElementById('volume-slider').value);
+            }
+        }
+
+    // --- NAVIGATION CONTROLS ---
+    function goBackToSubMap() {
+        window.location.href = "index.html?fromGame=true&stage=4";
+    }
+
+    function goToMainMap() {
+        window.location.href = "index.html?fromGame=true";
+    }
+
+        // Game Logic Configuration
+        const targetSequence = ['ဋ', 'ဌ', 'ဍ', 'ဎ', 'ဏ'];
+        const alphabetDistractors = [
+            'က', 'ခ', 'ဂ', 'ဃ', 'င', 'စ', 'ဆ', 'ဇ', 'ဈ', 'ည', 
+            'တ', 'ထ', 'ဒ', 'ဓ', 'န', 'ပ', 'ဖ', 'ဗ', 'ဘ', 'မ', 
+            'ယ', 'ရ', 'လ', 'ဝ', 'သ'
+        ];
+
+        let currentTargetIndex = 0;
+        let currentTargetLetter = 'ဋ';
+        let foundCount = 0;
+        let totalTargetCount = 0;
+
+        const canvas = document.getElementById('paintCanvas');
+        const foundDisplay = document.getElementById('found-display');
+        const totalDisplay = document.getElementById('total-display');
+        const targetDisplay = document.getElementById('target-display');
+
+        function startGame() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            document.getElementById('start-screen').classList.add('hide');
+            startBackgroundMusic();
+            currentTargetIndex = 0;
+            setupRound();
+        }
+
+        function setupRound() {
+            foundCount = 0;
+            totalTargetCount = 0;
+            currentTargetLetter = targetSequence[currentTargetIndex];
+            
+            targetDisplay.innerText = currentTargetLetter;
+            foundDisplay.innerText = '0';
+            canvas.innerHTML = '';
+
+            for (let i = 0; i < 36; i++) {
+                const seg = document.createElement('div');
+                seg.className = 'segment';
+                
+                const isTarget = Math.random() < 0.35;
+                const letter = isTarget ? currentTargetLetter : alphabetDistractors[Math.floor(Math.random() * alphabetDistractors.length)];
+                
+                if (letter === currentTargetLetter) totalTargetCount++;
+                
+                seg.innerText = letter;
+                seg.onclick = () => handleSegmentClick(seg, letter);
+                canvas.appendChild(seg);
+            }
+
+            if (totalTargetCount < 3) return setupRound();
+            totalDisplay.innerText = totalTargetCount;
+        }
+
+        function handleSegmentClick(seg, letter) {
+            if (seg.classList.contains('found') || seg.classList.contains('wrong')) return;
+
+            if (letter === currentTargetLetter) {
+                playSound('correct');
+                seg.classList.add('found');
+                foundCount++;
+                foundDisplay.innerText = foundCount;
+
+                if (foundCount === totalTargetCount) {
+                    setTimeout(() => { advanceNextProgress(); }, 700);
+                }
+            } else {
+                playSound('wrong');
+                seg.classList.add('wrong');
+            }
+        }
+
+        function advanceNextProgress() {
+            currentTargetIndex++;
+            if (currentTargetIndex < targetSequence.length) {
+                setupRound();
+            } else {
+                playSound('victory');
+                document.getElementById('victory-screen').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

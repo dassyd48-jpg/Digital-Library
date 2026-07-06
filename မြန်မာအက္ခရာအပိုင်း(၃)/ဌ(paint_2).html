@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Paint & Falling Leaves Lesson - ဌ Duck Pond</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+    
+    body {
+      font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+      min-height: 100vh;
+      position: relative;
+      background-color: #60a5fa;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+
+    /* Navigation Buttons (Home & Back) */
+    .nav-container {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      right: 15px;
+      display: flex;
+      justify-content: space-between;
+      z-index: 600; 
+      pointer-events: auto;
+    }
+    .nav-btn {
+      width: 50px;
+      height: 50px;
+      background-color: #ffffff;
+      border: 3px solid #0ea5e9;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      transition: transform 0.1s ease;
+    }
+    .nav-btn:active { transform: scale(0.9); }
+
+    /* ==========================================================================
+       BACKGROUND COMPONENT
+       ========================================================================== */
+    .pond-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to bottom, #bae6fd 0%, #7dd3fc 35%, #0284c7 100%);
+      z-index: 1;
+    }
+    .landscape {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: 35vh;
+      background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%);
+      border-top: 8px solid #16a34a;
+    }
+    .pond-water {
+      position: absolute; left: -5%; right: -5%; bottom: -5vh;
+      height: 28vh;
+      background: linear-gradient(180deg, #38bdf8 0%, #0369a1 100%);
+      border-radius: 50% 50% 0 0;
+      border-top: 6px solid #e0f2fe;
+      box-shadow: inset 0 10px 30px rgba(0,0,0,0.15);
+    }
+    .lotus-leaf { position: absolute; background: #15803d; border-radius: 50%; }
+    .leaf-1 { left: 8%; bottom: 12vh; width: 90px; height: 35px; transform: rotate(-5deg); }
+    .leaf-2 { right: 12%; bottom: 8vh; width: 110px; height: 40px; transform: rotate(5deg); }
+    .lotus-flower { position: absolute; font-size: 30px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+    .lotus-1 { left: 12%; bottom: 14vh; }
+    .lotus-2 { right: 16%; bottom: 10vh; }
+
+    .pond-creatures { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+    .creature { position: absolute; display: inline-block; filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.15)); }
+    
+    .duck-mom { 
+      left: 10%; bottom: 22vh;
+      font-size: 55px; z-index: 5; 
+      transition: left 3s cubic-bezier(0.25, 1, 0.5, 1), bottom 3s ease;
+    }
+    .duck-baby-1 { right: 12%; bottom: 20vh; font-size: 32px; z-index: 4; transition: right 3s cubic-bezier(0.25, 1, 0.5, 1), bottom 3s ease; }
+    .duck-baby-2 { right: 5%; bottom: 23vh; font-size: 32px; z-index: 4; transition: right 3s cubic-bezier(0.25, 1, 0.5, 1), bottom 3s ease; }
+    
+    .frog { left: 8%; bottom: 14.5vh; font-size: 26px; }
+    .butterfly { right: 25%; top: 35%; font-size: 28px; }
+    .dragonfly { left: 40%; top: 25%; font-size: 26px; }
+
+    .ripples-container { position: absolute; inset: 0; pointer-events: none; }
+    .ripple { position: absolute; border: 2px solid rgba(255, 255, 255, 0.4); border-radius: 50%; opacity: 0; transform: scale(0.5); }
+
+    /* ANIMATIONS */
+    body.game-active .duck-mom { animation: duckSearching 5s infinite ease-in-out; }
+    body.game-active .duck-baby-1 { animation: babyWaiting 3s infinite ease-in-out; }
+    body.game-active .duck-baby-2 { animation: babyWaiting 3s infinite ease-in-out; animation-delay: 0.4s; }
+    body.game-active .frog { animation: frogJump 4s infinite ease-in-out; }
+    body.game-active .butterfly { animation: flyAround 8s infinite ease-in-out; }
+    body.game-active .dragonfly { animation: flyAroundFast 5s infinite ease-in-out; }
+    
+    body.game-active .ripple:nth-child(1) { width: 60px; height: 15px; left: 20%; bottom: 8vh; animation: rippleWave 4s infinite linear; }
+    body.game-active .ripple:nth-child(2) { width: 80px; height: 20px; right: 25%; bottom: 5vh; animation: rippleWave 4s infinite linear; animation-delay: 2s; }
+
+    .duck-found-mom { animation: duckHappyDance 0.6s infinite alternate ease-in-out !important; left: 45% !important; bottom: 18vh !important; }
+    .duck-found-baby1 { animation: duckHappyDance 0.6s infinite alternate ease-in-out !important; right: 48% !important; bottom: 17vh !important; }
+    .duck-found-baby2 { animation: duckHappyDance 0.6s infinite alternate ease-in-out !important; right: 40% !important; bottom: 19vh !important; }
+
+    @keyframes duckHappyDance {
+      0% { transform: translateY(0) scale(1.1) rotate(-5deg); }
+      100% { transform: translateY(-18px) scale(1.15) rotate(5deg); }
+    }
+
+    /* ==========================================================================
+       INTRO SCREEN
+       ========================================================================== */
+    .intro-screen {
+      position: fixed;
+      inset: 0; z-index: 100;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    .intro-emojis { font-size: 42px; margin-bottom: 15px; letter-spacing: 12px; z-index: 10; }
+    .intro-title { font-size: 46px; font-weight: 800; color: #1e3a8a; margin-bottom: 20px; line-height: 1.4; z-index: 10; text-shadow: 3px 3px 0px #ffffff; }
+    .intro-badge { background-color: #0ea5e9; color: white; font-size: 18px; font-weight: 600; padding: 12px 28px; border-radius: 50px; margin-bottom: 25px; display: inline-block; border: 3px solid #ffffff; box-shadow: 0 6px 12px rgba(0,0,0,0.1); z-index: 10; }
+    .intro-description { color: #1e293b; font-size: 20px; line-height: 1.8; max-width: 650px; margin-bottom: 35px; font-weight: 600; z-index: 10; background: rgba(255, 255, 255, 0.92); padding: 22px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    .btn-start { background-color: #22c55e; color: white; font-size: 24px; font-weight: 800; padding: 16px 55px; border: none; border-radius: 24px; cursor: pointer; box-shadow: 0 6px 0 #16a34a, 0 10px 20px rgba(0,0,0,0.15); transition: transform 0.1s ease; z-index: 10; }
+    .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #16a34a; }
+
+    /* ==========================================================================
+       MAIN GAME INTERFACE (PAINT SCREEN)
+       ========================================================================== */
+    .game-wrapper {
+      position: absolute;
+      inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.5s ease;
+      padding-top: 20px;
+      z-index: 10;
+    }
+    .game-wrapper.active { opacity: 1; visibility: visible; }
+
+    .game-container { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 1000px; padding: 10px; }
+    
+    /* Heading Box Paint Version */
+    .heading-box { 
+      background-color: #0ea5e9;
+      border: 3px solid #ffffff; 
+      border-radius: 50px; 
+      padding: 8px 30px; 
+      margin-bottom: 15px; 
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15); 
+      display: flex; 
+      align-items: center;
+      justify-content: center;
+      gap: 10px; 
+    }
+    .heading-text { font-size: 20px; font-weight: 700; color: #ffffff; }
+    .heading-glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #0ea5e9; font-size: 26px; font-weight: 800; background: #ffffff; padding: 0 12px; border-radius: 10px; }
+    
+    .stage { display: flex; gap: 25px; align-items: center; justify-content: center; width: 100%; transition: opacity 0.5s ease; margin-top: 10px; }
+    .wood-frame { position: relative; padding: 12px; border-radius: 24px; background-color: #0ea5e9; box-shadow: 0 16px 35px rgba(0,0,0,0.2); border: 4px solid #ffffff; }
+    .canvas-container { background: #ffffff; border-radius: 16px; overflow: hidden; position: relative; width: 440px; height: 440px; max-width: 75vh; max-height: 65vh; }
+    canvas { display: block; cursor: crosshair; touch-action: none; width: 100% !important; height: 100% !important; }
+    
+    /* Control Panel */
+    .panel { width: 125px; background-color: #f0f9ff; border-radius: 28px; border: 3px solid #bae6fd; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; gap: 12px; box-shadow: 0 16px 35px rgba(0,0,0,0.15); }
+    .panel-title { font-size: 12px; font-weight: 700; text-align: center; color: #0369a1; margin-bottom: 2px; }
+    
+    .eraser { width: 100%; height: 50px; border-radius: 20px; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #e0f2fe; box-shadow: 0 3px 0 #bae6fd; }
+    .eraser.selected { border-color: #0ea5e9; background: #e0f2fe; }
+    .eraser-icon { font-size: 24px; transform: rotate(-10deg); }
+    
+    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
+    .brush { aspect-ratio: 1/1; border-radius: 14px; cursor: pointer; position: relative; background: white; border: 2px solid #f1f5f9; box-shadow: 0 3px 0 #e2e8f0; }
+    .brush.selected { border-color: #0ea5e9; transform: scale(1.05); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0ea5e9; }
+    .swatch { position: absolute; inset: 0; border-radius: 11px; }
+    
+    .action-container { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: auto; }
+    .btn { width: 100%; height: 48px; border-radius: 16px; border: none; color: white; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+    .btn-reset { background-color: #38bdf8; box-shadow: 0 4px 0 #0284c7; }
+    .btn-next { background-color: #f97316; box-shadow: 0 4px 0 #ea580c; }
+    .btn:active { transform: translateY(3px); box-shadow: none; }
+    
+    /* ==========================================================================
+       🍁 Independent Game Zone
+       ========================================================================== */
+    .game-zone {
+      position: absolute;
+      inset: 0; 
+      display: none; 
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 75px; 
+      z-index: 350; 
+      overflow: hidden; 
+      pointer-events: auto;
+    }
+
+    .game-header-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      z-index: 400;
+      pointer-events: none;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .game-title-banner {
+      background-color: #16a34a;
+      border: 3px solid #ffffff; 
+      border-radius: 50px; 
+      padding: 8px 32px; 
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15); 
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .scoreboard {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 2px solid #16a34a; 
+      padding: 4px 18px; 
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 13px; 
+      color: #15803d; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    .leaf {
+      position: absolute;
+      width: 90px; 
+      height: 60px;
+      border-radius: 4px 44px 4px 44px;
+      box-shadow: inset -4px -4px 12px rgba(0,0,0,0.18), 0 8px 16px rgba(0,0,0,0.15);
+      cursor: pointer; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      transition: transform 0.1s linear; 
+      transform-style: preserve-3d;
+      pointer-events: auto; 
+      padding: 10px;
+    }
+    .leaf::before {
+      content: ''; position: absolute; left: 0; top: 50%;
+      width: 100%; height: 2px;
+      background: rgba(0,0,0,0.12); transform: translateY(-50%);
+    }
+    .leaf-text {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 28px; font-weight: 800;
+      color: #ffffff; text-shadow: 2px 2px 4px rgba(0,0,0,0.35); z-index: 2;
+      pointer-events: none;
+    }
+
+    .leaf-green { background: linear-gradient(135deg, #22c55e, #15803d); border: 2px solid #4ade80; }
+    .leaf-orange { background: linear-gradient(135deg, #f97316, #c2410c); border: 2px solid #fb923c; }
+    .leaf-yellow { background: linear-gradient(135deg, #eab308, #a16207); border: 2px solid #fde047; }
+    .leaf-red { background: linear-gradient(135deg, #ef4444, #991b1b); border: 2px solid #f87171; }
+
+    .leaf-shake { animation: shakeError 0.4s ease-in-out; }
+    @keyframes shakeError {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-10px); }
+      40%, 80% { transform: translateX(10px); }
+    }
+
+    /* 🏆 OVERLAY WINDOWS */
+    .done-overlay {
+      position: fixed;
+      inset: 0; background: rgba(15, 23, 42, 0.65);
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 700; backdrop-filter: blur(5px);
+    }
+    .btn-done {
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      color: white;
+      border: 4px solid #ffffff; font-size: 34px; font-weight: 800;
+      padding: 16px 75px; border-radius: 25px; cursor: pointer;
+      box-shadow: 0 10px 0 #b45309, 0 15px 30px rgba(0,0,0,0.4);
+      animation: pulsePop 1s infinite alternate;
+    }
+    
+    /* Next Level Transition Button */
+    .btn-next-level {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: white; border: 4px solid #ffffff; font-size: 26px; font-weight: 800;
+      padding: 18px 45px; border-radius: 24px; cursor: pointer;
+      box-shadow: 0 10px 0 #c2410c, 0 15px 25px rgba(0,0,0,0.35);
+      transition: transform 0.1s ease;
+    }
+    .btn-next-level:active {
+      transform: translateY(6px);
+      box-shadow: 0 4px 0 #c2410c;
+    }
+
+    @keyframes pulsePop {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.06); }
+    }
+
+    #rewardLayer { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+    .reward-item { position: absolute; font-size: 32px; animation: burstUp 1.5s ease-out forwards; }
+    @keyframes burstUp {
+      0% { transform: translate(0,0) scale(0.4) rotate(0deg); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(1.3) rotate(360deg); opacity: 0; }
+    }
+
+    /* 📱 RESPONSIVE ADJUSTMENTS */
+    @media (max-width: 760px) {
+      .game-wrapper { padding-top: 75px; justify-content: center; }
+      .stage { flex-direction: column; align-items: center; gap: 12px; }
+      .canvas-container { width: 310px; height: 310px; max-height: 50vh; max-width: 85vw; }
+      .panel { width: 100%; max-width: 310px; flex-direction: row; justify-content: space-between; border-radius: 20px; padding: 8px; gap: 5px; }
+      .panel-title { display: none; }
+      .eraser { width: 46px; height: 46px; border-radius: 14px; }
+      .brush-grid { grid-template-columns: repeat(5, 1fr); gap: 5px; width: auto; }
+      .brush { width: 44px; height: 44px; }
+      .action-container { flex-direction: row; width: auto; gap: 5px; margin-top: 0; }
+      .btn { width: 55px; height: 46px; font-size: 10px; border-radius: 12px; }
+      .intro-title { font-size: 32px; }
+      .intro-description { font-size: 16px; padding: 15px; }
+      .heading-box { padding: 6px 20px; margin-bottom: 5px; }
+      .heading-text { font-size: 16px; }
+      .heading-glyph { font-size: 20px; padding: 0 8px; }
+      
+      .game-zone { padding-top: 70px; }
+      .game-title-banner { font-size: 14px; padding: 6px 20px; }
+      .scoreboard { font-size: 11px; padding: 3px 12px; }
+      .btn-next-level { font-size: 20px; padding: 14px 35px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav-container">
+    <button class="nav-btn" id="btnBack" title="နောက်သို့ ပြန်သွားရန်">🔙</button>
+    <button class="nav-btn" id="btnHome" title="ပင်မစာမျက်နှာသို့ ပြန်သွားရန်">🏠</button>
+  </div>
+
+  <div class="pond-bg">
+    <div class="landscape"></div>
+    <div class="pond-water"></div>
+    
+    <div class="lotus-leaf leaf-1"></div>
+    <div class="lotus-leaf leaf-2"></div>
+    <span class="lotus-flower lotus-1">🪷</span>
+    <span class="lotus-flower lotus-2">🪷</span>
+
+    <div class="pond-creatures">
+      <span class="creature duck-mom" id="duckMom">🦆</span>
+      <span class="creature duck-baby-1" id="duckBaby1">🐥</span>
+      <span class="creature duck-baby-2" id="duckBaby2">🐥</span>
+      <span class="creature frog">🐸</span>
+      <span class="creature butterfly">🦋</span>
+      <span class="creature dragonfly">🪰</span>
+    </div>
+
+    <div class="ripples-container">
+      <div class="ripple"></div>
+      <div class="ripple"></div>
+    </div>
+  </div>
+
+  <div class="game-zone" id="gameZone">
+    <div class="game-header-area">
+      <div class="game-title-banner">လေထဲက 'ဌ' သစ်ရွက်လေးတွေကို ဖမ်းစို့ 🍁</div>
+      <div class="scoreboard" id="scoreboard">
+        <span id="lblLevel">အဆင့်: ၁</span>
+        <span>•</span>
+        <span id="lblScore">ဖမ်းမိသောအရွက်: ၀ / ၅</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-emojis">🦆🌾🪷🐸✨</div>
+    <h1 class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</h1>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဌ" ဝမ်းဘဲအိုင်လေးဆီသို့</div>
+    <p class="intro-description">
+      ကလေးတို့ရေ... ဝမ်းဘဲမေမေကြီးဟာ သူ့ရဲ့ချစ်လှစွာသော ဘဲကလေးတွေကို ရှာမတွေ့လို့ ကုန်းပေါ်မှာ စိုးရိမ်တကြီးနဲ့ ဟိုပြေးဒီပြေး လိုက်ရှာနေတယ်ကွ။ 
+      ဘဲကလေးတွေကလည်း ဟိုးအဝေးကြီးမှာ ပုန်းနေကြရရှာတယ်။ 
+      မေမေနဲ့ သားသမီးတွေ ပျော်ပျော်ရွှင်ရွှင် ပြန်လည်ဆုံတွေ့နိုင်ဖို့ တို့တွေမှာ "ဌ" အက္ခရာလေး လိုအပ်နေတယ်နော်။ 
+      ကဲ... စုတ်တံလေးတွေကိုကိုင်ပြီး "ဌ" လမ်းကြောင်းအတိုင်း လှလှပပ ခြယ်သပြီး ဝမ်းဘဲမိသားစုလေးကို ကူညီပေးကြရအောင်။
+    </p>
+    <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
+  </div>
+
+  <div class="game-wrapper" id="gameWrapper">
+    <div class="game-container" id="paintContainer">
+      <div class="heading-box" id="headingBox">
+        <span class="heading-text">အရောင်ခြယ်ကြစို့</span>
+        <span class="heading-glyph">ဌ</span>
+        <span class="heading-text">!</span>
+      </div>
+
+      <div class="stage" id="paintStage">
+        <div class="wood-frame">
+          <div class="canvas-container">
+            <canvas id="paintCanvas" width="500" height="500"></canvas>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <div class="panel-title">စုတ်တံရောင်စုံ</div>
+          <div class="eraser" id="eraser">
+            <span class="eraser-icon">🧼</span>
+          </div>
+          <div class="brush-grid" id="brushGrid"></div>
+      
+          <div class="action-container">
+            <button class="btn btn-reset" id="btnReset">↻<br>ဖျက်မည်</button>
+            <button class="btn btn-next" id="btnNext">→<br>ရှေ့သို့</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="done-overlay" id="nextLevelOverlay">
+    <button class="btn-next-level" id="btnNextLevel">Level 2 သို့ တက်လှမ်းမည် →</button>
+  </div>
+
+  <div class="done-overlay" id="doneOverlay">
+    <button class="btn-done" id="btnDone">DONE (ပြီးပါပြီ) ✨</button>
+  </div>
+
+  <div id="rewardLayer"></div>
+
+  <script>
+    // ==========================================================================
+    // AUDIO ENGINE COMPONENTS
+    // ==========================================================================
+    let audioCtx = null;
+    let bgMusicNode = null;
+
+    function initAudio() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playBackgroundMusic() {
+      initAudio();
+      if (!audioCtx) return;
+      const bufferSize = audioCtx.sampleRate * 8; 
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      const notes = [329.63, 392.00, 440.00, 523.25, 440.00, 523.25, 587.33, 659.25];
+      const noteLength = audioCtx.sampleRate * 0.4;
+      for (let i = 0; i < bufferSize; i++) {
+        const currentNoteIdx = Math.floor(i / noteLength) % notes.length;
+        const freq = notes[currentNoteIdx];
+        const t = i / audioCtx.sampleRate;
+        const noteTime = (i % noteLength) / audioCtx.sampleRate;
+        data[i] = Math.sin(2 * Math.PI * freq * t) * 0.3 * Math.exp(-5 * noteTime);
+      }
+      bgMusicNode = audioCtx.createBufferSource();
+      bgMusicNode.buffer = buffer; bgMusicNode.loop = true;
+      const musicGain = audioCtx.createGain();
+      musicGain.gain.setValueAtTime(0.10, audioCtx.currentTime); 
+      bgMusicNode.connect(musicGain); musicGain.connect(audioCtx.destination);
+      bgMusicNode.start();
+    }
+
+    function playSFX(type) {
+      initAudio();
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      const now = audioCtx.currentTime;
+      if (type === 'click') {
+        osc.type = 'sine'; osc.frequency.setValueAtTime(600, now);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+        osc.start(now); osc.stop(now + 0.08);
+      } else if (type === 'quack') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(350, now);
+        osc.frequency.exponentialRampToValueAtTime(150, now + 0.15);
+        gain.gain.setValueAtTime(0.15, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        osc.start(now); osc.stop(now + 0.15);
+      } else if (type === 'victory') {
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((f, i) => {
+          const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+          o.connect(g); g.connect(audioCtx.destination); o.type = 'triangle';
+          o.frequency.setValueAtTime(f, now + (i * 0.08)); gain.gain.setValueAtTime(0.15, now + (i * 0.08));
+          g.gain.exponentialRampToValueAtTime(0.01, now + (i * 0.08) + 0.3);
+          o.start(now + (i * 0.08)); o.stop(now + (i * 0.08) + 0.3);
+        });
+      }
+    }
+
+    // ==========================================================================
+    // ⚙️ NAVIGATION FIXED SYSTEM (BUTTONS ACTIONS)
+    // ==========================================================================
+    document.getElementById('btnHome').onclick = () => { 
+      playSFX('click'); 
+      // 🏠 ပင်မမြေပုံကြီး (Main Map) သို့ တိုက်ရိုက်ပြန်သွားမည့် စနစ်
+      window.location.href = 'index.html?fromGame=true'; 
+    };
+
+    document.getElementById('btnBack').onclick = () => { 
+      playSFX('click'); 
+      
+      // အရွက်ကြွေဂိမ်း (Leaves Game Area) ရောက်နေ၊ မနေ စစ်ဆေးခြင်း
+      const isLeavesActive = document.getElementById('gameZone') && document.getElementById('gameZone').style.display === 'flex';
+      
+      if (isLeavesActive) {
+        // အရွက်ဖမ်းတဲ့နေရာ ရောက်နေရင် -> Stage 2 (ဌ အက္ခရာ အရောင်ခြယ်တဲ့ နေရာ) သို့ ပြန်သွားမည်
+        // ဖိုင်ကို Reload လုပ်ပြီး အရောင်ခြယ်တဲ့ Screen ဆီ ပြန်စခိုင်းခြင်း
+        location.reload(); 
+      } else {
+        // အရောင်ခြယ်တဲ့ နေရာမှာပဲ ရှိနေသေးရင် -> လက်ရှိ Stage ၏ လေ့ကျင့်ခန်း ၅ ခုရွေးချယ်ရာ Sub-map သို့ ပြန်သွားမည်
+        window.location.href = 'index.html?stage=2'; 
+      }
+    };
+
+    document.getElementById('btnStart').onclick = () => {
+      playBackgroundMusic(); playSFX('click');
+      document.getElementById('introScreen').style.opacity = '0';
+      document.getElementById('introScreen').style.visibility = 'hidden';
+      document.getElementById('gameWrapper').classList.add('active');
+      document.body.classList.add('game-active');
+    };
+
+    // ==========================================================================
+    // PAINTING SYSTEM
+    // ==========================================================================
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    let isPainting = false, currentColor = '#f59e0b', currentType = 'solid', currentPattern = '', isEraser = false, brushSize = 28, lastX = 0, lastY = 0;
+    const brushes = [
+      { id: 'b1', type: 'solid', color: '#f59e0b' }, { id: 'b2', type: 'solid', color: '#ef4444' },
+      { id: 'b3', type: 'solid', color: '#0284c7' }, { id: 'b4', type: 'solid', color: '#22c55e' },
+      { id: 'b5', type: 'solid', color: '#ec4899' }, { id: 'b6', type: 'solid', color: '#a855f7' },
+      { id: 'b7', type: 'solid', color: '#f97316' },
+      { id: 'b8', type: 'rainbow', color: 'linear-gradient(45deg, #ff3366, #eab308, #3b82f6, #22c55e)' },
+      { id: 'b9', type: 'pattern', color: '#f59e0b', pattern: 'dots' },
+      { id: 'b10', type: 'pattern', color: '#ef4444', pattern: 'stripes' }
+    ];
+
+    function getPattern(type, color, pName) {
+      if (type === 'solid') return color;
+      if (type === 'rainbow') {
+        const grad = ctx.createLinearGradient(50, 50, 450, 450);
+        grad.addColorStop(0, '#ff3366'); grad.addColorStop(0.3, '#eab308'); grad.addColorStop(0.7, '#3b82f6'); grad.addColorStop(1, '#22c55e');
+        return grad;
+      }
+      const pCanvas = document.createElement('canvas');
+      pCanvas.width = 16; pCanvas.height = 16;
+      const pCtx = pCanvas.getContext('2d'); pCtx.fillStyle = color; pCtx.fillRect(0,0,16,16);
+      if (pName === 'dots') {
+        pCtx.fillStyle = '#ffffff'; pCtx.beginPath(); pCtx.arc(8,8,2.5,0,Math.PI*2); pCtx.fill();
+      } else if (pName === 'stripes') {
+        pCtx.strokeStyle = '#ffffff'; pCtx.lineWidth = 2.5;
+        pCtx.beginPath(); pCtx.moveTo(0,0); pCtx.lineTo(16,16); pCtx.stroke();
+      }
+      return ctx.createPattern(pCanvas, 'repeat');
+    }
+
+    function startDrawing(e) {
+      initAudio(); isPainting = true;
+      const rect = canvas.getBoundingClientRect();
+      lastX = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
+      lastY = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+    }
+    function stopDrawing() { isPainting = false; ctx.beginPath(); }
+    
+    function draw(e) {
+      if (!isPainting) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
+      const y = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+
+      ctx.lineWidth = brushSize; ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      if (isEraser) { ctx.globalCompositeOperation = 'destination-out'; ctx.lineWidth = 40; }
+      else { ctx.globalCompositeOperation = 'source-over'; ctx.strokeStyle = getPattern(currentType, currentColor, currentPattern); }
+
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+      lastX = x; lastY = y;
+    }
+
+    // ==========================================================================
+    // 🍁 FALLING LEAVES CHALLENGE LOGIC
+    // ==========================================================================
+    let currentLevel = 1;
+    let targetScore = 5;
+    let currentScore = 0;
+    let gameLoopInterval = null;
+    const wrongLetters = ['ဋ', 'ဍ', 'ဏ', 'ဗ', 'ပ'];
+    const leafColors = ['leaf-green', 'leaf-orange', 'leaf-yellow', 'leaf-red'];
+
+    function startLeavesGame() {
+      document.getElementById('paintContainer').style.display = "none";
+      document.getElementById('gameZone').style.display = "flex";
+      runLevel(1);
+    }
+
+    function runLevel(lvl) {
+      currentLevel = lvl;
+      currentScore = 0;
+      targetScore = lvl === 1 ? 5 : (lvl === 2 ? 10 : 15);
+      document.getElementById('lblLevel').textContent = `အဆင့်: ${currentLevel}`;
+      updateScoreUI();
+      playSFX('victory');
+
+      clearInterval(gameLoopInterval);
+      const spawnSpeed = Math.max(1100 - (lvl * 200), 550); 
+      gameLoopInterval = setInterval(spawnLeaf, spawnSpeed);
+    }
+
+    function updateScoreUI() {
+      document.getElementById('lblScore').textContent = `ဖမ်းမိသောအရွက်: ${currentScore} / ${targetScore}`;
+    }
+
+    function spawnLeaf() {
+      const zone = document.getElementById('gameZone');
+      if(!zone || window.getComputedStyle(zone).display === 'none') return;
+      
+      const leaf = document.createElement('div');
+      const randColor = leafColors[Math.floor(Math.random() * leafColors.length)];
+      leaf.className = `leaf ${randColor}`;
+
+      const isCorrect = Math.random() > 0.35;
+      const textGlyph = isCorrect ? 'ဌ' : wrongLetters[Math.floor(Math.random() * wrongLetters.length)];
+      leaf.innerHTML = `<span class="leaf-text">${textGlyph}</span>`;
+      let x = Math.random() * (window.innerWidth - 110);
+      let y = -70;
+      let fallSpeed = 1.6 + (currentLevel * 0.6) + Math.random() * 1.4;
+      let swingAngle = 0;
+      let swingSpeed = 0.02 + Math.random() * 0.03;
+      let swingRange = 15 + Math.random() * 25;
+      leaf.style.left = x + 'px';
+      leaf.style.top = y + 'px';
+      zone.appendChild(leaf);
+      
+      function motion() {
+        if (!leaf.parentNode) return;
+        y += fallSpeed;
+        swingAngle += swingSpeed;
+        leaf.style.top = y + 'px';
+        const currentSwingX = Math.sin(swingAngle) * swingRange;
+        const rotateDeg = Math.sin(swingAngle) * 20;
+        leaf.style.transform = `translateX(${currentSwingX}px) rotate(${rotateDeg}deg)`;
+
+        if (y > window.innerHeight) {
+          leaf.remove();
+        } else {
+          requestAnimationFrame(motion);
+        }
+      }
+      requestAnimationFrame(motion);
+      
+      const handleLeafSelection = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (isCorrect) {
+          playSFX('quack');
+          currentScore++;
+          triggerBurstEffect(leaf.offsetLeft + 45, leaf.offsetTop + 30, ['✨', '🍁', '🍂', '💚']);
+          leaf.remove();
+          updateScoreUI();
+          if (currentScore >= targetScore) {
+            handleLevelAdvance();
+          }
+        } else {
+          playSFX('click');
+          leaf.classList.add('leaf-shake');
+          setTimeout(() => leaf.classList.remove('leaf-shake'), 400);
+        }
+      };
+
+      leaf.addEventListener('mousedown', handleLeafSelection);
+      leaf.addEventListener('touchstart', handleLeafSelection, { passive: false });
+    }
+
+    function handleLevelAdvance() {
+      clearInterval(gameLoopInterval);
+      document.querySelectorAll('.leaf').forEach(el => el.remove());
+      if (currentLevel < 3) {
+        playSFX('victory');
+        const nextOverlay = document.getElementById('nextLevelOverlay');
+        const nextButton = document.getElementById('btnNextLevel');
+        
+        nextButton.textContent = `Level ${currentLevel + 1} သို့ တက်လှမ်းမည် →`;
+        nextOverlay.style.display = 'flex';
+      } else {
+        playSFX('victory');
+        document.getElementById('doneOverlay').style.display = 'flex';
+      }
+    }
+
+    document.getElementById('btnNextLevel').onclick = () => {
+      playSFX('click');
+      document.getElementById('nextLevelOverlay').style.display = 'none';
+      runLevel(currentLevel + 1);
+    };
+
+    document.getElementById('btnDone').onclick = () => {
+      playSFX('victory');
+      // ဂိမ်းပြီးဆုံးသွားချိန်တွင်လည်း မူလ Stage 2 ရွေးချယ်မှု Sub-map သို့ ပို့ပေးခြင်း
+      window.location.href = 'index.html?stage=3'; 
+    };
+    
+    function triggerBurstEffect(x, y, customItems) {
+      const host = document.getElementById('rewardLayer');
+      for (let i = 0; i < 8; i++) {
+        const el = document.createElement('div');
+        el.className = 'reward-item';
+        el.textContent = customItems[Math.floor(Math.random() * customItems.length)];
+        el.style.left = x + 'px'; el.style.top = y + 'px';
+        const angle = Math.random() * Math.PI * 2; const dist = 40 + Math.random() * 70;
+        el.style.setProperty('--dx', Math.cos(angle) * dist + 'px'); el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+        host.appendChild(el); setTimeout(() => el.remove(), 1000);
+      }
+    }
+
+    function initUI() {
+      const grid = document.getElementById('brushGrid');
+      brushes.forEach((b, i) => {
+        const div = document.createElement('div'); div.className = 'brush' + (i === 0 ? ' selected' : '');
+        div.innerHTML = `<div class="swatch" style="background:${b.color}"></div>`;
+        if(b.pattern === 'dots') div.firstChild.style.backgroundImage = 'radial-gradient(circle, #fff 20%, transparent 20%)';
+        if(b.pattern === 'stripes') div.firstChild.style.backgroundImage = 'linear-gradient(45deg, #fff 25%, transparent 25%)';
+        
+        div.onclick = () => {
+          playSFX('click'); isEraser = false;
+          currentColor = b.color; currentType = b.type; currentPattern = b.pattern || '';
+          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+          document.getElementById('eraser').classList.remove('selected'); div.classList.add('selected');
+        };
+        grid.appendChild(div);
+      });
+      
+      document.getElementById('eraser').onclick = () => {
+        playSFX('click'); isEraser = true;
+        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+        document.getElementById('eraser').classList.add('selected');
+      };
+
+      document.getElementById('btnReset').onclick = () => { playSFX('click'); ctx.clearRect(0, 0, canvas.width, canvas.height); };
+      
+      document.getElementById('btnNext').onclick = () => {
+        playSFX('victory');
+        const mom = document.getElementById('duckMom');
+        const baby1 = document.getElementById('duckBaby1');
+        const baby2 = document.getElementById('duckBaby2');
+        
+        mom.classList.add('duck-found-mom');
+        baby1.classList.add('duck-found-baby1');
+        baby2.classList.add('duck-found-baby2');
+        setTimeout(() => {
+          startLeavesGame();
+        }, 1500);
+      };
+    }
+
+    canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mouseup', stopDrawing); canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='36%' y='25%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='310' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='5' stroke-dasharray='12,10'>ဌ</text></svg>\")";
+    canvas.style.backgroundSize = "100% 100%";
+
+    initUI();
+  </script>
+</body>
+</html>

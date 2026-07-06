@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>အာကာသဒုံးပျံ စွန့်စားခန်း (ဌ)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #020617;
+            font-family: 'Pyidaungsu', 'Fredoka One', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .burmese-font {
+            font-family: 'Pyidaungsu', sans-serif;
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- HUD အပေါ်ဘက် သတင်းအချက်အလက်ပြကွက် နှင့် Navigation ခလုတ်များ -->
+    <div id="hud" class="absolute top-4 left-4 right-4 pointer-events-none z-30 flex items-center justify-between">
+        <div class="flex items-center space-x-2 pointer-events-auto">
+            <!-- 🏠 Home ခလုတ် (ပင်မမြေပုံကြီးသို့ တန်းပြန်ရန်) -->
+            <button id="home-btn" class="flex items-center justify-center bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold px-4 py-2.5 rounded-2xl active:scale-95 transition-all shadow-lg cursor-pointer burmese-font">
+                🏠 <span class="ml-1">Home</span>
+            </button>
+            
+            <!-- 🔙 Back ခလုတ် (လက်ရှိ Stage ရဲ့ လေ့ကျင့်ခန်း ၅ ခုရွေးချယ်ရာနေရာသို့ ပြန်ရန်) -->
+            <button id="back-btn" class="flex items-center justify-center bg-slate-900/90 border-2 border-indigo-500/40 text-white text-sm font-bold px-4 py-2.5 rounded-2xl active:scale-95 transition-all shadow-lg cursor-pointer burmese-font">
+                🔙 <span class="ml-1">Back</span>
+            </button>
+            
+            <div class="flex items-center space-x-2 bg-slate-950/90 backdrop-blur-md px-3 py-2.5 rounded-2xl border border-indigo-500/20 shadow-lg">
+                <span class="text-lg">⭐</span>
+                <span id="cash-display" class="text-white font-black tracking-widest text-sm">0</span>
+            </div>
+            
+            <div class="flex items-center space-x-2 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 backdrop-blur-md px-3 py-2.5 rounded-2xl border border-indigo-500/40 shadow-lg">
+                <span class="text-xs font-bold text-indigo-400 burmese-font">ပစ်ရမည့်အက္ခရာ:</span>
+                <span id="target-letter-display" class="burmese-font text-2xl font-black text-yellow-300 animate-pulse">ဌ</span>
+            </div>
+        </div>
+
+        <!-- ညာဘက်အပေါ် ဒိုင်းကာစွမ်းအင် နှင့် လေ့ကျင့်ခန်းအဆင့် -->
+        <div class="flex items-center space-x-2">
+            <div class="bg-slate-950/90 backdrop-blur-md px-3 py-2.5 rounded-2xl border border-indigo-500/20 shadow-lg">
+                <span id="level-display" class="text-white text-xs font-bold burmese-font">လေ့ကျင့်ခန်း ၁</span>
+            </div>
+            <div class="flex items-center space-x-2 bg-slate-950/90 backdrop-blur-md px-3 py-2.5 rounded-2xl border border-indigo-500/20 shadow-lg">
+                <span class="text-lg">🛡️</span>
+                <span id="hp-display" class="text-indigo-400 font-bold text-sm">၁၀၀%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- လေ့ကျင့်ခန်းတစ်ခုအောင်မြင်၍ နောက်ဂြိုဟ်တစ်ခုသို့ ကူးပြောင်းချိန်ပြမည့် Modal -->
+    <div id="upgrade-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-[100] flex items-center justify-center p-6 transition-all duration-300">
+        <div class="bg-[#0f172a] border-2 border-indigo-500/20 rounded-[3rem] p-10 max-w-md w-full text-center shadow-[0_0_100px_rgba(99,102,241,0.15)] scale-95 transition-transform">
+            <div class="text-5xl animate-bounce mb-6">🚀✨🌌</div>
+            <h2 id="modal-title" class="text-2xl font-bold text-indigo-400 burmese-font mb-2">လေ့ကျင့်ခန်း အောင်မြင်သည်!</h2>
+            <p id="upgrade-subtitle" class="text-neutral-300 text-sm burmese-font mb-8">နောက်တစ်ဆင့်တွင် ဒုံးပျံအရှိန် ပိုမိုမြန်ဆန်လာပါမည်။</p>
+            <div id="upgrade-options"></div>
+        </div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- စတင်မျက်နှာပြင် / အောင်နိုင်ခြင်း / ဂိမ်းအဆုံးသတ်ခြင်း မျက်နှာပြင် -->
+    <div id="overlay-screen" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md z-[90] flex flex-col items-center justify-center text-center p-8">
+        <h1 id="game-title" class="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-400 tracking-wider mb-2 burmese-font">အာကာသဒုံးပျံ စွန့်စားခန်း</h1>
+        <p id="game-subtitle" class="text-indigo-400 text-sm font-bold mb-8 burmese-font">"ဌ" အက္ခရာကို ဒုံးပျံလေးရွှေ့ပြီး ပစ်ခတ်ကြရအောင်</p>
+        
+        <!-- ရလဒ်မှတ်တမ်းဘုတ် -->
+        <div id="game-stats" class="hidden bg-slate-900 border-2 border-indigo-500/30 rounded-3xl p-6 mb-10 max-w-sm w-full text-left space-y-4 shadow-xl">
+            <div class="text-center border-b border-white/10 pb-2 mb-2">
+                <span id="stat-header" class="text-indigo-400 font-bold burmese-font text-sm">📊 ကစားမှုရလဒ်မှတ်တမ်း</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-neutral-300 burmese-font text-sm">🟢 ချေမှုန်းနိုင်သည့် "ဌ" အရေအတွက်</span>
+                <span id="stat-coins" class="text-green-400 font-black text-lg">0</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-neutral-300 burmese-font text-sm">🔴 မှားယွင်းပစ်ခတ်မှု</span>
+                <span id="stat-kills" class="text-rose-400 font-black text-lg">0</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-neutral-300 burmese-font text-sm">👑 ရောက်ရှိခဲ့သည့် လေ့ကျင့်ခန်း</span>
+                <span id="stat-level" class="text-indigo-400 font-black text-lg">အဆင့် ၁</span>
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center pointer-events-auto w-full max-w-sm">
+            <button id="start-btn" class="w-full px-10 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm rounded-full transition-all shadow-lg border-b-4 border-indigo-800 active:scale-95 burmese-font cursor-pointer">
+                🚀 စွန့်စားခန်းစတင်မည်
+            </button>
+            <button id="main-page-btn" class="w-full px-10 py-4 bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm rounded-full transition-all shadow-lg border-b-4 border-purple-800 active:scale-95 burmese-font cursor-pointer">
+                🚪 ပင်မမြေပုံကြီးသို့ ပြန်မည်
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function playSound(type) {
+            initAudio();
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+
+            if (type === 'laser') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(700, now);
+                osc.frequency.linearRampToValueAtTime(250, now + 0.08);
+                gainNode.gain.setValueAtTime(0.05, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+                osc.start(now); osc.stop(now + 0.08);
+            } else if (type === 'coin') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(520, now);
+                osc.frequency.setValueAtTime(840, now + 0.08);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                osc.start(now); osc.stop(now + 0.2);
+            } else if (type === 'fail') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.linearRampToValueAtTime(50, now + 0.2);
+                gainNode.gain.setValueAtTime(0.12, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                osc.start(now); osc.stop(now + 0.2);
+            } else if (type === 'levelup') {
+                const freqs = [350, 500, 650, 800];
+                freqs.forEach((f, i) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g); g.connect(audioCtx.destination);
+                    o.type = 'sine';
+                    o.frequency.setValueAtTime(f, now + i * 0.05);
+                    g.gain.setValueAtTime(0.05, now + i * 0.05);
+                    g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.05 + 0.12);
+                    o.start(now + i * 0.05); o.stop(now + i * 0.05 + 0.12);
+                });
+            } else if (type === 'victory') {
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((f, i) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g); g.connect(audioCtx.destination);
+                    o.type = 'sine';
+                    o.frequency.setValueAtTime(f, now + i * 0.08);
+                    g.gain.setValueAtTime(0.1, now + i * 0.08);
+                    g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.08 + 0.25);
+                    o.start(now + i * 0.08); o.stop(now + i * 0.08 + 0.25);
+                });
+            }
+        }
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const burmeseAlphabets = ['က','ခ','ဂ','င','စ','ဆ','ည','တ','ထ','န','ပ','ဖ','မ','ယ','ရ','လ','ဝ','သ','ဟ','ဠ','အ','ဋ'];
+
+        const game = {
+            running: false,
+            paused: false,
+            score: 0,
+            correctPops: 0,
+            incorrectPops: 0,
+            targetLetter: 'ဌ',
+            asteroidSpeed: 1.8,
+            targetMaxLevel: 5,
+            stars: []
+        };
+
+        const player = {
+            x: 0,
+            y: 0,
+            width: 55,
+            height: 80,
+            hp: 100,
+            maxHp: 100,
+            xp: 0,
+            maxXp: 100,
+            level: 1,
+            lastFired: 0,
+            fireRate: 400
+        };
+
+        const entities = { asteroids: [], lasers: [] };
+
+        for (let i = 0; i < 40; i++) {
+            game.stars.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                size: Math.random() * 1.8 + 0.5,
+                speed: Math.random() * 0.8 + 0.2
+            });
+        }
+
+        function handleMove(clientX) {
+            if (!game.running || game.paused) return;
+            player.x = clientX;
+            player.x = Math.max(player.width/2 + 10, Math.min(canvas.width - player.width/2 - 10, player.x));
+        }
+
+        window.addEventListener('mousemove', (e) => handleMove(e.clientX));
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                handleMove(e.touches[0].clientX);
+            }
+        }, { passive: true });
+
+        function fireLaser() {
+            const now = Date.now();
+            if (now - player.lastFired > player.fireRate) {
+                playSound('laser');
+                entities.lasers.push({
+                    x: player.x,
+                    y: player.y - player.height / 2,
+                    speedY: -8,
+                    radius: 4
+                });
+                player.lastFired = now;
+            }
+        }
+
+        function spawnAsteroid() {
+            if (!game.running || game.paused) return;
+            const radius = 38;
+            const x = Math.random() * (canvas.width - radius * 2) + radius;
+            const y = -60;
+
+            const isTargetSpawn = Math.random() < 0.5;
+            let chosenLetter = game.targetLetter;
+            if (!isTargetSpawn) {
+                chosenLetter = burmeseAlphabets[Math.floor(Math.random() * burmeseAlphabets.length)];
+            }
+
+            entities.asteroids.push({
+                x: x, y: y,
+                letter: chosenLetter,
+                radius: radius,
+                speedY: game.asteroidSpeed + Math.random() * 0.4,
+                rot: Math.random() * Math.PI,
+                rotSpeed: (Math.random() - 0.5) * 0.015
+            });
+        }
+
+        setInterval(spawnAsteroid, 1800);
+
+        function drawSpaceBackground() {
+            ctx.fillStyle = '#020617';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ffffff';
+            game.stars.forEach(star => {
+                if (game.running && !game.paused) {
+                    star.y += star.speed;
+                    if (star.y > canvas.height) {
+                        star.y = 0; star.x = Math.random() * canvas.width;
+                    }
+                }
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function drawRocket(x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            if (game.running && !game.paused) {
+                const flameH = 15 + Math.random() * 12;
+                const gradient = ctx.createLinearGradient(0, player.height/2, 0, player.height/2 + flameH);
+                gradient.addColorStop(0, '#f97316');
+                gradient.addColorStop(1, 'rgba(239, 68, 68, 0)');
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.moveTo(-7, player.height/2 - 5);
+                ctx.lineTo(0, player.height/2 + flameH);
+                ctx.lineTo(7, player.height/2 - 5);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            ctx.fillStyle = '#a855f7';
+            ctx.beginPath(); ctx.moveTo(-player.width/2, player.height/2); ctx.lineTo(-player.width/2 - 6, player.height/2); ctx.lineTo(-player.width/4, player.height/4); ctx.closePath(); ctx.fill();
+            ctx.beginPath(); ctx.moveTo(player.width/2, player.height/2); ctx.lineTo(player.width/2 + 6, player.height/2); ctx.lineTo(player.width/4, player.height/4); ctx.closePath(); ctx.fill();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.moveTo(0, -player.height/2);
+            ctx.lineTo(player.width/2, player.height/3);
+            ctx.lineTo(player.width/2, player.height/2);
+            ctx.lineTo(-player.width/2, player.height/2);
+            ctx.lineTo(-player.width/2, player.height/3);
+            ctx.closePath(); ctx.fill();
+
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath(); ctx.moveTo(0, -player.height/2); ctx.lineTo(player.width/2, player.height/3); ctx.lineTo(-player.width/2, player.height/3); ctx.closePath(); ctx.fill();
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.beginPath(); ctx.arc(0, 8, 9, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
+        }
+
+        function drawAsteroid(ast) {
+            ctx.save();
+            ctx.translate(ast.x, ast.y);
+            ctx.rotate(ast.rot);
+
+            const isTarget = ast.letter === game.targetLetter;
+            ctx.fillStyle = isTarget ? '#1e1b4b' : '#334155';
+            ctx.strokeStyle = isTarget ? '#c084fc' : '#64748b';
+            ctx.lineWidth = 3.5;
+            
+            ctx.beginPath();
+            for (let i = 0; i < 8; i++) {
+                const angle = (i * Math.PI) / 4;
+                const r = ast.radius + (Math.sin(angle * 3) * 2);
+                const x = Math.cos(angle) * r;
+                const y = Math.sin(angle) * r;
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.closePath(); ctx.fill(); ctx.stroke();
+
+            ctx.rotate(-ast.rot);
+            ctx.fillStyle = isTarget ? '#fbbf24' : '#ffffff';
+            ctx.font = `bold 32px Pyidaungsu, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(ast.letter, 0, 2);
+            ctx.restore();
+        }
+
+        function triggerLevelUp() {
+            player.level++;
+            if (player.level > game.targetMaxLevel) {
+                gameWin();
+                return;
+            }
+            playSound('levelup');
+            player.xp = 0;
+            game.asteroidSpeed += 0.5;
+
+            document.getElementById('modal-title').innerText = `လေ့ကျင့်ခန်း ${player.level - 1} အောင်မြင်သည်!`;
+            document.getElementById('upgrade-subtitle').innerText = `နောက်တစ်ဆင့် (လေ့ကျင့်ခန်း ${player.level}) သို့ သွားကြရအောင်။`;
+            
+            const optionsContainer = document.getElementById('upgrade-options');
+            optionsContainer.innerHTML = '';
+            const btn = document.createElement('button');
+            btn.className = "w-full p-4 bg-indigo-600 text-white font-bold rounded-2xl text-center active:scale-95 transition-all burmese-font text-sm cursor-pointer";
+            btn.innerText = `🌌 ဆက်လက်ကစားမည်`;
+            btn.onclick = () => {
+                document.getElementById('upgrade-modal').classList.add('hidden');
+                game.paused = false;
+            };
+            optionsContainer.appendChild(btn);
+            document.getElementById('upgrade-modal').classList.remove('hidden');
+            game.paused = true;
+        }
+
+        function updateGame(dt) {
+            if (!game.running || game.paused) return;
+
+            if (player.hp <= 0) {
+                gameOver();
+                return;
+            }
+
+            fireLaser();
+
+            for (let i = entities.lasers.length - 1; i >= 0; i--) {
+                const laser = entities.lasers[i];
+                laser.y += laser.speedY * dt;
+                if (laser.y < -20) entities.lasers.splice(i, 1);
+            }
+
+            for (let i = entities.asteroids.length - 1; i >= 0; i--) {
+                const ast = entities.asteroids[i];
+                ast.y += ast.speedY * dt;
+                ast.rot += ast.rotSpeed * dt;
+
+                const distPlayerX = ast.x - player.x;
+                const distPlayerY = ast.y - player.y;
+                const distPlayer = Math.sqrt(distPlayerX * distPlayerX + distPlayerY * distPlayerY);
+
+                if (distPlayer < (ast.radius + player.width / 2 - 5)) {
+                    playSound('fail');
+                    player.hp = Math.max(0, player.hp - 20);
+                    entities.asteroids.splice(i, 1);
+                    continue;
+                }
+
+                for (let j = entities.lasers.length - 1; j >= 0; j--) {
+                    const laser = entities.lasers[j];
+                    const distLaserX = ast.x - laser.x;
+                    const distLaserY = ast.y - laser.y;
+                    const distLaser = Math.sqrt(distLaserX * distLaserX + distLaserY * distLaserY);
+
+                    if (distLaser < (ast.radius + laser.radius)) {
+                        entities.lasers.splice(j, 1);
+                        if (ast.letter === game.targetLetter) {
+                            playSound('coin');
+                            game.correctPops++;
+                            game.score += 20;
+                            player.xp += 34;
+                            if (player.xp >= player.maxXp) triggerLevelUp();
+                        } else {
+                            playSound('fail');
+                            game.incorrectPops++;
+                            player.hp = Math.max(0, player.hp - 10);
+                        }
+                        entities.asteroids.splice(i, 1);
+                        break;
+                    }
+                }
+
+                if (ast.y > canvas.height + 50) entities.asteroids.splice(i, 1);
+            }
+
+            document.getElementById('level-display').innerText = `လေ့ကျင့်ခန်း ${player.level}`;
+            document.getElementById('cash-display').innerText = game.score;
+            document.getElementById('hp-display').innerText = `${Math.max(0, Math.round(player.hp))}%`;
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawSpaceBackground();
+            ctx.fillStyle = '#ef4444';
+            entities.lasers.forEach(laser => {
+                ctx.beginPath(); ctx.arc(laser.x, laser.y, laser.radius, 0, Math.PI * 2); ctx.fill();
+            });
+            entities.asteroids.forEach(ast => drawAsteroid(ast));
+            drawRocket(player.x, player.y);
+        }
+
+        let lastTime = performance.now();
+        function gameLoop(now) {
+            let dt = (now - lastTime) / 16.666;
+            lastTime = now;
+            if (dt > 4) dt = 4;
+            updateGame(dt);
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            initAudio();
+            player.hp = player.maxHp;
+            player.xp = 0;
+            player.level = 1;
+            player.x = canvas.width / 2;
+            player.y = canvas.height - 120;
+            game.score = 0;
+            game.correctPops = 0;
+            game.incorrectPops = 0;
+            game.asteroidSpeed = 1.8;
+            entities.asteroids = [];
+            entities.lasers = [];
+            
+            document.getElementById('game-stats').classList.add('hidden');
+            document.getElementById('overlay-screen').classList.add('hidden');
+            game.running = true;
+            game.paused = false;
+        }
+
+        // 🏠 ပင်မမြေပုံကြီး (Main Map) သို့ တိုက်ရိုက်ပြန်သွားမည့် စနစ်
+        function goToHomeMap() {
+            game.running = false;
+            window.location.href = 'index.html?fromGame=true'; // ဤနေရာတွင် ပင်မမြေပုံ ဖိုင်အမည်ကို ပြောင်းလဲနိုင်ပါသည်
+        }
+
+        // 🔙 လက်ရှိ Stage ၏ လေ့ကျင့်ခန်း ၅ ခုရွေးချယ်ရာ Sub-map သို့ ပြန်သွားမည့် စနစ်
+        function goToSubMap() {
+            game.running = false;
+            // ဥပမာ - Stage 2 ဆိုလျှင် Stage 2 ရွေးချယ်မှုမြေပုံသို့ ပြန်သွားမည်
+            window.location.href = 'index.html?stage=3'; // ဤနေရာတွင် မိမိသွားလိုသော Stage ဖိုင်လမ်းကြောင်းကို ထည့်သွင်းပါ
+        }
+
+        function gameWin() {
+            game.running = false;
+            playSound('victory');
+            const titleEl = document.getElementById('game-title');
+            titleEl.innerText = "🏆 အောင်မြင်ပါသည်! 🏆";
+            titleEl.className = "text-4xl sm:text-5xl font-black text-amber-400 mb-2 burmese-font";
+            document.getElementById('game-subtitle').innerText = "ထူးချွန်လှပါပေတယ်။ သားသားမီးမီးတို့ 'ဌ' လေ့ကျင့်ခန်းအားလုံး ပြီးဆုံးပါပြီ။";
+            showStatsDisplay("🎉 အောင်ပွဲရလဒ်မှတ်တမ်း");
+            document.getElementById('start-btn').innerText = "🔄 ပြန်လည်ကစားမည်";
+        }
+
+        function gameOver() {
+            game.running = false;
+            const titleEl = document.getElementById('game-title');
+            titleEl.innerText = "နောက်တစ်ကြိမ် ပြန်ကြိုးစားရအောင်";
+            titleEl.className = "text-3xl sm:text-4xl font-black text-rose-500 mb-2 burmese-font";
+            document.getElementById('game-subtitle').innerText = "စိတ်မပျက်ပါနဲ့ဦးနော်။ ဒုံးပျံလေးကို ထပ်ပြီး မောင်းနှင်ကြည့်ရအောင်။";
+            showStatsDisplay("📊 ရလဒ်မှတ်တမ်း");
+            document.getElementById('start-btn').innerText = "🔄 ထပ်မံကြိုးစားမည်";
+        }
+
+        function showStatsDisplay(headerText) {
+            document.getElementById('stat-header').innerText = headerText;
+            document.getElementById('stat-coins').innerText = game.correctPops + " ကြိမ်";
+            document.getElementById('stat-kills').innerText = game.incorrectPops + " ကြိမ်";
+            document.getElementById('stat-level').innerText = `လေ့ကျင့်ခန်း ${Math.min(game.targetMaxLevel, player.level)}`;
+            document.getElementById('game-stats').classList.remove('hidden'); 
+            document.getElementById('overlay-screen').classList.remove('hidden');
+        }
+
+        document.getElementById('start-btn').onclick = startGame;
+        document.getElementById('home-btn').onclick = goToHomeMap;
+        document.getElementById('back-btn').onclick = goToSubMap;
+        document.getElementById('main-page-btn').onclick = goToHomeMap;
+        
+        lastTime = performance.now();
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>မြန်မာအက္ခရာ တူတူပုန်းတမ်း - ကမ်းခြေဗားရှင်း</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=600;700&family=Noto+Sans+Myanmar:wght=700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; user-select: none; background: #b3e5fc; }
+    
+    body {
+      font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 10px;
+    }
+
+    /* Device အားလုံးမှာ Layout ကွက်တိဖြစ်စေရန် Container စနစ် */
+    .responsive-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 800px;
+      transform-origin: center center;
+    }
+
+    /* ==========================================================================
+       HEADER PANEL
+       ========================================================================= */
+    .header-panel {
+      width: 100%; background: white; border: 4px solid #0288d1;
+      border-radius: 20px; padding: 10px 20px; display: flex; align-items: center;
+      justify-content: space-between; box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+      z-index: 10; margin-bottom: 12px; gap: 10px;
+    }
+    .nav-buttons { display: flex; gap: 8px; }
+    .btn-nav {
+      background: #e0f7fa; border: 2px solid #0288d1; border-radius: 50%;
+      width: 45px; height: 45px; font-size: 20px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 0 #0288d1; transition: all 0.1s;
+    }
+    .btn-nav:active { transform: translateY(3px); box-shadow: 0 1px 0 #0288d1; }
+
+    .instruction { font-size: 18px; font-weight: 700; color: #01579b; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .level-badge { background: #ff9800; color: white; padding: 2px 10px; border-radius: 10px; font-size: 14px; margin-right: 4px; }
+    .target-box {
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: 30px; font-weight: 900;
+      color: white; background: #0288d1; padding: 2px 20px; border-radius: 14px;
+      box-shadow: 0 4px 0 #01579b; animation: pulseTarget 1s infinite alternate;
+    }
+    @keyframes pulseTarget { 0% { transform: scale(1); } 100% { transform: scale(1.06); } }
+    .score-stars { font-size: 22px; color: #ffb300; letter-spacing: 2px; white-space: nowrap; }
+
+    /* ==========================================================================
+       GAME STAGE (REALISTIC CURVED BEACH & OCEAN THEME)
+       ========================================================================= */
+    .game-stage {
+      position: relative; width: 100%; aspect-ratio: 16/10;
+      background: linear-gradient(to bottom, #29b6f6 0%, #4fc3f7 40%, #81d4fa 60%);
+      border: 6px solid #0288d1; border-radius: 24px; overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    }
+
+    /* Ocean/Sea Layer */
+    .ocean-water { position: absolute; inset: 0; background: linear-gradient(135deg, #0288d1 0%, #00acc1 100%); z-index: 1; }
+    .wave-foam {
+      position: absolute; inset: 0; background: #ffffff; opacity: 0.6; z-index: 2;
+      clip-path: polygon(0 100%, 15% 78%, 32% 63%, 52% 53%, 72% 43%, 88% 28%, 100% 0%, 100% 100%);
+    }
+
+    /* Sandy Curved Beach Ground */
+    .beach-sand {
+      position: absolute; inset: 0; background: linear-gradient(145deg, #ffe082 60%, #ffd54f 100%); z-index: 3;
+      clip-path: polygon(0 100%, 18% 80%, 34% 65%, 53% 55%, 73% 45%, 89% 30%, 100% 5%, 100% 100%);
+    }
+
+    /* Sky Clouds */
+    .sky-cloud { position: absolute; background: white; border-radius: 50%; opacity: 0.85; z-index: 1; }
+    .cloud-1 { top: 12%; left: 10%; width: 100px; height: 34px; box-shadow: 40px 0 0 -5px white, -30px 5px 0 -2px white; }
+    .cloud-2 { top: 18%; right: 15%; width: 120px; height: 40px; box-shadow: 45px 5px 0 -5px white, -35px 0 0 0 white; opacity: 0.6; }
+
+    /* ==========================================================================
+       HIDING SLOTS & SCENERY GRAPHICS (UNTOUCHED GRAPHICS)
+       ========================================================================= */
+    .spot-container { position: absolute; z-index: 5; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .object-layer { position: absolute; inset: 0; z-index: 7; pointer-events: none; }
+
+    /* 1. သဲရဲတိုက်ကြီး (Sandcastle) */
+    .spot-sandcastle { bottom: 6%; left: 6%; width: 160px; height: 140px; }
+    .sand-base { position: absolute; bottom: 0; left: 10px; width: 140px; height: 45px; background: #dfae2f; border-radius: 25px 25px 6px 6px; }
+    .sand-tower-main { position: absolute; bottom: 40px; left: 55px; width: 50px; height: 75px; background: #d2a122; border-radius: 4px 4px 0 0; }
+    .sand-tower-left { position: absolute; bottom: 25px; left: 20px; width: 35px; height: 60px; background: #c59415; border-radius: 4px 4px 0 0; }
+    .sand-cone-roof { position: absolute; top: -26px; left: 50px; width: 60px; height: 32px; background: #ff7043; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
+    .sand-gate { position: absolute; bottom: 0; left: 65px; width: 30px; height: 32px; background: #5d4037; border-radius: 15px 15px 0 0; }
+
+    /* 2. ကမ်းခြေထီးနှင့် ကုလားထိုင် (Beach Umbrella & Lounge Chair) */
+    .spot-umbrella { bottom: 32%; left: 34%; width: 170px; height: 140px; }
+    .umbrella-pole { position: absolute; bottom: 0; left: 62px; width: 6px; height: 110px; background: #8d6e63; transform: rotate(-5deg); }
+    .umbrella-top { 
+      position: absolute; top: 0; left: 0; width: 135px; height: 55px; 
+      background: #e53935; border-radius: 70px 70px 10px 10px;
+      box-shadow: inset -25px 0 0 #ffb300, inset 25px 0 0 #1e88e5, inset -50px 0 0 #fb8c00;
+    }
+    .umbrella-tip { position: absolute; top: -6px; left: 63px; width: 4px; height: 8px; background: #5d4037; border-radius: 2px; }
+    
+    .beach-chair { position: absolute; bottom: 2px; left: 75px; width: 85px; height: 55px; }
+    .chair-wood-frame { position: absolute; bottom: 0; left: 0; width: 75px; height: 40px; border: 4px solid #b0afac; border-radius: 4px; transform: skewX(-20deg); }
+    .chair-backrest { position: absolute; bottom: 12px; left: 45px; width: 12px; height: 45px; border: 4px solid #b0afac; transform: rotate(30deg); border-radius: 4px; }
+    .chair-cloth {
+      position: absolute; bottom: 6px; left: 10px; width: 65px; height: 38px;
+      background: linear-gradient(to right, #ffb74d 25%, #ff9800 25%, #ff9800 50%, #ffb74d 50%, #ffb74d 75%, #ff9800 75%);
+      transform: skewX(-15deg) rotate(-5deg); border-radius: 2px;
+      box-shadow: inset 0 -4px 0 rgba(0,0,0,0.1);
+    }
+
+    /* 3. ပင်လယ်ကမာခရုခွံကြီး (Giant Clam Shell) */
+    .spot-clam { bottom: 5%; left: 46%; width: 110px; height: 75px; }
+    .clam-bottom { position: absolute; bottom: 0; left: 5px; width: 100px; height: 45px; background: #e0f2f1; border: 3px solid #b2dfdb; border-radius: 10px 10px 40px 40px; }
+    .clam-top { position: absolute; top: 0; left: 0; width: 110px; height: 45px; background: #b2dfdb; border-radius: 50% 50% 10px 10px; box-shadow: inset 0 8px 0 #80cbc4; }
+
+    /* 4. ရေကူးဘောကွင်းကြီး (Lifebuoy) */
+    .spot-lifebuoy { bottom: 28%; right: 26%; width: 95px; height: 95px; }
+    .buoy-ring {
+      position: absolute; inset: 0; background: white; border: 24px solid #e53935; border-radius: 50%;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15), inset 0 0 0 4px white;
+    }
+    .buoy-stripe { position: absolute; top: 0; left: 42px; width: 12px; height: 24px; background: white; box-shadow: 0 71px 0 white; }
+
+    /* 5. အုန်းပင်ဒီဇိုင်း (Realistic Beautiful Coconut Tree) */
+    .spot-palm { bottom: 8%; right: 4%; width: 180px; height: 230px; z-index: 6; }
+    .palm-sand-island { position: absolute; bottom: 0; right: 10px; width: 110px; height: 16px; background: #e0b034; border-radius: 50%; opacity: 0.5; }
+    .palm-trunk {
+      position: absolute; bottom: 10px; right: 55px; width: 24px; height: 160px;
+      background: linear-gradient(to right, #b58059, #8d5c36);
+      border-radius: 12px / 20px;
+      transform: rotate(-10deg); transform-origin: bottom center;
+      box-shadow: inset -5px 0 0 rgba(0,0,0,0.15);
+    }
+    .palm-trunk::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(to bottom, transparent, transparent 15px, rgba(0,0,0,0.08) 15px, rgba(0,0,0,0.08) 18px);
+    }
+    
+    .palm-leaves-crown { position: absolute; top: 12px; right: 20px; width: 150px; height: 100px; }
+    .palm-leaf { position: absolute; background: #388e3c; transform-origin: bottom center; box-shadow: inset 0 4px 0 #4caf50; }
+    .frond-left-1 { top: 25px; left: -30px; width: 85px; height: 40px; border-radius: 0 100% 0 100%; transform: rotate(-25deg); background: #2e7d32; }
+    .frond-left-2 { top: 5px; left: -20px; width: 90px; height: 45px; border-radius: 20% 100% 0 80%; transform: rotate(5deg); background: #388e3c; }
+    .frond-top { top: -20px; left: 25px; width: 50px; height: 85px; border-radius: 100% 100% 0 0; transform: rotate(-15deg); background: #4caf50; }
+    .frond-right-1 { top: 5px; right: -25px; width: 90px; height: 45px; border-radius: 100% 0 100% 0; transform: rotate(20deg); background: #2e7d32; }
+    .frond-right-2 { top: 30px; right: -20px; width: 80px; height: 38px; border-radius: 100% 0 100% 0; transform: rotate(50deg); background: #1b5e20; }
+    
+    .coconut-bunch { position: absolute; top: 40px; left: 55px; display: flex; gap: 2px; z-index: 8; }
+    .coconut-item { width: 18px; height: 22px; background: #795548; border-radius: 50% 50% 45% 45%; box-shadow: inset -3px -3px 0 #5d4037; }
+    .coconut-green { background: #81c784; box-shadow: inset -3px -3px 0 #4caf50; }
+
+    /* ==========================================================================
+       KIDS CHARACTER SYSTEM & DIRECTIONAL TRANSFORMS (UNTOUCHED DESIGN)
+       ========================================================================= */
+    .kid-character {
+      position: absolute; width: 70px; height: 100px; display: flex; flex-direction: column; align-items: center;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.25); z-index: 4; pointer-events: none;
+    }
+    
+    .spot-sandcastle .kid-character { left: 95px; bottom: 25px; }
+    .spot-umbrella .kid-character { left: 45px; bottom: 15px; }
+    .spot-clam .kid-character { left: 20px; bottom: 0px; }
+    .spot-lifebuoy .kid-character { left: 12px; bottom: -8px; }
+    .spot-palm .kid-character { right: 35px; bottom: 45px; }
+
+    .held-letter {
+      position: absolute; top: -46px; left: 50%; transform: translateX(-50%) scale(0);
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: 26px; font-weight: 900;
+      background: #e0f7fa; color: #006064; border: 3px solid #0288d1;
+      padding: 2px 14px; border-radius: 14px; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.12); line-height: 1.2; z-index: 10;
+    }
+    .held-letter::after {
+      content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+      border-width: 8px 8px 0; border-style: solid; border-color: #0288d1 transparent; display: block; width: 0;
+    }
+
+    .kid-head { width: 42px; height: 42px; background: #fbe9e7; border-radius: 50%; position: relative; border: 2px solid #37474f; z-index: 5; }
+    .kid-hair { position: absolute; top: -2px; left: -2px; right: -2px; height: 16px; background: #e65100; border-radius: 20px 20px 0 0; }
+    .kid-eyes { position: absolute; top: 16px; left: 8px; right: 8px; display: flex; justify-content: space-between; }
+    .kid-eyes::before, .kid-eyes::after { content: ''; width: 6px; height: 6px; background: #263238; border-radius: 50%; }
+    .kid-smile { position: absolute; bottom: 6px; left: 16px; width: 10px; height: 6px; border-bottom: 2px solid #263238; border-radius: 0 0 5px 5px; }
+    
+    .kid-body { 
+      width: 38px; height: 45px; background: #0288d1; border-radius: 12px 12px 0 0; margin-top: -2px; position: relative; z-index: 4;
+      opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Animation Matrix States */
+    .spot-sandcastle.peek .kid-character { transform: translateX(38px) translateY(-15px); }
+    .spot-umbrella.peek .kid-character { transform: translateX(-5px) translateY(-35px); }
+    .spot-clam.peek .kid-character { transform: translateY(-46px); }
+    .spot-lifebuoy.peek .kid-character { transform: translateY(-30px); }
+    .spot-palm.peek .kid-character { transform: translateX(32px) translateY(-30px); }
+
+    .spot-container.peek .held-letter { transform: translateX(-50%) scale(1); }
+    .spot-container.peek .kid-body { opacity: 1; transform: translateY(0); }
+
+    /* Success Jump State Animation */
+    .spot-sandcastle.success .kid-character { animation: winJumpSC 0.4s infinite alternate; }
+    @keyframes winJumpSC { 0% { transform: translateX(38px) translateY(-15px); } 100% { transform: translateX(38px) translateY(-38px); } }
+    .spot-umbrella.success .kid-character { animation: winJumpUMB 0.4s infinite alternate; }
+    @keyframes winJumpUMB { 0% { transform: translateX(-5px) translateY(-35px); } 100% { transform: translateX(-5px) translateY(-58px); } }
+    .spot-clam.success .kid-character { animation: winJumpCLAM 0.4s infinite alternate; }
+    @keyframes winJumpCLAM { 0% { transform: translateY(-46px); } 100% { transform: translateY(-68px); } }
+    .spot-lifebuoy.success .kid-character { animation: winJumpBUOY 0.4s infinite alternate; }
+    @keyframes winJumpBUOY { 0% { transform: translateY(-30px); } 100% { transform: translateY(-52px); } }
+    .spot-palm.success .kid-character { animation: winJumpPALM 0.4s infinite alternate; }
+    @keyframes winJumpPALM { 0% { transform: translateX(32px) translateY(-30px); } 100% { transform: translateX(32px) translateY(-55px); } }
+
+    .spot-container.success .kid-body { opacity: 1; transform: translateY(0); }
+
+    /* Wrong Shake Animation */
+    .spot-sandcastle.wrong .kid-character { animation: shakeSC 0.4s ease; }
+    @keyframes shakeSC { 0%, 100% { transform: translateX(38px) translateY(-15px); } 25% { transform: translateX(32px) translateY(-15px); } 75% { transform: translateX(44px) translateY(-15px); } }
+    .spot-umbrella.wrong .kid-character { animation: shakeUMB 0.4s ease; }
+    @keyframes shakeUMB { 0%, 100% { transform: translateX(-5px) translateY(-35px); } 25% { transform: translateX(-11px) translateY(-35px); } 75% { transform: translateX(1px) translateY(-35px); } }
+    .spot-clam.wrong .kid-character { animation: shakeCLAM 0.4s ease; }
+    @keyframes shakeCLAM { 0%, 100% { transform: translateY(-46px); } 25% { transform: translateX(-6px) translateY(-46px); } 75% { transform: translateX(6px) translateY(-46px); } }
+    .spot-lifebuoy.wrong .kid-character { animation: shakeBUOY 0.4s ease; }
+    @keyframes shakeBUOY { 0%, 100% { transform: translateY(-30px); } 25% { transform: translateX(-6px) translateY(-30px); } 75% { transform: translateX(6px) translateY(-30px); } }
+    .spot-palm.wrong .kid-character { animation: shakePALM 0.4s ease; }
+    @keyframes shakePALM { 0%, 100% { transform: translateX(32px) translateY(-30px); } 25% { transform: translateX(26px) translateY(-30px); } 75% { transform: translateX(38px) translateY(-30px); } }
+
+    /* ==========================================================================
+       INTRO / REWARD SCREENS (BURMESE LOCALIZATION)
+       ========================================================================= */
+    .intro-screen {
+      position: absolute; inset: 0; 
+      background: linear-gradient(to bottom, #e0f7fa 0%, #fffde7 100%);
+      z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center; transition: opacity 0.4s ease, pointer-events 0.4s;
+    }
+    .intro-screen.hide { opacity: 0; pointer-events: none; }
+    .intro-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 36px; font-weight: 900; color: #006064; margin-bottom: 14px; }
+    .intro-badge { font-family: 'Noto Sans Myanmar', sans-serif; background: #00bcd4; color: white; padding: 6px 24px; border-radius: 20px; font-weight: 700; margin-bottom: 24px; box-shadow: 0 4px 0 #0097a7; font-size: 18px; }
+    
+    .btn-action {
+      font-family: 'Noto Sans Myanmar', sans-serif; padding: 12px 48px; font-size: 20px; font-weight: 900;
+      color: white; background: #00acc1; border: none; border-radius: 16px; cursor: pointer; box-shadow: 0 6px 0 #007c91; z-index: 5;
+      transition: transform 0.1s;
+    }
+    .btn-action:active { transform: translateY(3px); box-shadow: 0 3px 0 #007c91; }
+
+    .reward-backdrop {
+      position: absolute; inset: 0; background: rgba(0,0,0,0.55);
+      z-index: 200; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .reward-backdrop.show { opacity: 1; pointer-events: auto; }
+    .reward-box {
+      background: white; border: 5px solid #ffca28; border-radius: 24px; padding: 35px 30px;
+      width: 90%; max-width: 440px; text-align: center; transform: scale(0.7); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+    }
+    .reward-backdrop.show .reward-box { transform: scale(1); }
+    .reward-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 26px; font-weight: 900; color: #e64a19; margin-bottom: 10px; }
+    .reward-letter-display { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 65px; font-weight: 900; color: #00acc1; margin: 10px 0; line-height: 1.2; }
+  </style>
+</head>
+<body>
+
+  <div class="responsive-wrapper" id="gameWrapper">
+    <!-- HEADER PANEL -->
+    <div class="header-panel">
+      <div class="nav-buttons">
+        <button class="btn-nav" onclick="goBackToSubMap()" title="နောက်သို့">⬅️</button>
+        <button class="btn-nav" onclick="goToMainMap()" title="ပင်မမြေပုံ">🏠</button>
+      </div>
+      <div class="instruction">
+        <span class="level-badge" id="levelBadge">အဆင့် ၁</span>
+        <span>သူငယ်ချင်းတို့ဆီက</span>
+        <div class="target-box" id="targetDisplay">ဋ</div>
+        <span>ကို ရှာပေးပါ။</span>
+      </div>
+      <div class="score-stars" id="starContainer">☆☆☆</div>
+    </div>
+
+    <!-- GAME STAGE -->
+    <div class="game-stage">
+      <div class="sky-cloud cloud-1"></div>
+      <div class="sky-cloud cloud-2"></div>
+      
+      <div class="ocean-water"></div>
+      <div class="wave-foam"></div>
+      <div class="beach-sand"></div>
+      
+      <!-- Slot 1: Sandcastle -->
+      <div class="spot-container spot-sandcastle" onclick="handleSpotClick(0)">
+        <div class="kid-character" id="kid0">
+          <div class="held-letter" id="letter0">-</div>
+          <div class="kid-head"><div class="kid-hair"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+          <div class="kid-body" style="background:#ff7043;"></div>
+        </div>
+        <div class="object-layer">
+          <div class="sand-base"></div>
+          <div class="sand-tower-left"></div>
+          <div class="sand-tower-main"></div>
+          <div class="sand-cone-roof"></div>
+          <div class="sand-gate"></div>
+        </div>
+      </div>
+
+      <!-- Slot 2: Umbrella & Chair -->
+      <div class="spot-container spot-umbrella" onclick="handleSpotClick(1)">
+        <div class="kid-character" id="kid1">
+          <div class="held-letter" id="letter1">-</div>
+          <div class="kid-head"><div class="kid-hair" style="background:#2d1a14;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+          <div class="kid-body" style="background:#ab47bc;"></div>
+        </div>
+        <div class="object-layer">
+          <div class="umbrella-pole"></div>
+          <div class="beach-chair">
+            <div class="chair-wood-frame"></div>
+            <div class="chair-backrest"></div>
+            <div class="chair-cloth"></div>
+          </div>
+          <div class="umbrella-top"></div>
+          <div class="umbrella-tip"></div>
+        </div>
+      </div>
+
+      <!-- Slot 3: Clam Shell -->
+      <div class="spot-container spot-clam" onclick="handleSpotClick(2)">
+        <div class="kid-character" id="kid2">
+          <div class="held-letter" id="letter2">-</div>
+          <div class="kid-head"><div class="kid-hair" style="background:#4e342e;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+          <div class="kid-body" style="background:#4cc9f0;"></div>
+        </div>
+        <div class="object-layer">
+          <div class="clam-bottom"></div>
+          <div class="clam-top"></div>
+        </div>
+      </div>
+
+      <!-- Slot 4: Lifebuoy -->
+      <div class="spot-container spot-lifebuoy" onclick="handleSpotClick(3)">
+        <div class="kid-character" id="kid3">
+          <div class="held-letter" id="letter3">-</div>
+          <div class="kid-head"><div class="kid-hair" style="background:#ef6c00;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+          <div class="kid-body" style="background:#ffca28;"></div>
+        </div>
+        <div class="object-layer">
+          <div class="buoy-ring"></div>
+          <div class="buoy-stripe"></div>
+        </div>
+      </div>
+
+      <!-- Slot 5: Coconut Palm Tree -->
+      <div class="spot-container spot-palm" onclick="handleSpotClick(4)">
+        <div class="kid-character" id="kid4">
+          <div class="held-letter" id="letter4">-</div>
+          <div class="kid-head"><div class="kid-hair" style="background:#26a69a;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+          <div class="kid-body" style="background:#ff70a6;"></div>
+        </div>
+        <div class="object-layer">
+          <div class="palm-sand-island"></div>
+          <div class="palm-trunk"></div>
+          <div class="coconut-bunch">
+            <div class="coconut-item"></div>
+            <div class="coconut-item coconut-green"></div>
+            <div class="coconut-item"></div>
+          </div>
+          <div class="palm-leaves-crown">
+            <div class="palm-leaf frond-left-1"></div>
+            <div class="palm-leaf frond-left-2"></div>
+            <div class="palm-leaf frond-top"></div>
+            <div class="palm-leaf frond-right-1"></div>
+            <div class="palm-leaf frond-right-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTRO SCREEN -->
+  <div class="intro-screen" id="welcomePanel">
+    <h1 class="intro-title">အက္ခရာသူငယ်ချင်းတို့ တူတူပုန်းတမ်း</h1>
+    <div class="intro-badge">သင်ခန်းစာ ၄ : ဋ ၊ ဌ ၊ ဍ ၊ ဎ ၊ ဏ</div>
+    <button class="btn-action" onclick="startGame()">ဂိမ်းစတင်ဆော့မည်</button>
+  </div>
+
+  <!-- REWARD / LEVEL COMPLETED POPUP -->
+  <div class="reward-backdrop" id="rewardPanel">
+    <div class="reward-box">
+      <h2 class="reward-title" id="rewardTitle">🎉 အောင်မြင်စွာ ရှာဖွေနိုင်ခဲ့ပါပြီ! 🎉</h2>
+      <p id="rewardSubText" style="font-family:'Noto Sans Myanmar'; color:#546e7a;">သူငယ်ချင်းလေးဆီက ရှာတွေ့လိုက်တဲ့ အက္ခရာကတော့ -</p>
+      <div class="reward-letter-display" id="rewardLetterBox">ဋ</div>
+      <button class="btn-action" style="background:#ff9800; box-shadow:0 6px 0 #e65100; margin-top: 10px;" id="rewardBtn" onclick="advanceToNextRound()">နောက်ထပ် အက္ခရာအသစ် ရှာမည်</button>
+    </div>
+  </div>
+
+  <script>
+    const lettersPoolList = ['ဋ', 'ဌ', 'ဍ', 'ဎ', 'ဏ'];
+    let assignedPositions = [];
+    let currentTargetLetter = '';
+    let isTransitioning = false;
+
+    let currentLevel = 1;      
+    let scoreProgress = 0;     
+    let targetsPerLevel = { 1: 3, 2: 4, 3: 5 }; 
+
+    function handleResize() {
+      const wrapper = document.getElementById('gameWrapper');
+      const baseWidth = 800;
+      const baseHeight = 570; 
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+
+      let scale = Math.min(windowWidth / baseWidth, windowHeight / baseHeight);
+      if (scale > 1) scale = 1; 
+      wrapper.style.transform = `scale(${scale})`;
+    }
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('load', handleResize);
+
+    // --- NAVIGATION CONTROLS ---
+    function goBackToSubMap() {
+      window.location.href = "index.html?fromGame=true&stage=4";
+    }
+
+    function goToMainMap() {
+      window.location.href = "index.html?fromGame=true";
+    }
+
+    // --- GAME ENGINE ---
+    function startGame() {
+      document.getElementById('welcomePanel').classList.add('hide');
+      currentLevel = 1;
+      scoreProgress = 0;
+      setupNewTargetRound();
+    }
+
+    function setupNewTargetRound() {
+      isTransitioning = false;
+      let randomPoolIndex = Math.floor(Math.random() * lettersPoolList.length);
+      currentTargetLetter = lettersPoolList[randomPoolIndex];
+      
+      let tempLettersArray = [...lettersPoolList];
+      assignedPositions = [];
+      
+      for(let i = 0; i < 5; i++) {
+        let randomIndex = Math.floor(Math.random() * tempLettersArray.length);
+        assignedPositions.push(tempLettersArray.splice(randomIndex, 1)[0]);
+        
+        document.getElementById(`letter${i}`).textContent = assignedPositions[i];
+        const parentElementNode = document.getElementById(`kid${i}`).parentElement;
+        parentElementNode.classList.remove('peek', 'success', 'wrong');
+      }
+      renderDashboardUI();
+    }
+
+    function renderDashboardUI() {
+      document.getElementById('levelBadge').textContent = `အဆင့် ${currentLevel}`;
+      document.getElementById('targetDisplay').textContent = currentTargetLetter;
+      
+      let totalStars = targetsPerLevel[currentLevel];
+      let starMarkup = '';
+      for(let i = 0; i < totalStars; i++) {
+        starMarkup += (i < scoreProgress) ? '★' : '☆';
+      }
+      document.getElementById('starContainer').textContent = starMarkup;
+    }
+
+    function handleSpotClick(spotIndex) {
+      if(isTransitioning) return;
+      
+      isTransitioning = true;
+      const clickedSpotContainer = document.getElementById(`kid${spotIndex}`).parentElement;
+      const discoveredLetter = assignedPositions[spotIndex];
+
+      clickedSpotContainer.classList.remove('wrong', 'peek', 'success');
+      void clickedSpotContainer.offsetWidth; 
+      clickedSpotContainer.classList.add('peek');
+
+      setTimeout(() => {
+        if(discoveredLetter === currentTargetLetter) {
+          clickedSpotContainer.classList.remove('peek');
+          clickedSpotContainer.classList.add('success');
+          document.getElementById('rewardLetterBox').textContent = currentTargetLetter;
+          scoreProgress++;
+          
+          setTimeout(() => { showRewardPopup(); }, 950);
+        } else {
+          clickedSpotContainer.classList.add('wrong');
+          setTimeout(() => {
+            clickedSpotContainer.classList.remove('wrong', 'peek');
+            isTransitioning = false;
+          }, 1200);
+        }
+      }, 400);
+    }
+
+    function showRewardPopup() {
+      const rewardPanel = document.getElementById('rewardPanel');
+      const rewardTitle = document.getElementById('rewardTitle');
+      const rewardSubText = document.getElementById('rewardSubText');
+      const rewardBtn = document.getElementById('rewardBtn');
+      let targetGoal = targetsPerLevel[currentLevel];
+
+      if (scoreProgress >= targetGoal) {
+        if (currentLevel < 3) {
+          rewardTitle.textContent = `🌟 အဆင့် ${currentLevel} ကို အောင်မြင်သွားပါပြီ! 🌟`;
+          rewardSubText.textContent = "နောက်ထပ် ပိုခက်တဲ့ အဆင့်ကို ဆက်ဆော့ကြစို့နော် ကလေးတို့ရေ...";
+          rewardBtn.textContent = `အဆင့် ${currentLevel + 1} သို့ ဆက်သွားမည်`;
+        } else {
+          rewardTitle.textContent = "🎉 သာဓုပါ ကလေးတို့ရေ! 🎉";
+          rewardSubText.textContent = "သင်ခန်းစာ ၄ (ဋ-ဏ) တူတူပုန်းတမ်း ဂိမ်းတစ်ခုလုံးကို အောင်မြင်စွာ ကစားပြီးသွားပါပြီရှင့်။";
+          rewardBtn.textContent = "➡️ နောက်ထပ် အက္ခရာတစ်ခုသို့";
+          rewardBtn.style.background = "#4caf50";
+          rewardBtn.style.boxShadow = "0 6px 0 #388e3c";
+        }
+      } else {
+        rewardTitle.textContent = "🎉 အောင်မြင်စွာ ရှာဖွေနိုင်ခဲ့ပါပြီ! 🎉";
+        rewardSubText.textContent = "သူငယ်ချင်းလေးဆီက ရှာတွေ့လိုက်တဲ့ အက္ခရာကတော့ -";
+        rewardBtn.textContent = "နောက်ထပ် အက္ခရာအသစ် ရှာမည်";
+        rewardBtn.style.background = "#ff9800";
+        rewardBtn.style.boxShadow = "0 6px 0 #e65100";
+      }
+      rewardPanel.classList.add('show');
+    }
+
+    function advanceToNextRound() {
+      document.getElementById('rewardPanel').classList.remove('show');
+      let targetGoal = targetsPerLevel[currentLevel];
+
+      if (scoreProgress >= targetGoal) {
+        if (currentLevel < 3) {
+          currentLevel++;
+          scoreProgress = 0;
+          setupNewTargetRound();
+        } else {
+          goBackToSubMap();
+        }
+      } else {
+        setupNewTargetRound();
+      }
+    }
+  </script>
+</body>
+</html>
