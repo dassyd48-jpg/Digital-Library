@@ -6,7 +6,7 @@
   <title>Paint the Burmese Letter ဏ - Spooky Alchemist Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -22,7 +22,7 @@
     }
 
     /* ==========================================================================
-       SPOOKY LAB ENVIRONMENT BACKGROUND COMPONENTS[cite: 3]
+       SPOOKY LAB ENVIRONMENT BACKGROUND COMPONENTS
        ========================================================================== */
     .magic-lab-bg {
       position: absolute; inset: 0; pointer-events: none;
@@ -136,10 +136,36 @@
     }
     .star-counter { font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: #eab308; display: flex; gap: 2px; }
 
-    /* Bottom Control Bar Layouts */
-    .bottom-bar {
-      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 16px; align-items: center;
+    /* ==========================================================================
+       GAME STAGE CONTAINERS (RESPONSIVE VIEWPORT)
+       ========================================================================== */
+    .stage-wrapper {
+      position: absolute; inset: 0; display: flex; align-items: center;
+      justify-content: center; z-index: 5; opacity: 0; visibility: hidden;
+      transition: opacity 0.4s, visibility 0.4s; padding: 20px;
+    }
+    .stage-wrapper.active { opacity: 1; visibility: visible; }
+
+    /* Level 1 Canvas & Controls Layout Column */
+    .canvas-frame-container {
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+      max-width: 90vw; max-height: 75vh; margin-left: 120px; /* Shift to clear witch character */
+    }
+    #paintCanvas {
+      background-color: rgba(255, 255, 255, 0.94); border-radius: 32px;
+      border: 6px dashed #a855f7; box-shadow: 0 20px 45px rgba(0,0,0,0.3);
+      width: min(55vw, 55vh, 440px); height: min(55vw, 55vh, 440px);
+      background-repeat: no-repeat; background-position: center; background-size: 80%;
+    }
+
+    /* Controls Group inside Canvas Box Container */
+    .controls-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      pointer-events: auto;
     }
     .palette-card {
       background: #ffffff; border: 3px solid #7e22ce; border-radius: 32px;
@@ -151,34 +177,27 @@
     }
     .color-swatch.active { border-color: #000000; transform: scale(1.15) translateY(-4px); }
     
+    .action-row {
+      display: flex;
+      gap: 12px;
+    }
     .action-pill {
       background: #a855f7; border: 3px solid #7e22ce; border-radius: 20px;
-      padding: 10px 24px; color: #ffffff; font-family: 'Noto Sans Myanmar', sans-serif;
+      padding: 8px 24px; color: #ffffff; font-family: 'Noto Sans Myanmar', sans-serif;
       font-size: clamp(0.95rem, 2.8vw, 1.2rem); font-weight: 800;
       cursor: pointer; box-shadow: 0 4px 0 #581c87; transition: all 0.1s; white-space: nowrap;
     }
     .action-pill:active { transform: translateY(4px); box-shadow: 0 2px 0 #581c87; }
-
-    /* ==========================================================================
-       GAME STAGE CONTAINERS (RESPONSIVE VIEWPORT)
-       ========================================================================== */
-    .stage-wrapper {
-      position: absolute; inset: 0; display: flex; align-items: center;
-      justify-content: center; z-index: 5; opacity: 0; visibility: hidden;
-      transition: opacity 0.4s, visibility 0.4s; padding: 20px;
+    
+    .action-pill.btn-clear {
+      background: #f97316; border-color: #c2410c; box-shadow: 0 4px 0 #7c2d12;
     }
-    .stage-wrapper.active { opacity: 1; visibility: visible; }
+    .action-pill.btn-clear:active { box-shadow: 0 2px 0 #7c2d12; }
 
-    /* Level 1 Canvas Framework Box */
-    .canvas-frame-container {
-      display: flex; flex-direction: column; align-items: center; gap: 12px;
-      max-width: 90vw; max-height: 70vh; margin-left: 120px; /* Shift to clear witch character */
-    }
-    #paintCanvas {
-      background-color: rgba(255, 255, 255, 0.94); border-radius: 32px;
-      border: 6px dashed #a855f7; box-shadow: 0 20px 45px rgba(0,0,0,0.3);
-      width: min(60vw, 60vh, 460px); height: min(60vw, 60vh, 460px);
-      background-repeat: no-repeat; background-position: center; background-size: 80%;
+    /* Toolbar Level 2 Score display */
+    .bottom-bar {
+      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 16px; align-items: center; z-index: 15;
     }
 
     /* Level 2 Flying Bats Play Zone Area */
@@ -194,7 +213,6 @@
       font-size: clamp(1.4rem, 3vw, 2rem); cursor: pointer; transform-origin: center;
       touch-action: none; user-select: none; -webkit-user-select: none; z-index: 20;
     }
-    /* Bat SVG Body Wings System Grid Vector */
     .bat-node::before {
       content: ''; position: absolute; inset: 0; z-index: -1;
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'><path d='M50,25 Q35,5 15,15 Q5,25 20,40 Q35,35 50,50 Q65,35 80,40 Q95,25 85,15 Q65,5 50,25 Z' fill='%232e1065' stroke='%23a855f7' stroke-width='2.5'/><circle cx='44' cy='25' r='2' fill='%23ef4444'/><circle cx='56' cy='25' r='2' fill='%23ef4444'/></svg>");
@@ -267,10 +285,25 @@
        RESPONSIVE CONFIGURATION FOR ALL COMPATIBLE DEVICES (PHONE + TABLET + PC)
        ========================================================================== */
     @media (max-width: 820px) {
-      .canvas-frame-container { margin-left: 0; }
+      .stage-wrapper { align-items: center; justify-content: center; padding-top: 40px; }
+      .canvas-frame-container { margin-left: 0; gap: 12px; }
+      #paintCanvas { max-width: 270px; max-height: 270px; border-radius: 24px; }
+      
+      .controls-wrapper { gap: 10px; }
+      .palette-card { padding: 6px 10px; gap: 8px; border-radius: 24px; box-shadow: 0 5px 0 #581c87; }
+      .color-swatch { width: 34px; height: 34px; border-width: 2px; }
+      .color-swatch.active { transform: scale(1.15) translateY(-2px); }
+      
+      .action-pill { padding: 6px 20px; border-radius: 14px; box-shadow: 0 3px 0 #581c87; font-size: 0.95rem; }
+      .action-pill.btn-clear { box-shadow: 0 3px 0 #7c2d12; }
+      
       /* Hide background decorations on small phones to maximize play area space */
       .witch-character, .cauldron-container, .magic-shelf { display: none !important; }
       .badge-title { font-size: 0.9rem; }
+      .bottom-bar { bottom: auto; top: 76px; }
+      .top-bar { top: 12px; left: 12px; right: 12px; }
+      .circle-btn { width: 42px; height: 42px; font-size: 1.2rem; box-shadow: 0 4px 0 #581c87; }
+      .badge-box { padding: 4px 10px; border-radius: 14px; }
     }
   </style>
 </head>
@@ -309,13 +342,7 @@
       </div>
     </div>
 
-    <!-- Toolbar Level 1 -->
-    <div class="bottom-bar interactive" id="paintToolbar">
-      <div class="palette-card" id="colorPalette"></div>
-      <button class="action-pill" id="btnCheck">ပြီးပါပြီ 🔮</button>
-    </div>
-
-    <!-- Toolbar Level 2 -->
+    <!-- Toolbar Level 2 Only Display Score Tracking -->
     <div class="bottom-bar" id="puzzleToolbar" style="display: none;">
       <div class="badge-box">
         <span class="badge-title">ဖမ်းမိသည့် 'ဏ' အရေအတွက်:</span>
@@ -328,6 +355,15 @@
   <div class="stage-wrapper" id="paintWrapper">
     <div class="canvas-frame-container">
       <canvas id="paintCanvas" width="500" height="500"></canvas>
+      
+      <!-- Palette & Controls (ဂိမ်းထဲရောက်မှသာ Canvas အောက်နားတွင် စုစည်းပေါ်လာမည့်အပိုင်း) -->
+      <div class="controls-wrapper">
+        <div class="palette-card" id="colorPalette"></div>
+        <div class="action-row">
+          <button class="action-pill btn-clear" id="btnClear">အသစ်ပြန်စမည်</button>
+          <button class="action-pill" id="btnCheck">ပြီးပါပြီ 🔮</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -336,7 +372,7 @@
     <div class="puzzle-grid" id="batSpawnerGrid"></div>
   </div>
 
-  <!-- Intro Start Modal Dialog Box[cite: 3] -->
+  <!-- Intro Start Modal Dialog Box -->
   <div class="screen-overlay" id="introScreen">
     <div class="modal-frame">
       <h2 class="modal-headline">မှော်ဆရာမလေးရဲ့ ဓာတ်ခွဲခန်း 🔮</h2>
@@ -371,7 +407,7 @@
 
     function setupSpookyMusic() {
       if (!audioCtx) return;
-      const notes = [220.00, 233.08, 277.18, 293.66, 349.23]; // Spooky Synth Style Notes
+      const notes = [220.00, 233.08, 277.18, 293.66, 349.23]; 
       let noteIdx = 0;
 
       function playNode(time) {
@@ -406,7 +442,7 @@
         gain.gain.setValueAtTime(0.15, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
         osc.start(t); osc.stop(t + 0.1);
       } 
-      else if (type === 'pop') { // Bat Flap Catch Squeak Sound
+      else if (type === 'pop') { 
         osc.type = 'sine'; osc.frequency.setValueAtTime(600, t);
         osc.frequency.exponentialRampToValueAtTime(1200, t + 0.15);
         gain.gain.setValueAtTime(0.2, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
@@ -435,7 +471,7 @@
     const levelTargets = [5, 10, 15];
     let loopSpawnerInterval = null;
 
-    // Palette Settings[cite: 3]
+    // Palette Settings
     const swatches = [
       { color: '#a855f7', type: 'solid' },
       { color: '#ec4899', type: 'solid' },
@@ -508,7 +544,6 @@
       
       document.getElementById('paintWrapper').classList.add('active');
       document.getElementById('puzzleWrapper').classList.remove('active');
-      document.getElementById('paintToolbar').style.display = 'flex';
       document.getElementById('puzzleToolbar').style.display = 'none';
 
       const headerBox = document.getElementById('levelIndicator');
@@ -522,14 +557,12 @@
     function setupPuzzleStage() {
       document.getElementById('paintWrapper').classList.remove('active');
       document.getElementById('puzzleWrapper').classList.add('active');
-      document.getElementById('paintToolbar').style.display = 'none';
       document.getElementById('puzzleToolbar').style.display = 'flex';
 
       score = 0;
       document.getElementById('scoreValue').textContent = score;
 
       if (loopSpawnerInterval) clearInterval(loopSpawnerInterval);
-      // Generate faster based on level difficulty tier
       const dynamicSpeed = Math.max(500, 1000 - (currentLevel * 150));
       loopSpawnerInterval = setInterval(spawnBatNode, dynamicSpeed);
     }
@@ -547,19 +580,16 @@
       
       bat.textContent = isTarget ? targetChar : noisePool[Math.floor(Math.random() * noisePool.length)];
       
-      // Horizontal positioning bounds calculation
       bat.style.left = (Math.random() * 70 + 5) + 'vw';
       bat.style.top = (Math.random() * 60 + 20) + 'vh';
       bat.style.opacity = '0';
       bat.style.transition = 'opacity 0.3s ease';
       
-      // Sine-wave drift speed variables
       let angleX = Math.random() * Math.PI * 2;
       let angleY = Math.random() * Math.PI * 2;
       const driftRadius = 2 + currentLevel * 0.6;
       let isCaptured = false;
 
-      // Animate flight path frame loop pattern
       function driftFrame() {
         if (!bat.parentElement || isCaptured) return;
         angleX += 0.03; angleY += 0.04;
@@ -595,7 +625,6 @@
         }
       }
 
-      // High Performance Touch Event Binding Engine Configuration
       bat.addEventListener('pointerdown', handleBatClick, { passive: false });
       bat.addEventListener('touchstart', handleBatClick, { passive: false });
 
@@ -603,7 +632,6 @@
       setTimeout(() => { bat.style.opacity = '1'; }, 50);
       requestAnimationFrame(driftFrame);
 
-      // Auto clear ghost nodes loop cycle safety line
       setTimeout(() => { if(bat.parentElement && !isCaptured) bat.remove(); }, 3500);
     }
 
@@ -672,6 +700,11 @@
       document.getElementById('introScreen').style.visibility = 'hidden';
       document.body.classList.add('game-active');
       setupPaintingStage();
+    };
+
+    document.getElementById('btnClear').onclick = () => {
+      playSFX('click');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
     };
 
     document.getElementById('btnCheck').onclick = () => { playSFX('click'); setupPuzzleStage(); };
