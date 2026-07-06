@@ -6,7 +6,7 @@
   <title>Burmese Letter ဎ Mastery - 3 Levels Challenge</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; width: 100%; overflow: hidden; }
@@ -25,78 +25,196 @@
        ========================================================================== */
     .nature-bg {
       position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(to bottom, #bae6fd 0%, #e0f2fe 40%, #f0fdf4 70%, #dcfce7 100%);
-      z-index: 1; overflow: hidden;
+      background: linear-gradient(180deg, #bae6fd 0%, #fed7aa 50%, #ffedd5 100%); z-index: 1;
     }
-
-    /* Hills */
     .nature-bg::before {
-      content: ''; position: absolute; bottom: 0; left: -10%; width: 120%; height: 25vh;
-      background: #86efac; border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-      filter: blur(1px); z-index: 2;
+      content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 26vh;
+      background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%); border-top: 6px solid #15803d; z-index: 2;
     }
     .nature-bg::after {
-      content: ''; position: absolute; bottom: 0; right: -20%; width: 130%; height: 32vh;
-      background: #4ade80; border-radius: 60% 60% 0 0 / 100% 100% 0 0;
-      opacity: 0.8; z-index: 1;
+      content: ''; position: absolute; left: -10%; right: -10%; bottom: -4vh; height: 22vh;
+      background: linear-gradient(180deg, #22c55e 0%, #14532d 100%); border-radius: 50% 50% 0 0; z-index: 3;
     }
 
-    /* Cloud Animation */
-    .cloud {
-      position: absolute; background: #ffffff; border-radius: 100px; opacity: 0.85;
-      animation: floatCloud var(--d, 35s) linear infinite; pointer-events: none; z-index: 2;
-    }
-    .cloud::before, .cloud::after {
-      content: ''; position: absolute; background: #ffffff; border-radius: 50%;
-    }
-    .cloud.c1 { width: 150px; height: 50px; top: 10%; --d: 40s; left: -160px; }
-    .cloud.c1::before { width: 70px; height: 70px; top: -35px; left: 20px; }
-    .cloud.c1::after { width: 50px; height: 50px; top: -25px; left: 75px; }
-
-    .cloud.c2 { width: 200px; height: 60px; top: 22%; --d: 55s; left: -220px; animation-delay: -15s; opacity: 0.7; }
-    .cloud.c2::before { width: 90px; height: 90px; top: -50px; left: 30px; }
-    .cloud.c2::after { width: 70px; height: 70px; top: -30px; left: 100px; }
-
-    @keyframes floatCloud {
-      0% { transform: translateX(0vw); }
-      100% { transform: translateX(125vw); }
-    }
-
-    /* THE BIG TREE ASSETS */
     .big-tree-trunk {
-      position: absolute; bottom: 12vh; right: 8%; width: 120px; height: 65vh;
-      background: linear-gradient(to right, #78350f, #92400e, #78350f);
-      border-radius: 30px 30px 10px 10px; z-index: 3; opacity: 0.95;
+      position: absolute; right: 12%; bottom: 15vh; width: 130px; height: 55vh;
+      background: linear-gradient(90deg, #78350f 0%, #92400e 40%, #b45309 70%, #78350f 100%);
+      border-radius: 12px 12px 0 0; z-index: 4; box-shadow: inset -10px 0 20px rgba(0,0,0,0.3);
     }
     .big-tree-foliage {
-      position: absolute; bottom: 50vh; right: -10%; width: 420px; height: 420px;
-      background: radial-gradient(circle, #166534 20%, #15803d 60%, #16a34a 100%);
-      border-radius: 50%; border: 8px solid #14532d; z-index: 4; opacity: 0.98;
-      box-shadow: inset -20px -20px 0 rgba(0,0,0,0.15), 0 15px 30px rgba(0,0,0,0.1);
+      position: absolute; right: -5%; bottom: 55vh; width: 440px; height: 440px;
+      background: radial-gradient(circle at 40% 40%, #22c55e 0%, #16a34a 50%, #14532d 100%);
+      border-radius: 50%; z-index: 5; filter: drop-shadow(0 15px 25px rgba(20,83,45,0.4));
     }
     .big-tree-foliage::before {
       content: ''; position: absolute; bottom: -30px; left: -40px; width: 220px; height: 220px;
-      background: radial-gradient(circle, #15803d, #16a34a); border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, #4ade80 0%, #15803d 100%); border-radius: 50%;
     }
 
-    /* Butterflies */
-    .butterfly {
-      position: absolute; font-size: 1.8rem; pointer-events: none; z-index: 5;
-      animation: flyAround var(--t, 14s) ease-in-out infinite alternate;
+    /* ==========================================================================
+        TOP HEADER TOOLBAR COMPONENT
+       ========================================================================== */
+    .top-bar {
+      position: absolute; top: 20px; left: 20px; right: 20px;
+      display: flex; justify-content: space-between; align-items: center; z-index: 500;
     }
-    @keyframes flyAround {
-      0% { transform: translate(0, 0) scaleX(1) rotate(0deg); }
-      30% { transform: translate(-8vw, -12vh) scaleX(1) rotate(15deg); }
-      50% { transform: translate(-18vw, -4vh) scaleX(-1) rotate(-10deg); }
-      70% { transform: translate(-28vw, -18vh) scaleX(-1) rotate(20deg); }
-      100% { transform: translate(-38vw, -8vh) scaleX(1) rotate(0deg); }
+    .circle-btn {
+      width: 54px; height: 54px; background: #ffffff; border: 3.5px solid #16a34a;
+      border-radius: 50%; font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 6px 0 #14532d, 0 10px 15px rgba(0,0,0,0.15); transition: transform 0.1s;
     }
+    .circle-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #14532d; }
+    
+    .badge-box {
+      background: #ffffff; border: 3.5px solid #16a34a; padding: 6px 18px; border-radius: 20px;
+      display: flex; align-items: center; gap: 8px; box-shadow: 0 6px 0 #14532d;
+    }
+    .badge-label { font-size: 0.9rem; font-weight: 700; color: #16a34a; text-transform: uppercase; letter-spacing: 0.5px; }
+    .badge-value { font-size: 1.2rem; font-weight: 800; color: #14532d; }
+
+    /* ==========================================================================
+        INTRO WELCOME DIALOG OVERLAY SCREEN
+       ========================================================================== */
+    .intro-overlay {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center; z-index: 800; opacity: 1; transition: opacity 0.4s ease;
+    }
+    .intro-box {
+      background: #ffffff; border: 6px solid #16a34a; padding: 40px; border-radius: 36px;
+      text-align: center; max-width: 500px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.2), 0 12px 0 #14532d;
+      transform: scale(1); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .intro-glyph {
+      font-size: 6rem; font-weight: 800; color: #15803d; line-height: 1.1; margin-bottom: 10px;
+      filter: drop-shadow(0 4px 0 #bbf7d0);
+    }
+    .intro-title { font-size: 2.2rem; font-weight: 800; color: #14532d; margin-bottom: 15px; }
+    .intro-text { font-size: 1.1rem; color: #334155; font-weight: 600; line-height: 1.6; margin-bottom: 30px; }
+
+    /* ==========================================================================
+        INTERACTIVE LESSON DISPLAY WRAPPER
+       ========================================================================== */
+    .stage-wrapper {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; z-index: 10;
+    }
+    
+    #paintCanvas {
+      background: #ffffff; border: 6px solid #16a34a; border-radius: 36px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15); cursor: crosshair; touch-action: none;
+    }
+
+    /* ==========================================================================
+        BOTTOM PANEL TOOLBARBAR COMPONENT
+       ========================================================================== */
+    .bottom-bar {
+      position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 20px; z-index: 50; width: auto;
+    }
+    .palette-card {
+      background: #ffffff; border: 3.5px solid #16a34a; padding: 10px 22px;
+      border-radius: 32px; display: flex; gap: 14px; box-shadow: 0 8px 0 #14532d;
+    }
+    .color-swatch {
+      width: 44px; height: 44px; border-radius: 50%; border: 3px solid #e2e8f0;
+      cursor: pointer; transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .color-swatch.active { transform: scale(1.25) translateY(-5px); border-color: #16a34a; box-shadow: 0 6px 10px rgba(0,0,0,0.15); }
+    
+    .action-pill {
+      background: #ffffff; border: 3.5px solid #16a34a; padding: 10px 26px; border-radius: 22px;
+      font-size: 1rem; font-weight: 700; color: #16a34a; cursor: pointer; box-shadow: 0 6px 0 #14532d;
+      transition: transform 0.1s; display: flex; align-items: center; gap: 6px;
+    }
+    .action-pill:active { transform: translateY(4px); box-shadow: 0 2px 0 #14532d; }
+    
+    .big-action-btn {
+      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+      border: 3.5px solid #ffffff; color: #ffffff; font-size: 1.1rem; font-weight: 800;
+      padding: 12px 32px; border-radius: 22px; cursor: pointer; box-shadow: 0 6px 0 #14532d, 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .big-action-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #14532d; }
+
+    /* ==========================================================================
+        🍁 AUTUMN FALLING PUZZLE INTERACTIVE SYSTEM
+       ========================================================================== */
+    .puzzle-workspace {
+      position: absolute; inset: 0; z-index: 100; display: none; overflow: hidden;
+    }
+    .puzzle-workspace.active { display: block; }
+
+    .leaf-node {
+      position: absolute; width: 85px; height: 85px; border-radius: 50% 0 50% 0;
+      border: 3px solid #ffffff; font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 1.8rem; font-weight: 800; color: #ffffff; display: flex; align-items: center;
+      justify-content: center; cursor: pointer; box-shadow: inset -4px -4px 12px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.15);
+      transform-style: preserve-3d; transition: transform 0.1s linear;
+    }
+    .leaf-node::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      border-radius: 50% 0 50% 0; background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 60%); pointer-events: none;
+    }
+
+    .leaf-hue-1 { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); }
+    .leaf-hue-2 { background: linear-gradient(135deg, #f97316 0%, #c2410c 100%); }
+    .leaf-hue-3 { background: linear-gradient(135deg, #facc15 0%, #a16207 100%); }
+    .leaf-hue-4 { background: linear-gradient(135deg, #a855f7 0%, #6b21a8 100%); }
+
+    .shake-err { animation: leafShakeTrigger 0.4s ease-in-out; }
+    @keyframes leafShakeTrigger {
+      0%, 100% { transform: translateX(0) rotate(var(--r, 0deg)); }
+      20%, 60% { transform: translateX(-12px) rotate(calc(var(--r, 0deg) - 8deg)); }
+      40%, 80% { transform: translateX(12px) rotate(calc(var(--r, 0deg) + 8deg)); }
+    }
+
+    /* Overlay Screens definitions */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px);
+      display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 900;
+    }
+    .modal-backdrop.active { display: flex; }
+    
+    .popup-btn {
+      background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color: #ffffff;
+      border: 4px solid #ffffff; font-size: 2rem; font-weight: 800; padding: 14px 60px;
+      border-radius: 24px; cursor: pointer; box-shadow: 0 10px 0 #92400e, 0 15px 30px rgba(0,0,0,0.3);
+      animation: bounceActionPulse 1s infinite alternate;
+    }
+    @keyframes bounceActionPulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.06); }
+    }
+
+    #particleEmitter { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+    .sparkle-dot { position: absolute; font-size: 2rem; animation: explosiveFly 1.2s ease-out forwards; }
+    @keyframes explosiveFly {
+      0% { transform: translate(0,0) scale(0.5); opacity: 1; }
+      100% { transform: translate(var(--mx), var(--my)) scale(1.2) rotate(270deg); opacity: 0; }
+    }
+
     /* ==========================================================================
         📱 MOBILE RESPONSIVE ADJUSTMENTS (FIXED FOR SCREEN OVERFLOW)
        ========================================================================== */
     @media (max-width: 760px) {
-      /* ------------ အပိုင်း (၁) ဆေးရောင်ခြယ်ခြင်း ဆိုင်ရာ ပြင်ဆင်ချက် ------------ */
-      /* Canvas ကို ဖုန်းမျက်နှာပြင်နှင့် ကိုက်ညီအောင် ချုံ့ပြီး အပေါ်သို့ တင်ခြင်း */
+      /* ၁။ Background နှင့် သစ်ပင်ကြီးကို ဖုန်းမျက်နှာပြင်နှင့် ကိုက်ညီအောင် ဖြတ်ချခြင်း */
+      .nature-bg::before { height: 18vh; }
+      .nature-bg::after { height: 22vh; }
+      .big-tree-trunk { height: 42vh; bottom: 8vh; width: 80px; right: 4%; }
+      .big-tree-foliage { width: 280px; height: 280px; right: -15%; bottom: 35vh; }
+      .big-tree-foliage::before { width: 140px; height: 140px; bottom: -15px; left: -20px; }
+
+      /* ၂။ Navigation အိုင်ကွန်များ ချုံ့ခြင်း */
+      .top-bar { top: 12px; left: 12px; right: 12px; }
+      .circle-btn { width: 44px; height: 44px; font-size: 1.2rem; border-width: 2.5px; box-shadow: 0 4px 0 #14532d; }
+      .badge-box { padding: 4px 10px; border-radius: 14px; border-width: 2.5px; box-shadow: 0 3px 0 #14532d; }
+
+      /* ၃။ Intro မိတ်ဆက်ဘုတ်ကို ဖုန်းမျက်နှာပြင်နှင့် ကိုက်ညီအောင် ညှိခြင်း */
+      .intro-box { padding: 20px; border-radius: 24px; border-width: 4px; box-shadow: 0 12px 0 #14532d; }
+      .intro-glyph { font-size: 4rem; }
+      .intro-title { font-size: 1.6rem; margin-bottom: 10px; }
+      .intro-text { font-size: 0.95rem; margin-bottom: 20px; }
+
+      /* ၄။ အပိုင်း (၁) ဆေးရောင်ခြယ် Canvas ကို ကျစ်ကျစ်လျစ်လျစ် ဖြစ်စေရန် ချုံ့ခြင်း */
       .stage-wrapper { padding-top: 60px; align-items: flex-start; }
       #paintCanvas { 
         max-width: 260px; 
@@ -105,637 +223,365 @@
         border-width: 4px; 
         margin-top: 10px;
       }
-      /* အောက်ခြေ Palette ဘားတန်းနှင့် ဖျက်မည်/ရှေ့သို့ ခလုတ်များကို အောက်ခြေအလယ်တွင် ပေါ်စေခြင်း */
+
+      /* ၅။ အောက်ခြေ Palette ဘားတန်းကို အပေါ်သို့ ဆွဲတင်ပြီး အလယ်ညှိခြင်း */
       .bottom-bar { bottom: 12px; gap: 10px; width: 92%; justify-content: center; }
       .palette-card { padding: 6px 12px; gap: 8px; border-radius: 24px; border-width: 2.5px; box-shadow: 0 5px 0 #14532d; }
       .color-swatch { width: 34px; height: 34px; border-width: 2px; }
       .color-swatch.active { transform: scale(1.15) translateY(-2px); }
       .action-pill { padding: 6px 16px; border-radius: 14px; border-width: 2.5px; box-shadow: 0 3px 0 #14532d; }
 
-      /* ------------ အပိုင်း (၂) အရွက်ဖမ်းသည့် Game ဆိုင်ရာ ပြင်ဆင်ချက် ------------ */
-      /* Background သစ်ပင်ကြီး၏ အမြင့်ကို ဖြတ်ချပြီး ခေါင်းစဉ်ဘောင်ကို အပေါ်သို့ ဆွဲတင်ခြင်း */
-      .nature-bg::before { height: 18vh; }
-      .nature-bg::after { height: 22vh; }
-      .big-tree-trunk { height: 42vh; bottom: 8vh; width: 80px; right: 4%; }
-      .big-tree-foliage { width: 280px; height: 280px; right: -15%; bottom: 35vh; }
-      .big-tree-foliage::before { width: 140px; height: 140px; bottom: -15px; left: -20px; }
-
-      /* JavaScript က ဖန်တီးပေးမည့် အရွက်ဖမ်းဂိမ်း ခေါင်းစဉ်ဘောင်နှင့် Scoreboard ကို အပေါ်သို့ ပို့ခြင်း */
+      /* ၆။ အပိုင်း (၂) အရွက်ဖမ်းသည့် နေရာရှိ စာသားဘောင်များ အပေါ်သို့ ဆွဲတင်ခြင်း */
       #puzzleToolbar { bottom: auto; top: 72px; }
       #puzzleToolbar .badge-box { box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
       
-      /* ဖမ်းရမည့် 'ဎ' သစ်ရွက်များ ဖုန်းမျက်နှာပြင်နှင့် ကိုက်ညီအောင် ချုံ့ခြင်း */
+      /* ၇။ ဖုန်းမျက်နှာပြင်နှင့် ကိုက်ညီအောင် 'ဎ' သစ်ရွက်များ ချုံ့ခြင်း */
       .leaf-node { width: 62px; height: 62px; font-size: 1.4rem; border-width: 2px; }
-
-      /* General UI Adjustments for Mobile */
-      .top-bar { top: 12px; left: 12px; right: 12px; }
-      .circle-btn { width: 44px; height: 44px; font-size: 1.2rem; border-width: 2.5px; box-shadow: 0 4px 0 #14532d; }
-      .badge-box { padding: 4px 10px; border-radius: 14px; border-width: 2.5px; box-shadow: 0 3px 0 #14532d; }
     }
-
-    /* ==========================================================================
-        UI INTERFACE LAYER (MOBILE RESPONSIVE TEXT)
-       ========================================================================== */
-    .ui-layer { position: absolute; inset: 0; z-index: 10; pointer-events: none; }
-    .interactive { pointer-events: auto; }
-
-    /* Top Navigation Elements */
-    .top-bar {
-      position: absolute; top: 16px; left: 16px; right: 16px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .nav-group { display: flex; gap: 12px; }
-    
-    .circle-btn {
-      width: 52px; height: 52px; border-radius: 50%; background: #ffffff;
-      border: 3px solid #15803d; color: #15803d; font-size: 1.5rem;
-      display: flex; align-items: center; justify-content: center; cursor: pointer;
-      box-shadow: 0 6px 0 #14532d; transition: transform 0.1s, box-shadow 0.1s;
-    }
-    .circle-btn:active {
-      transform: translateY(4px); box-shadow: 0 2px 0 #14532d;
-    }
-
-    /* Level & Score Badges Box */
-    .badge-box {
-      background: #ffffff; border: 3px solid #15803d; border-radius: 20px;
-      padding: 4px 14px; display: flex; align-items: center; gap: 6px;
-      box-shadow: 0 4px 0 #14532d;
-    }
-    .badge-title { 
-      font-family: 'Noto Sans Myanmar', sans-serif; 
-      font-weight: 800; 
-      color: #166534; 
-      font-size: clamp(0.85rem, 2.5vw, 1.1rem); 
-      white-space: nowrap; 
-    }
-    .star-counter { font-size: 1.3rem; color: #eab308; display: flex; gap: 2px; }
-
-    /* Bottom Toolbar Container */
-    .bottom-bar {
-      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 16px; align-items: center;
-    }
-    .palette-card {
-      background: #ffffff; border: 3px solid #15803d; border-radius: 32px;
-      padding: 8px 16px; display: flex; gap: 12px; box-shadow: 0 8px 0 #14532d;
-    }
-    .color-swatch {
-      width: 44px; height: 44px; border-radius: 50%; border: 3px solid #e2e8f0;
-      cursor: pointer; transition: transform 0.2s; position: relative;
-    }
-    .color-swatch.active { border-color: #0f172a; transform: scale(1.15) translateY(-4px); }
-    
-    .action-pill {
-      background: #22c55e; border: 3px solid #15803d; border-radius: 20px;
-      padding: 8px 20px; color: #ffffff; font-family: 'Noto Sans Myanmar', sans-serif;
-      font-size: clamp(0.95rem, 2.8vw, 1.2rem); font-weight: 800;
-      cursor: pointer; box-shadow: 0 4px 0 #14532d; transition: all 0.1s;
-      white-space: nowrap;
-    }
-    .action-pill:active { transform: translateY(4px); box-shadow: 0 2px 0 #14532d; }
-
-    #scoreValue {
-      font-size: clamp(1.1rem, 3.2vw, 1.4rem) !important;
-      font-weight: 800;
-    }
-
-    /* ==========================================================================
-        GAME PLAY STAGES VIEWPORT
-       ========================================================================== */
-    .stage-wrapper {
-      position: absolute; inset: 0; display: flex; align-items: center;
-      justify-content: center; z-index: 5; opacity: 0; visibility: hidden;
-      transition: opacity 0.4s, visibility 0.4s;
-    }
-    .stage-wrapper.active { opacity: 1; visibility: visible; }
-
-    /* Canvas Drawing Area */
-    #paintCanvas {
-      background-color: rgba(255, 255, 255, 0.88); border-radius: 40px;
-      border: 6px dashed #16a34a; box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-      max-width: 90vw; max-height: 65vh; aspect-ratio: 1/1;
-      background-repeat: no-repeat; background-position: center; background-size: 80%;
-    }
-
-    /* Falling Leaves Catching Challenge */
-    .puzzle-grid {
-      position: absolute; inset: 0; overflow: hidden; pointer-events: auto;
-    }
-
-    /* Falling Leaf Element */
-    .leaf-node {
-      position: absolute; width: 75px; height: 75px;
-      background: radial-gradient(circle at 35% 35%, #86efac 0%, #22c55e 70%, #16a34a 100%);
-      border: 3px solid #14532d; border-radius: 50% 0 50% 0; /* Leaf Shape */
-      box-shadow: 0 8px 16px rgba(0,0,0,0.12); cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      color: #ffffff; font-family: 'Noto Sans Myanmar', sans-serif; font-weight: 800; font-size: 1.8rem;
-      transform-origin: center;
-      touch-action: none;
-      user-select: none; -webkit-user-select: none;
-    }
-    .leaf-node.swaying {
-      animation: swayMotion 2.5s ease-in-out infinite alternate;
-    }
-    @keyframes swayMotion {
-      0% { transform: rotate(-15deg) translateX(-10px); }
-      100% { transform: rotate(15deg) translateX(10px); }
-    }
-    .leaf-node.wrong-shake {
-      animation: shakeAnim 0.4s linear !important; background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
-      border-color: #7f1d1d !important;
-    }
-    @keyframes shakeAnim {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-12px); }
-      40%, 80% { transform: translateX(12px); }
-    }
-
-    /* Leaf Burst Particles */
-    .leaf-particle {
-      position: absolute; font-size: 1.4rem; pointer-events: none;
-      animation: particleOut 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
-    }
-    @keyframes particleOut {
-      100% { transform: translate(var(--mx), var(--my)) scale(0); opacity: 0; }
-    }
-
-    /* Success Pop Burst Star Overlay */
-    .star {
-      position: absolute; font-size: 2.2rem; pointer-events: none; z-index: 99;
-      animation: explodeOut 1.2s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
-    }
-    @keyframes explodeOut {
-      0% { transform: translate(0, 0) scale(0.3) rotate(0deg); opacity: 1; }
-      80% { opacity: 1; }
-      100% { transform: translate(var(--dx), var(--dy)) scale(1.3) rotate(360deg); opacity: 0; }
-    }
-
-    /* ==========================================================================
-        MODALS & OVERLAYS (INTRO & VICTORY) - SMALL & BEAUTIFUL FOR MOBILE
-       ========================================================================== */
-    .screen-overlay {
-      position: absolute; inset: 0; background: rgba(20, 83, 45, 0.85);
-      z-index: 100; display: flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(8px); transition: all 0.4s;
-    }
-    .modal-frame {
-      background: #ffffff; border: 4px solid #22c55e; border-radius: 28px;
-      padding: 20px 16px; width: 88%; max-width: 360px; text-align: center;
-      box-shadow: 0 12px 0 #14532d;
-    }
-    .modal-headline {
-      font-family: 'Noto Sans Myanmar', sans-serif;
-      font-size: clamp(1.1rem, 3.8vw, 1.35rem) !important;
-      color: #166534; font-weight: 800; margin-bottom: 8px; line-height: 1.4;
-    }
-    .modal-body {
-      font-family: 'Noto Sans Myanmar', sans-serif;
-      font-size: clamp(0.85rem, 2.8vw, 0.95rem) !important;
-      color: #334155; line-height: 1.5; margin-bottom: 16px; font-weight: 600;
-    }
-    .big-action-btn {
-      background: linear-gradient(to bottom, #4ade80, #22c55e); border: 2.5px solid #15803d;
-      border-radius: 20px; padding: 8px 24px; color: #ffffff; 
-      font-family: 'Noto Sans Myanmar', sans-serif;
-      font-size: clamp(0.9rem, 3vw, 1.05rem) !important;
-      font-weight: 800; cursor: pointer; box-shadow: 0 4px 0 #14532d;
-      white-space: nowrap; transition: all 0.1s;
-    }
-    .big-action-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #14532d; }
   </style>
 </head>
 <body>
 
+  <div class="intro-overlay" id="welcomeIntroScreen">
+    <div class="intro-box">
+      <div class="intro-glyph">ဎ</div>
+      <h1 class="intro-title">ဗျည်းအက္ခရာ "ဎ"</h1>
+      <p class="intro-text">ဉာဏ်ကျယ်လေးတို့ရေ... "ဎ" အက္ခရာလေးကို လှလှပပ ဆေးရောင်ခြယ်ပြီး ရောင်စုံကြွေကျလာမယ့် "ဎ" သစ်ရွက်လေးတွေကို ပျော်ပျော်ပါးပါး ဖမ်းကြရအောင်။</p>
+      <button class="big-action-btn" id="startLessonBtn" style="padding: 14px 44px; font-size: 1.3rem;">စတင်မည် 🚀</button>
+    </div>
+  </div>
+
+  <header class="top-bar" id="gameHeader">
+    <button class="circle-btn" id="goBackBtn" title="နောက်သို့ ပြန်သွားရန်">🔙</button>
+    <div class="badge-box" id="levelIndicator">
+      <span class="badge-label">သင်ခန်းစာ:</span>
+      <span class="badge-value">ဎ (ဆေးရောင်ခြယ်)</span>
+    </div>
+    <button class="circle-btn" id="goHomeBtn" title="ပင်မစာမျက်နှာသို့">🏠</button>
+  </header>
+
   <div class="nature-bg">
-    <div class="cloud c1"></div>
-    <div class="cloud c2"></div>
     <div class="big-tree-trunk"></div>
     <div class="big-tree-foliage"></div>
-    <div class="butterfly" style="top: 25%; left: 45%; --t: 16s;">🦋</div>
-    <div class="butterfly" style="top: 40%; left: 60%; --t: 12s;">🦋</div>
   </div>
 
-  <div class="ui-layer">
-    <div class="top-bar">
-      <div class="nav-group interactive">
-        <button class="circle-btn" id="goBackBtn" title="နောက်သို့">⬅️</button>
-        <button class="circle-btn" id="goHomeBtn" title="ပင်မစာမျက်နှာ">🏠</button>
-      </div>
-      <div class="badge-box">
-        <span class="badge-title">LEVEL</span>
-        <div class="star-counter" id="levelIndicator">⭐</div>
-      </div>
-    </div>
-
-    <div class="bottom-bar interactive" id="paintToolbar">
-      <div class="palette-card" id="colorPalette"></div>
-      <button class="action-pill" id="btnCheck">ပြီးပါပြီ</button>
-    </div>
-
-    <div class="bottom-bar" id="puzzleToolbar" style="display: none;">
-      <div class="badge-box">
-        <span class="badge-title">ဖမ်းမိသည့် 'ဎ' အရေအတွက်:</span>
-        <span class="badge-title" id="scoreValue" style="color:#eab308;">0</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="stage-wrapper" id="paintWrapper">
+  <main class="stage-wrapper" id="paintStage">
     <canvas id="paintCanvas" width="500" height="500"></canvas>
-  </div>
+    
+    <footer class="bottom-bar" id="paintControlPanel">
+      <button class="action-pill" id="clearBtn">🧼 ဖျက်မည်</button>
+      <div class="palette-card" id="swatchGrid"></div>
+      <button class="big-action-btn" id="submitBtn">→ ရှေ့သို့</button>
+    </footer>
+  </main>
 
-  <div class="stage-wrapper" id="puzzleWrapper">
-    <div class="puzzle-grid" id="leafSpawnerGrid"></div>
-  </div>
-
-  <div class="screen-overlay" id="introScreen">
-    <div class="modal-frame">
-      <h2 class="modal-headline">မင်္ဂလာပါ သားတို့သမီးတို့ရေ</h2>
-      <p class="modal-body">
-        "ဎ" အက္ခရာ ဂိမ်းလေးကနေ ကြိုဆိုပါတယ်။ <br/>
-        ပထမဆုံး "ဎ" စာလုံးလေးကို လှလှပပ ရေးဆွဲကြမယ်။ ပြီးရင်တော့ သစ်ပင်ကြီးပေါ်က ကြွေကျလာမယ့် "ဎ" သစ်ရွက်လေးတွေကို လိုက်ဖမ်းကြမယ်နော်။
-      </p>
-      <button class="big-action-btn" id="btnStartGame">စတင်ကစားမည်</button>
+  <div class="puzzle-workspace" id="puzzleWrapper">
+    <div class="top-bar" id="puzzleToolbar" style="justify-content: center;">
+      <div class="badge-box">
+        <span class="badge-label" id="lblLevel">အဆင့်: ၁</span>
+        <span class="badge-label">•</span>
+        <span class="badge-value" id="lblScore">ဖမ်းမိသောအရွက်: ၀ / ၅</span>
+      </div>
     </div>
   </div>
 
-  <div class="screen-overlay" id="victoryScreen" style="opacity: 0; visibility: hidden;">
-    <div class="modal-frame">
-      <h2 class="modal-headline" id="victoryTitle">အံ့ဩစရာကောင်းလိုက်တာ! 🌟</h2>
-      <p class="modal-body" id="victoryMessage">သင်ခန်းစာ အဆင့်ကို အောင်မြင်စွာ ပြီးဆုံးသွားပါပြီ။</p>
-      <button class="big-action-btn" id="btnNextLevel">နောက်တစ်ဆင့် သွားမည် ➡️</button>
-    </div>
+  <div class="modal-backdrop" id="victoryModal">
+    <button class="popup-btn" id="modalActionBtn">ပြီးပါပြီ ✨</button>
   </div>
+
+  <div id="particleEmitter"></div>
 
   <script>
-    // Audio Web API Infrastructure
-    let audioCtx = null;
-    let bgMusicNode = null;
+    // ==========================================================================
+    // AUDIO PROCESSING ENGINE CORE COMPONENTS
+    // ==========================================================================
+    let audioContextInstance = null;
 
-    function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        playBackgroundMusic();
+    function activateAudioContext() {
+      if (!audioContextInstance) {
+        audioContextInstance = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioContextInstance.state === 'suspended') {
+        audioContextInstance.resume();
       }
     }
 
-    function playBackgroundMusic() {
-      if (!audioCtx) return;
-      const notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00]; 
-      let noteIdx = 0;
-
-      function scheduleNextNote(time) {
-        if (!bgMusicNode) return;
-        let osc = audioCtx.createOscillator();
-        let gain = audioCtx.createGain();
+    function playSFX(mode) {
+      activateAudioContext();
+      if (!audioContextInstance) return;
+      
+      const osc = audioContextInstance.createOscillator();
+      const volumeNode = audioContextInstance.createGain();
+      osc.connect(volumeNode);
+      volumeNode.connect(audioContextInstance.destination);
+      
+      const timestamp = audioContextInstance.currentTime;
+      
+      if (mode === 'click') {
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(notes[noteIdx], time);
-        noteIdx = (noteIdx + 1) % notes.length;
-        
-        gain.gain.setValueAtTime(0.06, time);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.8);
-        
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start(time);
-        osc.stop(time + 0.8);
-        
-        setTimeout(() => scheduleNextNote(audioCtx.currentTime), 900);
-      }
-
-      bgMusicNode = true;
-      scheduleNextNote(audioCtx.currentTime);
-    }
-
-    function playSFX(type) {
-      if (!audioCtx) return;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      const t = audioCtx.currentTime;
-
-      if (type === 'click') {
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, t);
-        gain.gain.setValueAtTime(0.2, t);
-        gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
-        osc.start(t); osc.stop(t + 0.1);
-      } 
-      else if (type === 'pop') { 
+        osc.frequency.setValueAtTime(520, timestamp);
+        volumeNode.gain.setValueAtTime(0.12, timestamp);
+        volumeNode.gain.exponentialRampToValueAtTime(0.01, timestamp + 0.06);
+        osc.start(timestamp); osc.stop(timestamp + 0.06);
+      } else if (mode === 'pop') {
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(440, t);
-        osc.frequency.exponentialRampToValueAtTime(880, t + 0.12);
-        gain.gain.setValueAtTime(0.3, t);
-        gain.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
-        osc.start(t); osc.stop(t + 0.15);
-      } 
-      else if (type === 'wrong') {
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(180, t);
-        osc.frequency.linearRampToValueAtTime(120, t + 0.25);
-        gain.gain.setValueAtTime(0.25, t);
-        gain.gain.exponentialRampToValueAtTime(0.01, t + 0.25);
-        osc.start(t); osc.stop(t + 0.25);
-      } 
-      else if (type === 'victory') {
-        const chords = [523.25, 659.25, 783.99, 1046.50]; 
-        chords.forEach((freq, idx) => {
-          const o = audioCtx.createOscillator();
-          const g = audioCtx.createGain();
-          o.type = 'sine';
-          o.frequency.setValueAtTime(freq, t + idx * 0.08);
-          g.gain.setValueAtTime(0.18, t + idx * 0.08);
-          g.gain.exponentialRampToValueAtTime(0.005, t + idx * 0.08 + 0.5);
-          o.connect(g); g.connect(audioCtx.destination);
-          o.start(t + idx * 0.08); o.stop(t + idx * 0.08 + 0.5);
+        osc.frequency.setValueAtTime(280, timestamp);
+        osc.frequency.exponentialRampToValueAtTime(620, timestamp + 0.12);
+        volumeNode.gain.setValueAtTime(0.18, timestamp);
+        volumeNode.gain.exponentialRampToValueAtTime(0.01, timestamp + 0.12);
+        osc.start(timestamp); osc.stop(timestamp + 0.12);
+      } else if (mode === 'victory') {
+        const chordNotes = [523.25, 659.25, 783.99, 1046.50];
+        chordNotes.forEach((pitch, step) => {
+          const o = audioContextInstance.createOscillator();
+          const g = audioContextInstance.createGain();
+          o.connect(g); g.connect(audioContextInstance.destination);
+          o.type = 'sine'; o.frequency.setValueAtTime(pitch, timestamp + (step * 0.07));
+          g.gain.setValueAtTime(0.14, timestamp + (step * 0.07));
+          g.gain.exponentialRampToValueAtTime(0.005, timestamp + (step * 0.07) + 0.25);
+          o.start(timestamp + (step * 0.07)); o.stop(timestamp + (step * 0.07) + 0.25);
         });
       }
     }
 
-    // State Variables
-    let currentLevel = 1;
-    let score = 0;
-    const levelTargets = [5, 10, 15];
-    let leafSpawningInterval = null;
+    // INTRO TRIGGER EVENTS
+    document.getElementById('startLessonBtn').onclick = () => {
+      playSFX('pop');
+      const intro = document.getElementById('welcomeIntroScreen');
+      intro.style.opacity = '0';
+      setTimeout(() => intro.remove(), 400);
+    };
 
-    // Palette Configuration
-    const swatches = [
-      { color: '#ef4444', type: 'solid' },
-      { color: '#3b82f6', type: 'solid' },
-      { color: '#eab308', type: 'solid' },
-      { color: '#db2777', type: 'solid' },
-      { color: 'rainbow', type: 'gradient' },
-      { color: '#cbd5e1', type: 'eraser' }
-    ];
-    let activeSwatch = swatches[0];
-
-    // Core Canvas Properties
+    // ==========================================================================
+    // DRAWING INTERACTIVE VECTOR ENGINE MANAGEMENT
+    // ==========================================================================
     const canvas = document.getElementById('paintCanvas');
     const ctx = canvas.getContext('2d');
     let isDrawing = false;
+    let selectedColor = '#f59e0b';
+    let lineThickness = 25;
+    let prevX = 0, prevY = 0;
 
-    // Build Custom Palette Buttons
-    const paletteBox = document.getElementById('colorPalette');
-    swatches.forEach(sw => {
-      const btn = document.createElement('div');
-      btn.className = 'color-swatch';
-      if (sw.type === 'solid') btn.style.backgroundColor = sw.color;
-      else if (sw.type === 'gradient') btn.style.background = 'linear-gradient(45deg, red, orange, yellow, green, blue, violet)';
-      else if (sw.type === 'eraser') {
-        btn.style.backgroundColor = '#ffffff';
-        btn.innerText = '🧼';
-        btn.style.display = 'flex'; btn.style.alignItems = 'center'; btn.style.justifyContent = 'center'; btn.style.fontSize = '1.2rem';
-      }
-      
-      btn.onclick = () => {
-        playSFX('click');
-        document.querySelectorAll('.color-swatch').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeSwatch = sw;
-      };
-      paletteBox.appendChild(btn);
-    });
-    paletteBox.children[0].classList.add('active');
+    const designPalettes = ['#f59e0b', '#ef4444', '#3b82f6', '#22c55e', '#ec4899', '#8b5cf6'];
 
-    function getEventCoords(e) {
-      const rect = canvas.getBoundingClientRect();
-      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-      const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-      return {
-        x: ((clientX - rect.left) / rect.width) * canvas.width,
-        y: ((clientY - rect.top) / rect.height) * canvas.height
-      };
-    }
-
-    function getBrushPattern() {
-      if (activeSwatch.type === 'eraser') return null;
-      if (activeSwatch.type === 'solid') return activeSwatch.color;
-      if (activeSwatch.type === 'gradient') {
-        const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        grad.addColorStop(0, '#ef4444'); grad.addColorStop(0.2, '#f97316');
-        grad.addColorStop(0.4, '#eab308'); grad.addColorStop(0.6, '#22c55e');
-        grad.addColorStop(0.8, '#3b82f6'); grad.addColorStop(1, '#a855f7');
-        return grad;
-      }
-      return '#000000';
+    function buildPaletteUI() {
+      const wrapper = document.getElementById('swatchGrid');
+      designPalettes.forEach((colorHex, idx) => {
+        const item = document.createElement('div');
+        item.className = 'color-swatch' + (idx === 0 ? ' active' : '');
+        item.style.backgroundColor = colorHex;
+        item.onclick = () => {
+          playSFX('click');
+          selectedColor = colorHex;
+          document.querySelectorAll('.color-swatch').forEach(el => el.classList.remove('active'));
+          item.classList.add('active');
+        };
+        wrapper.appendChild(item);
+      });
     }
 
     function startDrawing(e) {
+      activateAudioContext();
       isDrawing = true;
-      const coords = getEventCoords(e);
-      ctx.beginPath();
-      ctx.moveTo(coords.x, coords.y);
+      const boundingBox = canvas.getBoundingClientRect();
+      prevX = ((e.clientX || e.touches[0].clientX) - boundingBox.left) * (canvas.width / boundingBox.width);
+      prevY = ((e.clientY || e.touches[0].clientY) - boundingBox.top) * (canvas.height / boundingBox.height);
     }
 
     function draw(e) {
       if (!isDrawing) return;
-      const coords = getEventCoords(e);
-      
-      ctx.lineWidth = activeSwatch.type === 'eraser' ? 36 : 16;
+      const boundingBox = canvas.getBoundingClientRect();
+      const currentX = ((e.clientX || e.touches[0].clientX) - boundingBox.left) * (canvas.width / boundingBox.width);
+      const currentY = ((e.clientY || e.touches[0].clientY) - boundingBox.top) * (canvas.height / boundingBox.height);
+
+      ctx.lineWidth = lineThickness;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
+      ctx.strokeStyle = selectedColor;
 
-      if (activeSwatch.type === 'eraser') {
-        ctx.globalCompositeOperation = 'destination-out';
-      } else {
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.strokeStyle = getBrushPattern();
-      }
-
-      ctx.lineTo(coords.x, coords.y);
+      ctx.beginPath();
+      ctx.moveTo(prevX, prevY);
+      ctx.lineTo(currentX, currentY);
       ctx.stroke();
+
+      prevX = currentX;
+      prevY = currentY;
     }
 
     function stopDrawing() { isDrawing = false; ctx.beginPath(); }
 
-    function setupPaintingStage() {
-      if (leafSpawningInterval) clearInterval(leafSpawningInterval);
-      document.getElementById('leafSpawnerGrid').innerHTML = '';
-      
-      document.getElementById('paintWrapper').classList.add('active');
-      document.getElementById('puzzleWrapper').classList.remove('active');
-      document.getElementById('paintToolbar').style.display = 'flex';
-      document.getElementById('puzzleToolbar').style.display = 'none';
-
-      const headerBox = document.getElementById('levelIndicator');
-      headerBox.innerHTML = '';
-      for(let i=0; i<currentLevel; i++) headerBox.innerHTML += '⭐';
-
+    document.getElementById('clearBtn').onclick = () => {
+      playSFX('click');
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.globalCompositeOperation = 'source-over';
+    };
+
+    document.getElementById('submitBtn').onclick = () => {
+      playSFX('victory');
+      document.getElementById('paintStage').style.display = 'none';
+      document.getElementById('levelIndicator').style.display = 'none';
+      document.getElementById('puzzleWrapper').classList.add('active');
+      initiatePuzzleChallenge();
+    };
+
+    // ==========================================================================
+    // AUTUMN LEAVES SIMULATION GAME LOGIC FIELD
+    // ==========================================================================
+    let currentStageLevel = 1;
+    let quotaLeavesTarget = 5;
+    let accruedLeavesScore = 0;
+    let leafSpawningInterval = null;
+    const distractingGlyphs = ['တ', 'ဌ', 'ဍ', 'ထ', 'ဓ'];
+
+    function initiatePuzzleChallenge() {
+      currentStageLevel = 1;
+      launchStageDifficulty(1);
     }
 
-    function setupPuzzleStage() {
-      document.getElementById('paintWrapper').classList.remove('active');
-      document.getElementById('puzzleWrapper').classList.add('active');
-      document.getElementById('paintToolbar').style.display = 'none';
-      document.getElementById('puzzleToolbar').style.display = 'flex';
-
-      score = 0;
-      document.getElementById('scoreValue').textContent = score;
+    function launchStageDifficulty(lvlNum) {
+      currentStageLevel = lvlNum;
+      accruedLeavesScore = 0;
+      quotaLeavesTarget = lvlNum === 1 ? 5 : (lvlNum === 2 ? 10 : 15);
+      
+      document.getElementById('lblLevel').textContent = `အဆင့်: ${currentStageLevel}`;
+      refreshScoreDisplay();
 
       if (leafSpawningInterval) clearInterval(leafSpawningInterval);
-      leafSpawningInterval = setInterval(spawnLeafNode, 900);
+      const productionFrequency = Math.max(1200 - (lvlNum * 220), 500);
+      leafSpawningInterval = setInterval(generateLeafParticle, productionFrequency);
     }
 
-    function spawnLeafNode() {
-      const hostGrid = document.getElementById('leafSpawnerGrid');
-      if (!hostGrid) return;
+    function refreshScoreDisplay() {
+      document.getElementById('lblScore').textContent = `ဖမ်းမိသောအရွက်: ${accruedLeavesScore} / ${quotaLeavesTarget}`;
+    }
+
+    function generateLeafParticle() {
+      const container = document.getElementById('puzzleWrapper');
+      if (!container || !container.classList.contains('active')) return;
 
       const leaf = document.createElement('div');
-      leaf.className = 'leaf-node swaying';
-      
-      const targetChar = 'ဎ';
-      const noisePool = ['လ', 'ပ', 'ဃ', 'ယ'];
-      const isTarget = Math.random() < 0.4;
-      
-      leaf.textContent = isTarget ? targetChar : noisePool[Math.floor(Math.random() * noisePool.length)];
-      
-      leaf.style.left = (Math.random() * 75 + 5) + 'vw';
-      leaf.style.top = '-90px';
-      
-      let positionY = -90;
-      const fallSpeed = 2 + currentLevel * 0.8;
-      let hasBeenClicked = false;
+      const randomHueClass = `leaf-hue-${Math.floor(Math.random() * 4) + 1}`;
+      leaf.className = `leaf-node ${randomHueClass}`;
 
-      function frameUpdate() {
-        if (!leaf.parentElement) return;
-        positionY += fallSpeed;
-        leaf.style.top = positionY + 'px';
+      const targetValidity = Math.random() > 0.4;
+      const characterLabel = targetValidity ? 'ဎ' : distractingGlyphs[Math.floor(Math.random() * distractingGlyphs.length)];
+      leaf.innerHTML = `<span>${characterLabel}</span>`;
 
-        if (positionY > window.innerHeight) {
+      let horizontalX = Math.random() * (window.innerWidth - 90);
+      let verticalY = -95;
+      let descentVelocity = 1.5 + (currentStageLevel * 0.5) + Math.random() * 1.5;
+      
+      let waveAngle = 0;
+      let waveFrequency = 0.02 + Math.random() * 0.03;
+      let waveAmplitude = 15 + Math.random() * 25;
+      let continuousRotation = Math.random() * 360;
+
+      leaf.style.left = horizontalX + 'px';
+      leaf.style.top = verticalY + 'px';
+      leaf.style.setProperty('--r', continuousRotation + 'deg');
+      container.appendChild(leaf);
+
+      function cascadeTick() {
+        if (!leaf.parentNode) return;
+        verticalY += descentVelocity;
+        waveAngle += waveFrequency;
+        
+        const deltaX = Math.sin(waveAngle) * waveAmplitude;
+        leaf.style.top = verticalY + 'px';
+        leaf.style.transform = `translateX(${deltaX}px) rotate(${continuousRotation + (waveAngle * 15)}deg)`;
+
+        if (verticalY > window.innerHeight) {
           leaf.remove();
         } else {
-          requestAnimationFrame(frameUpdate);
+          requestAnimationFrame(cascadeTick);
         }
       }
+      requestAnimationFrame(cascadeTick);
 
-      // HIGHLY RESPONSIVE MULTI-TOUCH/POINTER EVENT
-      function handleLeafTap(e) {
-        if (hasBeenClicked) return;
-        e.preventDefault();
-        e.stopPropagation();
+      const claimTargetLeaf = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         
-        if (isTarget) {
-          hasBeenClicked = true;
+        if (targetValidity) {
           playSFX('pop');
-          score++;
-          document.getElementById('scoreValue').textContent = score;
-          createLeafPopBurst(leaf.offsetLeft + 35, leaf.offsetTop + 35);
+          accruedLeavesScore++;
+          createExplosionCloud(leaf.offsetLeft + 35, leaf.offsetTop + 35);
           leaf.remove();
-
-          if (score >= levelTargets[currentLevel - 1]) {
-            triggerLevelVictory();
+          refreshScoreDisplay();
+          
+          if (accruedLeavesScore >= quotaLeavesTarget) {
+            evaluateGameProgression();
           }
         } else {
-          playSFX('wrong');
-          leaf.classList.remove('swaying');
-          leaf.classList.add('wrong-shake');
-          setTimeout(() => {
-            leaf.classList.remove('wrong-shake');
-            leaf.classList.add('swaying');
-          }, 400);
+          playSFX('click');
+          leaf.classList.add('shake-err');
+          setTimeout(() => leaf.classList.remove('shake-err'), 400);
         }
-      }
+      };
 
-      // Fast response for modern touch devices
-      leaf.addEventListener('pointerdown', handleLeafTap, { passive: false });
-      leaf.addEventListener('touchstart', handleLeafTap, { passive: false });
-
-      hostGrid.appendChild(leaf);
-      requestAnimationFrame(frameUpdate);
+      leaf.addEventListener('mousedown', claimTargetLeaf);
+      leaf.addEventListener('touchstart', claimTargetLeaf, { passive: false });
     }
 
-    function createLeafPopBurst(x, y) {
-      const grid = document.getElementById('leafSpawnerGrid');
-      for (let i = 0; i < 6; i++) {
-        const p = document.createElement('div');
-        p.className = 'leaf-particle';
-        p.textContent = '🍃';
-        p.style.left = x + 'px'; p.style.top = y + 'px';
-        const angle = Math.random() * Math.PI * 2;
-        const radius = 40 + Math.random() * 50;
-        p.style.setProperty('--mx', Math.cos(angle) * radius + 'px');
-        p.style.setProperty('--my', Math.sin(angle) * radius + 'px');
-        grid.appendChild(p);
-        setTimeout(() => p.remove(), 600);
-      }
-    }
-
-    function triggerLevelVictory() {
-      if (leafSpawningInterval) clearInterval(leafSpawningInterval);
-      document.getElementById('leafSpawnerGrid').innerHTML = '';
+    function evaluateGameProgression() {
+      clearInterval(leafSpawningInterval);
+      document.querySelectorAll('.leaf-node').forEach(n => n.remove());
       playSFX('victory');
-      triggerExplosionStars();
 
-      const modal = document.getElementById('victoryScreen');
-      const title = document.getElementById('victoryTitle');
-      const msg = document.getElementById('victoryMessage');
-      const nextBtn = document.getElementById('btnNextLevel');
+      const modal = document.getElementById('victoryModal');
+      const actionBtn = document.getElementById('modalActionBtn');
 
-      modal.style.opacity = '1';
-      modal.style.visibility = 'visible';
-
-      if (currentLevel < 3) {
-        title.textContent = "အုန်းမွှေးလုံးလေးလို တော်လိုက်တာ! 🥳";
-        msg.innerHTML = `အဆင့် ${currentLevel} ကို စွမ်းစွမ်းတမံ ပြီးမြောက်သွားပါပြီ။ <br/> နောက်ထပ် စိန်ခေါ်မှုအဆင့်သို့ တက်လှမ်းကြရအောင်။`;
-        nextBtn.textContent = "နောက်တစ်ဆင့် သွားမည် ➡️";
+      if (currentStageLevel < 3) {
+        actionBtn.textContent = `Level ${currentStageLevel + 1} သို့ တက်လှမ်းမည် →`;
+        modal.classList.add('active');
       } else {
-        title.textContent = "💎 သာဓုပါ ကလေးတို့ရေ! 💎";
-        msg.innerHTML = `"ဎ" အက္ခရာကို အဆင့် ၃ ဆင့်စလုံးမှာ ပိုင်နိုင်စွာ မှတ်မိပြီး <br/> သစ်ပင်ကြီးရဲ့ ရွှေရောင်သစ်ရွက်အားလုံးကို အောင်မြင်စွာ စုဆောင်းနိုင်ခဲ့ပါပြီ။`;
-        nextBtn.textContent = "အစကနေ ပြန်ကစားမည် 🔄";
+        actionBtn.textContent = `ပြီးပါပြီ ✨`;
+        modal.classList.add('active');
       }
     }
 
-    function triggerExplosionStars() {
-      const host = document.body;
-      const items = ['✨', '⭐', '💎', '🍃', '🍂'];
-      for (let i = 0; i < 35; i++) {
-        const el = document.createElement('div');
-        el.className = 'star';
-        el.textContent = items[Math.floor(Math.random() * items.length)];
-        el.style.left = '50vw'; el.style.top = '50vh';
-        const angle = Math.random() * Math.PI * 2;
-        const dist = 80 + Math.random() * 220;
-        el.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
-        el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
-        host.appendChild(el);
-        setTimeout(() => el.remove(), 1200);
-      }
-    }
-
-    // Wiring Action Event Handlers
-    document.getElementById('btnStartGame').onclick = () => {
-      initAudio();
+    document.getElementById('modalActionBtn').onclick = () => {
       playSFX('click');
-      document.getElementById('introScreen').style.opacity = '0';
-      document.getElementById('introScreen').style.visibility = 'hidden';
-      setupPaintingStage();
-    };
-
-    document.getElementById('btnCheck').onclick = () => {
-      playSFX('click');
-      setupPuzzleStage();
-    };
-
-    document.getElementById('btnNextLevel').onclick = () => {
-      playSFX('click');
-      document.getElementById('victoryScreen').style.opacity = '0';
-      document.getElementById('victoryScreen').style.visibility = 'hidden';
+      document.getElementById('victoryModal').classList.remove('active');
       
-      if (currentLevel < 3) {
-        currentLevel++;
+      if (currentStageLevel < 3) {
+        launchStageDifficulty(currentStageLevel + 1);
       } else {
-        currentLevel = 1;
+        window.location.href = 'index.html?stage=5';
       }
-      setupPaintingStage();
     };
 
-    // NAVIGATION SYSTEM ACTIONS LOGIC
+    function createExplosionCloud(posX, posY) {
+      const parent = document.getElementById('particleEmitter');
+      const symbols = ['🍁', '🍂', '✨', '💛', '🧡'];
+      for (let i = 0; i < 8; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'sparkle-dot';
+        dot.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        dot.style.left = posX + 'px';
+        dot.style.top = posY + 'px';
+        
+        const polarAngle = Math.random() * Math.PI * 2;
+        const radiusDist = 35 + Math.random() * 65;
+        dot.style.setProperty('--mx', Math.cos(polarAngle) * radiusDist + 'px');
+        dot.style.setProperty('--my', Math.sin(polarAngle) * radiusDist + 'px');
+        
+        parent.appendChild(dot);
+        setTimeout(() => dot.remove(), 1100);
+      }
+    }
+
+    function setupPaintingStage() {
+      document.getElementById('puzzleWrapper').classList.remove('active');
+      document.getElementById('paintStage').style.display = 'flex';
+      document.getElementById('levelIndicator').style.display = 'flex';
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // ==========================================================================
+    // SYSTEM LIFECYCLE INITIALIZATION BINDINGS
+    // ==========================================================================
+    buildPaletteUI();
+
     document.getElementById('goHomeBtn').onclick = () => {
       playSFX('click');
       if (leafSpawningInterval) clearInterval(leafSpawningInterval);
@@ -765,6 +611,7 @@
 
     // "ဎ" Guideline Trace SVG Overlay Vector Definition
     canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='74%' font-family='Noto Sans Myanmar' font-size='380' font-weight='800' fill='none' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='12,12' text-anchor='middle'>ဎ</text></svg>\")";
+    canvas.style.backgroundSize = "100% 100%";
   </script>
 </body>
 </html>
