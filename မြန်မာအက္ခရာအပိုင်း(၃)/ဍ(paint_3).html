@@ -179,29 +179,87 @@
     .heading-text { font-size: 24px; font-weight: 700; color: #ffffff; }
     .heading-glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #475569; font-size: 32px; font-weight: 800; background: #ffffff; padding: 0 15px; border-radius: 8px; }
     
-    .stage { display: flex; gap: 25px; align-items: stretch; justify-content: center; width: 100%; }
-    .wood-frame { position: relative; padding: 14px; border-radius: 24px; background-color: #475569; box-shadow: 0 16px 35px rgba(0,0,0,0.3); border: 4px solid #ffffff; }
-    .canvas-container { background: #ffffff; border-radius: 16px; overflow: hidden; position: relative; }
-    canvas { display: block; cursor: crosshair; touch-action: none; }
-    
-    .panel { width: 125px; background-color: #f8fafc; border-radius: 28px; border: 3px solid #cbd5e1; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; gap: 12px; box-shadow: 0 16px 35px rgba(0,0,0,0.2); }
-    .panel-title { font-size: 12px; font-weight: 700; text-align: center; color: #475569; margin-bottom: 2px; }
-    
-    .eraser { width: 100%; height: 50px; border-radius: 20px; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #e2e8f0; box-shadow: 0 3px 0 #cbd5e1; }
-    .eraser.selected { border-color: #3b82f6; background: #eff6ff; }
-    .eraser-icon { font-size: 24px; transform: rotate(-10deg); }
-    
-    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
-    .brush { aspect-ratio: 1/1; border-radius: 14px; cursor: pointer; position: relative; background: white; border: 2px solid #f1f5f9; box-shadow: 0 3px 0 #e2e8f0; }
-    .brush.selected { border-color: #3b82f6; transform: scale(1.05); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #3b82f6; }
-    .swatch { position: absolute; inset: 0; border-radius: 11px; }
-    
-    .action-container { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: auto; }
-    .btn { width: 100%; height: 48px; border-radius: 16px; border: none; color: white; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
-    .btn-reset { background-color: #38bdf8; box-shadow: 0 4px 0 #0284c7; }
-    .btn-next { background-color: #22c55e; box-shadow: 0 4px 0 #16a34a; }
-    .btn:active { transform: translateY(3px); box-shadow: none; }
+    /* Canvas နှင့် စုတ်တံဘောက်ကြား Gap ကို ကျစ်လျစ်အောင် ညှိပြီး အပေါ်သို့ တွန်းတင်ခြင်း */
+.stage { 
+  display: flex; 
+  gap: 15px; /* 25px ကနေ ကျဉ်းလိုက်ပါတယ် */
+  align-items: center; 
+  justify-content: center; 
+  width: 100%; 
+  margin-top: -10px; /* တစ်ခုလုံး အပေါ်တက်လာစေရန် */
+}
 
+/* ဘေးဘား/အောက်ဘား Panel ကို ခလုတ်တွေ စုံစုံလင်လင် ပေါ်အောင် ညှိခြင်း */
+.panel { 
+  width: 135px; 
+  background-color: #f8fafc; 
+  border-radius: 24px; 
+  border: 3px solid #cbd5e1;
+  padding: 12px 10px; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 10px; 
+  box-shadow: 0 16px 35px rgba(0,0,0,0.2);
+}
+
+.eraser { display: none; } /* HTML ထဲက မူရင်း ခဲဖျက်အကွက်ဟောင်းကို ဖျောက်ထားပါသည် */
+
+.action-container { 
+  display: grid; 
+  grid-template-columns: 1fr; 
+  gap: 6px; 
+  width: 100%; 
+  margin-top: 5px; 
+}
+
+.btn { 
+  width: 100%; 
+  height: 42px; 
+  border-radius: 12px; 
+  border: none; 
+  color: white;
+  font-weight: 700; 
+  font-size: 13px; 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 4px;
+}
+.btn-reset { background-color: #38bdf8; box-shadow: 0 3px 0 #0284c7; }
+.btn-eraser { background-color: #64748b; box-shadow: 0 3px 0 #475569; }
+.btn-eraser.selected { background-color: #ef4444; box-shadow: 0 3px 0 #b91c1c; }
+.btn-next { background-color: #22c55e; box-shadow: 0 3px 0 #16a34a; }
+
+@media (max-width: 760px) {
+  .stage { 
+    flex-direction: column;
+    align-items: center; 
+    gap: 8px;
+    margin-top: -30px; 
+  }
+  .panel { 
+    width: 100%; 
+    max-width: 340px; 
+    padding: 8px; 
+    gap: 8px;
+  }
+  .brush-grid { 
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 6px;
+    width: 100%;
+  }
+  .action-container { 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 6px; 
+    width: 100%;
+  }
+  .btn { height: 44px; font-size: 12px; }
+  .intro-title { font-size: 32px; }
+  .intro-description { font-size: 16px; }
+  .tree, .water-puddle, .green-floor, .storm-cloud, .kid-3d { display: none; }
+}
     /* Score Header for Balloons game */
     .score-box {
       background: rgba(30, 41, 59, 0.9); border: 3px solid #ffffff; border-radius: 16px;
@@ -241,7 +299,6 @@
     }
     .modal-overlay.active .modal-content { transform: scale(1); }
     
-    /* Font Size များကို သေးငယ်ပြီး သေသပ်စွာ ပြောင်းလဲထားသောနေရာ */
     .modal-title { font-size: 22px; font-weight: 700; color: #818cf8; margin-bottom: 8px; }
     .modal-subtitle { font-size: 14px; color: #94a3b8; margin-bottom: 24px; font-weight: 500; }
     
@@ -335,16 +392,16 @@
         </div>
 
         <aside class="panel">
-          <div class="panel-title">စုတ်တံများ</div>
-          <div class="eraser" id="eraser" title="ခဲဖျက်">
-            <span class="eraser-icon">🧼</span>
-          </div>
-          <div class="brush-grid" id="brushGrid"></div>
-          <div class="action-container">
-            <button class="btn btn-reset" id="btnReset">↻<br>ပြန်စမည်</button>
-            <button class="btn btn-next" id="btnNext">→<br>ရှေ့သို့</button>
-          </div>
-        </aside>
+  <div class="panel-title">စုတ်တံများ</div>
+  
+  <div class="brush-grid" id="brushGrid"></div>
+  
+  <div class="action-container">
+    <button class="btn btn-reset" id="btnReset">↻ ပြန်စမည်</button>
+    <button class="btn btn-eraser" id="eraser">🧼 ခဲဖျက်</button>
+    <button class="btn btn-next" id="btnNext">→ ရှေ့သို့</button>
+  </div>
+</aside>
       </div>
     </div>
   </div>
