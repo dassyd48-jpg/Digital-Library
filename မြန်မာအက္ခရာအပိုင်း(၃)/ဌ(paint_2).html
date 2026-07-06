@@ -20,6 +20,7 @@
       -webkit-user-select: none;
       touch-action: none;
     }
+
     /* Navigation Buttons (Home & Back) */
     .nav-container {
       position: absolute;
@@ -329,29 +330,29 @@
 
     /* 📱 RESPONSIVE ADJUSTMENTS (FIXED SHORTER SCREENS & OVERFLOW) */
     @media (max-width: 760px) {
-      .game-wrapper { padding-top: 70px; justify-content: center; }
-      .stage { flex-direction: column; align-items: center; gap: 8px; }
+      /* အပေါ်ဘက်ကို စုပြုံပြီး ဆွဲတင်လိုက်သည့် Layout ဗျူဟာ */
+      .game-wrapper { padding-top: 55px; justify-content: flex-start; }
+      .stage { flex-direction: column; align-items: center; gap: 4px; }
       
-      
-      .canvas-container { width: 260px; height: 260px; max-height: 42vh; max-width: 80vw; }
-      .wood-frame { padding: 8px; border-radius: 18px; }
+      /* Canvas အတိုင်းအတာ ညှိနှိုင်းမှု */
+      .canvas-container { width: 260px; height: 260px; max-height: 40vh; max-width: 80vw; }
+      .wood-frame { padding: 6px; border-radius: 16px; margin-bottom: 2px; }
 
-      
-      .panel { width: 100%; max-width: 280px; flex-direction: row; justify-content: space-between; border-radius: 16px; padding: 6px; gap: 4px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+      /* Control Panel နေရာအကျယ်အဝန်း ချုံ့ချမှု */
+      .panel { width: 100%; max-width: 275px; flex-direction: row; justify-content: space-between; border-radius: 14px; padding: 4px 6px; gap: 4px; box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
       .panel-title { display: none; }
-      .eraser { width: 44px; height: 44px; border-radius: 12px; }
+      .eraser { width: 42px; height: 42px; border-radius: 10px; }
       .brush-grid { grid-template-columns: repeat(5, 1fr); gap: 4px; width: auto; }
-      .brush { width: 40px; height: 40px; border-radius: 10px; }
-      
-      
+      .brush { width: 38px; height: 38px; border-radius: 8px; }
       .action-container { flex-direction: row; width: auto; gap: 4px; margin-top: 0; }
-      .btn { width: 52px; height: 44px; font-size: 10px; border-radius: 10px; padding: 2px; }
+      .btn { width: 52px; height: 42px; font-size: 10px; border-radius: 8px; padding: 1px; }
       
       .intro-title { font-size: 32px; }
       .intro-description { font-size: 16px; padding: 15px; }
-      .heading-box { padding: 5px 16px; margin-bottom: 6px; }
-      .heading-text { font-size: 15px; }
-      .heading-glyph { font-size: 18px; padding: 0 6px; }
+    
+      .heading-box { padding: 4px 14px; margin-bottom: 4px; }
+      .heading-text { font-size: 14px; }
+      .heading-glyph { font-size: 16px; padding: 0 5px; }
       
       .game-zone { padding-top: 70px; }
       .game-header-area { gap: 6px; margin-bottom: 15px; }
@@ -783,7 +784,7 @@
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
     
-    // Middle center bounding alignment
+    // Core font center text bound element
     canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='55%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='310' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='5' stroke-dasharray='12,10'>ဌ</text></svg>\")";
     canvas.style.backgroundSize = "100% 100%";
 
