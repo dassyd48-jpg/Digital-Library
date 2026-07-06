@@ -91,7 +91,7 @@
     }
 
     /* ==========================================================================
-        UI INTERFACE LAYER (MOBILE RESPONSIVE TEXT)
+        UI INTERFACE LAYER 
        ========================================================================== */
     .ui-layer { position: absolute; inset: 0; z-index: 10; pointer-events: none; }
     .interactive { pointer-events: auto; }
@@ -100,6 +100,7 @@
     .top-bar {
       position: absolute; top: 16px; left: 16px; right: 16px;
       display: flex; justify-content: space-between; align-items: center;
+      z-index: 20;
     }
     .nav-group { display: flex; gap: 12px; }
     
@@ -124,7 +125,7 @@
 
     /* Bottom Toolbar Container */
     .bottom-bar {
-      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      position: absolute; bottom: 4vh; left: 50%; transform: translateX(-50%);
       display: flex; gap: 16px; align-items: center;
     }
     .palette-card {
@@ -157,11 +158,32 @@
     }
     .stage-wrapper.active { opacity: 1; visibility: visible; }
 
+    /* Painting Content Column Layout */
+    .paint-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+    }
+
+    /* Game Header Title (Requested Style) */
+    .game-title {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-weight: 800;
+      color: #166534;
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      text-shadow: 2px 2px 0px #ffffff, 4px 4px 0px rgba(22, 101, 52, 0.15);
+      text-align: center;
+      margin-top: 40px;
+    }
+
     /* Canvas Drawing Area */
     #paintCanvas {
       background-color: rgba(255, 255, 255, 0.88); border-radius: 40px;
       border: 6px dashed #16a34a; box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-      max-width: 90vw; max-height: 65vh; aspect-ratio: 1/1;
+      max-width: 90vw; max-height: 55vh; aspect-ratio: 1/1;
       background-repeat: no-repeat; background-position: center; background-size: 80%;
     }
 
@@ -211,7 +233,7 @@
     }
 
     /* ==========================================================================
-        MODALS & OVERLAYS (INTRO & VICTORY) - SMALL & BEAUTIFUL FOR MOBILE
+        MODALS & OVERLAYS (INTRO & VICTORY)
        ========================================================================== */
     .screen-overlay {
       position: absolute; inset: 0; background: rgba(20, 83, 45, 0.85);
@@ -239,16 +261,20 @@
     .big-action-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #14532d; }
 
     /* ==========================================================================
-        📱 MOBILE RESPONSIVE MEDIA QUERIES (UPDATED FOR PERFECT POSITIONING)
+        📱 MOBILE RESPONSIVE MEDIA QUERIES (ပုံစံအတိုင်း လှပစွာဗဟိုညှိခြင်း)
        ========================================================================== */
     @media (max-width: 760px) {
-      .stage-wrapper { padding-top: 50px; align-items: flex-start; }
-      #paintCanvas { max-width: 260px; max-height: 260px; border-radius: 24px; margin-top: 20px; }
-      .bottom-bar { bottom: 12px; gap: 8px; width: 94%; justify-content: center; }
+      .stage-wrapper { align-items: center; justify-content: center; padding-top: 40px; }
+      .paint-container { gap: 12px; }
+      .game-title { margin-top: 20px; font-size: 1.5rem; }
+      #paintCanvas { max-width: 270px; max-height: 270px; border-radius: 28px; }
+      
+      .bottom-bar { bottom: 3vh; gap: 8px; width: 94%; justify-content: center; }
       .palette-card { padding: 6px 10px; gap: 8px; border-radius: 24px; box-shadow: 0 5px 0 #14532d; }
       .color-swatch { width: 34px; height: 34px; border-width: 2px; }
       .color-swatch.active { transform: scale(1.15) translateY(-2px); }
-      .action-pill { padding: 6px 14px; border-radius: 14px; box-shadow: 0 3px 0 #14532d; }
+      .action-pill { padding: 6px 14px; border-radius: 14px; box-shadow: 0 3px 0 #14532d; font-size: 0.95rem; }
+      
       #puzzleToolbar { bottom: auto; top: 76px; }
       .leaf-node { width: 62px; height: 62px; font-size: 1.4rem; border-width: 2px; }
       .top-bar { top: 12px; left: 12px; right: 12px; }
@@ -294,7 +320,10 @@
   </div>
 
   <div class="stage-wrapper" id="paintWrapper">
-    <canvas id="paintCanvas" width="500" height="500"></canvas>
+    <div class="paint-container">
+      <h1 class="game-title">ဎ ကို ဆေးရောင်ခြယ်ကြမယ်</h1>
+      <canvas id="paintCanvas" width="500" height="500"></canvas>
+    </div>
   </div>
 
   <div class="stage-wrapper" id="puzzleWrapper">
@@ -484,7 +513,7 @@
       if (!isDrawing) return;
       const coords = getEventCoords(e);
       
-      ctx.lineWidth = activeSwatch.type === 'eraser' ? 36 : 18; // ဆေးခြယ်ရ ပိုလွယ်အောင် Brush Size ကို ၁၈ သို့ တိုးမြှင့်ထားပါတယ်
+      ctx.lineWidth = activeSwatch.type === 'eraser' ? 36 : 18;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       if (activeSwatch.type === 'eraser') {
@@ -693,7 +722,7 @@
       }
     };
 
-    // Canvas Events Binding Configuration (Multi-touch support matched from ဋ game)
+    // Canvas Events Binding Configuration
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mousemove', draw);
