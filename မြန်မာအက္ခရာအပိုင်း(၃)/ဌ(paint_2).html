@@ -143,7 +143,7 @@
       display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
       opacity: 0; visibility: hidden;
       transition: opacity 0.5s ease;
-      padding-top: 20px;
+      padding-top: 80px;
       z-index: 10;
     }
     .game-wrapper.active { opacity: 1; visibility: visible; }
@@ -156,7 +156,7 @@
       border: 3px solid #ffffff; 
       border-radius: 50px; 
       padding: 8px 30px; 
-      margin-bottom: 15px; 
+      margin-bottom: 20px; 
       box-shadow: 0 8px 16px rgba(0,0,0,0.15); 
       display: flex; 
       align-items: center;
@@ -166,7 +166,7 @@
     .heading-text { font-size: 20px; font-weight: 700; color: #ffffff; }
     .heading-glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #0ea5e9; font-size: 26px; font-weight: 800; background: #ffffff; padding: 0 12px; border-radius: 10px; }
     
-    .stage { display: flex; gap: 25px; align-items: center; justify-content: center; width: 100%; transition: opacity 0.5s ease; margin-top: 10px; }
+    .stage { display: flex; gap: 25px; align-items: center; justify-content: center; width: 100%; transition: opacity 0.5s ease; }
     .wood-frame { position: relative; padding: 12px; border-radius: 24px; background-color: #0ea5e9; box-shadow: 0 16px 35px rgba(0,0,0,0.2); border: 4px solid #ffffff; }
     .canvas-container { background: #ffffff; border-radius: 16px; overflow: hidden; position: relative; width: 440px; height: 440px; max-width: 75vh; max-height: 65vh; }
     canvas { display: block; cursor: crosshair; touch-action: none; width: 100% !important; height: 100% !important; }
@@ -200,7 +200,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding-top: 75px; 
+      padding-top: 85px; 
       z-index: 350; 
       overflow: hidden; 
       pointer-events: auto;
@@ -210,23 +210,26 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
       z-index: 400;
       pointer-events: none;
       margin-bottom: 20px;
-      width: 100%;
+      width: 90%;
+      max-width: 600px;
     }
 
     .game-title-banner {
       background-color: #16a34a;
       border: 3px solid #ffffff; 
       border-radius: 50px; 
-      padding: 8px 32px; 
+      padding: 10px 32px; 
       box-shadow: 0 8px 16px rgba(0,0,0,0.15); 
       color: #ffffff;
       font-size: 18px;
       font-weight: 700;
       text-align: center;
+      width: 100%;
+      line-height: 1.5;
     }
 
     .scoreboard {
@@ -237,10 +240,10 @@
       gap: 15px;
       background: rgba(255, 255, 255, 0.95);
       border: 2px solid #16a34a; 
-      padding: 4px 18px; 
+      padding: 6px 22px; 
       border-radius: 30px;
       font-weight: 700;
-      font-size: 13px; 
+      font-size: 14px; 
       color: #15803d; 
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
@@ -344,8 +347,9 @@
       .heading-glyph { font-size: 20px; padding: 0 8px; }
       
       .game-zone { padding-top: 70px; }
-      .game-title-banner { font-size: 14px; padding: 6px 20px; }
-      .scoreboard { font-size: 11px; padding: 3px 12px; }
+      .game-header-area { gap: 6px; margin-bottom: 15px; }
+      .game-title-banner { font-size: 14px; padding: 8px 20px; border-radius: 16px; }
+      .scoreboard { font-size: 12px; padding: 4px 14px; }
       .btn-next-level { font-size: 20px; padding: 14px 35px; }
     }
   </style>
@@ -398,9 +402,8 @@
     <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဌ" ဝမ်းဘဲအိုင်လေးဆီသို့</div>
     <p class="intro-description">
       ကလေးတို့ရေ... ဝမ်းဘဲမေမေကြီးဟာ သူ့ရဲ့ချစ်လှစွာသော ဘဲကလေးတွေကို ရှာမတွေ့လို့ ကုန်းပေါ်မှာ စိုးရိမ်တကြီးနဲ့ ဟိုပြေးဒီပြေး လိုက်ရှာနေတယ်ကွ။ 
-      ဘဲကလေးတွေကလည်း ဟိုးအဝေးကြီးမှာ ပုန်းနေကြရရှာတယ်။ 
       မေမေနဲ့ သားသမီးတွေ ပျော်ပျော်ရွှင်ရွှင် ပြန်လည်ဆုံတွေ့နိုင်ဖို့ တို့တွေမှာ "ဌ" အက္ခရာလေး လိုအပ်နေတယ်နော်။ 
-      ကဲ... စုတ်တံလေးတွေကိုကိုင်ပြီး "ဌ" လမ်းကြောင်းအတိုင်း လှလှပပ ခြယ်သပြီး ဝမ်းဘဲမိသားစုလေးကို ကူညီပေးကြရအောင်။
+      ကဲ... စုတ်တံလေးတွေကိုကိုင်ပြီး "ဌ" လမ်းကြောင်းအတိုင်း လှလှပပ ခြေလှမ်းပြီး ဝမ်းဘဲမိသားစုလေးကို ကူညီပေးကြရအောင်။
     </p>
     <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
   </div>
@@ -429,7 +432,7 @@
       
           <div class="action-container">
             <button class="btn btn-reset" id="btnReset">↻<br>ဖျက်မည်</button>
-            <button class="btn btn-next" id="btnNext">→<br>ရှေ့သို့</button>
+            <button class="btn btn-next" id="btnNext">→<br>#ှေ့သို့</button>
           </div>
         </aside>
       </div>
@@ -516,22 +519,15 @@
     // ==========================================================================
     document.getElementById('btnHome').onclick = () => { 
       playSFX('click'); 
-      // 🏠 ပင်မမြေပုံကြီး (Main Map) သို့ တိုက်ရိုက်ပြန်သွားမည့် စနစ်
       window.location.href = 'index.html?fromGame=true'; 
     };
 
     document.getElementById('btnBack').onclick = () => { 
       playSFX('click'); 
-      
-      // အရွက်ကြွေဂိမ်း (Leaves Game Area) ရောက်နေ၊ မနေ စစ်ဆေးခြင်း
       const isLeavesActive = document.getElementById('gameZone') && document.getElementById('gameZone').style.display === 'flex';
-      
       if (isLeavesActive) {
-        // အရွက်ဖမ်းတဲ့နေရာ ရောက်နေရင် -> Stage 2 (ဌ အက္ခရာ အရောင်ခြယ်တဲ့ နေရာ) သို့ ပြန်သွားမည်
-        // ဖိုင်ကို Reload လုပ်ပြီး အရောင်ခြယ်တဲ့ Screen ဆီ ပြန်စခိုင်းခြင်း
         location.reload(); 
       } else {
-        // အရောင်ခြယ်တဲ့ နေရာမှာပဲ ရှိနေသေးရင် -> လက်ရှိ Stage ၏ လေ့ကျင့်ခန်း ၅ ခုရွေးချယ်ရာ Sub-map သို့ ပြန်သွားမည်
         window.location.href = 'index.html?stage=2'; 
       }
     };
@@ -720,7 +716,6 @@
 
     document.getElementById('btnDone').onclick = () => {
       playSFX('victory');
-      // ဂိမ်းပြီးဆုံးသွားချိန်တွင်လည်း မူလ Stage 2 ရွေးချယ်မှု Sub-map သို့ ပို့ပေးခြင်း
       window.location.href = 'index.html?stage=3'; 
     };
     
@@ -781,7 +776,9 @@
     canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
-    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='36%' y='25%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='310' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='5' stroke-dasharray='12,10'>ဌ</text></svg>\")";
+    
+    // Exact middle position configuration matching perfect 500x500 layout bounding box
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='55%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='310' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='5' stroke-dasharray='12,10'>ဌ</text></svg>\")";
     canvas.style.backgroundSize = "100% 100%";
 
     initUI();
