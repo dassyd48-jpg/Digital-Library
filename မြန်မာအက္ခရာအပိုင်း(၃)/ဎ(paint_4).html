@@ -450,7 +450,6 @@
     });
     paletteBox.children[0].classList.add('active');
 
-    // "ဋ" ဂိမ်းပုံစံအတိုင်း Interaction coordinate တွက်ချက်မှု တိကျစေရန် ညှိယူခြင်း
     function getEventCoords(e) {
       const rect = canvas.getBoundingClientRect();
       const clientX = e.clientX || (e.touches && e.touches[0].clientX);
@@ -474,7 +473,6 @@
       return '#000000';
     }
 
-    // "ဋ" တုန်းကလို ချောမွေ့ပြီး ကလေးတွေ ဆွဲရလွယ်ကူစေမယ့် Brush Stroke ပုံစံ
     function startDrawing(e) {
       isDrawing = true;
       const coords = getEventCoords(e);
