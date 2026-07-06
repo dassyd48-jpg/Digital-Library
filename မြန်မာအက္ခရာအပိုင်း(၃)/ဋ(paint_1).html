@@ -98,7 +98,7 @@
     }
     .game-wrapper.active { opacity: 1; visibility: visible; }
     
-    /* ကွန်ပျူတာရော ဖုန်းမှာပါ Screen တစ်ခုလုံးကို နေရာအပြည့်ယူပြီး အလယ်တည့်တည့် ကျကျနနဖြစ်စေရန် ပြင်ဆင်ထားသည် */
+    
     .game-container { 
       display: flex; 
       flex-direction: column; 
@@ -221,7 +221,7 @@
       .heading-text { font-size: 16px; font-weight: 800; }
       .heading-glyph { font-size: 22px; padding: 3px 14px; min-width: 45px; border-radius: 10px; }
 
-      /* Stage ကို အောက်သို့ ဒေါင်လိုက် ဆင်းသွားစေပြီး နေရာအပြည့် ယူစေခြင်း */
+      
       .stage { 
         flex-direction: column; 
         align-items: center; 
@@ -229,7 +229,7 @@
         width: 100%; 
       }
       
-      /* ဖုန်းအမျိုးအစားမရွေး Canvas ဘောင်ကြီး ကွက်တိ အကြီးဆုံးဖြစ်အောင် 92vw (Screen အကျယ် 92%) သို့ မြှင့်တင်လိုက်သည် */
+      
       .wood-frame { 
         padding: 10px; 
         border-radius: 20px; 
@@ -237,7 +237,7 @@
         max-width: 340px; 
       }
       
-      /* Canvas အကွက်ကို သေးသေးလေး မဟုတ်တော့ဘဲ ဖုန်း Screen အပြည့် ကြီးကြီးလန်းလန်း ဖြစ်သွားစေရန် အချိုးချခြင်း */
+      
       .canvas-container { 
         width: 100%; 
         height: auto;
@@ -247,7 +247,7 @@
         border-radius: 14px; 
       }
       
-      /* Control Panel (ဆေးရောင်စုံ ခလုတ်ခုံ) ကို အောက်က လွတ်နေတဲ့ နေရာအပြည့် ဖြန့်ခင်းပေးခြင်း */
+      
       .panel { 
         width: 92vw; 
         max-width: 340px; 
@@ -259,8 +259,7 @@
         gap: 10px; 
         height: auto;
       }
-      .panel-title { display: none; } /* ဖုန်းပေါ်တွင် ခေါင်းစဉ်စာသား ဖျောက်၍ နေရာချွေတာသည် */
-      
+      .panel-title { display: none; } 
       .eraser { 
         width: 44px; 
         height: 44px; 
@@ -270,7 +269,7 @@
         box-shadow: 0 3px 0 #bae6fd; 
       }
       
-      /* ဆေးရောင်စုံအကွက်များကို ဘေးတိုက်လှိမ့်စရာမလိုဘဲ အပြည့်ပေါ်နေစေရန် ညှိခြင်း */
+      
       .brush-grid { 
         display: flex; 
         flex-direction: row; 
@@ -293,7 +292,7 @@
       .brush.selected { transform: scale(1.05); box-shadow: 0 0 0 1px #fff, 0 0 0 3px #0ea5e9; }
       .swatch { border-radius: 8px; }
       
-      /* ဖျက်မည် နှင့် ပြီးပါပြီ ခလုတ်နှစ်ခုကို ညာဘက်အစွန်းတွင် သပ်သပ်ရပ်ရပ် ပူးတွဲထားရှိသည် */
+      
       .action-container { 
         display: flex;
         flex-direction: row; 
