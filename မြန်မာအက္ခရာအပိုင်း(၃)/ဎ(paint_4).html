@@ -91,6 +91,47 @@
       70% { transform: translate(-28vw, -18vh) scaleX(-1) rotate(20deg); }
       100% { transform: translate(-38vw, -8vh) scaleX(1) rotate(0deg); }
     }
+    /* ==========================================================================
+        📱 MOBILE RESPONSIVE ADJUSTMENTS (FIXED FOR SCREEN OVERFLOW)
+       ========================================================================== */
+    @media (max-width: 760px) {
+      /* ------------ အပိုင်း (၁) ဆေးရောင်ခြယ်ခြင်း ဆိုင်ရာ ပြင်ဆင်ချက် ------------ */
+      /* Canvas ကို ဖုန်းမျက်နှာပြင်နှင့် ကိုက်ညီအောင် ချုံ့ပြီး အပေါ်သို့ တင်ခြင်း */
+      .stage-wrapper { padding-top: 60px; align-items: flex-start; }
+      #paintCanvas { 
+        max-width: 260px; 
+        max-height: 260px; 
+        border-radius: 24px; 
+        border-width: 4px; 
+        margin-top: 10px;
+      }
+      /* အောက်ခြေ Palette ဘားတန်းနှင့် ဖျက်မည်/ရှေ့သို့ ခလုတ်များကို အောက်ခြေအလယ်တွင် ပေါ်စေခြင်း */
+      .bottom-bar { bottom: 12px; gap: 10px; width: 92%; justify-content: center; }
+      .palette-card { padding: 6px 12px; gap: 8px; border-radius: 24px; border-width: 2.5px; box-shadow: 0 5px 0 #14532d; }
+      .color-swatch { width: 34px; height: 34px; border-width: 2px; }
+      .color-swatch.active { transform: scale(1.15) translateY(-2px); }
+      .action-pill { padding: 6px 16px; border-radius: 14px; border-width: 2.5px; box-shadow: 0 3px 0 #14532d; }
+
+      /* ------------ အပိုင်း (၂) အရွက်ဖမ်းသည့် Game ဆိုင်ရာ ပြင်ဆင်ချက် ------------ */
+      /* Background သစ်ပင်ကြီး၏ အမြင့်ကို ဖြတ်ချပြီး ခေါင်းစဉ်ဘောင်ကို အပေါ်သို့ ဆွဲတင်ခြင်း */
+      .nature-bg::before { height: 18vh; }
+      .nature-bg::after { height: 22vh; }
+      .big-tree-trunk { height: 42vh; bottom: 8vh; width: 80px; right: 4%; }
+      .big-tree-foliage { width: 280px; height: 280px; right: -15%; bottom: 35vh; }
+      .big-tree-foliage::before { width: 140px; height: 140px; bottom: -15px; left: -20px; }
+
+      /* JavaScript က ဖန်တီးပေးမည့် အရွက်ဖမ်းဂိမ်း ခေါင်းစဉ်ဘောင်နှင့် Scoreboard ကို အပေါ်သို့ ပို့ခြင်း */
+      #puzzleToolbar { bottom: auto; top: 72px; }
+      #puzzleToolbar .badge-box { box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+      
+      /* ဖမ်းရမည့် 'ဎ' သစ်ရွက်များ ဖုန်းမျက်နှာပြင်နှင့် ကိုက်ညီအောင် ချုံ့ခြင်း */
+      .leaf-node { width: 62px; height: 62px; font-size: 1.4rem; border-width: 2px; }
+
+      /* General UI Adjustments for Mobile */
+      .top-bar { top: 12px; left: 12px; right: 12px; }
+      .circle-btn { width: 44px; height: 44px; font-size: 1.2rem; border-width: 2.5px; box-shadow: 0 4px 0 #14532d; }
+      .badge-box { padding: 4px 10px; border-radius: 14px; border-width: 2.5px; box-shadow: 0 3px 0 #14532d; }
+    }
 
     /* ==========================================================================
         UI INTERFACE LAYER (MOBILE RESPONSIVE TEXT)
