@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Master Selection Protocol</title>
+    <style>
+        :root {
+            --bg-color: #0a0a0c;
+            --card-bg: #121216;
+            --accent-gold: #d4af37;
+            --accent-red: #8b0000;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 15px; /* Responsive safe padding for mobile devices */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid #23232a;
+            border-radius: 12px;
+            padding: 30px 20px; /* Upgraded for flawless padding on mobile screens */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #23232a;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            color: var(--accent-gold);
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            margin: 0 0 12px 0;
+            text-transform: uppercase;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .question-card {
+            display: none;
+        }
+
+        .question-card.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .question-number {
+            color: var(--accent-gold);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .option-item {
+            background: #181820;
+            border: 1px solid #2d2d38;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            -webkit-tap-highlight-color: transparent; /* Fixes blue flashing effect on touch */
+        }
+
+        .option-item:hover, .option-item:active {
+            border-color: var(--accent-gold);
+            background: #1f1f29;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+        }
+
+        .result-section {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .result-title {
+            color: var(--accent-gold);
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .result-desc {
+            color: var(--text-main);
+            line-height: 1.7;
+            margin-bottom: 30px;
+            text-align: left;
+            background: #181820;
+            padding: 20px;
+            border-left: 3px solid var(--accent-gold);
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #181820 0%, #221414 100%);
+            border: 1px solid var(--accent-red);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .cta-box p {
+            margin: 0 0 15px 0;
+            color: #ffcccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .screenshot-notif {
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+            font-weight: bold;
+            line-height: 1.4;
+            margin-top: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="header" id="quiz-header">
+        <h1>Master Selection Protocol</h1>
+        <p>သင်ဟာ သာမန်လူတွေနောက်မှာပဲ လိုက်နေမယ့်သူလား၊ ဒါမှမဟုတ် အမြဲတမ်း ခြေတစ်လှမ်းသာနေမယ့် Master လူတစ်ယောက်လားဆိုတာကို ဤစနစ်က စစ်ထုတ်ပေးပါလိမ့်မယ်။</p>
+    </div>
+
+    <div class="question-card active" id="q1">
+        <div class="question-number">မေးခွန်း ၁ / ၆</div>
+        <div class="question-text">စာအုပ်မပို့ပေးခင်မှာ သင့်ရဲ့ ဆက်ဆံရေးဗျူဟာကို သိပါရစေ။ သင်က ဘယ်လို အမြှော်အမြင်ရှိတဲ့သူမျိုးလဲ?</div>
+        <ul class="options-list">
+            <li class="option-item" onclick="nextQuestion(1, 'A')">လူအများကြားမှာ ဖတ်ရှုလေ့လာတဲ့အရာကို လူအများသိအောင် ထုတ်ပြရတာ ကြိုက်တဲ့သူ။</li>
+            <li class="option-item" onclick="nextQuestion(1, 'B')">လူတွေက သင် ဘယ်ခြေလှမ်းလှမ်းနေလဲဆိုတာ လုံးဝ မသိအောင် လျှို့ဝှက်စွာ လေ့လာပြီး ရလဒ်နဲ့ပဲ သက်သေပြတတ်သူ။</li>
+        </ul>
+    </div>
+
+    <div class="question-card" id="q2">
+        <div class="question-number">မေးခွန်း ၂ / ၆</div>
+        <div class="question-text">စျေးနှုန်းအပေါ် သင့်သဘောထားက ဘယ်လိုလဲ?</div>
+        <ul class="options-list">
+            <li class="option-item" onclick="nextQuestion(2, 'A')">လူတိုင်း အလွယ်တကူ ဝယ်ယူနိုင်တဲ့၊ အများသုံး အခြေခံအချက်အလက်တွေအတွက်ပဲ သင့်တင့်တဲ့ စျေးနှုန်းနဲ့ ရယူချင်တယ်။</li>
+            <li class="option-item" onclick="nextQuestion(2, 'B')">တစ်သက်လုံး အသုံးချလို့ရပြီး မိမိဘဝကို လုံးဝ အကျိုးပြုစေနိုင်မယ့် အသိပညာ 'အာဏာ' အတွက် ထိုက်တန်သလောက် ရင်းနှီးမြှုပ်နှံချင်တယ်။</li>
+        </ul>
+    </div>
+
+    <div class="question-card" id="q3">
+        <div class="question-number">မေးခွန်း ၃ / ၆</div>
+        <div class="question-text">မင်းရဲ့ ပထမဆုံး ခြေလှမ်းက ဘာလဲ?</div>
+        <ul class="options-list">
+            <li class="option-item" onclick="nextQuestion(3, 'A')">လူတိုင်း အသုံးပြုနေကျ ဖြစ်တဲ့၊ လူသိများပြီးသား အခြေခံသီအိုရီတွေကိုပဲ သုံးပြီး အေးအေးချမ်းချမ်းနဲ့ သာမန်အတိုင်းပဲ ဖြတ်သန်းမယ်။</li>
+            <li class="option-item" onclick="nextQuestion(3, 'B')">မင်းကို အမြဲတမ်း တစ်ဖက်လူရဲ့ အပေါ်ကနေ ထိန်းချုပ်နိုင်စေမယ့် 'အဆင့်မြင့် ဗျူဟာမြောက် လက်နက်' ကိုသာ ပိုင်ဆိုင်မယ်။</li>
+        </ul>
+    </div>
+
+    <div class="question-card" id="q4">
+        <div class="question-number">မေးခွန်း ၄ / ၆</div>
+        <div class="question-text">သင့်ရဲ့ အချစ်ရေးနဲ့ ဆက်ဆံရေးတွေမှာ... သင့်ရဲ့ အခန်းကဏ္ဍက ဘယ်လိုမျိုးလဲ?</div>
+        <ul class="options-list">
+            <li class="option-item" onclick="nextQuestion(4, 'A')">တစ်ဖက်လူ စိတ်ချမ်းသာဖို့အတွက် ကိုယ်ကပဲ အမြဲလိုက်လျောပေးပြီး ရိုးရိုးသားသားနဲ့ အေးအေးချမ်းချမ်းပဲ နေတတ်သူ။။</li>
+            <li class="option-item" onclick="nextQuestion(4, 'B')">ကစားကွက်ကို ကိုယ်တိုင်ရေးဆွဲပြီး တစ်ဖက်လူရဲ့ စိတ်ခံစားချက်ကို နောက်ကွယ်ကနေ စနစ်တကျ ထိန်းချုပ်ကာ အသာစီးရယူနိုင်သူ</li>
+        </ul>
+    </div>
+
+    <div class="question-card" id="q5">
+        <div class="question-number">မေးခွန်း ၅ / ၆</div>
+        <div class="question-text">အသိပညာကို ရှာဖွေဆည်းပူးခြင်းအပေါ် သင့်ရဲ့ ရည်ရွယ်ချက်က ဘာလဲ?</div>
+        <ul class="options-list">
+            <li class="option-item" onclick="nextQuestion(5, 'A')">စာအုပ်ကောင်းတွေကို လက်ဝယ်ပိုင်ဆိုင်ပြီး ရိုးရာပုံစံအတိုင်း စာမျက်နှာတွေကို ဖတ်ရှုလေ့လာရတာကို ကြိုက်နှစ်သက်သူ။</li>
+            <li class="option-item" onclick="nextQuestion(5, 'B')">ဘယ်သူမှ မသိအောင် တိတ်တဆိတ် လေ့လာပြီး၊ ရလဒ်နဲ့ပဲ သက်သေပြရမယ့် လျှို့ဝှက်လက်နက်။</li>
+        </ul>
+    </div>
+
+    <div class="question-card" id="q6">
+        <div class="question-number">မေးခွန်း ၆ / ၆</div>
+        <div class="question-text">သင့်ဘဝရဲ့ အနာဂတ် ရွေးချယ်မှုအပေါ် သင့်ရဲ့ သန္နိဋ္ဌာန်က ဘယ်လိုရှိလဲ?</div>
+        <ul class="options-list">
+            <li class="option-item" onclick="nextQuestion(6, 'A')">အပြောင်းအလဲတွေနဲ့ စိန်ခေါ်မှုတွေကို ရှောင်လွှဲပြီး လက်ရှိ ရောက်ရှိနေတဲ့ သက်သောင့်သက်သာဇုန် (Comfort Zone) ထဲမှာပဲ အေးအေးဆေးဆေး ဆက်နေချင်သူ။</li>
+            <li class="option-item" onclick="nextQuestion(6, 'B')">မိမိရဲ့ အစွမ်းအစအမှန်တွေကို ထုတ်ဖော်ပြီး အဆင့်မြင့်တဲ့ နေရာတစ်ခုကို ရောက်ရှိဖို့အတွက် အယူအဆဟောင်းတွေကို စွန့်လွှတ်ကာ အပြည့်အဝ ပြောင်းလဲပစ်ဖို့ အဆင်သင့်ရှိသူ။</li>
+        </ul>
+    </div>
+
+    <div class="result-section" id="result">
+        <h2 class="result-title" id="result-title">Analyzing Protocol...</h2>
+        <div class="result-desc" id="result-desc"></div>
+        
+        <div class="cta-box">
+            <p>မင်းရဲ့ ကိုက်ညီမယ့် ဗျူဟာမြောက် လက်နက် (Digital Books) တွေကို ဆက်လက်ကြည့်ရှုဖို့ အောက်ပါ အဆင့်အတိုင်း လုပ်ဆောင်ပါ။</p>
+            <div class="screenshot-notif">⚠️ ယခု သင်ရရှိထားသောအဖြေကို (ဓာတ်ပုံ)Screenshot ရိုက်ပြီး DASSY ထံသို့ ပြန်လည်ပေးပို့ပါ ⚠️</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let scoreB = 0;
+
+    function nextQuestion(currentNum, choice) {
+        if (choice === 'B' || choice === '2') {
+            scoreB++;
+        }
+
+        document.getElementById(`q${currentNum}`).classList.remove('active');
+
+        if (currentNum < 6) {
+            document.getElementById(`q${currentNum + 1}`).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' }); /* Smooth scroll to top on mobile view */
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-header').style.display = 'none';
+        const resultSection = document.getElementById('result');
+        const titleEl = document.getElementById('result-title');
+        const descEl = document.getElementById('result-desc');
+
+        resultSection.style.display = 'block';
+
+        if (scoreB >= 4) {
+            titleEl.innerText = "RESULT: THE SHADOW MASTER";
+            descEl.innerHTML = `<strong>ဂုဏ်ယူပါတယ်။ သင်ဟာ တကယ့် Master တစ်ယောက်ပါ။</strong><br><br>
+            သင်ဟာ လူတွေရဲ့ အပေါ်ယံ အာရုံစိုက်မှုကို မလိုလားတော့ဘဲ၊ နောက်ကွယ်ကနေ ကစားကွက်တွေကို ဖန်တီးသူ ဖြစ်လာပါပြီ။ သင်ရွေးချယ်လိုက်တဲ့ လမ်းကြောင်းက သင့်ကို အမြဲတမ်း ခြေတစ်လှမ်းသာနေစေမှာပါ။<br><br>
+            <strong>သင်ရရှိမည့် ရလဒ်များ:</strong><br>
+            • လူတွေက သင့်ကို အရင်ထက် ပိုမိုခန့်ညား ကြောက်ရွံ့လာလိမ့်မယ်။<br>
+            • ဆက်ဆံရေးတိုင်းမှာ သင်ကပဲ နောက်ကွယ်ကနေ စိုးမိုးထားနိုင်မယ်။<br>
+            • သင့်ဦးနှောက်ထဲက အသိပညာကို ဘယ်သူမှ ခန့်မှန်းနိုင်မှာ မဟုတ်ဘူး။`;
+        } else {
+            titleEl.innerText = "RESULT: THE AWAKENING WARRIOR";
+            descEl.innerHTML = `<strong>သင်ဟာ တကယ့်ကို အလားအလာရှိတဲ့သူ ဖြစ်ပါတယ်။</strong><br><br>
+            ဒါပေမဲ့ သင်ဟာ အခုထိ သာမန်လူတွေရဲ့ အတွေးအခေါ် ထောင်ချောက်ထဲမှာ တစ်စိတ်တစ်ပိုင်း ရှိနေသေးတယ်။ အမြဲတမ်း ခြေတစ်လှမ်းသာဖို့အတွက် သင့်ရဲ့ ဗျူဟာတွေကို အဆင့်မြှင့်တင်ဖို့ လိုအပ်ပါတယ်။<br><br>
+            <strong>သင်ရရှိမည့် ရလဒ်များ:</strong><br>
+            • သာမန်လူတွေရဲ့ တွေးခေါ်ပုံကို သင် ချက်ချင်း ကျော်ဖြတ်နိုင်တော့မယ်။<br>
+            • သင့်ရဲ့ အမှားတွေကို ပြင်ဆင်ပြီး ခြေတစ်လှမ်းစောတဲ့ Master ဖြစ်လာမယ်။<br>
+            • ဘဝရဲ့ ထိန်းချုပ်ခွင့်ကို သင့်လက်ထဲ အပြည့်အဝ ပြန်လည်ရရှိမယ်။`;
+        }
+    }
+</script>
+
+</body>
+</html>
