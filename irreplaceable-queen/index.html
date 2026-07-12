@@ -113,13 +113,13 @@
     <audio id="sound" src="flip.mp3" preload="auto"></audio>
 
     <script>
-        // စာအုပ်အသစ်အတွက် အချက်အလက်များ
+        
         const myPassword = "D2026@QUEEN"; 
         const maxPages = 59; // စာမျက်နှာ စုစုပေါင်း
         const quizPages = [2, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56]; // Quiz ရှိသော စာမျက်နှာများ
         let isQuizLocked = false; 
 
-        // 🛠️ FIX 2: Password တစ်ခါပဲ ထည့်ရအောင် စစ်ဆေးပေးသော Logic
+        
         $(document).ready(function() {
             const isUnlocked = localStorage.getItem("tiq_unlocked");
             if (isUnlocked === "true") {
@@ -129,7 +129,7 @@
             }
         });
 
-        // 🛠️ FIX 1: စာမျက်နှာ Ratio ကို Mobile/Tablet ကွက်တိဖြစ်အောင် တွက်ချက်ပေးသော Logic
+        
         function getBookSize() {
             let w = window.innerWidth;
             let h = window.innerHeight - 40; 
@@ -195,6 +195,8 @@
             setTimeout(() => {
                 flipbook.turn({
                     width: w, height: h, autoCenter: true, display: 'single', acceleration: true, duration: 400,
+                    corners: 'all', // 🛠️ Area ချဲ့ထွင်ခြင်း: ထောင့်စွန်းတင်မဟုတ်ဘဲ ဘေးအနားများပါ လှန်၍ရစေရန် 'all' သတ်မှတ်
+                    gradients: true,
                     when: {
                         turning: function(e, page) {
                             if (isQuizLocked) { e.preventDefault(); return; }
@@ -211,13 +213,26 @@
                     }
                 });
 
-                // 🛠️ FIX 3: ဖတ်လက်စ စာမျက်နှာကို ပြန်ခေါ်ယူဖွင့်ပေးခြင်း Logic
+                
                 const savedPage = localStorage.getItem("tiq_last_page");
                 if (savedPage) {
                     flipbook.turn("page", parseInt(savedPage));
                 } else {
                     flipbook.turn("page", 1);
                 }
+
+                
+                if (!savedPage || parseInt(savedPage) === 1) {
+                    setTimeout(function() {
+                        if (flipbook.turn("page") === 1) {
+                            flipbook.turn("peel", "br"); // bottom-right ထောင့်မှ စာရွက်လေးကို ကြွပြမည်
+                            setTimeout(function() {
+                                flipbook.turn("peel", false); // ၂ စက္ကန့်အကြာတွင် မူလအတိုင်း ပြန်ချပေးမည်
+                            }, 2000);
+                        }
+                    }, 1200); // စာအုပ်ပွင့်ပြီး ၁.၂ စက္ကန့်အကြာတွင် အရိပ်အမွက်ပြမည်
+                }
+
             }, 100);
         }
 
