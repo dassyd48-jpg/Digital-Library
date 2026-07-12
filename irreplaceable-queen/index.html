@@ -74,7 +74,7 @@
         }
 
         #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; }
-        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding-bottom: 35px; background: #000; }
+        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding-bottom: 35px; background: #000; position: relative; }
         
         .page { background: #000; width: 100%; height: 100%; position: relative; overflow: hidden; }
         .page img { width: 100%; height: 100%; object-fit: fill !important; display: block; pointer-events: none; }
@@ -83,6 +83,29 @@
         .watermark { 
             position: absolute; bottom: 20px; width: 100%; text-align: center; 
             font-size: 10px; color: var(--gold); opacity: 0.4; letter-spacing: 4px; pointer-events: none; z-index: 15;
+        }
+
+        /* 🛠️ နေရာချဲ့ထွင်ရန်နှင့် အရိပ်အမွက်ပြရန် ဖန်တီးထားသော Hotspot Area များ */
+        .click-layer-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 35%; /* စာရွက်ရဲ့ ညာဘက်မျက်နှာပြင် ၃၅ ရာခိုင်နှုန်း တစ်ပြင်လုံးကို နေရာချဲ့ထားသည် */
+            height: calc(100% - 40px);
+            z-index: 999;
+            cursor: pointer;
+        }
+
+        /* 🛠️ စာဖတ်သူ ဘာမှမနှိပ်ရသေးခင် ညာဘက်အနားတစ်ခုလုံးကနေ အလိုအလျောက် တွန့်လိပ်လှုပ်ရှားနေမည့် အရိပ်အမွက်ပြခြင်း */
+        .peel-hint-active {
+            animation: edgePulse 2.5s ease-in-out infinite;
+            transform-origin: right center;
+        }
+
+        @keyframes edgePulse {
+            0% { transform: scaleX(1); filter: brightness(1); }
+            50% { transform: scaleX(0.97); filter: brightness(1.2); } /* စာရွက်လေး ဘေးကနေ အလိုလို တွန့်လိပ်လှုပ်ရှားနေသလို ပြပေးသည် */
+            100% { transform: scaleX(1); filter: brightness(1); }
         }
     </style>
 </head>
@@ -106,7 +129,11 @@
     </div>
 
     <div id="book-container">
-        <div id="flipbook-wrapper"><div id="flipbook"></div></div>
+        <!-- 🛠️ ညာဘက်အခြမ်း ကြိုက်တဲ့နေရာကနေ ဆွဲလှန်လို့ရမည့် Overlay Layer ကို ထည့်သွင်းခြင်း -->
+        <div id="flipbook-wrapper">
+            <div id="flipbook"></div>
+            <div class="click-layer-right" id="right-hotspot"></div>
+        </div>
         <div class="watermark">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
     </div>
 
@@ -119,7 +146,7 @@
         const quizPages = [2, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56]; // Quiz ရှိသော စာမျက်နှာများ
         let isQuizLocked = false; 
 
-        
+        // 🛠️ FIX 2: Password တစ်ခါပဲ ထည့်ရအောင် စစ်ဆေးပေးသော Logic
         $(document).ready(function() {
             const isUnlocked = localStorage.getItem("tiq_unlocked");
             if (isUnlocked === "true") {
@@ -172,6 +199,9 @@
 
             const { w, h } = getBookSize();
 
+            
+            $("#right-hotspot").css({ width: (w * 0.35) + "px", height: h + "px" });
+
             for(let i=1; i<=maxPages; i++) {
                 const pageDiv = $('<div class="page"></div>');
                 
@@ -195,7 +225,7 @@
             setTimeout(() => {
                 flipbook.turn({
                     width: w, height: h, autoCenter: true, display: 'single', acceleration: true, duration: 400,
-                    corners: 'all', // 🛠️ Area ချဲ့ထွင်ခြင်း: ထောင့်စွန်းတင်မဟုတ်ဘဲ ဘေးအနားများပါ လှန်၍ရစေရန် 'all' သတ်မှတ်
+                    corners: 'all',
                     gradients: true,
                     when: {
                         turning: function(e, page) {
@@ -204,43 +234,69 @@
                             if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
                         },
                         turned: function(e, page) {
-                            // 🛠️ FIX 3: ဖတ်နေတဲ့စာမျက်နှာကို LocalStorage ထဲ သိမ်းဆည်းခြင်း
+                            
                             localStorage.setItem("tiq_last_page", page);
                             
-                            // Quiz စာမျက်နှာဆိုလျှင် နောက်တစ်ရွက်လှန်မရအောင် Lock ချခြင်း
+                            
                             isQuizLocked = quizPages.includes(page);
+
+                            // ပထမဆုံး စာမျက်နှာ မဟုတ်တော့လျှင် အရိပ်အမွက် Animation ကို ရပ်တန့်ရန်
+                            if (page > 1) {
+                                flipbook.removeClass("peel-hint-active");
+                            } else {
+                                flipbook.addClass("peel-hint-active");
+                            }
                         }
                     }
                 });
 
-                
+                // 🛠️ FIX 3: ဖတ်လက်စ စာမျက်နှာကို ပြန်ခေါ်ယူဖွင့်ပေးခြင်း Logic
                 const savedPage = localStorage.getItem("tiq_last_page");
-                if (savedPage) {
-                    flipbook.turn("page", parseInt(savedPage));
-                } else {
-                    flipbook.turn("page", 1);
+                const startPage = savedPage ? parseInt(savedPage) : 1;
+                flipbook.turn("page", startPage);
+
+                // 🛠️ စာဖတ်သူ ဘာမှမနှိပ်ရသေးခင် ပထမစာမျက်နှာမှာ တစ်လှန့်ချင်း အရိပ်အမွက်ပြနေစေမည့် Logic
+                if (startPage === 1) {
+                    flipbook.addClass("peel-hint-active");
                 }
 
-                
-                if (!savedPage || parseInt(savedPage) === 1) {
-                    setTimeout(function() {
-                        if (flipbook.turn("page") === 1) {
-                            flipbook.turn("peel", "br"); // bottom-right ထောင့်မှ စာရွက်လေးကို ကြွပြမည်
-                            setTimeout(function() {
-                                flipbook.turn("peel", false); // ၂ စက္ကန့်အကြာတွင် မူလအတိုင်း ပြန်ချပေးမည်
-                            }, 2000);
-                        }
-                    }, 1200); // စာအုပ်ပွင့်ပြီး ၁.၂ စက္ကန့်အကြာတွင် အရိပ်အမွက်ပြမည်
-                }
+                // 🛠️ ညာဘက်အခြမ်း နေရာအနှံ့အပြားမှ ကိုင်ဆွဲ/နှိပ်ပြီး လှန်နိုင်စေရန် Hotspot Logic 
+                let isDragging = false;
+                let startX = 0;
+
+                $("#right-hotspot").on("mousedown touchstart", function(e) {
+                    if (isQuizLocked) return;
+                    isDragging = true;
+                    startX = e.pageX || e.originalEvent.touches[0].pageX;
+                    flipbook.removeClass("peel-hint-active"); // နှိပ်လိုက်လျှင် animation ရပ်မည်
+                });
+
+                $(document).on("mousemove touchmove", function(e) {
+                    if (!isDragging) return;
+                    let currentX = e.pageX || e.originalEvent.touches[0].pageX;
+                    let diffX = startX - currentX;
+                    if (diffX > 30) {
+                        isDragging = false;
+                        flipbook.turn("next");
+                    }
+                });
+
+                $(document).on("mouseup touchend", function(e) {
+                    if (isDragging) {
+                        isDragging = false;
+                        flipbook.turn("next");
+                    }
+                });
 
             }, 100);
         }
 
-        // Screen Size ပြောင်းလဲလျှင် Flipbook Size လိုက်ညှိရန်
+        
         $(window).resize(function() {
             const { w, h } = getBookSize();
             if ($("#flipbook").turn("is")) {
                 $("#flipbook").turn("size", w, h);
+                $("#right-hotspot").css({ width: (w * 0.35) + "px", height: h + "px" });
             }
         });
     </script>
