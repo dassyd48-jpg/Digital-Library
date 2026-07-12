@@ -1,304 +1,233 @@
 <!DOCTYPE html>
 <html lang="my">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>THE IRREPLACEABLE QUEEN | DASSY DIGITAL LIBRARY</title>
-    
-    <meta name="description" content="Official Digital Library of DASSY. Psychological insights into 'The Irreplaceable Queen' - Mastering relationship dynamics.">
-    <meta name="author" content="DASSY">
-    
-    <meta property="og:title" content="THE IRREPLACEABLE QUEEN | DASSY">
-    <meta property="og:description" content="Master the psychology of high-value choices.">
-    <meta property="og:type" content="book">
-    <meta property="og:image" content="cover.jpg">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>THE IRREPLACEABLE QUEEN | DASSY DIGITAL LIBRARY</title>
+    
+    <meta name="description" content="Official Digital Library of DASSY. Psychological insights into 'The Irreplaceable Queen' - Mastering relationship dynamics.">
+    <meta name="author" content="DASSY">
+    
+    <meta property="og:title" content="THE IRREPLACEABLE QUEEN | DASSY">
+    <meta property="og:description" content="Master the psychology of high-value choices.">
+    <meta property="og:type" content="book">
+    <meta property="og:image" content="cover.jpg">
 
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "DigitalDocument",
-      "name": "The Irreplaceable Queen",
-      "author": { "@type": "Person", "name": "DASSY" },
-      "publisher": "DASSY DIGITAL LIBRARY"
-    }
-    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "DigitalDocument",
+      "name": "The Irreplaceable Queen",
+      "author": { "@type": "Person", "name": "DASSY" },
+      "publisher": "DASSY DIGITAL LIBRARY"
+    }
+    </script>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="turn.js"></script>
 
-    <style>
-        :root { 
-            --gold: #D4AF37; 
-            --royal-purple: #12011b;
-        }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
-        
-        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.4); transition: opacity 1s ease; }
-        
-        /* Lock Screen Style - Purple/Gold Theme */
-        #lock { 
-            position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; 
-            flex-direction: column; z-index: 20; 
-            background: radial-gradient(circle, rgba(18, 1, 27, 0.8) 0%, rgba(0, 0, 0, 0.95) 100%); 
-            backdrop-filter: blur(8px); color: #fff; text-align: center; padding: 20px; 
-        }
-        
-        .brand-label { font-size: 11px; color: var(--gold); letter-spacing: 5px; margin-bottom: 25px; font-weight: bold; opacity: 0.9; }
-        
-        .book-title-container { margin-bottom: 45px; }
-        .book-title-my { color: #fff; font-size: clamp(28px, 6vw, 45px); font-weight: 900; letter-spacing: 2px; margin: 0; }
-        .book-title-en { color: var(--gold); font-size: 14px; letter-spacing: 3px; font-weight: bold; margin-top: 10px; text-transform: uppercase; }
+    <style>
+        :root { 
+            --gold: #D4AF37; 
+            --royal-purple: #12011b;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
+        
+        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: brightness(0.4); transition: opacity 1s ease; }
+        
+        /* Lock Screen Style - Purple/Gold Theme */
+        #lock { 
+            position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; 
+            flex-direction: column; z-index: 20; 
+            background: radial-gradient(circle, rgba(18, 1, 27, 0.8) 0%, rgba(0, 0, 0, 0.95) 100%); 
+            backdrop-filter: blur(8px); color: #fff; text-align: center; padding: 20px; 
+        }
+        
+        .brand-label { font-size: 11px; color: var(--gold); letter-spacing: 5px; margin-bottom: 25px; font-weight: bold; opacity: 0.9; }
+        
+        .book-title-container { margin-bottom: 45px; }
+        .book-title-my { color: #fff; font-size: clamp(28px, 6vw, 45px); font-weight: 900; letter-spacing: 2px; margin: 0; }
+        .book-title-en { color: var(--gold); font-size: 14px; letter-spacing: 3px; font-weight: bold; margin-top: 10px; text-transform: uppercase; }
 
-        #lock input { 
-            padding: 16px; width: 300px; border: 1px solid rgba(212, 175, 55, 0.4); 
-            background: rgba(255, 255, 255, 0.05); color: #fff; text-align: center; 
-            font-size: 16px; outline: none; margin-bottom: 25px; border-radius: 4px;
-            letter-spacing: 2px;
-        }
-        #lock input::placeholder { color: rgba(255,255,255,0.3); }
+        #lock input { 
+            padding: 16px; width: 300px; border: 1px solid rgba(212, 175, 55, 0.4); 
+            background: rgba(255, 255, 255, 0.05); color: #fff; text-align: center; 
+            font-size: 16px; outline: none; margin-bottom: 25px; border-radius: 4px;
+            letter-spacing: 2px;
+        }
+        #lock input::placeholder { color: rgba(255,255,255,0.3); }
 
-        #lock button { 
-            padding: 15px 80px; 
-            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
-            color: #000; border: none; font-weight: 900; cursor: pointer; 
-            text-transform: uppercase; border-radius: 4px; letter-spacing: 2px;
-            box-shadow: 0 4px 15px rgba(191, 149, 63, 0.3);
-            transition: 0.3s;
-        }
-        #lock button:hover { transform: scale(1.05); opacity: 0.9; }
+        #lock button { 
+            padding: 15px 80px; 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); 
+            color: #000; border: none; font-weight: 900; cursor: pointer; 
+            text-transform: uppercase; border-radius: 4px; letter-spacing: 2px;
+            box-shadow: 0 4px 15px rgba(191, 149, 63, 0.3);
+            transition: 0.3s;
+        }
+        #lock button:hover { transform: scale(1.05); opacity: 0.9; }
 
-        .request-link { 
-            margin-top: 35px; color: #ff00ff; text-decoration: none; 
-            font-size: 12px; font-weight: bold; letter-spacing: 1px;
-            text-transform: uppercase;
-        }
+        .request-link { 
+            margin-top: 35px; color: #ff00ff; text-decoration: none; 
+            font-size: 12px; font-weight: bold; letter-spacing: 1px;
+            text-transform: uppercase;
+        }
 
-        #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; }
-        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding-bottom: 35px; background: #000; position: relative; }
-        
-        .page { background: #000; width: 100%; height: 100%; position: relative; overflow: hidden; }
-        .page img { width: 100%; height: 100%; object-fit: fill !important; display: block; pointer-events: none; }
-        .page iframe { width: 100% !important; height: 100% !important; border: none !important; display: block; background: #000; position: absolute; top: 0; left: 0; }
+        #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; }
+        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding-bottom: 35px; background: #000; }
+        
+        .page { background: #000; width: 100%; height: 100%; position: relative; overflow: hidden; }
+        .page img { width: 100%; height: 100%; object-fit: fill !important; display: block; pointer-events: none; }
+        .page iframe { width: 100% !important; height: 100% !important; border: none !important; display: block; background: #000; position: absolute; top: 0; left: 0; }
 
-        .watermark { 
-            position: absolute; bottom: 20px; width: 100%; text-align: center; 
-            font-size: 10px; color: var(--gold); opacity: 0.4; letter-spacing: 4px; pointer-events: none; z-index: 15;
-        }
-
-        /* 🛠️ နေရာချဲ့ထွင်ရန်နှင့် အရိပ်အမွက်ပြရန် ဖန်တီးထားသော Hotspot Area များ */
-        .click-layer-right {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 35%; /* စာရွက်ရဲ့ ညာဘက်မျက်နှာပြင် ၃၅ ရာခိုင်နှုန်း တစ်ပြင်လုံးကို နေရာချဲ့ထားသည် */
-            height: calc(100% - 40px);
-            z-index: 999;
-            cursor: pointer;
-        }
-
-        /* 🛠️ စာဖတ်သူ ဘာမှမနှိပ်ရသေးခင် ညာဘက်အနားတစ်ခုလုံးကနေ အလိုအလျောက် တွန့်လိပ်လှုပ်ရှားနေမည့် အရိပ်အမွက်ပြခြင်း */
-        .peel-hint-active {
-            animation: edgePulse 2.5s ease-in-out infinite;
-            transform-origin: right center;
-        }
-
-        @keyframes edgePulse {
-            0% { transform: scaleX(1); filter: brightness(1); }
-            50% { transform: scaleX(0.97); filter: brightness(1.2); } /* စာရွက်လေး ဘေးကနေ အလိုလို တွန့်လိပ်လှုပ်ရှားနေသလို ပြပေးသည် */
-            100% { transform: scaleX(1); filter: brightness(1); }
-        }
-    </style>
+        .watermark { 
+            position: absolute; bottom: 20px; width: 100%; text-align: center; 
+            font-size: 10px; color: var(--gold); opacity: 0.4; letter-spacing: 4px; pointer-events: none; z-index: 15;
+        }
+    </style>
 </head>
 <body>
 
-    <video id="bg-video" autoplay muted loop playsinline><source src="video.mp4" type="video/mp4"></video>
+    <video id="bg-video" autoplay muted loop playsinline><source src="video.mp4" type="video/mp4"></video>
 
-    <div id="lock">
-        <span class="brand-label">DASSY DIGITAL LIBRARY PRESENTS</span>
-        <div class="book-title-container">
-            <h1 class="book-title-my">မစွန့်လွှတ်နိုင်သော ဧကရီ</h1>
-            <div class="book-title-en">(THE IRREPLACEABLE QUEEN)</div>
-        </div>
-        
-        <input type="password" id="pass" placeholder="ACCESS KEY">
-        <button onclick="unlock()">ENTER THE MIRROR</button>
-        
-        <a href="https://t.me/Dassy_digital_Library" target="_blank" class="request-link">
-            REQUEST PRIVATE ACCESS FROM DASSY
-        </a>
-    </div>
+    <div id="lock">
+        <span class="brand-label">DASSY DIGITAL LIBRARY PRESENTS</span>
+        <div class="book-title-container">
+            <h1 class="book-title-my">မစွန့်လွှတ်နိုင်သော ဧကရီ</h1>
+            <div class="book-title-en">(THE IRREPLACEABLE QUEEN)</div>
+        </div>
+        
+        <input type="password" id="pass" placeholder="ACCESS KEY">
+        <button onclick="unlock()">ENTER THE MIRROR</button>
+        
+        <a href="https://t.me/Dassy_digital_Library" target="_blank" class="request-link">
+            REQUEST PRIVATE ACCESS FROM DASSY
+        </a>
+    </div>
 
-    <div id="book-container">
-        <!-- 🛠️ ညာဘက်အခြမ်း ကြိုက်တဲ့နေရာကနေ ဆွဲလှန်လို့ရမည့် Overlay Layer ကို ထည့်သွင်းခြင်း -->
-        <div id="flipbook-wrapper">
-            <div id="flipbook"></div>
-            <div class="click-layer-right" id="right-hotspot"></div>
-        </div>
-        <div class="watermark">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
-    </div>
+    <div id="book-container">
+        <div id="flipbook-wrapper"><div id="flipbook"></div></div>
+        <div class="watermark">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
+    </div>
 
-    <audio id="sound" src="flip.mp3" preload="auto"></audio>
+    <audio id="sound" src="flip.mp3" preload="auto"></audio>
 
-    <script>
-        
-        const myPassword = "D2026@QUEEN"; 
-        const maxPages = 59; // စာမျက်နှာ စုစုပေါင်း
-        const quizPages = [2, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56]; // Quiz ရှိသော စာမျက်နှာများ
-        let isQuizLocked = false; 
+    <script>
+        // စာအုပ်အသစ်အတွက် အချက်အလက်များ
+        const myPassword = "D2026@QUEEN"; 
+        const maxPages = 59; // စာမျက်နှာ စုစုပေါင်း
+        const quizPages = [2, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56]; // Quiz ရှိသော စာမျက်နှာများ
+        let isQuizLocked = false; 
 
-        // 🛠️ FIX 2: Password တစ်ခါပဲ ထည့်ရအောင် စစ်ဆေးပေးသော Logic
-        $(document).ready(function() {
-            const isUnlocked = localStorage.getItem("tiq_unlocked");
-            if (isUnlocked === "true") {
-                $("#lock, #bg-video").hide();
-                $("#book-container").show().css("opacity", 1);
-                loadAndInit();
-            }
-        });
+        // 🛠️ FIX 2: Password တစ်ခါပဲ ထည့်ရအောင် စစ်ဆေးပေးသော Logic
+        $(document).ready(function() {
+            const isUnlocked = localStorage.getItem("tiq_unlocked");
+            if (isUnlocked === "true") {
+                $("#lock, #bg-video").hide();
+                $("#book-container").show().css("opacity", 1);
+                loadAndInit();
+            }
+        });
 
-        
-        function getBookSize() {
-            let w = window.innerWidth;
-            let h = window.innerHeight - 40; 
+        // 🛠️ FIX 1: စာမျက်နှာ Ratio ကို Mobile/Tablet ကွက်တိဖြစ်အောင် တွက်ချက်ပေးသော Logic
+        function getBookSize() {
+            let w = window.innerWidth;
+            let h = window.innerHeight - 40; 
 
-            if (window.innerWidth < 600) {
-                w = window.innerWidth;
-            } else {
-                let tabletH = window.innerHeight * 0.85;
-                let tabletW = tabletH * 0.707;
-                if (w / h > 0.707) { w = tabletW; h = tabletH; } else { h = w / 0.707; }
-            }
-            return { w, h };
-        }
+            if (window.innerWidth < 600) {
+                w = window.innerWidth;
+            } else {
+                let tabletH = window.innerHeight * 0.85;
+                let tabletW = tabletH * 0.707;
+                if (w / h > 0.707) { w = tabletW; h = tabletH; } else { h = w / 0.707; }
+            }
+            return { w, h };
+        }
 
-        // Quiz ဖြေပြီးသွားလျှင် Lock ဖွင့်ပေးရန် Message လက်ခံခြင်း
-        window.addEventListener("message", function(event) {
-            if (event.data === "quizCompleted") {
-                isQuizLocked = false; 
-                setTimeout(() => { $("#flipbook").turn("next"); }, 300);
-            }
-        }, false);
+        // Quiz ဖြေပြီးသွားလျှင် Lock ဖွင့်ပေးရန် Message လက်ခံခြင်း
+        window.addEventListener("message", function(event) {
+            if (event.data === "quizCompleted") {
+                isQuizLocked = false; 
+                setTimeout(() => { $("#flipbook").turn("next"); }, 300);
+            }
+        }, false);
 
-        function unlock() {
-            if(document.getElementById("pass").value === myPassword) {
-                // 🛠️ FIX 2: Password မှန်ကန်လျှင် နောက်တစ်ကြိမ် ထပ်မတောင်းရန် မှတ်သားခြင်း
-                localStorage.setItem("tiq_unlocked", "true");
-                $("#lock").fadeOut(600, () => {
-                    $("#bg-video").fadeOut(600);
-                    $("#book-container").css("display", "block").animate({opacity: 1}, 1000);
-                    loadAndInit();
-                });
-            } else { 
-                alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။ DASSY ထံမှ ကုဒ်ရယူပါ။"); 
-            }
-        }
+        function unlock() {
+            if(document.getElementById("pass").value === myPassword) {
+                // 🛠️ FIX 2: Password မှန်ကန်လျှင် နောက်တစ်ကြိမ် ထပ်မတောင်းရန် မှတ်သားခြင်း
+                localStorage.setItem("tiq_unlocked", "true");
+                $("#lock").fadeOut(600, () => {
+                    $("#bg-video").fadeOut(600);
+                    $("#book-container").css("display", "block").animate({opacity: 1}, 1000);
+                    loadAndInit();
+                });
+            } else { 
+                alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။ DASSY ထံမှ ကုဒ်ရယူပါ။"); 
+            }
+        }
 
-        function loadAndInit() {
-            const flipbook = $("#flipbook");
-            if (flipbook.children().length > 0) return;
+        function loadAndInit() {
+            const flipbook = $("#flipbook");
+            if (flipbook.children().length > 0) return;
 
-            const { w, h } = getBookSize();
+            const { w, h } = getBookSize();
 
-            
-            $("#right-hotspot").css({ width: (w * 0.35) + "px", height: h + "px" });
+            for(let i=1; i<=maxPages; i++) {
+                const pageDiv = $('<div class="page"></div>');
+                
+                // Quiz စာမျက်နှာများအတွက် iframe ထည့်ခြင်း
+                if(quizPages.includes(i)) {
+                    const fileName = (i === 2) ? "intro_quiz.html" : `page${i}.html`;
+                    pageDiv.append(`<iframe src="${fileName}" style="width:100%; height:100%; border:none; overflow:hidden;" scrolling="no"></iframe>`);
+                } 
+                // ပုံမှန်စာမျက်နှာများ (Page.jpg)
+                else if (i < maxPages) {
+                    pageDiv.append($('<img />').attr('src', `page${i}.jpg`));
+                } 
+                // နောက်ဆုံးစာမျက်နှာ
+                else {
+                    pageDiv.append('<div style="width:100%; height:100%; background:#000; display:flex; align-items:center; justify-content:center; color:#555; font-size:12px;">END OF PREVIEW</div>');
+                }
+                flipbook.append(pageDiv);
+            }
 
-            for(let i=1; i<=maxPages; i++) {
-                const pageDiv = $('<div class="page"></div>');
-                
-                // Quiz စာမျက်နှာများအတွက် iframe ထည့်ခြင်း
-                if(quizPages.includes(i)) {
-                    const fileName = (i === 2) ? "intro_quiz.html" : `page${i}.html`;
-                    pageDiv.append(`<iframe src="${fileName}" style="width:100%; height:100%; border:none; overflow:hidden;" scrolling="no"></iframe>`);
-                } 
-                // ပုံမှန်စာမျက်နှာများ (Page.jpg)
-                else if (i < maxPages) {
-                    pageDiv.append($('<img />').attr('src', `page${i}.jpg`));
-                } 
-                // နောက်ဆုံးစာမျက်နှာ
-                else {
-                    pageDiv.append('<div style="width:100%; height:100%; background:#000; display:flex; align-items:center; justify-content:center; color:#555; font-size:12px;">END OF PREVIEW</div>');
-                }
-                flipbook.append(pageDiv);
-            }
+            // Turn.js စတင်ခြင်း
+            setTimeout(() => {
+                flipbook.turn({
+                    width: w, height: h, autoCenter: true, display: 'single', acceleration: true, duration: 400,
+                    when: {
+                        turning: function(e, page) {
+                            if (isQuizLocked) { e.preventDefault(); return; }
+                            const s = document.getElementById("sound");
+                            if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
+                        },
+                        turned: function(e, page) {
+                            // 🛠️ FIX 3: ဖတ်နေတဲ့စာမျက်နှာကို LocalStorage ထဲ သိမ်းဆည်းခြင်း
+                            localStorage.setItem("tiq_last_page", page);
+                            
+                            // Quiz စာမျက်နှာဆိုလျှင် နောက်တစ်ရွက်လှန်မရအောင် Lock ချခြင်း
+                            isQuizLocked = quizPages.includes(page);
+                        }
+                    }
+                });
 
-            // Turn.js စတင်ခြင်း
-            setTimeout(() => {
-                flipbook.turn({
-                    width: w, height: h, autoCenter: true, display: 'single', acceleration: true, duration: 400,
-                    corners: 'all',
-                    gradients: true,
-                    when: {
-                        turning: function(e, page) {
-                            if (isQuizLocked) { e.preventDefault(); return; }
-                            const s = document.getElementById("sound");
-                            if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
-                        },
-                        turned: function(e, page) {
-                            
-                            localStorage.setItem("tiq_last_page", page);
-                            
-                            
-                            isQuizLocked = quizPages.includes(page);
+                // 🛠️ FIX 3: ဖတ်လက်စ စာမျက်နှာကို ပြန်ခေါ်ယူဖွင့်ပေးခြင်း Logic
+                const savedPage = localStorage.getItem("tiq_last_page");
+                if (savedPage) {
+                    flipbook.turn("page", parseInt(savedPage));
+                } else {
+                    flipbook.turn("page", 1);
+                }
+            }, 100);
+        }
 
-                            // ပထမဆုံး စာမျက်နှာ မဟုတ်တော့လျှင် အရိပ်အမွက် Animation ကို ရပ်တန့်ရန်
-                            if (page > 1) {
-                                flipbook.removeClass("peel-hint-active");
-                            } else {
-                                flipbook.addClass("peel-hint-active");
-                            }
-                        }
-                    }
-                });
-
-                // 🛠️ FIX 3: ဖတ်လက်စ စာမျက်နှာကို ပြန်ခေါ်ယူဖွင့်ပေးခြင်း Logic
-                const savedPage = localStorage.getItem("tiq_last_page");
-                const startPage = savedPage ? parseInt(savedPage) : 1;
-                flipbook.turn("page", startPage);
-
-                // 🛠️ စာဖတ်သူ ဘာမှမနှိပ်ရသေးခင် ပထမစာမျက်နှာမှာ တစ်လှန့်ချင်း အရိပ်အမွက်ပြနေစေမည့် Logic
-                if (startPage === 1) {
-                    flipbook.addClass("peel-hint-active");
-                }
-
-                // 🛠️ ညာဘက်အခြမ်း နေရာအနှံ့အပြားမှ ကိုင်ဆွဲ/နှိပ်ပြီး လှန်နိုင်စေရန် Hotspot Logic 
-                let isDragging = false;
-                let startX = 0;
-
-                $("#right-hotspot").on("mousedown touchstart", function(e) {
-                    if (isQuizLocked) return;
-                    isDragging = true;
-                    startX = e.pageX || e.originalEvent.touches[0].pageX;
-                    flipbook.removeClass("peel-hint-active"); // နှိပ်လိုက်လျှင် animation ရပ်မည်
-                });
-
-                $(document).on("mousemove touchmove", function(e) {
-                    if (!isDragging) return;
-                    let currentX = e.pageX || e.originalEvent.touches[0].pageX;
-                    let diffX = startX - currentX;
-                    if (diffX > 30) {
-                        isDragging = false;
-                        flipbook.turn("next");
-                    }
-                });
-
-                $(document).on("mouseup touchend", function(e) {
-                    if (isDragging) {
-                        isDragging = false;
-                        flipbook.turn("next");
-                    }
-                });
-
-            }, 100);
-        }
-
-        
-        $(window).resize(function() {
-            const { w, h } = getBookSize();
-            if ($("#flipbook").turn("is")) {
-                $("#flipbook").turn("size", w, h);
-                $("#right-hotspot").css({ width: (w * 0.35) + "px", height: h + "px" });
-            }
-        });
-    </script>
+        // Screen Size ပြောင်းလဲလျှင် Flipbook Size လိုက်ညှိရန်
+        $(window).resize(function() {
+            const { w, h } = getBookSize();
+            if ($("#flipbook").turn("is")) {
+                $("#flipbook").turn("size", w, h);
+            }
+        });
+    </script>
 </body>
-</html>
+</html> 
