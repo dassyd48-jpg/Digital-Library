@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>မှော်ဝင်ပျားလေးများနှင့် ပျားရည်အိုး - "ဓ" စာလုံး</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght=400;700;900&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #1e1b4b; 
+            font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .burmese-font {
+            font-family: 'Pyidaungsu', sans-serif;
+        }
+    </style>
+</head>
+<body class="relative select-none">
+
+    <!-- 🌟 HUD UI TOP BAR -->
+    <div id="hud" class="absolute top-4 left-4 right-4 pointer-events-none z-30 flex flex-col space-y-2 max-w-md burmese-font">
+        <div class="flex items-center space-x-3 bg-amber-950/90 backdrop-blur-md p-3 rounded-2xl border border-amber-500/20 shadow-lg">
+            <span class="text-xs font-black text-amber-400 tracking-wider uppercase">ပျားအုံအလှဆင်မှု 🐝</span>
+            <div class="flex-1 bg-black/40 h-4 rounded-full overflow-hidden p-0.5 border border-white/5">
+                <div id="xp-bar" class="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <span id="level-display" class="bg-amber-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Level 1</span>
+        </div>
+        
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-2 bg-amber-950/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-amber-500/20 shadow-lg">
+                    <span class="text-xl">🍯</span>
+                    <span id="cash-display" class="text-white font-black tracking-widest text-sm">0</span>
+                </div>
+                <div class="flex items-center space-x-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 backdrop-blur-md px-4 py-2 rounded-2xl border border-amber-500/40 shadow-lg animate-pulse">
+                    <span class="text-xs font-black text-amber-400 uppercase tracking-wider">ရှာရမည့်စာလုံး -</span>
+                    <span id="target-letter-display" class="burmese-font text-2xl font-bold text-yellow-300">ဓ</span>
+                </div>
+            </div>
+
+            <div class="flex space-x-2 pointer-events-auto">
+                <a href="index.html?fromGame=true" class="px-3 py-2 bg-slate-950/90 hover:bg-slate-900 border border-teal-500/30 rounded-xl text-xs text-white flex items-center space-x-1 shadow-md transition-all active:scale-95 cursor-pointer">
+                    <span>🏠</span> <span class="hidden sm:inline">ပင်မမြေပုံ</span>
+                </a>
+                <a href="index.html?fromGame=true&showPopup=stage3" class="px-3 py-2 bg-slate-950/90 hover:bg-slate-900 border border-amber-500/30 rounded-xl text-xs text-white flex items-center space-x-1 shadow-md transition-all active:scale-95 cursor-pointer">
+                    <span>↩️</span> <span class="hidden sm:inline">နောက်သို့</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ❤️ HP DISPLAY -->
+    <div class="absolute top-4 right-4 z-30 pointer-events-none flex items-center space-x-2 bg-amber-950/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-amber-500/20 shadow-lg">
+        <span class="text-lg">❤️</span>
+        <span id="hp-display" class="text-rose-500 font-black tracking-wider text-sm">100 / 100</span>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+<div id="overlay-screen" class="absolute inset-0 bg-amber-950/95 backdrop-blur-md z-[90] flex flex-col items-center justify-center text-center p-6 burmese-font">
+        <h1 class="text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400 tracking-wider mb-4 uppercase drop-shadow-[0_0_30px_rgba(245,158,11,0.4)] font-sans">
+            HONEY POT & BEES
+        </h1>
+        
+        <p class="text-yellow-300 text-xl sm:text-1xl font-extrabold tracking-wide mb-12 leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+            "ဓ" စာလုံး ပျားရည်အိုးနှင့် ပျားခုံလေးများဂိမ်း
+        </p>
+        
+        <div id="game-stats" class="hidden bg-white/5 border border-white/5 rounded-3xl p-6 mb-10 max-w-xs w-full text-left space-y-3 font-sans">
+            <div class="flex justify-between"><span class="text-neutral-400 burmese-font">မှန်ကန်စွာ ထည့်နိုင်မှု</span><span id="stat-coins" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-neutral-400 burmese-font">မှားယွင်းစွာ ထည့်မှု</span><span id="stat-kills" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-neutral-400 burmese-font">ရောက်ရှိသွားသည့် အဆင့်</span><span id="stat-level" class="text-amber-400 font-bold">Level 1</span></div>
+        </div>
+
+        <button id="start-btn" class="px-16 py-6 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-black text-base sm:text-lg uppercase tracking-[0.2em] rounded-full transition-all shadow-[0_20px_50px_rgba(245,158,11,0.3)] border-b-4 border-amber-800 pointer-events-auto cursor-pointer">
+            ဂိမ်းစတင်မည်
+        </button>
+    </div>
+
+    <script>
+        // 🎵 Web Audio Sound FX System (Safely initialized inside standard variable)
+        let audioCtx = null;
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type) {
+            initAudioContext();
+            if (!audioCtx) return;
+            
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+
+            if (type === 'match_correct') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(587.33, now); osc.frequency.setValueAtTime(698.46, now + 0.08); osc.frequency.setValueAtTime(880.00, now + 0.15);
+                gainNode.gain.setValueAtTime(0.08, now); gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now); osc.stop(now + 0.3);
+            } else if (type === 'match_wrong') {
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, now); osc.frequency.linearRampToValueAtTime(70, now + 0.25);
+                gainNode.gain.setValueAtTime(0.1, now); gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                osc.start(now); osc.stop(now + 0.25);
+            } else if (type === 'levelup') {
+                const notes = [293.66, 349.23, 440.00, 587.33];
+                notes.forEach((f, i) => {
+                    const o = audioCtx.createOscillator(); const g = audioCtx.createGain();
+                    o.connect(g); g.connect(audioCtx.destination); o.type = 'sine';
+                    o.frequency.setValueAtTime(f, now + i * 0.06); g.gain.setValueAtTime(0.06, now + i * 0.06);
+                    g.gain.exponentialRampToValueAtTime(0.01, now + i * 0.06 + 0.2); o.start(now + i * 0.06); o.stop(now + i * 0.06 + 0.2);
+                });
+            }
+        }
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // 🍯 HONEY POT & HONEYCOMB SYSTEM OBJ
+        const honeyPot = {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2 + 120,
+            radius: 55,
+            bounceTimer: 0,
+            reactionMode: 'idle',
+            reactionTimer: 0,
+            slots: []
+        };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            honeyPot.x = canvas.width / 2;
+            honeyPot.y = canvas.height / 2 + 120;
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        const burmeseAlphabets = ['က','ခ','ဂ','င','စ','ဆ','ည','တ','ထ','ဒ','ဓ','န','ပ','ဖ','ဗ','မ','ယ','ရ','လ','ဝ','သ','ဟ','အ'];
+        const game = { running: false, score: 0, correctPops: 0, incorrectPops: 0, targetLetter: 'ဓ' };
+        const player = { hp: 100, level: 1 };
+
+        const entities = { bees: [], magicStars: [] };
+        let draggedBee = null;
+
+        // 🐝 INITIALIZE HONEYCOMB SLOTS PER LEVEL
+        function initHoneycombSlots() {
+            honeyPot.slots = [];
+            let totalSlots = 6; 
+            let radius = 140;
+
+            if (player.level === 2) {
+                totalSlots = 10;
+                radius = 160;
+            } else if (player.level >= 3) {
+                totalSlots = 15;
+                radius = 180;
+            }
+
+            const startAngle = Math.PI * 1.1; 
+            const endAngle = Math.PI * 1.9;
+
+            for (let i = 0; i < totalSlots; i++) {
+                const angle = startAngle + (endAngle - startAngle) * (i / (totalSlots - 1));
+                honeyPot.slots.push({
+                    angle: angle,
+                    radius: radius,
+                    filled: false,
+                    pulse: 0
+                });
+            }
+        }
+
+        // 🎨 DRAW HONEY POT & HONEYCOMB SLOTS
+        function drawHoneyPot(ctx, hp) {
+            ctx.save();
+            ctx.translate(hp.x, hp.y);
+
+            // Draw Honeycomb Slots
+            hp.slots.forEach((slot) => {
+                const sx = Math.cos(slot.angle) * slot.radius;
+                const sy = Math.sin(slot.angle) * slot.radius;
+
+                ctx.save();
+                ctx.translate(sx, sy);
+
+                if (slot.filled) {
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.strokeStyle = '#d97706';
+                    ctx.lineWidth = 3;
+                    drawHexagon(ctx, 0, 0, 22);
+                    ctx.fill(); ctx.stroke();
+
+                    ctx.fillStyle = '#fef08a';
+                    ctx.beginPath(); ctx.arc(0, 0, 6, 0, Math.PI*2); ctx.fill();
+
+                    ctx.fillStyle = '#78350f';
+                    ctx.font = 'bold 20px Pyidaungsu, sans-serif';
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText(game.targetLetter, 0, 0);
+                } else {
+                    slot.pulse += 0.05;
+                    ctx.strokeStyle = 'rgba(251, 191, 36, 0.4)';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([4, 4]);
+                    drawHexagon(ctx, 0, 0, 20);
+                    ctx.stroke();
+
+                    ctx.fillStyle = 'rgba(251, 191, 36, 0.4)';
+                    ctx.font = 'bold 18px Pyidaungsu, sans-serif';
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText(game.targetLetter, 0, 0);
+                }
+                ctx.restore();
+            });
+
+            let scalePot = 1.0;
+            if (hp.reactionMode === 'happy') scalePot += Math.sin(hp.bounceTimer * 2.5) * 0.08;
+            else if (hp.reactionMode === 'sad') scalePot += Math.sin(hp.bounceTimer * 3.5) * 0.04;
+            else scalePot += Math.sin(hp.bounceTimer) * 0.015;
+            ctx.scale(scalePot, scalePot);
+
+            const potGrad = ctx.createLinearGradient(0, -hp.radius, 0, hp.radius);
+            potGrad.addColorStop(0, '#ea580c');
+            potGrad.addColorStop(1, '#9a3412');
+            ctx.fillStyle = potGrad;
+            ctx.beginPath();
+            ctx.arc(0, 15, hp.radius, 0, Math.PI, false);
+            ctx.lineTo(-hp.radius + 10, -20);
+            ctx.lineTo(hp.radius - 10, -20);
+            ctx.closePath(); ctx.fill();
+
+            ctx.fillStyle = '#c2410c';
+            ctx.beginPath();
+            ctx.ellipse(0, -20, hp.radius - 8, 10, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#fbbf24';
+            ctx.beginPath();
+            ctx.ellipse(0, -20, hp.radius - 12, 6, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#f59e0b';
+            ctx.beginPath();
+            ctx.moveTo(-25, -18); ctx.quadraticCurveTo(-20, 5, -15, -15);
+            ctx.moveTo(10, -18); ctx.quadraticCurveTo(18, 12, 25, -15);
+            ctx.ellipse(0, -10, 30, 12, 0, 0, Math.PI);
+            ctx.fill();
+
+            ctx.fillStyle = '#fef08a';
+            ctx.font = 'black 34px Pyidaungsu, sans-serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(game.targetLetter, 0, 15);
+
+            ctx.restore();
+        }
+
+        function drawHexagon(context, x, y, size) {
+            context.beginPath();
+            for (let i = 0; i < 6; i++) {
+                const angle = (Math.PI / 3) * i + Math.PI / 6;
+                context.lineTo(x + size * Math.cos(angle), y + size * Math.sin(angle));
+            }
+            context.closePath();
+        }
+
+        function drawBee(ctx, b) {
+            ctx.save();
+            ctx.translate(b.x, b.y);
+
+            if (b === draggedBee) {
+                ctx.shadowColor = '#f59e0b'; ctx.shadowBlur = 25;
+            }
+
+            const wingWave = Math.sin(performance.now() * 0.05) * 12;
+
+            // 1. ပျားတောင်ပံလေးများ
+            ctx.fillStyle = 'rgba(224, 242, 254, 0.85)';
+            ctx.strokeStyle = '#bae6fd'; ctx.lineWidth = 1.5;
+            ctx.save(); ctx.translate(-8, -12); ctx.rotate(-Math.PI/4 + wingWave*Math.PI/180);
+            ctx.beginPath(); ctx.ellipse(0, 0, 8, 15, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke(); ctx.restore();
+            ctx.save(); ctx.translate(8, -12); ctx.rotate(Math.PI/4 - wingWave*Math.PI/180);
+            ctx.beginPath(); ctx.ellipse(0, 0, 8, 15, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke(); ctx.restore();
+
+            // 2. ပျားကိုယ်ထည် (အဝါရောင်)
+            ctx.fillStyle = '#facc15';
+            ctx.beginPath(); ctx.ellipse(0, 0, 24, 18, 0, 0, Math.PI*2); ctx.fill();
+
+            // 3. ပျားကိုယ်ပေါ်က အစင်းကြောင်းများ
+            ctx.strokeStyle = '#451a03'; ctx.lineWidth = 4;
+            ctx.beginPath(); ctx.moveTo(-6, -17); ctx.lineTo(-6, 17);
+            ctx.moveTo(4, -17); ctx.lineTo(4, 17); ctx.stroke();
+
+            // 4. ပျားမျက်လုံး
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath(); ctx.arc(-14, -4, 2.5, 0, Math.PI*2); ctx.arc(-6, -4, 2.5, 0, Math.PI*2); ctx.fill();
+
+            // =========================================================================
+            // ✨ စာလုံးထင်ရှားစေရန် အဖြူရောင်ဆိုင်းဘုတ်ဝိုင်းနှင့် အနက်ရောင်စာလုံး ပေါင်းစပ်မှု
+            // =========================================================================
+            // အနောက်က ခံမယ့် အဖြူရောင် ဝိုင်းဝိုင်းလေး
+            ctx.fillStyle = '#ffffff';
+            ctx.strokeStyle = '#451a03';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(0, 0, 15, 0, Math.PI * 2); 
+            ctx.fill();
+            ctx.stroke();
+
+            // မြန်မာအက္ခရာစာလုံးကို ထင်ထင်ရှားရှား ရေးဆွဲခြင်း
+            ctx.fillStyle = '#1e1b4b'; // ရင့်မှောင်သောအရောင်
+            ctx.font = 'bold 22px Pyidaungsu, sans-serif'; // စာလုံးအရွယ်အစား ပိုကြီးကြီး
+            ctx.textAlign = 'center'; 
+            ctx.textBaseline = 'middle';
+            ctx.fillText(b.letter, 0, 1); // ဗဟိုတည့်တည့်မှာ ကွက်တိချပေးခြင်း
+
+            ctx.restore();
+        }
+
+        function spawnBee() {
+            if (!game.running) return;
+            if (entities.bees.length >= 6) return;
+
+            const x = 50 + Math.random() * (canvas.width - 100);
+            const isTarget = Math.random() < 0.45;
+            let chosenLetter = game.targetLetter;
+
+            if (!isTarget) {
+                const filtered = burmeseAlphabets.filter(c => c !== game.targetLetter);
+                chosenLetter = filtered[Math.floor(Math.random() * filtered.length)];
+            }
+
+            entities.bees.push({
+                id: Math.random(), x: x, y: -40, letter: chosenLetter,
+                speedY: 0.9 + Math.random() * 1.2,
+                waveSpeed: 0.03 + Math.random() * 0.03,
+                waveParam: Math.random() * 100
+            });
+        }
+
+        setInterval(spawnBee, 1400);
+
+        function handleDragStart(clientX, clientY) {
+            if (!game.running) return;
+            for (let i = entities.bees.length - 1; i >= 0; i--) {
+                const b = entities.bees[i];
+                const dist = Math.hypot(clientX - b.x, clientY - b.y);
+                if (dist < 45) {
+                    draggedBee = b;
+                    break;
+                }
+            }
+        }
+
+        function handleDragMove(clientX, clientY) {
+            if (!draggedBee) return;
+            draggedBee.x = clientX;
+            draggedBee.y = clientY;
+        }
+
+        function handleDragEnd() {
+            if (!draggedBee) return;
+
+            let matched = false;
+            for (let i = 0; i < honeyPot.slots.length; i++) {
+                const slot = honeyPot.slots[i];
+                const sx = honeyPot.x + Math.cos(slot.angle) * slot.radius;
+                const sy = honeyPot.y + Math.sin(slot.angle) * slot.radius;
+                const distToSlot = Math.hypot(draggedBee.x - sx, draggedBee.y - sy);
+
+                if (distToSlot < 55) {
+                    if (draggedBee.letter === game.targetLetter) {
+                        if (!slot.filled) {
+                            playSound('match_correct');
+                            slot.filled = true; game.score += 20; game.correctPops++;
+                            honeyPot.reactionMode = 'happy'; honeyPot.reactionTimer = 40;
+                            
+                            for (let k = 0; k < 15; k++) {
+                                entities.magicStars.push({ x: sx, y: sy, vx: (Math.random() - 0.5) * 6, vy: (Math.random() - 0.5) * 6, size: 2 + Math.random() * 4, alpha: 1 });
+                            }
+                            matched = true;
+                            checkLevelComplete();
+                        }
+                    } else {
+                        playSound('match_wrong');
+                        game.incorrectPops++; player.hp = Math.max(0, player.hp - 15);
+                        honeyPot.reactionMode = 'sad'; honeyPot.reactionTimer = 45;
+                        if (player.hp <= 0) gameOver();
+                        matched = true;
+                    }
+                    break;
+                }
+            }
+
+            if (matched || draggedBee.y > canvas.height + 40) {
+                entities.bees = entities.bees.filter(item => item.id !== draggedBee.id);
+            }
+            draggedBee = null;
+        }
+
+        window.addEventListener('touchstart', (e) => { const t = e.touches[0]; handleDragStart(t.clientX, t.clientY); }, { passive: true });
+        window.addEventListener('touchmove', (e) => { const t = e.touches[0]; handleDragMove(t.clientX, t.clientY); }, { passive: true });
+        window.addEventListener('touchend', handleDragEnd);
+        window.addEventListener('mousedown', (e) => { handleDragStart(e.clientX, e.clientY); });
+        window.addEventListener('mousemove', (e) => { handleDragMove(e.clientX, e.clientY); });
+        window.addEventListener('mouseup', handleDragEnd);
+
+        function checkLevelComplete() {
+            const allFilled = honeyPot.slots.every(slot => slot.filled);
+            if (allFilled) {
+                playSound('levelup');
+                player.level++;
+                
+                setTimeout(() => {
+                    if (player.level > 3) {
+                        alert("အံ့ဩစရာပဲ Dassy ရေ! 'ဓ' စာလုံးပျားရည်အိုးလေး အလှဆင်လို့ ပြီးသွားပါပြီရှင်။ 🎉");
+                        player.level = 1;
+                    }
+                    initHoneycombSlots();
+                }, 1500);
+            }
+        }
+
+        function updateGame(dt) {
+            if (!game.running) return;
+            honeyPot.bounceTimer += 0.05 * dt;
+
+            if (honeyPot.reactionTimer > 0) {
+                honeyPot.reactionTimer -= 1 * dt;
+                if (honeyPot.reactionTimer <= 0) honeyPot.reactionMode = 'idle';
+            }
+
+            entities.bees.forEach(b => {
+                if (b !== draggedBee) {
+                    b.waveParam += b.waveSpeed * dt;
+                    b.y += b.speedY * dt;
+                    b.x += Math.sin(b.waveParam) * 0.6 * dt;
+                }
+            });
+
+            for (let i = entities.bees.length - 1; i >= 0; i--) {
+                if (entities.bees[i].y > canvas.height + 40 && entities.bees[i] !== draggedBee) {
+                    entities.bees.splice(i, 1);
+                }
+            }
+
+            for (let i = entities.magicStars.length - 1; i >= 0; i--) {
+                const s = entities.magicStars[i]; s.x += s.vx * dt; s.y += s.vy * dt; s.alpha -= 0.025 * dt;
+                if (s.alpha <= 0) entities.magicStars.splice(i, 1);
+            }
+
+            let totalInCurrentLevel = honeyPot.slots.length;
+            let filledCount = honeyPot.slots.filter(s => s.filled).length;
+            document.getElementById('xp-bar').style.width = `${(filledCount / totalInCurrentLevel) * 100}%`;
+            
+            document.getElementById('level-display').innerText = `Level ${player.level}`;
+            document.getElementById('cash-display').innerText = game.score;
+            document.getElementById('hp-display').innerText = `${Math.round(player.hp)} / 100`;
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const bgGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            bgGrad.addColorStop(0, '#2e1065'); bgGrad.addColorStop(1, '#0c0a09');
+            ctx.fillStyle = bgGrad; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = 'rgba(245, 158, 11, 0.06)';
+            ctx.beginPath(); ctx.arc(honeyPot.x, honeyPot.y, 250, 0, Math.PI*2); ctx.fill();
+
+            entities.magicStars.forEach(s => {
+                ctx.fillStyle = `rgba(251, 191, 36, ${s.alpha})`;
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill();
+            });
+
+            drawHoneyPot(ctx, honeyPot);
+            entities.bees.forEach(b => drawBee(ctx, b));
+        }
+
+        let lastTime = performance.now();
+        function gameLoop(now) {
+            let dt = (now - lastTime) / 16.666; lastTime = now; if (dt > 4) dt = 4;
+            updateGame(dt); render(); requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            // Safe Audio initialization on direct click event triggered
+            initAudioContext();
+
+            player.hp = 100; player.level = 1;
+            game.score = 0; game.correctPops = 0; game.incorrectPops = 0;
+            entities.bees = []; entities.magicStars = [];
+            honeyPot.reactionMode = 'idle';
+            initHoneycombSlots();
+            resizeCanvas();
+            document.getElementById('overlay-screen').classList.add('hidden'); 
+            game.running = true;
+        }
+
+        function gameOver() {
+            game.running = false;
+            document.getElementById('stat-coins').innerText = game.correctPops;
+            document.getElementById('stat-kills').innerText = game.incorrectPops;
+            document.getElementById('stat-level').innerText = `Level ${player.level}`;
+            document.getElementById('game-stats').classList.remove('hidden');
+            document.getElementById('start-btn').innerText = "ပြန်လည်ကြိုးစားမည် 🔄";
+            document.getElementById('overlay-screen').classList.remove('hidden');
+        }
+
+        document.getElementById('start-btn').onclick = startGame;
+        window.onload = function() { resizeCanvas(); initHoneycombSlots(); requestAnimationFrame(gameLoop); };
+    </script>
+</body>
+</html>

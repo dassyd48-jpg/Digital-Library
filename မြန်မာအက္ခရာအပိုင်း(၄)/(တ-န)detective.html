@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Find and Paint 'တ၊ ထ၊ ဒ၊ ဓ၊ န' - Dassy Digital Library</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght=400;700;900&display=swap');
+
+        :root {
+            --ocean-dark: #002244;
+            --ocean-mid: #005577;
+            --ocean-light: #0088aa;
+            --coral-pink: #ff6b6b;
+            --target-yellow: #f1c40f;
+            --sea-green: #2ecc71;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body, html {
+            width: 100%; height: 100%; overflow: hidden;
+            font-family: "Noto Sans Myanmar", "Pyidaungsu", "Myanmar Text", system-ui, sans-serif;
+            user-select: none; -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        body {
+            background: linear-gradient(180deg, var(--ocean-light) 0%, var(--ocean-mid) 50%, var(--ocean-dark) 100%);
+            position: relative;
+        }
+
+        .ocean-decor { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+        .bubble {
+            position: absolute; background: rgba(255, 255, 255, 0.3); border-radius: 50%;
+            bottom: -50px; animation: floatUp linear infinite;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .b1 { width: 20px; height: 20px; left: 10%; animation-duration: 8s; }
+        .b2 { width: 35px; height: 35px; left: 30%; animation-duration: 12s; animation-delay: 2s; }
+        .b3 { width: 15px; height: 15px; left: 75%; animation-duration: 7s; animation-delay: 1s; }
+        .b4 { width: 25px; height: 25px; left: 85%; animation-duration: 10s; animation-delay: 3s; }
+
+        .fish {
+            position: absolute; width: 55px; height: 35px; background: #ff7f50;
+            border-radius: 50% 50% 50% 50%; left: -100px; opacity: 0.65;
+            animation: swimRight linear infinite;
+        }
+        .fish::after {
+            content: ''; position: absolute; left: -12px; top: 7px;
+            border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+            border-right: 18px solid #ff7f50;
+        }
+        .fish::before {
+            content: ''; position: absolute; right: 10px; top: 10px;
+            width: 5px; height: 5px; background: #2c3e50; border-radius: 50%;
+        }
+        .f1 { top: 22%; animation-duration: 15s; transform: scale(0.85); background: #ffcc00; }
+        .f1::after { border-right-color: #ffcc00; }
+        .f2 { top: 75%; animation-duration: 20s; animation-delay: 3s; }
+
+        .jellyfish {
+            position: absolute; top: 30px; right: 50px;
+            width: 85px; height: 95px; z-index: 1;
+            display: flex; flex-direction: column; align-items: center;
+            animation: jellyBob 4s ease-in-out infinite;
+        }
+
+        .jelly-head {
+            width: 80px; height: 55px;
+            background: linear-gradient(to bottom, #ff9ff3, #feca57);
+            border-radius: 50px 50px 25px 25px;
+            position: relative; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            box-shadow: 0 0 25px rgba(255, 159, 243, 0.6);
+        }
+
+        .jelly-eyes { display: flex; gap: 16px; margin-top: 8px; height: 8px; align-items: center; }
+        .jelly-eye { width: 8px; height: 8px; background: #2c3e50; border-radius: 50%; animation: eyeBlink 3s infinite; }
+        .jelly-mouth-css { width: 20px; height: 10px; border-bottom: 3.5px solid #2c3e50; border-radius: 0 0 12px 12px; margin-top: 2px; }
+
+        .jelly-tentacles { display: flex; gap: 8px; margin-top: -2px; }
+        .tentacle {
+            width: 6px; height: 35px; background: #ff9ff3; border-radius: 3px;
+            animation: tentacleWave 2s ease-in-out infinite alternate;
+            opacity: 0.8;
+        }
+        .tentacle:nth-child(2) { animation-delay: 0.3s; height: 42px; background: #ffcf75; }
+        .tentacle:nth-child(3) { animation-delay: 0.6s; height: 32px; background: #ff9ff3; }
+
+        /* Navigation Top Bar */
+        .top-nav-bar {
+            position: absolute; top: 15px; left: 15px; z-index: 150;
+            display: flex; gap: 10px;
+        }
+        .nav-icon-btn {
+            width: 45px; height: 45px; background: white; border: 3px solid var(--ocean-light);
+            border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 4px 0 var(--ocean-dark); transition: transform 0.1s;
+        }
+        .nav-icon-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ocean-dark); }
+        .nav-icon-btn svg { width: 24px; height: 24px; fill: var(--ocean-dark); }
+
+        #intro-screen {
+            position: fixed; inset: 0;
+            background: linear-gradient(180deg, var(--ocean-light) 0%, var(--ocean-dark) 100%);
+            z-index: 200; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 20px;
+        }
+
+        /* Certificate / Success Modal Pop */
+        #congrats-modal {
+            position: fixed; inset: 0; background: rgba(0, 34, 68, 0.85);
+            z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .intro-card, .congrats-card {
+            background: rgba(255, 255, 255, 0.95); padding: 45px 35px; border-radius: 35px;
+            border: 6px solid var(--ocean-light); text-align: center; max-width: 450px; width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: introPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .congrats-card { border-color: var(--target-yellow); }
+
+        .intro-title, .congrats-title { color: var(--ocean-dark); font-size: 2.2rem; font-weight: 900; margin-bottom: 12px; }
+        .congrats-title { color: #e67e22; }
+        .intro-subtitle, .congrats-subtitle { color: #4b5563; font-size: 1.15rem; font-weight: 700; margin-bottom: 35px; line-height: 1.6; }
+        
+        .btn-start, .btn-home-back {
+            background: #6ee46b; color: #0a3d10; border: 4px solid #2a9d3a;
+            border-radius: 25px; padding: 15px 45px; font-size: 1.4rem;
+            font-weight: 900; cursor: pointer; box-shadow: 0 8px 0 #2a9d3a;
+            transition: all 0.1s; width: 100%;
+        }
+        .btn-start:active, .btn-home-back:active { transform: translateY(4px); box-shadow: 0 4px 0 #2a9d3a; }
+        .btn-home-back { background: var(--target-yellow); color: #5e4300; border-color: #d39e00; box-shadow: 0 8px 0 #d39e00; }
+
+        .container {
+            position: relative; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; height: 100vh;
+            z-index: 10; padding: 20px; display: none;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            border: 4px solid var(--ocean-light); border-radius: 22px;
+            padding: 12px 30px; text-align: center;
+            box-shadow: 0 6px 0 var(--ocean-dark), 0 10px 20px rgba(0,0,0,0.2);
+            margin-bottom: 15px; width: 100%; max-width: 500px; margin-top: 40px;
+        }
+
+        h1 { color: var(--ocean-dark); font-size: 1.5rem; margin: 0; font-weight: 900; }
+        .guide-text { color: #c0392b; font-weight: 800; margin-top: 4px; font-size: 1rem; }
+
+        .status-panel {
+            display: flex; gap: 15px; margin-bottom: 15px; width: 100%; max-width: 500px; justify-content: center;
+        }
+
+        .score-board, .stage-board {
+            background: white; padding: 8px 18px; border-radius: 15px;
+            border: 3px solid var(--ocean-light); color: var(--ocean-dark);
+            font-weight: 800; box-shadow: 0 4px 0 var(--ocean-light); font-size: 0.95rem;
+        }
+        .stage-board { border-color: #e67e22; box-shadow: 0 4px 0 #e67e22; color: #d35400; }
+
+        .painting-canvas {
+            background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(5px);
+            padding: 20px; border-radius: 30px; border: 6px solid var(--ocean-light);
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); width: 100%; max-width: 500px;
+        }
+
+        .segment {
+            width: 100%; aspect-ratio: 1;
+            background: white; border: 4px solid #eee; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: clamp(28px, 5vw, 42px); cursor: pointer; transition: all 0.2s;
+            color: var(--ocean-dark); font-weight: 900; box-shadow: 0 4px 0 #ddd;
+        }
+
+        .segment:active { transform: translateY(2px); box-shadow: 0 2px 0 #ddd; }
+        .segment.painted { border-color: rgba(255,255,255,0.5); color: white; box-shadow: 0 4px 0 rgba(0,0,0,0.1); }
+        .segment.wrong { animation: shake 0.4s ease; background: #ffebee; border-color: #ef9a9a; box-shadow: 0 4px 0 #ef9a9a; }
+
+        .palette {
+            margin-top: 20px; background: white; padding: 10px 20px;
+            border-radius: 50px; border: 3px solid var(--ocean-light);
+            display: flex; gap: 12px; box-shadow: 0 6px 0 var(--ocean-light);
+        }
+
+        .color-circle {
+            width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
+            border: 3px solid transparent; transition: transform 0.2s;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+        }
+        .color-circle.selected { border-color: var(--ocean-dark); transform: scale(1.2); }
+
+        .controls { margin-top: 20px; display: flex; gap: 15px; width: 100%; max-width: 500px; }
+        .btn {
+            flex: 1; background: var(--target-yellow); color: #4a2c00; border: 4px solid #cc8a00;
+            border-radius: 18px; padding: 12px 15px; font-size: 1.1rem;
+            font-weight: 900; cursor: pointer; box-shadow: 0 6px 0 #cc8a00; transition: transform 0.1s;
+            text-align: center;
+        }
+        .btn:active { transform: translateY(3px); box-shadow: 0 3px 0 #cc8a00; }
+        
+        .btn-next-lesson { background: #6ee46b; border-color: #2a9d3a; color: #0a3d10; box-shadow: 0 6px 0 #2a9d3a; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
+        }
+        @keyframes swimRight { 0% { left: -100px; } 100% { left: 100%; } }
+        @keyframes jellyBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes tentacleWave { from { transform: scaleY(1); } to { transform: scaleY(0.85) skewX(5deg); } }
+        @keyframes eyeBlink { 0%, 90%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes introPop { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .success-pop { animation: pop 0.4s ease; }
+    </style>
+</head>
+<body>
+
+    <!-- Back and Home Nav Buttons -->
+    <div class="top-nav-bar">
+        <div class="nav-icon-btn" onclick="goBack()" title="Back">
+            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        </div>
+        <div class="nav-icon-btn" onclick="goHome()" title="Home">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        </div>
+    </div>
+    
+    <!-- Intro Screen -->
+    <div id="intro-screen">
+        <div class="intro-card">
+            <h1 class="intro-title">မင်္ဂလာပါရှင်</h1>
+            <p class="intro-subtitle">မြန်မာအက္ခရာ "တ၊ ထ၊ ဒ၊ ဓ၊ န" များကို ရှာဖွေပြီး ဆွဲဆောင်မှုရှိတဲ့ အရောင်လေးတွေ ခြယ်သရအောင်နော်</p>
+            <button class="btn-start" onclick="startGame()">ဂိမ်းစဆော့မယ် 🚀</button>
+        </div>
+    </div>
+
+    <!-- Final Congrats Modal -->
+    <div id="congrats-modal">
+        <div class="congrats-card">
+            <h1 class="congrats-title">🎉 အရမ်းတော်တယ်ကွယ် 🎉</h1>
+            <p class="congrats-subtitle">အဆင့်အားလုံးမှာရှိတဲ့ မြန်မာအက္ခရာလေးတွေကို မှန်ကန်အောင် ရှာဖွေပြီး အရောင်ခြယ်သနိုင်ခဲ့လို့ ဂုဏ်ယူပါတယ်ရှင်။</p>
+            <button class="btn-home-back" onclick="goHome()">ပင်မစာမျက်နှာသို့ပြန်ရန် 🏠</button>
+        </div>
+    </div>
+
+    <!-- Ocean Decorations -->
+    <div class="ocean-decor" aria-hidden="true">
+        <div class="bubble b1"></div>
+        <div class="bubble b2"></div>
+        <div class="bubble b3"></div>
+        <div class="bubble b4"></div>
+        
+        <div class="fish f1"></div>
+        <div class="fish f2"></div>
+        
+        <div class="jellyfish">
+            <div class="jelly-head">
+                <div class="jelly-eyes">
+                    <div class="jelly-eye"></div>
+                    <div class="jelly-eye"></div>
+                </div>
+                <div class="jelly-mouth-css"></div>
+            </div>
+            <div class="jelly-tentacles">
+                <div class="tentacle"></div>
+                <div class="tentacle"></div>
+                <div class="tentacle"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Container -->
+    <div class="container" id="main-game-container">
+        <header>
+            <h1>"<span id="header-target-letter">တ</span>" ကို ရှာပြီး အရောင်ခြယ်ရအောင်</h1>
+            <p class="guide-text">"<span id="guide-target-letter">တ</span>" အက္ခရာကိုပဲ ရွေးပြီး အရောင်ခြယ်ပါ</p>
+        </header>
+
+        <div class="status-panel">
+            <div class="stage-board">အဆင့်: <span id="stage-count">1</span> / 3</div>
+            <div class="score-board">ရှာတွေ့မှု: <span id="found-count">0</span> / <span id="total-target">0</span></div>
+        </div>
+
+        <div class="painting-canvas" id="canvas"></div>
+
+        <div class="palette" id="palette">
+            <div class="color-circle selected" style="background: #0088aa;" data-color="#0088aa"></div>
+            <div class="color-circle" style="background: #ff6b6b;" data-color="#ff6b6b"></div>
+            <div class="color-circle" style="background: #2ecc71;" data-color="#2ecc71"></div>
+            <div class="color-circle" style="background: #e67e22;" data-color="#e67e22"></div>
+            <div class="color-circle" style="background: #e74c3c;" data-color="#e74c3c"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="resetCurrentStage()">အစကပြန်ဆော့မယ်</button>
+            <button class="btn btn-next-lesson" id="next-btn" style="display: none;" onclick="handleNextProgression()">နောက်တစ်ဆင့် သွားမည်</button>
+        </div>
+    </div>
+
+    <script>
+        const lessonPool = ['တ', 'ထ', 'ဒ', 'ဓ', 'န'];
+        const distractorPool = ['က', 'ခ', 'ဂ', 'င', 'စ', 'ဆ', 'ဇ', 'ည', 'ပ', 'ဖ', 'ဗ', 'မ'];
+        
+        let currentStage = 1;
+        let targetLetter = '';
+        let foundCount = 0;
+        let totalTarget = 0;
+        let selectedColor = '#0088aa';
+        let stageTargetsPool = [];
+
+        const canvas = document.getElementById('canvas');
+        const foundDisplay = document.getElementById('found-count');
+        const totalDisplay = document.getElementById('total-target');
+        const stageDisplay = document.getElementById('stage-count');
+        const nextBtn = document.getElementById('next-btn');
+        const headerTarget = document.getElementById('header-target-letter');
+        const guideTarget = document.getElementById('guide-target-letter');
+
+        function startGame() {
+            document.getElementById('intro-screen').style.display = 'none';
+            document.getElementById('main-game-container').style.display = 'flex';
+            currentStage = 1;
+            stageTargetsPool = [...lessonPool].sort(() => 0.5 - Math.random()).slice(0, 3);
+            initStage();
+        }
+
+        document.querySelectorAll('.color-circle').forEach(circle => {
+            circle.onclick = () => {
+                document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+                circle.classList.add('selected');
+                selectedColor = circle.dataset.color;
+            };
+        });
+
+        function initStage() {
+            canvas.innerHTML = '';
+            foundCount = 0;
+            totalTarget = 0;
+            foundDisplay.innerText = '0';
+            nextBtn.style.display = 'none';
+            canvas.classList.remove('success-pop');
+            
+            targetLetter = stageTargetsPool[currentStage - 1];
+            stageDisplay.innerText = currentStage;
+            headerTarget.innerText = targetLetter;
+            guideTarget.innerText = targetLetter;
+
+            nextBtn.innerText = "နောက်တစ်ဆင့် သွားမည် ➔";
+
+            for (let i = 0; i < 12; i++) {
+                const seg = document.createElement('div');
+                seg.className = 'segment';
+                
+                const isTarget = Math.random() > 0.6;
+                const letter = isTarget ? targetLetter : distractorPool[Math.floor(Math.random() * distractorPool.length)];
+                
+                if (letter === targetLetter) totalTarget++;
+                seg.innerText = letter;
+                seg.onclick = () => handlePaint(seg, letter);
+                canvas.appendChild(seg);
+            }
+
+            if (totalTarget < 3) return initStage();
+            totalDisplay.innerText = totalTarget;
+        }
+
+        function resetCurrentStage() {
+            initStage();
+        }
+
+        function handlePaint(seg, letter) {
+            if (seg.classList.contains('painted')) return;
+
+            if (letter === targetLetter) {
+                seg.style.background = selectedColor;
+                seg.classList.add('painted');
+                foundCount++;
+                foundDisplay.innerText = foundCount;
+                
+                if (foundCount === totalTarget) {
+                    nextBtn.style.display = 'block';
+                    canvas.classList.add('success-pop');
+                    
+                    // If stage 3 is completed, trigger the final congrats modal immediately
+                    if (currentStage === 3) {
+                        setTimeout(() => {
+                            document.getElementById('congrats-modal').style.display = 'flex';
+                        }, 600);
+                    }
+                }
+            } else {
+                seg.classList.add('wrong');
+                setTimeout(() => seg.classList.remove('wrong'), 400);
+            }
+        }
+
+        function handleNextProgression() {
+            if (currentStage < 3) {
+                currentStage++;
+                initStage();
+            }
+        }
+
+        // Navigation Navigation Functions
+        function goHome() {
+            window.location.href = 'index.html?fromGame=true';
+        }
+
+        function goBack() {
+            // Check if intro is hidden, if so return to intro, else return to main index
+            if (document.getElementById('intro-screen').style.display === 'none' && document.getElementById('congrats-modal').style.display !== 'flex') {
+                document.getElementById('intro-screen').style.display = 'flex';
+                document.getElementById('main-game-container').style.display = 'none';
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

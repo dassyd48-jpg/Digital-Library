@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hidden Alphabet Safari - Level 4 Sky (Realistic Motion)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #bae6fd; 
+            font-family: 'Fredoka One', 'Pyidaungsu', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        @keyframes introPop { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .animate-pop { animation: introPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Navigation Top Bar (Back & Home) -->
+    <div class="absolute top-4 left-4 z-50 flex space-x-3 pointer-events-auto">
+        <button onclick="goBack()" class="w-12 h-12 bg-white border-4 border-sky-400 rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-transform" title="Back">
+            <svg class="w-6 h-6 fill-sky-800" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        </button>
+        <button onclick="goHome()" class="w-12 h-12 bg-white border-4 border-sky-400 rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-transform" title="Home">
+            <svg class="w-6 h-6 fill-sky-800" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        </button>
+    </div>
+
+    <!-- Dashboard Info Display -->
+    <div class="absolute top-4 left-4 right-4 pointer-events-none z-30 flex justify-between items-center pl-32">
+        <div class="flex flex-col space-y-1">
+            <div class="bg-sky-500 text-white text-[11px] font-black px-4 py-1 rounded-full w-max shadow-md uppercase tracking-wider">
+                Level 4 : တ - န
+            </div>
+            <div class="flex items-center space-x-3 bg-white/95 backdrop-blur-md px-5 py-2 rounded-3xl border-4 border-sky-400 shadow-xl">
+                <span class="text-xs font-black text-sky-900 uppercase tracking-wide">ရှာရမယ့်စာလုံး:</span>
+                <span id="target-display" class="text-3xl font-bold text-sky-600 font-sans">တ</span>
+            </div>
+        </div>
+
+        <div class="flex space-x-2 self-start mt-6">
+            <div class="bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-2xl border-2 border-sky-400 flex items-center space-x-2 shadow-lg">
+                <span class="text-lg">⭐</span>
+                <span id="score-display" class="text-lg font-black text-sky-900">0</span>
+                <span class="text-xs text-sky-600 font-bold">/100</span>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="safariCanvas"></canvas>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="absolute inset-0 bg-sky-900/95 backdrop-blur-md z-[90] flex flex-col items-center justify-center text-center p-6">
+        <div class="text-6xl mb-6 animate-pulse">🎈☁️✈️🌈🕊️</div>
+        <h1 class="text-4xl sm:text-5xl font-black text-white tracking-wide mb-3 drop-shadow-md">မိုးကောင်းကင်နှင့် ပူဖောင်းပျံစွန့်စားခန်း</h1>
+        <div class="bg-sky-500 text-white font-black px-6 py-2 rounded-full text-sm mb-4 tracking-widest uppercase">
+            သင်ခန်းစာ (Level 4) : တ၊ ထ၊ ဒ၊ ဓ၊ န
+        </div>
+        <p class="text-sky-200 text-sm max-w-md mb-12 font-medium">ကောင်းကင်ပြာကြီးထဲမှာ တောင်ပံခတ်ပျံသန်းနေတဲ့ ငှက်ကလေးတွေ၊ လေယာဉ်ပျံတွေနဲ့ မိုးပျံပူဖောင်းလေးတွေ ရှိပါတယ်။ မှန်ကန်တဲ့ စာလုံးသယ်လာတာတွေကို တို့ထိကယ်တင်ကြရအောင်။</p>
+        
+        <button id="play-btn" class="px-14 py-5 bg-sky-500 hover:bg-sky-400 text-white font-black text-lg rounded-full shadow-[0_12px_30px_rgba(14,165,233,0.4)] border-b-4 border-sky-700 active:scale-95 transition-all">စတင်ကစားမည်</button>
+    </div>
+
+    <!-- Premium Victory Success Modal -->
+    <div id="victory-screen" class="hidden absolute inset-0 bg-sky-950/85 backdrop-blur-md z-[100] flex items-center justify-center p-6">
+        <div class="bg-white p-10 rounded-[35px] border-6 border-amber-400 text-center max-w-md w-100 shadow-2xl animate-pop">
+            <div class="text-7xl mb-4 animate-bounce">🏆✨🎈🌈</div>
+            <h2 class="text-3xl font-black text-sky-950 mb-3 drop-shadow-sm">ထူးချွန်လိုက်တာကွယ်! 🎉</h2>
+            <p class="text-slate-600 font-medium text-base mb-8 leading-relaxed">Level 4 ကို ၁၀၀ မှတ်အပြည့်ဖြင့် အောင်မြင်စွာ ဆော့ကစားပြီးပါပြီ။ သင်ခန်းစာအားလုံး ပြီးဆုံးသွားပါပြီရှင်။</p>
+            <button onclick="goHome()" class="w-full py-4 bg-amber-400 hover:bg-amber-300 text-amber-950 font-black text-xl rounded-2xl shadow-[0_8px_0_#d97706] border-b-2 border-amber-600 active:scale-95 active:translate-y-1 transition-all">
+                ပင်မစာမျက်နှာသို့ပြန်ရန် 🏠
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(150, now + 0.1);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                osc.start(now); osc.stop(now + 0.1);
+            } else if (type === 'wrong') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(240, now);
+                osc.frequency.linearRampToValueAtTime(100, now + 0.25);
+                gain.gain.setValueAtTime(0.06, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                osc.start(now); osc.stop(now + 0.25);
+            } else if (type === 'victory') {
+                const notes = [523.25, 659.25, 783.99, 880.00, 1046.50];
+                notes.forEach((f, i) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g); g.connect(audioCtx.destination);
+                    o.frequency.setValueAtTime(f, now + i*0.07);
+                    g.gain.setValueAtTime(0.04, now + i*0.07);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+                    o.start(now + i*0.07); o.stop(now + 0.6);
+                });
+            }
+        }
+
+        const canvas = document.getElementById('safariCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        const level4Targets = ['တ', 'ထ', 'ဒ', 'ဓ', 'န'];
+        const fullAlphabetPool = [
+            'က', 'ခ', 'ဂ', 'ဃ', 'င', 'စ', 'ဆ', 'ဇ', 'ဈ', 'ည', 
+            'ဋ', 'ဌ', 'ဍ', 'ဎ', 'ဏ', 'တ', 'ထ', 'ဒ', 'ဓ', 'န', 
+            'ပ', 'ဖ', 'ဗ', 'ဘ', 'မ', 'ယ', 'ရ', 'လ', 'ဝ', 'သ', 
+            'ဟ', 'ဠ', 'အ'
+        ];
+        
+        const skyObjects = [
+            { emoji: '🎈', moveType: 'balloon' },
+            { emoji: '✈️', moveType: 'plane' },
+            { emoji: '🚁', moveType: 'helicopter' },
+            { emoji: '🦅', moveType: 'bird' },
+            { emoji: '🕊️', moveType: 'bird' }
+        ];
+
+        const gameState = {
+            isPlaying: false,
+            score: 0,
+            targetIndex: 0,
+            targetLetter: 'တ',
+            skyCrafts: [], 
+            particles: [],
+            bgClouds: [],
+            hasRainbow: true
+        };
+
+        function initSkyScenery() {
+            gameState.bgClouds = [];
+            for (let i = 0; i < 8; i++) {
+                gameState.bgClouds.push({
+                    x: Math.random() * canvas.width,
+                    y: canvas.height * 0.05 + Math.random() * (canvas.height * 0.4),
+                    size: 70 + Math.random() * 60,
+                    speed: 0.2 + Math.random() * 0.4
+                });
+            }
+        }
+
+        function rotateLevel4Target() {
+            gameState.targetIndex = (gameState.targetIndex + 1) % level4Targets.length;
+            gameState.targetLetter = level4Targets[gameState.targetIndex];
+            document.getElementById('target-display').innerText = gameState.targetLetter;
+        }
+
+        function spawnSkyObject() {
+            if (!gameState.isPlaying) return;
+
+            const fromLeft = Math.random() > 0.5;
+            const x = fromLeft ? -95 : canvas.width + 95;
+            
+            const obj = skyObjects[Math.floor(Math.random() * skyObjects.length)];
+            const y = canvas.height * 0.25 + Math.random() * (canvas.height * 0.55);
+            
+            let speed = (1.1 + Math.random() * 1.1) * (fromLeft ? 1 : -1);
+            if (obj.moveType === 'plane') speed *= 1.4; 
+
+            const isTarget = Math.random() < 0.4;
+            let letter = gameState.targetLetter;
+            
+            if (!isTarget) {
+                const filteredDistractors = fullAlphabetPool.filter(l => l !== gameState.targetLetter);
+                letter = filteredDistractors[Math.floor(Math.random() * filteredDistractors.length)];
+            }
+
+            gameState.skyCrafts.push({
+                x, y, speed,
+                emoji: obj.emoji,
+                moveType: obj.moveType,
+                letter,
+                animTime: Math.random() * 100, 
+                isFleeing: false,
+                waveY: 0
+            });
+        }
+
+        function createBalloonPopSparks(x, y) {
+            for (let i = 0; i < 15; i++) {
+                gameState.particles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 6,
+                    vy: (Math.random() - 0.5) * 6 - 2,
+                    size: 4 + Math.random() * 5,
+                    alpha: 1,
+                    color: `hsl(${Math.random() * 360}, 95%, 65%)` 
+                });
+            }
+        }
+
+        function handleInteraction(clientX, clientY) {
+            if (!gameState.isPlaying) return;
+
+            for (let i = gameState.skyCrafts.length - 1; i >= 0; i--) {
+                const obj = gameState.skyCrafts[i];
+                const currentY = obj.y + obj.waveY;
+                const dx = obj.x - clientX;
+                const dy = (currentY - 20) - clientY; 
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 65 && !obj.isFleeing) {
+                    if (obj.letter === gameState.targetLetter) {
+                        playSound('correct');
+                        createBalloonPopSparks(obj.x, currentY);
+                        gameState.score += 10;
+                        document.getElementById('score-display').innerText = gameState.score;
+                        
+                        gameState.skyCrafts.splice(i, 1);
+                        
+                        if (gameState.score >= 100) {
+                            gameState.isPlaying = false;
+                            playSound('victory');
+                            document.getElementById('victory-screen').classList.remove('hidden');
+                        } else {
+                            rotateLevel4Target();
+                        }
+                    } else {
+                        playSound('wrong');
+                        obj.isFleeing = true;
+                        obj.speed *= 3.5; 
+                    }
+                    break;
+                }
+            }
+        }
+
+        canvas.addEventListener('mousedown', (e) => handleInteraction(e.clientX, e.clientY));
+        canvas.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            handleInteraction(touch.clientX, touch.clientY);
+        }, { passive: true });
+
+        function update() {
+            gameState.bgClouds.forEach(cloud => {
+                cloud.x += cloud.speed;
+                if (cloud.x > canvas.width + cloud.size) {
+                    cloud.x = -cloud.size;
+                }
+            });
+
+            for (let i = gameState.skyCrafts.length - 1; i >= 0; i--) {
+                const obj = gameState.skyCrafts[i];
+                obj.animTime += 0.06; 
+
+                if (obj.moveType === 'balloon') {
+                    obj.waveY = Math.sin(obj.animTime * 0.7) * 14;
+                } else if (obj.moveType === 'helicopter') {
+                    obj.waveY = Math.sin(obj.animTime * 8) * 1.5;
+                } else {
+                    obj.waveY = 0;
+                }
+
+                obj.x += obj.speed;
+
+                if (obj.speed > 0 && obj.x > canvas.width + 120) {
+                    gameState.skyCrafts.splice(i, 1);
+                } else if (obj.speed < 0 && obj.x < -120) {
+                    gameState.skyCrafts.splice(i, 1);
+                }
+            }
+
+            for (let i = gameState.particles.length - 1; i >= 0; i--) {
+                const p = gameState.particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.05; 
+                p.alpha -= 0.025;
+                if (p.alpha <= 0) {
+                    gameState.particles.splice(i, 1);
+                }
+            }
+        }
+
+        function draw() {
+            let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#0ea5e9'); 
+            gradient.addColorStop(0.6, '#38bdf8'); 
+            gradient.addColorStop(1, '#bae6fd'); 
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (gameState.hasRainbow) {
+                ctx.save();
+                ctx.globalAlpha = 0.25;
+                ctx.lineWidth = 12;
+                const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#a855f7'];
+                colors.forEach((color, index) => {
+                    ctx.strokeStyle = color;
+                    ctx.beginPath();
+                    ctx.arc(canvas.width / 2, canvas.height, canvas.height * 0.7 + (index * 12), Math.PI, 0, false);
+                    ctx.stroke();
+                });
+                ctx.restore();
+            }
+
+            gameState.bgClouds.forEach(cloud => {
+                ctx.save();
+                ctx.globalAlpha = 0.45;
+                ctx.font = `${cloud.size}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('☁️', cloud.x, cloud.y);
+                ctx.restore();
+            });
+
+            gameState.skyCrafts.forEach(obj => {
+                const finalY = obj.y + obj.waveY;
+
+                ctx.save();
+                ctx.translate(obj.x, finalY);
+
+                let flipX = 1;
+                if (obj.emoji === '✈️') {
+                    if (obj.speed < 0) flipX = -1;
+                } else {
+                    if (obj.speed > 0) flipX = -1;
+                }
+                ctx.scale(flipX, 1);
+
+                if (obj.moveType === 'bird') {
+                    let flapScaleY = 1.0 + Math.sin(obj.animTime * 5.5) * 0.38; 
+                    ctx.scale(1, flapScaleY);
+                } else if (obj.moveType === 'helicopter') {
+                    ctx.rotate(0.04); 
+                }
+
+                ctx.font = '56px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(obj.emoji, 0, 0);
+                ctx.restore();
+
+                // Solid White Background Bubble for better text contrast
+                ctx.save();
+                ctx.translate(obj.x, finalY - 58);
+                
+                const isCorrect = level4Targets.includes(obj.letter);
+                ctx.strokeStyle = '#0284c7'; 
+                ctx.lineWidth = 3.5;
+                ctx.fillStyle = '#ffffff'; // Better visibility card for children
+                ctx.shadowColor = '#0ea5e9';
+                ctx.shadowBlur = 8;
+                
+                ctx.beginPath();
+                ctx.arc(0, 0, 24, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                
+                ctx.shadowBlur = 0;
+
+                ctx.fillStyle = isCorrect ? '#0284c7' : '#334155';
+                ctx.font = 'bold 26px Pyidaungsu, Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(obj.letter, 0, 2);
+                ctx.restore();
+            });
+
+            gameState.particles.forEach(p => {
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            gameState.score = 0;
+            gameState.targetIndex = 0;
+            gameState.targetLetter = level4Targets[0];
+            gameState.skyCrafts = [];
+            gameState.particles = [];
+            document.getElementById('score-display').innerText = '0';
+            document.getElementById('target-display').innerText = gameState.targetLetter;
+            document.getElementById('victory-screen').classList.add('hidden');
+            initSkyScenery();
+            
+            document.getElementById('start-screen').classList.add('hidden');
+            gameState.isPlaying = true;
+        }
+
+        // Navigation Functions
+        function goHome() {
+            window.location.href = 'index.html?fromGame=true';
+        }
+
+        function goBack() {
+            if (document.getElementById('start-screen').classList.contains('hidden') && !document.getElementById('victory-screen').classList.contains('hidden')) {
+                window.location.href = 'index.html';
+            } else if (document.getElementById('start-screen').classList.contains('hidden')) {
+                gameState.isPlaying = false;
+                document.getElementById('start-screen').classList.remove('hidden');
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        setInterval(spawnSkyObject, 1200);
+
+        document.getElementById('play-btn').onclick = startGame;
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>

@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Paint the Burmese Letter ထ - Real Fishing Adventure</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Pyidaungsu:wght=400;700;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; position: relative; background-color: #bae6fd; user-select: none; -webkit-user-select: none; }
+    
+    body { font-family: 'Fredoka', 'Pyidaungsu', system-ui, sans-serif; }
+
+    /* ==========================================================================
+       ENVIRONMENT SCENE DESIGN (နောက်ခံကမ္ဘာ)
+       ========================================================================== */
+    .game-scene { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+    .water-pond { position: absolute; left: 0; right: 0; bottom: 0; height: 40vh; background: linear-gradient(to bottom, #38bdf8 0%, #0284c7 100%); overflow: hidden; }
+    
+    .water-wave { position: absolute; left: -20%; width: 140%; height: 25px; background-repeat: repeat-x; opacity: 0.35; }
+    .wave-top { top: 0; height: 15px; background-color: #7dd3fc; animation: waveOscillate 4s infinite ease-in-out alternate; }
+    .wave-mid { top: 35%; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 30' fill='none' stroke='%23ffffff' stroke-width='4'><path d='M0,15 Q150,0 300,15 T600,15 T900,15 T1200,15' stroke-linecap='round'/></svg>"); animation: waveSlide 12s infinite linear; }
+
+    @keyframes waveOscillate { 0% { transform: translate(0, 0) scaleY(0.8); } 100% { transform: translate(-40px, 8px) scaleY(1.2); } }
+    @keyframes waveSlide { 0% { transform: translateX(0); } 100% { transform: translateX(-300px); } }
+
+    .green-pier-land { position: absolute; left: -50px; bottom: -50px; width: 450px; height: 48vh; background: #4ade80; border-radius: 0 450px 0 0; border-right: 16px solid #ca8a04; box-shadow: 10px 0 30px rgba(0,0,0,0.15); z-index: 2; }
+    .swaying-grass-group { position: absolute; left: 20px; bottom: 42vh; width: 350px; height: 80px; z-index: 3; }
+    .grass-blade { position: absolute; bottom: 0; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 50px solid #22c55e; transform-origin: bottom center; animation: grassSway 2.2s infinite ease-in-out alternate; }
+    .g1 { left: 10px; height: 55px; border-bottom-color: #16a34a; animation-delay: 0.1s; }
+    .g2 { left: 30px; border-bottom-width: 65px; animation-delay: 0.4s; }
+    .g3 { left: 240px; border-bottom-width: 45px; border-bottom-color: #15803d; animation-delay: 0.2s; }
+
+    @keyframes grassSway { 0% { transform: rotate(-3deg) scaleY(0.95); } 100% { transform: rotate(10deg) scaleY(1.05); } }
+    .blue-fish-bucket { position: absolute; left: 250px; bottom: 12vh; width: 65px; height: 65px; background: #2563eb; border: 3px solid #1d4ed8; border-radius: 4px 4px 14px 14px; box-shadow: 0 6px 12px rgba(0,0,0,0.2); z-index: 4; }
+    .blue-fish-bucket::before { content: ""; position: absolute; top: -4px; left: -3px; width: 65px; height: 6px; background: #1d4ed8; border-radius: 4px; }
+
+    /* REAL BOY FISHERMAN COMPONENT */
+    .fisherman-container { position: absolute; left: 40px; bottom: 6vh; width: 360px; height: 360px; z-index: 5; }
+    .boy-fisherman { position: absolute; left: 20px; bottom: 10px; width: 120px; height: 180px; background-size: 100% 100%; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 170'><defs><linearGradient id='skin' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='%23ffedd5'/><stop offset='100%' stop-color='%23fed7aa'/></linearGradient></defs><path d='M40,115 L40,165 L22,165 L18,170 L52,170 L48,115 Z M68,115 L68,165 L86,165 L90,170 L56,170 L60,115 Z' fill='%235c4033'/><path d='M25,60 L85,60 L78,120 L32,120 Z' fill='%23f472b6'/><circle cx='55' cy='38' r='22' fill='url(%23skin)'/><path d='M28,28 Q55,-4 82,28 Z' fill='%233b82f6'/><rect x='22' y='24' width='30' height='7' fill='%232563eb' rx='3'/><circle cx='62' cy='36' r='3.5' fill='%230f172a'/><circle cx='44' cy='36' r='3.5' fill='%230f172a'/><circle cx='63' cy='34' r='1' fill='%23fff'/><circle cx='45' cy='34' r='1' fill='%23fff'/><path d='M44,46 Q53,53 62,46' stroke='%23e11d48' stroke-width='2.5' fill='none' stroke-linecap='round'/><circle cx='31' cy='38' r='5' fill='url(%23skin)'/><circle cx='79' cy='38' r='5' fill='url(%23skin)'/><path d='M30,65 Q5,80 12,95' stroke='%23f472b6' stroke-width='10' stroke-linecap='round' fill='none'/><path d='M80,65 Q105,80 88,100' stroke='%23f472b6' stroke-width='10' stroke-linecap='round' fill='none'/><circle cx='13' cy='95' r='5.5' fill='url(%23skin)'/><circle cx='87' cy='100' r='5.5' fill='url(%23skin)'/></svg>"); transform-origin: bottom center; animation: boyIdling 2s infinite alternate ease-in-out; }
+    @keyframes boyIdling { 0% { transform: scaleY(0.98); } 100% { transform: scaleY(1.02); } }
+
+    .fishing-rod-arm { position: absolute; left: 100px; bottom: 90px; width: 300px; height: 300px; transform-origin: bottom left; transform: rotate(0deg); transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
+    .rod-stick { position: absolute; left: 0; bottom: 0; width: 300px; height: 260px; background-size: 100% 100%; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 340 280'><path d='M10,270 Q220,180 330,10' fill='none' stroke='%23475569' stroke-width='5' stroke-linecap='round'/></svg>"); }
+    .fishing-line-container { position: absolute; right: -30px; top: 40px; width: 100px; height: 300px; transform-origin: top center; transition: transform 0.8s ease-in-out; }
+    .actual-line { position: absolute; left: 50px; top: 0; width: 2px; height: 160px; background: #475569; }
+    .hook-prize-fish { position: absolute; left: 18px; top: 155px; width: 65px; height: 35px; background-size: 100% 100%; opacity: 0; transform: scale(0); transition: opacity 0.3s, transform 0.4s ease-in-out; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 65 35'><path d='M5,17 Q25,2 50,17 T5,17 Z M55,22 L67,8 L63,22 L67,36 Z' fill='%2338bdf8' stroke='%230284c7' stroke-width='2'/><circle cx='14' cy='13' r='2.5' fill='%23000'/></svg>"); }
+
+    .fisherman-container.active-pull .fishing-rod-arm { transform: rotate(-50deg) scale(0.95); }
+    .fisherman-container.active-pull .hook-prize-fish { opacity: 1; transform: scale(1) rotate(-30deg); }
+    .fisherman-container.active-pull .fishing-line-container { transform: scaleY(0.4); }
+
+    /* ==========================================================================
+       INTRO SCREEN
+       ========================================================================== */
+    .intro-screen { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; background: rgba(7, 89, 133, 0.6); backdrop-filter: blur(6px); transition: opacity 0.4s ease; }
+    .intro-emojis { font-size: 40px; margin-bottom: 12px; letter-spacing: 10px; }
+    .intro-title { font-size: 36px; font-weight: 900; color: #ffffff; margin-bottom: 15px; text-shadow: 4px 4px 0px #0369a1; }
+    .intro-badge { background-color: #0284c7; color: white; font-size: 15px; font-weight: bold; padding: 8px 24px; border-radius: 50px; margin-bottom: 20px; display: inline-block; border: 3px solid #ffffff; box-shadow: 0 6px 15px rgba(0,0,0,0.3); }
+    .intro-description { color: #ffffff; font-size: 17px; line-height: 1.7; max-width: 620px; margin-bottom: 30px; font-weight: 500; background: rgba(12, 74, 110, 0.96); padding: 22px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 3px solid #38bdf8; }
+    .btn-start { background-color: #22c55e; color: white; font-size: 20px; font-weight: 800; padding: 14px 50px; border: none; border-radius: 20px; cursor: pointer; box-shadow: 0 6px 0 #16a34a, 0 10px 20px rgba(0,0,0,0.3); }
+    .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #16a34a; }
+
+    /* ==========================================================================
+       MAIN GAME WORKSPACE LAYOUT
+       ========================================================================== */
+    .game-wrapper { position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transition: opacity 0.4s ease; }
+    .game-wrapper.active { opacity: 1; visibility: visible; }
+    .workspace { display: flex; width: 100%; height: 100%; align-items: center; justify-content: space-between; padding: 1.5vh 2vw; gap: 2vw; }
+    .play-area { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; gap: 1.5vh; position: relative; }
+    
+    /* 💡 ပြင်ဆင်ချက် (၁) - ခေါင်းစဉ်အား Game Board / Whiteboard ဧရိယာအပြင်ဘက်၊ ထိပ်ဆုံးသို့ လုံးဝ ရွှေ့ပြောင်းလိုက်ခြင်း */
+    .heading-box { 
+      background-color: #1e3a8a; 
+      border: 3px solid #ffffff; 
+      border-radius: 14px; 
+      padding: 6px 24px; 
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2); 
+      display: flex; 
+      align-items: center; 
+      gap: 10px; 
+      margin-top: 1vh;
+      margin-bottom: 0.5vh;
+      z-index: 30;
+    }
+    .heading-text { font-size: 18px; font-weight: 700; color: #ffffff; }
+    .heading-glyph { font-family: 'Pyidaungsu', sans-serif; color: #1e3a8a; font-size: 24px; font-weight: 900; background: #ffffff; padding: 1px 14px; border-radius: 6px; }
+
+    .whiteboard-frame { position: relative; padding: 10px; border-radius: 16px; background-color: #0284c7; box-shadow: 0 15px 35px rgba(0,0,0,0.35); border: 4px solid #ffffff; display: flex; justify-content: center; align-items: center; z-index: 10; }
+    .canvas-container { background: #ffffff; overflow: hidden; position: relative; border-radius: 10px; box-shadow: inset 0 0 14px rgba(0,0,0,0.15); width: 68vh; height: 68vh; max-width: 80vw; max-height: 80vw; min-width: 280px; min-height: 280px; }
+    canvas { width: 100%; height: 100%; display: block; cursor: crosshair; touch-action: none; }
+
+    /* Side Control Panel */
+    .panel { width: 120px; height: 86vh; background-color: #fefcf0; border-radius: 20px; border: 3px solid #0284c7; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); z-index: 20; }
+    .panel-title { font-size: 11px; font-weight: 900; text-align: center; color: #0369a1; letter-spacing: 1px; }
+    
+    .eraser { width: 100%; height: 42px; border-radius: 12px; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #7dd3fc; box-shadow: 0 3px 0 #0284c7; }
+    .eraser.selected { border-color: #0284c7; background: #e0f2fe; box-shadow: 0 0 10px #0284c7; }
+    .eraser-icon { font-size: 20px; }
+    
+    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; overflow-y: auto; max-height: 40vh; padding-right: 2px; }
+    .brush { aspect-ratio: 1/1; border-radius: 10px; cursor: pointer; position: relative; background: white; border: 2px solid #e2e8f0; }
+    .brush.selected { border-color: #0284c7; transform: scale(1.05); box-shadow: 0 0 8px #0284c7; }
+    .swatch { position: absolute; inset: 0; border-radius: 7px; }
+    
+    .action-container { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: auto; }
+    .btn { width: 100%; height: 38px; border-radius: 10px; border: none; color: white; font-weight: 700; font-size: 11px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.1s ease; text-align: center; }
+    .btn-reset { background-color: #ef4444; box-shadow: 0 4px 0 #b91c1c; }
+    .btn-next { background-color: #22c55e; box-shadow: 0 4px 0 #16a34a; }
+    .btn:active { transform: translateY(3px); box-shadow: none; }
+
+    /* ==========================================================================
+       DYNAMIC MINI-GAMES LAYERS (STAGE 2 & 3)
+       ========================================================================== */
+    .game-stage-screen { position: absolute; inset: 0; background: #f0f9ff; border-radius: 10px; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 15px; z-index: 20; overflow: hidden; }
+    
+    /* Stage 2 Fish Swimming Area */
+    .swim-pond-area { width: 100%; flex: 1; position: relative; background: linear-gradient(to bottom, #bae6fd, #38bdf8); border-radius: 12px; border: 2px dashed #0284c7; overflow: hidden; margin-top: 10px; }
+    .swim-fish { position: absolute; width: 85px; height: 55px; background-size: 100% 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.1s ease; }
+    .swim-fish::before { content: attr(data-letter); font-family: 'Pyidaungsu', sans-serif; font-size: 20px; font-weight: 900; color: #1e293b; margin-right: 12px; margin-top: -2px; }
+    
+    .fish-style1 { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 70 45'><path d='M5,22 Q30,2 55,22 T5,22 Z M55,22 L67,8 L63,22 L67,36 Z' fill='%23f472b6'/><circle cx='18' cy='16' r='3' fill='%23000'/></svg>"); }
+    .fish-style2 { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 70 45'><path d='M5,22 Q30,2 55,22 T5,22 Z M55,22 L67,8 L63,22 L67,36 Z' fill='%23fbbf24'/><circle cx='18' cy='16' r='3' fill='%23000'/></svg>"); }
+    .fish-style3 { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 70 45'><path d='M5,22 Q30,2 55,22 T5,22 Z M55,22 L67,8 L63,22 L67,36 Z' fill='%234ade80'/><circle cx='18' cy='16' r='3' fill='%23000'/></svg>"); }
+
+    /* 💡 ပြင်ဆင်ချက် (၂) - ပူဖောင်း Stylings အား တောက်ပထင်ရှားသော အရောင်စုံဒီဇိုင်းသို့ ပြောင်းလဲခြင်းနှင့် Touch-action ပိတ်ဆို့မှု ကာကွယ်ခြင်း */
+    .ocean-bubble { 
+      position: absolute; 
+      width: 80px; 
+      height: 80px; 
+      border-radius: 50%; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      cursor: pointer; 
+      font-family: 'Pyidaungsu', sans-serif; 
+      font-size: 36px; 
+      font-weight: 900; 
+      color: #ffffff; 
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      animation: floatBubbleUp 5s infinite linear; 
+      z-index: 25;
+      will-change: transform, bottom;
+      touch-action: none; /* Touch ကြန့်ကြာမှုကို လုံးဝဖယ်ရှားရန် */
+      box-shadow: inset -6px -8px 15px rgba(0,0,0,0.15), inset 6px 6px 15px rgba(255,255,255,0.6), 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+    
+    @keyframes floatBubbleUp {
+      0% { transform: translateY(540px) scale(0.9); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) scale(1.05); opacity: 0; }
+    }
+
+    /* ==========================================================================
+       FINAL CELEBRATION MODAL POPUP (ဂုဏ်ပြုလွှာ)
+       ========================================================================== */
+    .celebration-overlay { position: absolute; inset: 0; background: rgba(12, 74, 110, 0.5); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 50; animation: fadeIn 0.4s ease forwards; }
+    .celebration-card { background: #ffffff; border: 5px solid #0284c7; border-radius: 24px; width: 85%; max-width: 440px; padding: 30px 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); transform: scale(0.7); opacity: 0; animation: popUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes popUp { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    /* Responsive adjustments */
+    @media (max-width: 850px), (orientation: portrait) {
+      .workspace { flex-direction: column; justify-content: flex-start; padding: 1.5vh 2vw; gap: 1.5vh; }
+      .play-area { flex: none; height: auto; width: 100%; }
+      .canvas-container { width: 72vw; height: 72vw; max-width: 55vh; max-height: 55vh; }
+      .panel { width: 100%; height: auto; max-width: 55vh; flex-direction: row; flex-wrap: wrap; justify-content: space-between; padding: 10px 12px; border-radius: 16px; align-items: center; }
+      .panel-title { display: none; }
+      .brush-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; width: auto; max-height: none; overflow: visible; flex: 1; margin: 0 8px; padding-right: 0; }
+      .eraser { width: 38px; height: 38px; }
+      .action-container { flex-direction: row; width: auto; gap: 6px; margin-top: 0; }
+      .btn { width: 62px; height: 38px; font-size: 10px; }
+      .green-pier-land, .fisherman-container, .swaying-grass-group, .blue-fish-bucket { display: none !important; }
+    }
+
+    /* Sparks effects */
+    #effectsLayer { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+    .spark { position: absolute; font-size: 16px; animation: blast 1.2s ease-out forwards; }
+    @keyframes blast { 0% { transform: translate(0,0) scale(0.5); opacity: 1; } 100% { transform: translate(var(--sx), var(--sy)) scale(1.4) rotate(180deg); opacity: 0; } }
+  </style>
+</head>
+<body>
+
+  <div class="game-scene">
+    <div class="water-pond">
+      <div class="water-wave wave-top"></div>
+      <div class="water-wave wave-mid"></div>
+    </div>
+    <div class="green-pier-land"></div>
+    <div class="swaying-grass-group">
+      <div class="grass-blade g1"></div><div class="grass-blade g2"></div><div class="grass-blade g3"></div>
+    </div>
+    <div class="blue-fish-bucket"></div>
+    <div class="fisherman-container" id="fishingSystem">
+      <div class="boy-fisherman"></div>
+      <div class="fishing-rod-arm">
+        <div class="rod-stick"></div>
+        <div class="fishing-line-container">
+          <div class="actual-line"></div>
+          <div class="hook-prize-fish"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-emojis">🎣🌊🐟⛵⭐</div>
+    <h1 class="intro-title">ရေအောက်ကမ္ဘာ ငါးဖမ်းစွန့်စားခန်း</h1>
+    <div class="intro-badge">သင်ခန်းစာ : "ထ" ဆင်ထူးလေးနှင့် ပင်လယ်သူငယ်ချင်းများ</div>
+    <p class="intro-description">
+      ကလေးတို့ရေ... ဒီနေ့တော့ တို့တစ်တွေ ရေကန်စိမ်းစိမ်းလေးဘေးမှာ ထိုင်ပြီး ငါးမျှားတမ်းကစားကြမယ်နော်။ 
+      ငါးမျှားချိတ်လေးက ရေထဲကို ပျံသန်းသွားတဲ့ လမ်းကြောင်းလေးကတော့ မြန်မာအက္ခရာ "ထ" (ဆင်ထူး) ပုံစံလေးပဲ ဖြစ်ပါတယ်။ 
+      ကဲ... ရေဆေးစုတ်တံလှလှလေးတွေနဲ့ "ထ" Сာလုံးလေးကို စိတ်ကြိုက်လှလှပပ ဆေးခြယ်ပြီးရင် "မြှားမည်" ခလုတ်ကိုနှိပ်ပြီး 
+      မှော်ငါးကြီးတွေကို အတူတူ ဖမ်းယူလိုက်ရအောင်...
+    </p>
+    <button class="btn-start" id="btnStart">စတင်ငါးဖမ်းမည်</button>
+  </div>
+
+  <div class="game-wrapper" id="gameWrapper">
+    
+    <div class="absolute top-4 left-4 z-50 flex space-x-2 pointer-events-auto">
+        <a href="index.html?fromGame=true" class="px-3 py-2 bg-slate-950/90 hover:bg-slate-900 border border-sky-500/30 rounded-xl text-xs text-white flex items-center space-x-1 shadow-md transition-all active:scale-95 cursor-pointer">
+            <span>🏠</span> <span class="hidden sm:inline">ပင်မမြေပုံ</span>
+        </a>
+        <a href="index.html?fromGame=true&showPopup=stage2" class="px-3 py-2 bg-slate-950/90 hover:bg-slate-900 border border-amber-500/30 rounded-xl text-xs text-white flex items-center space-x-1 shadow-md transition-all active:scale-95 cursor-pointer">
+            <span>↩️</span> <span class="hidden sm:inline">နောက်သို့</span>
+        </a>
+    </div>
+
+    <div class="workspace">
+      <div class="play-area">
+        
+        <div class="heading-box" id="mainHeadingBox">
+          <span class="heading-text">Paint the letter</span>
+          <span class="heading-glyph">ထ</span>
+          <span class="heading-text">!</span>
+        </div>
+
+        <div class="whiteboard-frame">
+          <div class="canvas-container">
+            
+            <canvas id="paintCanvas" width="500" height="500"></canvas>
+
+            <div class="game-stage-screen" id="stage2Screen">
+              <h2 class="text-xl font-black text-sky-600 text-center" id="stage2Title">အဆင့် (၂) - "ထ" ငါးလေးများ ဖမ်းစို့ (ပွဲစဉ် ၁/၃) 🐟</h2>
+              <p class="text-xs font-semibold text-slate-500 mt-1 text-center">ရေကူးနေတဲ့ ငါးတွေထဲက "ထ" စာလုံးပါတဲ့ ငါးလေးတွေကို နှိပ်ဖမ်းပေးပါ!</p>
+              <div class="swim-pond-area" id="swimPondArea"></div>
+              <div class="text-sm font-bold text-slate-700 mt-4 bg-sky-100 px-4 py-1 rounded-full border border-sky-300">ကျန်ရှိသော "ထ" ငါးအရေအတွက်: <span id="targetFishCount" class="text-pink-600 font-extrabold text-lg">3</span> ကောင်</div>
+            </div>
+
+            <div class="game-stage-screen" id="stage3Screen" style="background: linear-gradient(to bottom, #e0f2fe, #bae6fd);">
+              <h2 class="text-xl font-black text-indigo-700 text-center">အဆင့် (၃) - မှော်ရေပူဖောင်းလေးများ ဖောက်စို့! 🫧</h2>
+              <p class="text-xs font-semibold text-slate-600 mt-1 text-center">မျောတက်လာတဲ့ "ထ" စာလုံး ရေပူဖောင်းလေးတွေကို လိုက်ဖောက်ပြီး ရတနာသေတ္တာ ဖွင့်ရအောင်!</p>
+              <div class="text-sm font-bold text-indigo-700 mt-4 bg-indigo-100 px-4 py-1 rounded-full border border-indigo-300 z-30">ကျန်ရှိသော "ထ" ပူဖောင်း: <span id="bubbleTargetCount" class="text-indigo-600 text-lg font-black">5</span> ခု</div>
+            </div>
+
+            <div class="celebration-overlay" id="celebrationOverlay">
+              <div class="celebration-card">
+                <div class="text-5xl mb-3">👑🐳🎁</div>
+                <h2 class="text-2xl font-black text-sky-600 mb-2">ဝမ်းသာပါတယ် ကလေးတို့ရေ!</h2>
+                <p class="text-sm font-bold text-slate-600 leading-relaxed mb-6 px-2">
+                  ပင်လယ်ရေအောက်စွန့်စားခန်း ပွဲစဉ်အားလုံးကို <br>
+                  အိုင်ကျူမြင့်မြင့်နဲ့ အောင်မြင်စွာ ဖမ်းယူနိုင်ခဲ့ပါပြီ။ <br>
+                  ဉာဏ်အကောင်းဆုံး ငါးဖမ်းသူရဲကောင်းလေးပဲနော်! 🌟
+                </p>
+                <button class="w-full py-3.5 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 text-white font-black text-lg rounded-2xl shadow-lg shadow-sky-500/30 transform active:scale-95 transition-all cursor-pointer border-b-4 border-blue-700" id="btnFinish">
+                  ပြီးပြီ ➔
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <aside class="panel" id="controlPanel">
+        <div class="panel-title">WATER INK</div>
+        <div class="eraser" id="eraser"><span class="eraser-icon">🧼</span></div>
+        <div class="brush-grid" id="brushGrid"></div>
+        
+        <div class="action-container">
+          <button class="btn btn-reset" id="btnReset">↻<br>ပြန်စရန်</button>
+          <button class="btn btn-next" id="btnNext">🎣<br>ဖမ်းမည်</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div id="effectsLayer"></div>
+
+  <script>
+    let currentStage = 1; 
+    let level2Round = 1; 
+    let isAnimating = false;
+    let bubbleTargetCount = 5;
+
+    document.getElementById('btnStart').onclick = () => {
+      document.getElementById('introScreen').style.opacity = '0';
+      document.getElementById('introScreen').style.visibility = 'hidden';
+      document.getElementById('gameWrapper').classList.add('active');
+    };
+
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    let isPainting = false;
+    let currentColor = '#38bdf8';
+    let isEraser = false;
+    let brushSize = 28;
+    let lastX = 0, lastY = 0;
+
+    const colors = ['#38bdf8', '#3b82f6', '#ec4899', '#a855f7', '#22c55e', '#eab308', '#f97316', '#06b6d4', '#14b8a6', '#6366f1'];
+    const bubbleColors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6'];
+
+    function getCanvasCoords(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+      const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+      return {
+        x: (clientX - rect.left) * (canvas.width / rect.width),
+        y: (clientY - rect.top) * (canvas.height / rect.height)
+      };
+    }
+
+    function startDrawing(e) {
+      if (currentStage !== 1) return;
+      isPainting = true;
+      const coords = getCanvasCoords(e);
+      lastX = coords.x; lastY = coords.y;
+    }
+    function stopDrawing() { isPainting = false; ctx.beginPath(); }
+
+    function draw(e) {
+      if (!isPainting || currentStage !== 1) return;
+      const coords = getCanvasCoords(e);
+      ctx.lineWidth = brushSize; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      if (isEraser) {
+        ctx.globalCompositeOperation = 'destination-out'; ctx.lineWidth = 42;
+      } else {
+        ctx.globalCompositeOperation = 'source-over'; ctx.strokeStyle = currentColor;
+      }
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(coords.x, coords.y); ctx.stroke();
+      lastX = coords.x; lastY = coords.y;
+    }
+
+    // ==========================================================================
+    // STAGE 2 ENGINE SYSTEM: SWIMMING FISH CHASE (3 SUB-ROUNDS)
+    // ==========================================================================
+    let remainingFishTarget = 3;
+    let fishMoveIntervals = [];
+
+    function startStage2Game() {
+      currentStage = 2;
+      level2Round = 1;
+      document.getElementById('controlPanel').style.display = 'none';
+      document.getElementById('stage2Screen').style.display = 'flex';
+      setupLevel2Round();
+    }
+
+    function setupLevel2Round() {
+      const pond = document.getElementById('swimPondArea');
+      fishMoveIntervals.forEach(clearInterval);
+      fishMoveIntervals = [];
+      pond.innerHTML = '';
+
+      document.getElementById('stage2Title').innerHTML = `အဆင့် (၂) - "ထ" ငါးလေးများ ဖမ်းစို့ (ပွဲစဉ် ${level2Round}/၃) 🐟`;
+
+      let fishData = [];
+      if (level2Round === 1) { remainingFishTarget = 3; fishData = [{L:'ထ', T:true},{L:'က', T:false},{L:'ထ', T:true},{L:'ပ', T:false},{L:'ထ', T:true}]; }
+      else if (level2Round === 2) { remainingFishTarget = 4; fishData = [{L:'ထ', T:true},{L:'ထ', T:true},{L:'ဘ', T:false},{L:'ထ', T:true},{L:'မ', T:false},{L:'ထ', T:true},{L:'ည', T:false}]; }
+      else if (level2Round === 3) { remainingFishTarget = 5; fishData = [{L:'ထ', T:true},{L:'ထ', T:true},{L:'က', T:false},{L:'ထ', T:true},{L:'ထ', T:true},{L:'လ', T:false},{L:'ထ', T:true},{L:'ပ', T:false}]; }
+
+      document.getElementById('targetFishCount').textContent = remainingFishTarget;
+
+      fishData.forEach((fInfo, idx) => {
+        const fish = document.createElement('div');
+        const styles = ['fish-style1', 'fish-style2', 'fish-style3'];
+        fish.className = `swim-fish ${styles[idx % styles.length]}`;
+        fish.setAttribute('data-letter', fInfo.L);
+        
+        let posX = Math.random() * 70;
+        let posY = 15 + Math.random() * 60;
+        let speed = 0.4 + Math.random() * 0.4; 
+        let direction = Math.random() > 0.5 ? 1 : -1;
+
+        fish.style.left = posX + '%';
+        fish.style.top = posY + '%';
+        if (direction === -1) fish.style.transform = 'scaleX(-1)';
+
+        const moveLoop = setInterval(() => {
+          posX += speed * direction;
+          if (posX > 85) { direction = -1; fish.style.transform = 'scaleX(-1)'; }
+          if (posX < 0) { direction = 1; fish.style.transform = 'scaleX(1)'; }
+          fish.style.left = posX + '%';
+        }, 30);
+        fishMoveIntervals.push(moveLoop);
+
+        // STAGE 2 FISH TOUCH PERFORMANCE
+        fish.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          if (fInfo.T) {
+            const rect = fish.getBoundingClientRect();
+            createSparks(rect.left + 42, rect.top + 28);
+            clearInterval(moveLoop);
+            fish.remove();
+
+            remainingFishTarget--;
+            document.getElementById('targetFishCount').textContent = remainingFishTarget;
+
+            if (remainingFishTarget <= 0) {
+              if (level2Round < 3) { level2Round++; setupLevel2Round(); }
+              else { fishMoveIntervals.forEach(clearInterval); setTimeout(startStage3Bubbles, 600); }
+            }
+          } else {
+            fish.style.filter = 'brightness(0.5)';
+            setTimeout(() => fish.style.filter = 'none', 300);
+          }
+        });
+
+        pond.appendChild(fish);
+      });
+    }
+
+    // ==========================================================================
+    // STAGE 3 ENGINE SYSTEM: SUPER SMOOTH BUBBLE POPPER (မွမ်းမံထားသော စနစ်သစ်)
+    // ==========================================================================
+    let stage3BubbleInterval = null;
+    const lettersPool = ['ထ', 'တ', 'က', 'ထ', 'စ', 'ထ', 'လ', 'ထ'];
+
+    function startStage3Bubbles() {
+      currentStage = 3;
+      document.getElementById('stage2Screen').style.display = 'none';
+      document.getElementById('stage3Screen').style.display = 'flex';
+      
+      const screen = document.getElementById('stage3Screen');
+      bubbleTargetCount = 5;
+      document.getElementById('bubbleTargetCount').textContent = bubbleTargetCount;
+
+      stage3BubbleInterval = setInterval(() => {
+        if (currentStage !== 3) return;
+
+        const b = document.createElement('div');
+        b.className = 'ocean-bubble';
+        
+        // စာလုံးနှင့် တောက်ပသော ကျပန်းနောက်ခံအရောင် ထည့်သွင်းခြင်း
+        const letter = lettersPool[Math.floor(Math.random() * lettersPool.length)];
+        b.textContent = letter;
+        
+        const bgColor = bubbleColors[Math.floor(Math.random() * bubbleColors.length)];
+        b.style.background = `radial-gradient(circle at 30% 30%, ${bgColor}dd 0%, ${bgColor} 70%, #00000033 100%)`;
+        b.style.border = '3px solid #ffffff';
+        b.style.left = (10 + Math.random() * 75) + '%';
+
+        // 💡 ပြင်ဆင်ချက် (၂) - ပူဖောင်းဖောက်ရတာ ချောမွေ့မှုမရှိခြင်းကို 'pointerdown' စနစ်သစ်ဖြင့် ၁၀၀% အပြည့်အဝ ဖြေရှင်းခြင်း
+        b.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          if (letter === 'ထ') {
+            const rect = b.getBoundingClientRect();
+            createSparks(rect.left + 40, rect.top + 40);
+            b.remove();
+
+            bubbleTargetCount--;
+            document.getElementById('bubbleTargetCount').textContent = bubbleTargetCount;
+
+            if (bubbleTargetCount <= 0) {
+              clearInterval(stage3BubbleInterval);
+              triggerFinalVictoryModal();
+            }
+          } else {
+            b.style.transform = 'scale(0.8)';
+            setTimeout(() => b.style.transform = 'scale(1)', 150);
+          }
+        });
+
+        screen.appendChild(b);
+        // သတ်မှတ်ထားတဲ့ သက်တမ်းပြည့်ရင် ဖျက်ထုတ်ခြင်း
+        setTimeout(() => { if (b.parentNode) b.remove(); }, 5000);
+      }, 900);
+    }
+
+    // ==========================================================================
+    // CELEBRATION SHOW MODAL POPUP & NAVIGATION
+    // ==========================================================================
+    function triggerFinalVictoryModal() {
+      currentStage = 4;
+      clearInterval(stage3BubbleInterval);
+
+      for(let i=0; i<30; i++) {
+        setTimeout(() => {
+          createSparks(Math.random() * window.innerWidth, Math.random() * window.innerHeight);
+        }, i * 60);
+      }
+
+      setTimeout(() => {
+        document.getElementById('celebrationOverlay').style.display = 'flex';
+      }, 400);
+
+      document.getElementById('btnFinish').onclick = () => {
+        window.location.href = "index.html?fromGame=true&showPopup=stage2";
+      };
+    }
+
+    function triggerFishingAnimationAndNext() {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      const system = document.getElementById('fishingSystem');
+      system.classList.add('active-pull'); 
+
+      setTimeout(() => {
+        const fishRect = document.querySelector('.hook-prize-fish').getBoundingClientRect();
+        createSparks(fishRect.left + 30, fishRect.top + 15);
+      }, 600);
+
+      setTimeout(() => {
+        system.classList.remove('active-pull');
+        isAnimating = false;
+        startStage2Game(); 
+      }, 1800);
+    }
+
+    function createSparks(x, y) {
+      const layer = document.getElementById('effectsLayer');
+      const items = ['✨', '⭐', '🐠', '🫧', '🎈', '🎉', '🌊'];
+      for (let i = 0; i < 6; i++) {
+        const s = document.createElement('div');
+        s.className = 'spark'; s.textContent = items[Math.floor(Math.random() * items.length)];
+        s.style.left = x + 'px'; s.style.top = y + 'px';
+        const rad = Math.random() * Math.PI * 2; const vel = 45 + Math.random() * 55;
+        s.style.setProperty('--sx', Math.cos(rad) * vel + 'px');
+        s.style.setProperty('--sy', Math.sin(rad) * vel + 'px');
+        layer.appendChild(s);
+        setTimeout(() => s.remove(), 1100);
+      }
+    }
+
+    function initUI() {
+      const grid = document.getElementById('brushGrid');
+      colors.forEach((color, i) => {
+        const div = document.createElement('div');
+        div.className = 'brush' + (i === 0 ? ' selected' : '');
+        div.innerHTML = `<div class="swatch" style="background:${color}"></div>`;
+        div.onclick = () => {
+          isEraser = false; currentColor = color;
+          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+          document.getElementById('eraser').classList.remove('selected');
+          div.classList.add('selected');
+        };
+        grid.appendChild(div);
+      });
+
+      document.getElementById('eraser').onclick = () => {
+        isEraser = true;
+        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+        document.getElementById('eraser').classList.add('selected');
+      };
+
+      document.getElementById('btnReset').onclick = () => {
+        if(currentStage === 1) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      };
+      document.getElementById('btnNext').onclick = () => {
+        if(currentStage === 1) triggerFishingAnimationAndNext();
+      };
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); }, { passive: false });
+
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500'><text x='50%' y='46%' font-family='Pyidaungsu, sans-serif' font-weight='900' font-size='300' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='5' stroke-dasharray='14,11'>ထ</text></svg>\")";
+    canvas.style.backgroundSize = "100% 100%";
+
+    initUI();
+  </script>
+</body>
+</html>
