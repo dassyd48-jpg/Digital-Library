@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>BOOK CHAPTER 4 - LEVEL TEST</title>
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-gradient: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --dark-panel: rgba(11, 25, 44, 0.95);
+            --border-glow: rgba(212, 175, 55, 0.25);
+            --bg-color: #050B14;
+        }
+        body { background: var(--bg-color); color: #fff; font-family: sans-serif; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .quiz-container { width: 100%; max-width: 480px; background: var(--dark-panel); border: 1px solid var(--border-glow); border-radius: 4px; padding: 22px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); position: relative; }
+        .header-tag { text-align: center; font-size: 11px; color: var(--gold); letter-spacing: 3px; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; }
+        .main-title { text-align: center; font-size: 19px; color: #fff; margin: 0 0 15px 0; font-weight: bold; line-height: 1.4; border-bottom: 1px solid rgba(212,175,55,0.15); padding-bottom: 12px; }
+        .instruction-text { font-size: 13px; color: #ccc; line-height: 1.6; margin-bottom: 25px; text-align: justify; background: rgba(255,255,255,0.02); padding: 10px; border-left: 2px solid var(--gold); }
+        .q-block { margin-bottom: 25px; border-bottom: 1px dashed rgba(212,175,55,0.1); padding-bottom: 20px; }
+        .q-block:last-of-type { border-bottom: none; }
+        .q-title { font-size: 14.5px; font-weight: bold; color: var(--gold); line-height: 1.5; margin-bottom: 12px; }
+        .option-label { display: block; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); padding: 12px 14px; margin-bottom: 10px; border-radius: 4px; cursor: pointer; font-size: 13.5px; line-height: 1.5; transition: all 0.2s ease; }
+        .option-label input[type="radio"] { margin-right: 10px; accent-color: var(--gold); transform: scale(1.1); vertical-align: middle; }
+        .option-label.selected { background: rgba(212, 175, 55, 0.08); border-color: var(--gold); color: #fff; }
+        .submit-btn { width: 100%; padding: 15px; background: var(--gold-gradient); color: #000; border: none; font-size: 14px; font-weight: 900; letter-spacing: 2px; cursor: pointer; border-radius: 3px; margin-top: 10px; text-transform: uppercase; box-shadow: 0 4px 15px rgba(179,135,40,0.3); }
+        #result-box { display: none; animation: fadeInUp 0.5s ease backwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .badge-box { text-align: center; margin-bottom: 20px; }
+        .result-badge { display: inline-block; padding: 8px 16px; background: rgba(212,175,55,0.1); border: 1px solid var(--gold); color: var(--gold); font-weight: bold; font-size: 15px; border-radius: 2px; }
+        .analysis-text { font-size: 14px; line-height: 1.7; color: #e5e5e5; text-align: justify; margin-bottom: 30px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); }
+        .next-btn { width: 100%; padding: 15px; background: transparent; color: var(--gold); border: 1px solid var(--gold); font-size: 13px; font-weight: bold; letter-spacing: 2px; cursor: pointer; border-radius: 4px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-area">
+        <div class="header-tag">PAGE 43</div>
+        <h2 class="main-title">အခန်း ၄ ဆန်းစစ်ချက်</h2>
+        
+        <p class="instruction-text">
+            တစ်ဖက်လူ၏ မသိစိတ်ကို မိမိအကြောင်း နေ့ညမပြတ် စွဲလမ်းတွေးတောလာစေမည့် "ဗျူဟာမြောက် စကားပရိယာယ်" နားလည်မှုကို စမ်းသပ်ရန် အောက်ပါမေးခွန်း (၃) ခုလုံးကို ဖြေဆိုပေးပါ။
+        </p>
+
+        <!-- မေးခွန်း ၁ -->
+        <div class="q-block" id="block-q1">
+            <div class="q-title">[ မေးခွန်း ၁ ] အမျိုးသမီးတစ်ဦးက မိမိအကြောင်းကို စူးစမ်းလိုစိတ်ပြင်းပြလာပြီး နေ့ညမပြတ် စွဲလမ်းနေစေရန် မည်သည့် စကားပရိယာယ်ကို သုံးစွဲမည်နည်း။</div>
+            <label class="option-label">
+                <input type="radio" name="q1" value="A" onclick="highlightOption('q1', this)"> (က) မိမိ၏ ဘဝအကြောင်း၊ စွမ်းဆောင်ရည်နှင့် အောင်မြင်မှုများကို အစအဆုံး အသေးစိတ် တိုက်ရိုက်ထုတ်ဖော်ပြောဆိုမည်။
+            </label>
+            <label class="option-label">
+                <input type="radio" name="q1" value="B" onclick="highlightOption('q1', this)"> (ခ) မိမိအကြောင်းကို သာမန်မျှသာ ပြောဆိုပြီး ၎င်း၏ စိတ်ဝင်စားမှုကို ရရှိရန် အမြဲတစေ အဆင်သင့်ရှိနေပေးမည်။
+            </label>
+            <label class="option-label">
+                <input type="radio" name="q1" value="C" onclick="highlightOption('q1', this)"> (ဂ) အဓိပ္ပာယ်နှစ်ခွထွက်သော စကားလုံးတို့ဖြင့် ထောင်ချောက်ဆင်ကာ မိမိအကြောင်းကို တစ်ပိုင်းတစ်စသာ ဖွင့်ဟလျက် ၎င်း၏ ဦးနှောက်ကို အချက်အလက်စီမံမှု ဝန်ထုပ်ဝန်ပိုး (Cognitive Load) ဖြစ်စေမည်။
+            </label>
+        </div>
+
+        <!-- မေးခွန်း ၂ -->
+        <div class="q-block" id="block-q2">
+            <div class="q-title">[ မေးခွန်း ၂ ] သင်က စကားဝိုင်းတစ်ခုတွင် စာတို (Message) ပြန်ကြားမှုနှုန်းကို ညှိနှိုင်းရာ၌ မသိစိတ်ကို ဆွဲဆောင်ရန် မည်သည့်နည်းလမ်းက အထိရောက်ဆုံးဖြစ်မည်နည်း။</div>
+            <label class="option-label">
+                <input type="radio" name="q2" value="A" onclick="highlightOption('q2', this)"> (က) ၎င်း စာပို့လာသည်နှင့် တစ်စက္ကန့်မျှ မဆိုင်းဘဲ ချက်ချင်း ပြန်စာရှည်ကြီးများ ရေးသားပေးပို့မည်။
+            </label>
+            <label class="option-label">
+                <input type="radio" name="q2" value="B" onclick="highlightOption('q2', this)"> (ခ) အချိန်အပိုင်းအခြားကို ပုံသေမရှိဘဲ ခန့်မှန်းရခက်အောင် ပြုလုပ်ပြီး စကားလုံးများကို ကျစ်လျစ်စွာဖြင့် စိတ်ဝင်စားစရာ ချန်လှပ်ထားမည်။
+            </label>
+            <label class="option-label">
+                <input type="radio" name="q2" value="C" onclick="highlightOption('q2', this)"> (ဂ) စိတ်ဆိုးသွားစေရန် ရက်အတော်ကြာ လုံးဝအကြောင်းမပြန်ဘဲ ထားပစ်မည်။
+            </label>
+        </div>
+
+        <!-- မေးခွန်း ၃ -->
+        <div class="q-block" id="block-q3">
+            <div class="q-title">[ မေးခွန်း ၃ ] လူသားတို့၏ မသိစိတ်သည် မည်သို့သော အရာများအပေါ်တွင် အစွဲလမ်းဆုံးနှင့် နေ့ညမပြတ် စူးစမ်းချင်စိတ် အဖြစ်ဆုံး ဖြစ်တတ်သနည်း။</div>
+            <label class="option-label">
+                <input type="radio" name="q3" value="A" onclick="highlightOption('q3', this)"> (က) အရာရာတိုင်းကို ရှင်းလင်းပြတ်သားစွာ သိရှိပြီးသား ဖြစ်နေသော ကိစ္စရပ်များ။
+            </label>
+            <label class="option-label">
+                <input type="radio" name="q3" value="B" onclick="highlightOption('q3', this)"> (ခ) အပိုင်းတစ်စသာ သိရပြီး ကျန်ရှိနေသော အစိတ်အပိုင်းကို ဦးနှောက်က ဆက်လက် တွေးတောနေရဆဲ ဖြစ်သည့် "မပြီးပြတ်သေးသော ပဟေဠိများ"။
+            </label>
+            <label class="option-label">
+                <input type="radio" name="q3" value="C" onclick="highlightOption('q3', this)"> (ဂ) မိမိအတွက် လုံးဝ အကျိုးအမြတ် သို့မဟုတ် စိတ်လှုပ်ရှားမှု မရှိသော သာမန်အကြောင်းအရာများ။
+            </label>
+        </div>
+
+        <button onclick="processAnswers()" class="submit-btn">စစ်ဆေးချက်ရလဒ် ကြည့်ရန် →</button>
+    </div>
+
+    <div id="result-box">
+        <div class="header-tag" style="margin-bottom: 15px;">CHAPTER 4 EVALUATION</div>
+        <div class="badge-box"><span class="result-badge" id="res-title"></span></div>
+        <div class="analysis-text" id="res-desc"></div>
+        <button onclick="completeQuiz()" class="next-btn">START READING CHAPTER 5 →</button>
+    </div>
+</div>
+
+<script>
+    function highlightOption(qName, element) {
+        const block = document.getElementById('block-' + qName);
+        const labels = block.querySelectorAll('.option-label');
+        labels.forEach(label => label.classList.remove('selected'));
+        element.parentElement.classList.add('selected');
+    }
+
+    function processAnswers() {
+        const q1 = document.querySelector('input[name="q1"]:checked');
+        const q2 = document.querySelector('input[name="q2"]:checked');
+        const q3 = document.querySelector('input[name="q3"]:checked');
+
+        if (!q1 || !q2 || !q3) {
+            alert("ကျေးဇူးပြု၍ မေးခွန်းအားလုံးအတွက် အဖြေရွေးချယ်ပေးပါရှင်။");
+            return;
+        }
+
+        let masterCount = 0;
+        if (q1.value === 'C') masterCount++;
+        if (q2.value === 'B') masterCount++;
+        if (q3.value === 'B') masterCount++;
+
+        let title = "";
+        let desc = "";
+
+        // မေးခွန်း ၁ ၏ ရွေးချယ်မှုအပေါ် အဓိကမူတည်၍ တုံ့ပြန်ချက် ရလဒ်များကို သတ်မှတ်သည်
+        if (q1.value === 'A') {
+            title = "[ LEVEL 1 - အပေါ်ယံအဆင့် ]";
+            desc = "ဆန်းစစ်ချက်: အလုံးစုံကို အလွယ်တကူ ဖွင့်ဟပြသသော အမျိုးသားကို အမျိုးသမီးတို့၏ မသိစိတ်သည် လျင်မြန်စွာ ငြီးငွေ့တတ်ပေသည်။ သင်သည် ၎င်း၏ စိတ်ဝင်စားမှုကို ကိုယ်တိုင် သတ်ပစ်လိုက်ခြင်း ဖြစ်သည်။ အချက်အလက်များကို ဗျူဟာမြောက် ထိန်းချုပ်ရန် လိုအပ်ပါသည်။";
+        } else if (q1.value === 'B') {
+            title = "[ LEVEL 2 - အလယ်အလတ်အဆင့် ]";
+            desc = "ဆန်းစစ်ချက်: အမြဲတစေ အဆင်သင့်ရှိနေပေးခြင်း (Availability) သည် သင်၏ ဆွဲဆောင်မှုတန်ဖိုးကို လျှော့ချပစ်လိုက်ခြင်း ဖြစ်၏။ သင်သည် သာမန်သူငယ်ချင်းအဆင့်ထက် ပိုမိုနိုင်မည် မဟုတ်ပေ။ ရှားပါးမှုနိယာမကို ပိုမိုအသုံးချပါ။";
+        } else if (q1.value === 'C' && masterCount === 3) {
+            title = "[ LEVEL 3 - မာစတာအဆင့် ]";
+            desc = "ဆန်းစစ်ချက်: အံ့ဩဖွယ်ကောင်းလှပေသည်။ ပဟေဠိဆန်မှုသည် မသိစိတ်ကို စွဲလမ်းစေသော အဓိကသော့ချက် ဖြစ်၏။ ၎င်း၏ ဦးနှောက်ကို အချက်အလက်စီမံခိုင်းခြင်းဖြင့် ၎င်း၏ မသိစိတ်ကို မိမိအကြောင်း နေ့ညမပြတ် တွေးတောရသည့် ထောင်ချောက်အတွင်းသို့ သွတ်သွင်းနိုင်ခဲ့ပြီ ဖြစ်သည်။ သင်သည် မသိစိတ်ဆွဲဆောင်မှု၏ မာစတာအစစ်အမှန် ဖြစ်သည်။";
+        } else {
+            title = "[ LEVEL 2 - အလယ်အလတ်အဆင့် ]";
+            desc = "ဆန်းစစ်ချက်: သင်သည် စကားလုံးပရိယာယ်၏ သဘောတရားကို ရိပ်မိသော်လည်း လက်တွေ့တွင် တစ်ဖက်လူအား ခန့်မှန်းရခက်စေမည့် စာတိုပေးပို့မှုနှင့် တုံ့ပြန်မှုပိုင်း ဗျူဟာများကို ထပ်မံလေ့ကျင့်ရန် လိုအပ်ပါသေးသည်။ နောက်အခန်းများက လမ်းညွှန်ပေးပါလိမ့်မည်။";
+        }
+
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function completeQuiz() {
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: "quizCompleted", page: 43 }, "*");
+        }
+    }
+</script>
+
+</body>
+</html>
