@@ -79,7 +79,7 @@
 
         #book-container { display: none; position: relative; width: 100vw; height: 100vh; z-index: 10; opacity: 0; display: flex; justify-content: center; align-items: center; background-color: #010714; }
         
-        /* 📌 အောက်ခြေကိုမထိဘဲ အပေါ်ဘက်သို့ အပြည့်တက်သွားစေရန် margin-top နှင့် max-height ကို ပေါင်းစပ်ပြင်ဆင်ထားသည် */
+        /* 📌 အပေါ်ဘက်အမည်းကွက်လွတ်ထဲအထိ စာမျက်နှာအပြည့် ဆွဲဆန့်နေရာယူစေရန် Max-Height ကို 100vh သို့ တိုးမြှင့်ထားသည် */
         #flipbook-box { 
             position: relative; 
             width: 100%; 
@@ -90,7 +90,6 @@
             justify-content: center; 
             align-items: center; 
             box-shadow: 0 0 70px rgba(0,0,0,0.95); 
-            margin-top: -35px; 
         }
         #flipbook { width: 100%; height: 100%; }
         
@@ -106,11 +105,9 @@
             image-rendering: crisp-edges; 
             image-rendering: pixelated; 
             -webkit-transform: translateZ(0); 
-            transform: translateZ(0); 
-            -webkit-backface-visibility: hidden; 
-            backface-visibility: hidden; 
-            filter: blur(0px); 
-            -webkit-filter: blur(0px); 
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
         
         .iframe-wrapper { width: 100%; height: 100%; position: relative; }
@@ -120,10 +117,10 @@
         
         .watermark { position: absolute; bottom: 10px; width: 100%; text-align: center; font-size: 9px; color: var(--gold); opacity: 0.2; letter-spacing: 4px; pointer-events: none; z-index: 12; font-weight: bold; }
 
-        /* 📌 Premium Floating Button - စာအုပ်အပေါ်တက်သွားစဉ် ခလုတ်နေရာလွတ်အား အဆင်ပြေအောင် ညှိထားသည် */
+        /* 📌 Premium Floating Button Dynamic Placement */
         #bookmark-btn { 
             position: fixed; 
-            top: 12px; 
+            top: 22px; 
             left: calc(50% + 260px - 145px); 
             z-index: 99999 !important; 
             background: rgba(3, 15, 38, 0.9); 
@@ -145,8 +142,9 @@
         #bookmark-btn.active { background: var(--gold-gradient); color: #000; border-color: transparent; box-shadow: 0 4px 15px rgba(179,135,40,0.4); }
 
         @media (max-width: 540px) {
-            #bookmark-btn { top: 12px; left: auto; right: 20px; }
-            #flipbook-box { max-height: 100vh; margin-top: -45px; }
+            #bookmark-btn { left: auto; right: 20px; }
+            /* 📌 Mobile တွင်လည်း အပေါ်ဘက်အထိ အပြည့်ဖြစ်စေရန် 100vh ပြောင်းလဲထားပါသည် */
+            #flipbook-box { max-height: 100vh; }
         }
 
         .ai-context-vault { display: none; visibility: hidden; height: 0; width: 0; overflow: hidden; }
@@ -278,8 +276,7 @@
                     width: size.width, 
                     height: size.height, 
                     display: 'single', 
-                    acceleration: false, // 📌 Safari Mobile Render Error မဖြစ်စေရန် acceleration ကို ပိတ်ထားပါသည်
-                    gradients: false,     // 📌 အရိပ်ကြောင့် အပေါ်အောက် အမည်းကွက်လပ်မကျန်စေရန် false ပေးထားပါသည်
+                    acceleration: true,
                     page: savedPage, 
                     when: {
                         start: function(e) { 
