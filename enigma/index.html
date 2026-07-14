@@ -267,15 +267,12 @@
                 isInitializing = true; 
 
                 flipbook.turn({
-    width: size.width, 
-    height: size.height, 
-    display: 'single', 
-    acceleration: true,
-    page: savedPage, 
-    // 📌 စာရွက်ရဲ့ လေးထောင့်ထောင့်စွန်း Peel effect တွေကို လုံးဝပိတ်လိုက်ပြီး အလယ် Area ကနေပဲ လှန်ခိုင်းခြင်း
-    turnCorners: "bl,br", // 'tl,tr' (Top Corners) တွေကို ဖြုတ်ပြီး ပိတ်လိုက်တာပါ
-    gradients: false,     // ထောင့်စွန်းခေါက်ကြောင်း အရိပ်တွေကို ပိတ်ပြီး Touch Area အမှားကို ကာကွယ်ပါတယ်
-    when: {
+                    width: size.width, 
+                    height: size.height, 
+                    display: 'single', 
+                    acceleration: true,
+                    page: savedPage, 
+                    when: {
                         start: function(e) { 
                             if (!isInitializing && isQuizLocked) e.preventDefault(); 
                         },
