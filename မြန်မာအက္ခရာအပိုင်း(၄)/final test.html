@@ -71,7 +71,7 @@
             သင်ခန်းစာ (Level 4) : တ၊ ထ၊ ဒ၊ ဓ၊ န
         </div>
         <p class="text-sky-200 text-sm max-w-md mb-12 font-medium">ကောင်းကင်ပြာကြီးထဲမှာ တောင်ပံခတ်ပျံသန်းနေတဲ့ ငှက်ကလေးတွေ၊ လေယာဉ်ပျံတွေနဲ့ မိုးပျံပူဖောင်းလေးတွေ ရှိပါတယ်။ မှန်ကန်တဲ့ စာလုံးသယ်လာတာတွေကို တို့ထိကယ်တင်ကြရအောင်။</p>
-        
+         
         <button id="play-btn" class="px-14 py-5 bg-sky-500 hover:bg-sky-400 text-white font-black text-lg rounded-full shadow-[0_12px_30px_rgba(14,165,233,0.4)] border-b-4 border-sky-700 active:scale-95 transition-all">စတင်ကစားမည်</button>
     </div>
 
@@ -88,6 +88,12 @@
     </div>
 
     <script>
+        // 🎵 Background Music ထည့်သွင်းခြင်း
+        // သီချင်းဖိုင်လမ်းကြောင်းနှင့် အမည်ကို ဒီနေရာတွင် လိုအပ်သလို ပြောင်းလဲနိုင်ပါသည်
+        const bgMusic = new Audio('sounds/sky-bg.mp3'); 
+        bgMusic.loop = true; // သီချင်းကို တစ်ပတ်လည် အဆက်မပြတ် ဖွင့်ထားရန်
+        bgMusic.volume = 0.4; // အသံအတိုးအကျယ် (0.0 မှ 1.0 အထိ ညှိနိုင်သည်)
+
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         function playSound(type) {
@@ -247,7 +253,11 @@
                         
                         if (gameState.score >= 100) {
                             gameState.isPlaying = false;
+                            
+                            // 🎵 အောင်နိုင်သွားချိန်တွင် သီချင်းကိုရပ်ပြီး Victory Sound ဖွင့်မည်
+                            bgMusic.pause();
                             playSound('victory');
+                            
                             document.getElementById('victory-screen').classList.remove('hidden');
                         } else {
                             rotateLevel4Target();
@@ -412,6 +422,12 @@
         }
 
         function startGame() {
+            // 🎵 "စတင်ကစားမည်" ကိုနှိပ်တာနဲ့ သီချင်းဖွင့်ရန်
+            bgMusic.currentTime = 0; // အစကနေ ပြန်ဖွင့်ရန်
+            bgMusic.play().catch(error => {
+                console.log("Audio play blocked by browser. Interaction required.", error);
+            });
+
             gameState.score = 0;
             gameState.targetIndex = 0;
             gameState.targetLetter = level4Targets[0];
@@ -428,16 +444,20 @@
 
         // Navigation Functions
         function goHome() {
+            bgMusic.pause(); // တခြားစာမျက်နှာသွားရင် သီချင်းရပ်ရန်
             window.location.href = 'index.html?fromGame=true';
         }
 
         function goBack() {
             if (document.getElementById('start-screen').classList.contains('hidden') && !document.getElementById('victory-screen').classList.contains('hidden')) {
+                bgMusic.pause();
                 window.location.href = 'index.html';
             } else if (document.getElementById('start-screen').classList.contains('hidden')) {
+                bgMusic.pause(); // Start Screen ပြန်သွားရင် သီချင်းခေတ္တရပ်ထားရန်
                 gameState.isPlaying = false;
                 document.getElementById('start-screen').classList.remove('hidden');
             } else {
+                bgMusic.pause();
                 window.location.href = 'index.html';
             }
         }
