@@ -109,6 +109,39 @@
             backface-visibility: hidden;
         }
 
+        /* 🛠️ Bookmark Button Style */
+        #bookmark-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1500;
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        #bookmark-btn.bookmarked {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 15px var(--gold);
+        }
+        @media screen and (max-width: 768px) {
+            #bookmark-btn {
+                top: 15px;
+                right: 15px;
+                padding: 6px 12px;
+                font-size: 10px;
+            }
+        }
+
         #flipbook-wrapper { 
             width: 100%; 
             height: 100%; 
@@ -120,7 +153,7 @@
         
         #flipbook .page { background-color: #000; background-size: 100% 100%; position: relative; }
         
-        /* 🛠️ Quiz Styles */
+        /* Quiz Styles */
         #quiz-overlay { 
             display: none; 
             position: absolute; 
@@ -154,6 +187,9 @@
     </div>
 
     <div id="book-container">
+        <!-- 🛠️ Floating Bookmark Button -->
+        <button id="bookmark-btn" onclick="toggleBookmark()">SAVE BOOKMARK</button>
+
         <div id="flipbook-wrapper">
             <div id="flipbook"></div>
         </div>
@@ -255,7 +291,6 @@
         }
     }
 
-    // 🛠️ BUG FIXED: အဖြေရမှတ်များတူနေပါက 'Hybrid (THE HYBRID SOUL)' ရလဒ်ကို တိကျမှန်ကန်စွာ တွက်ချက်ဖော်ပြပေးမည့် စနစ်
     function renderIntroScenario(data, index) {
         let introScores = window.introScores || { A: 0, B: 0, C: 0 };
         window.introScores = introScores;
@@ -290,7 +325,6 @@
         });
     }
 
-    // 🛠️ BUG FIXED: Intro Quiz ပြီးသွားလျှင် `#quiz-overlay` ကို Page 2 ထဲမှ ဆွဲထုတ်ပြီး `<body>` အောက်သို့ ပြန်ပို့ပေးရန် (ဒါမှ Page 12 ကောင်းကောင်း ပြန်သုံးနိုင်မည်)
     function initBook() {
         requestFullscreenMode();
         $("#quiz-overlay").fadeOut(400, function() {
@@ -298,6 +332,35 @@
             $("#flipbook").turn("next");
         });
         document.getElementById("bgm-dark").play().catch(()=>{});
+    }
+
+    /* 🛠️ Bookmark Functions */
+    function toggleBookmark() {
+        const flipbook = $("#flipbook");
+        const currentPage = flipbook.turn("page");
+        const bookmarkedPage = localStorage.getItem("dc_bookmarked_page");
+
+        if (bookmarkedPage && parseInt(bookmarkedPage) === currentPage) {
+            // Unsave Bookmark (ပြန်ဖျက်ခြင်း)
+            localStorage.removeItem("dc_bookmarked_page");
+        } else {
+            // Save Bookmark (သိမ်းဆည်းခြင်း)
+            localStorage.setItem("dc_bookmarked_page", currentPage);
+        }
+        updateBookmarkButton(currentPage);
+    }
+
+    function updateBookmarkButton(page) {
+        const btn = $("#bookmark-btn");
+        const bookmarkedPage = localStorage.getItem("dc_bookmarked_page");
+
+        if (bookmarkedPage && parseInt(bookmarkedPage) === page) {
+            btn.addClass("bookmarked");
+            btn.text("UNSAVE BOOKMARK");
+        } else {
+            btn.removeClass("bookmarked");
+            btn.text("SAVE BOOKMARK");
+        }
     }
 
     function loadAndInit() {
@@ -327,6 +390,10 @@
                 turned: function(e, page) {
                     handleMusic(page);
                     localStorage.setItem("dc_last_page", page);
+                    
+                    // 🛠️ စာမျက်နှာလှန်လိုက်တိုင်း Bookmark အခြေအနေကို စစ်ဆေးပြီး ခလုတ်ကို အရောင်/စာသား ပြောင်းပေးရန်
+                    updateBookmarkButton(page); 
+
                     if (quizPages.includes(page)) {
                         triggerPsychologyTest(page);
                     }
@@ -337,8 +404,13 @@
             }
         });
 
+        // 🛠️ Bookmark ရှိရင် ၎င်းဆီသို့ တိုက်ရိုက်သွားမည်။ မရှိပါက နောက်ဆုံးဖတ်ခဲ့သည့် စာမျက်နှာသို့ သွားမည်။
+        const bookmarkedPage = localStorage.getItem("dc_bookmarked_page");
         const savedPage = localStorage.getItem("dc_last_page");
-        if (savedPage) {
+        
+        if (bookmarkedPage) {
+            flipbook.turn("page", parseInt(bookmarkedPage));
+        } else if (savedPage) {
             flipbook.turn("page", parseInt(savedPage));
         } else {
             flipbook.turn("page", 1);
