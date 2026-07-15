@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Paint the Burmese Letter ဒ - Nature Meadow Adventure</title>
+  <title>"ဒ"ကိုအရောင်ခြယ်ပါ - Nature Meadow Adventure</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,7 +17,7 @@
     body { font-family: 'Fredoka', 'Pyidaungsu', system-ui, sans-serif; }
 
     /* ==========================================================================
-       ENVIRONMENT SCENE DESIGN (နောက်ခံကမ္ဘာ)
+       ENVIRONMENT SCENE DESIGN (Adaptive & Responsive Background)
        ========================================================================== */
     .game-scene { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
     
@@ -26,42 +26,43 @@
       background: linear-gradient(to bottom, #bfdbfe 0%, #dbeafe 55%, #86efac 55%, #4ade80 100%);
     }
     
+    /* Responsive Viewport Units သုံးပြီး တောင်ကုန်းများကို အချိုးကျ ညှိထားခြင်း */
     .hills {
-      position: absolute; left: 0; right: 0; bottom: 12vh; height: 38vh;
+      position: absolute; left: 0; right: 0; bottom: 0; height: clamp(25vh, 38vh, 45vh);
       background-size: 100% 100%;
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300'><path d='M0,150 Q150,80 350,160 T750,120 Q900,90 1000,140 L1000,300 L0,300 Z' fill='%236ee7b7'/><path d='M0,200 Q250,130 550,220 T1000,180 L1000,300 L0,300 Z' fill='%234ade80'/></svg>");
     }
 
     /* MOVING CLOUDS ANIMATION */
-    .cloud-container { position: absolute; top: 6vh; left: 0; right: 0; height: 120px; }
+    .cloud-container { position: absolute; top: clamp(3vh, 6vh, 8vh); left: 0; right: 0; height: 120px; }
     .cloud { position: absolute; background: white; border-radius: 100px; filter: drop-shadow(0 6px 12px rgba(255,255,255,0.4)); animation: floatCloud 25s infinite ease-in-out alternate; }
     .cloud::before, .cloud::after { content: ''; position: absolute; background: white; border-radius: 50%; }
     
-    .c1 { width: 120px; height: 40px; top: 10px; left: 10%; animation-duration: 26s; opacity: 0.95; }
-    .c1::before { width: 55px; height: 55px; top: -25px; left: 20px; }
-    .c1::after { width: 45px; height: 45px; top: -20px; right: 20px; }
+    .c1 { width: clamp(80px, 10vw, 120px); height: clamp(30px, 4vh, 40px); top: 10px; left: 10%; animation-duration: 26s; opacity: 0.95; }
+    .c1::before { width: clamp(40px, 5vw, 55px); height: clamp(40px, 5vw, 55px); top: -25px; left: 20px; }
+    .c1::after { width: clamp(30px, 4vw, 45px); height: clamp(30px, 4vw, 45px); top: -20px; right: 20px; }
 
-    .c2 { width: 140px; height: 48px; top: -10px; left: 50%; animation-duration: 32s; opacity: 0.9; }
-    .c2::before { width: 70px; height: 70px; top: -35px; left: 25px; }
-    .c2::after { width: 60px; height: 60px; top: -25px; right: 25px; }
+    .c2 { width: clamp(100px, 12vw, 140px); height: clamp(35px, 4.5vh, 48px); top: -10px; left: 50%; animation-duration: 32s; opacity: 0.9; }
+    .c2::before { width: clamp(50px, 6vw, 70px); height: clamp(50px, 6vw, 70px); top: -35px; left: 25px; }
+    .c2::after { width: clamp(40px, 5vw, 60px); height: clamp(40px, 5vw, 60px); top: -25px; right: 25px; }
 
     @keyframes floatCloud { 0% { transform: translateX(-30px); } 100% { transform: translateX(40px); } }
 
-    /* SWAYING FLOWERS & PLANTS */
-    .meadow-elements { position: absolute; left: 0; right: 0; bottom: 0; height: 20vh; z-index: 5; display: flex; justify-content: space-around; align-items: flex-end; padding: 0 30px; }
+    /* SWAYING FLOWERS & PLANTS (Adaptive Anchoring to Bottom) */
+    .meadow-elements { position: absolute; left: 0; right: 0; bottom: 0; height: clamp(10vh, 15vh, 20vh); z-index: 5; display: flex; justify-content: space-around; align-items: flex-end; padding: 0 30px; }
     .nature-item { transform-origin: bottom center; animation: gentleSway 3s infinite ease-in-out alternate; }
     .nature-item.excited { animation: excitedSway 0.4s infinite ease-in-out alternate !important; }
 
     @keyframes gentleSway { 0% { transform: rotate(-3deg); } 100% { transform: rotate(4deg); } }
     @keyframes excitedSway { 0% { transform: rotate(-12deg) scale(1.05); } 100% { transform: rotate(15deg) scale(0.95); } }
 
-    .leaf-bush { width: 60px; height: 95px; background-size: 100% 100%; }
+    .leaf-bush { width: clamp(40px, 5vw, 60px); height: clamp(65px, 8vw, 95px); background-size: 100% 100%; }
     .lb1 { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 70 110'><path d='M35,110 Q5,70 15,30 Q35,0 35,0 Q35,0 55,30 Q65,70 35,110 Z' fill='%2316a34a'/><path d='M35,110 Q20,70 25,40' stroke='%2315803d' stroke-width='3' fill='none'/></svg>"); animation-delay: 0.2s; }
     .lb2 { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 70 110'><path d='M35,110 C70,90 60,30 50,10 C35,30 35,50 35,110 C35,50 35,30 20,10 C10,30 0,90 35,110 Z' fill='%2315803d'/></svg>"); animation-delay: 0.6s; }
 
-    .flower { width: 55px; height: 90px; position: relative; }
-    .flower-stem { width: 5px; height: 55px; background: #22c55e; margin: 0 auto; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
-    .flower-head { width: 46px; height: 46px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); background-size: 100% 100%; }
+    .flower { width: clamp(35px, 4vw, 55px); height: clamp(60px, 8vw, 90px); position: relative; }
+    .flower-stem { width: 4px; height: 60%; background: #22c55e; margin: 0 auto; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
+    .flower-head { width: 100%; aspect-ratio: 1/1; position: absolute; top: 0; left: 50%; transform: translateX(-50%); background-size: 100% 100%; }
     .f-pink .flower-head { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><circle cx='30' cy='14' r='12' fill='%23f43f5e'/><circle cx='14' cy='30' r='12' fill='%23f43f5e'/><circle cx='46' cy='30' r='12' fill='%23f43f5e'/><circle cx='30' cy='46' r='12' fill='%23f43f5e'/><circle cx='30' cy='30' r='10' fill='%23fef08a'/></svg>"); }
     .f-white .flower-head { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><circle cx='30' cy='12' r='10' fill='%23ffffff'/><circle cx='12' cy='30' r='10' fill='%23ffffff'/><circle cx='48' cy='30' r='10' fill='%23ffffff'/><circle cx='30' cy='48' r='10' fill='%23ffffff'/><circle cx='20' cy='20' r='10' fill='%23ffffff'/><circle cx='40' cy='20' r='10' fill='%23ffffff'/><circle cx='20' cy='40' r='10' fill='%23ffffff'/><circle cx='40' cy='40' r='10' fill='%23ffffff'/><circle cx='30' cy='30' r='11' fill='%23facc15'/></svg>"); }
 
@@ -69,11 +70,11 @@
        INTRO SCREEN
        ========================================================================== */
     .intro-screen { position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); transition: opacity 0.4s ease; }
-    .intro-emojis { font-size: 40px; margin-bottom: 12px; letter-spacing: 10px; }
-    .intro-title { font-size: 36px; font-weight: 900; color: #ffffff; margin-bottom: 15px; text-shadow: 4px 4px 0px #0369a1; }
-    .intro-badge { background-color: #0284c7; color: white; font-size: 15px; font-weight: bold; padding: 8px 24px; border-radius: 50px; margin-bottom: 20px; display: inline-block; border: 3px solid #ffffff; box-shadow: 0 6px 15px rgba(0,0,0,0.3); }
-    .intro-description { color: #ffffff; font-size: 17px; line-height: 1.7; max-width: 620px; margin-bottom: 30px; font-weight: 500; background: rgba(15, 23, 42, 0.95); padding: 22px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 3px solid #38bdf8; }
-    .btn-start { background-color: #f97316; color: white; font-size: 20px; font-weight: 800; padding: 14px 50px; border: none; border-radius: 20px; cursor: pointer; box-shadow: 0 6px 0 #ea580c, 0 10px 20px rgba(0,0,0,0.3); }
+    .intro-emojis { font-size: clamp(28px, 5vw, 40px); margin-bottom: 12px; letter-spacing: 10px; }
+    .intro-title { font-size: clamp(22px, 4vw, 36px); font-weight: 900; color: #ffffff; margin-bottom: 15px; text-shadow: 4px 4px 0px #0369a1; }
+    .intro-badge { background-color: #0284c7; color: white; font-size: clamp(12px, 2.5vw, 15px); font-weight: bold; padding: 8px 24px; border-radius: 50px; margin-bottom: 20px; display: inline-block; border: 3px solid #ffffff; box-shadow: 0 6px 15px rgba(0,0,0,0.3); }
+    .intro-description { color: #ffffff; font-size: clamp(13px, 3vw, 17px); line-height: 1.7; max-width: 620px; margin-bottom: 30px; font-weight: 500; background: rgba(15, 23, 42, 0.95); padding: 22px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 3px solid #38bdf8; }
+    .btn-start { background-color: #f97316; color: white; font-size: clamp(16px, 3vw, 20px); font-weight: 800; padding: 14px 50px; border: none; border-radius: 20px; cursor: pointer; box-shadow: 0 6px 0 #ea580c, 0 10px 20px rgba(0,0,0,0.3); }
     .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #ea580c; }
 
     /* ==========================================================================
@@ -84,10 +85,9 @@
     .workspace { display: flex; width: 100%; height: 100%; align-items: center; justify-content: space-between; padding: 1.5vh 2vw; gap: 2vw; }
     .play-area { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; gap: 1.5vh; position: relative; }
     
-    /* 💡 ခေါင်းစဉ်အား Whiteboard Frame ၏ အပြင်ဘက် ထိပ်ဆုံး၌ စနစ်တကျ ထားရှိခြင်း */
     .heading-box { background-color: #1e3a8a; border: 3px solid #ffffff; border-radius: 14px; padding: 6px 24px; box-shadow: 0 6px 15px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px; margin-top: 1vh; margin-bottom: 0.5vh; z-index: 30; }
-    .heading-text { font-size: 18px; font-weight: 700; color: #ffffff; }
-    .heading-glyph { font-family: 'Pyidaungsu', sans-serif; color: #1e3a8a; font-size: 24px; font-weight: 900; background: #ffffff; padding: 1px 14px; border-radius: 6px; }
+    .heading-text { font-size: clamp(14px, 2.5vw, 18px); font-weight: 700; color: #ffffff; }
+    .heading-glyph { font-family: 'Pyidaungsu', sans-serif; color: #1e3a8a; font-size: clamp(18px, 3vw, 24px); font-weight: 900; background: #ffffff; padding: 1px 14px; border-radius: 6px; }
 
     .whiteboard-frame { position: relative; padding: 10px; border-radius: 16px; background-color: #0284c7; box-shadow: 0 15px 35px rgba(0,0,0,0.35); border: 4px solid #ffffff; display: flex; justify-content: center; align-items: center; z-index: 10; }
     .canvas-container { background: #ffffff; overflow: hidden; position: relative; border-radius: 10px; box-shadow: inset 0 0 14px rgba(0,0,0,0.15); width: 68vh; height: 68vh; max-width: 80vw; max-height: 80vw; min-width: 280px; min-height: 280px; }
@@ -116,18 +116,16 @@
        ========================================================================== */
     .game-stage-screen { position: absolute; inset: 0; background: #f0f9ff; border-radius: 10px; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 15px; z-index: 20; overflow: hidden; }
     
-    /* Stage 2 Butterfly Meadow Flying Area */
     .fly-meadow-area { width: 100%; flex: 1; position: relative; background: linear-gradient(to bottom, #f0fdf4, #bbf7d0); border-radius: 12px; border: 2px dashed #22c55e; overflow: hidden; margin-top: 10px; }
-    .fly-butterfly { position: absolute; width: 80px; height: 60px; background-size: 100% 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.1s ease; }
-    .fly-butterfly::before { content: attr(data-letter); font-family: 'Pyidaungsu', sans-serif; font-size: 18px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); margin-top: -4px; }
+    .fly-butterfly { position: absolute; width: clamp(60px, 12vw, 80px); height: clamp(45px, 9vw, 60px); background-size: 100% 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.1s ease; }
+    .fly-butterfly::before { content: attr(data-letter); font-family: 'Pyidaungsu', sans-serif; font-size: clamp(14px, 2.5vw, 18px); font-weight: 900; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); margin-top: -4px; }
     
     .bf-pink { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 50'><path d='M30,25 Q15,5 5,15 Q0,20 10,25 Q0,30 5,35 Q15,45 30,25 Z M30,25 Q45,5 55,15 Q60,20 50,25 Q60,30 55,35 Q45,45 30,25 Z' fill='%23ec4899'/><ellipse cx='30' cy='25' rx='3' ry='15' fill='%23475569'/></svg>"); }
     .bf-orange { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 50'><path d='M30,25 Q15,5 5,15 Q0,20 10,25 Q0,30 5,35 Q15,45 30,25 Z M30,25 Q45,5 55,15 Q60,20 50,25 Q60,30 55,35 Q45,45 30,25 Z' fill='%23f97316'/><ellipse cx='30' cy='25' rx='3' ry='15' fill='%23475569'/></svg>"); }
     .bf-purple { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 50'><path d='M30,25 Q15,5 5,15 Q0,20 10,25 Q0,30 5,35 Q15,45 30,25 Z M30,25 Q45,5 55,15 Q60,20 50,25 Q60,30 55,35 Q45,45 30,25 Z' fill='%23a855f7'/><ellipse cx='30' cy='25' rx='3' ry='15' fill='%23475569'/></svg>"); }
 
-    /* Stage 3 Dandelion Magic Balloons Touch Optimization */
     .meadow-bubble { 
-      position: absolute; width: 75px; height: 75px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-family: 'Pyidaungsu', sans-serif; font-size: 34px; font-weight: 900; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3); animation: floatBubbleUp 4.8s infinite linear; z-index: 25; will-change: transform, bottom; touch-action: none;
+      position: absolute; width: clamp(55px, 11vw, 75px); height: clamp(55px, 11vw, 75px); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-family: 'Pyidaungsu', sans-serif; font-size: clamp(24px, 5vw, 34px); font-weight: 900; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3); animation: floatBubbleUp 4.8s infinite linear; z-index: 25; will-change: transform, bottom; touch-action: none;
       box-shadow: inset -6px -8px 15px rgba(0,0,0,0.1), inset 6px 6px 15px rgba(255,255,255,0.6), 0 6px 12px rgba(0, 0, 0, 0.1);
     }
     
@@ -139,25 +137,73 @@
     }
 
     /* ==========================================================================
-       FINAL CELEBRATION MODAL POPUP (ဂုဏ်ပြုလွှာ)
+       FINAL CELEBRATION MODAL POPUP
        ========================================================================== */
     .celebration-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 50; animation: fadeIn 0.4s ease forwards; }
     .celebration-card { background: #ffffff; border: 5px solid #0284c7; border-radius: 24px; width: 85%; max-width: 440px; padding: 30px 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.4); transform: scale(0.7); opacity: 0; animation: popUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes popUp { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-    /* Responsive Mode Adjustments */
-    @media (max-width: 850px), (orientation: portrait) {
-      .workspace { flex-direction: column; justify-content: flex-start; padding: 1.5vh 2vw; gap: 1.5vh; }
-      .play-area { flex: none; height: auto; width: 100%; }
-      .canvas-container { width: 72vw; height: 72vw; max-width: 55vh; max-height: 55vh; }
-      .panel { width: 100%; height: auto; max-width: 55vh; flex-direction: row; flex-wrap: wrap; justify-content: space-between; padding: 10px 12px; border-radius: 16px; align-items: center; }
+    /* ==========================================================================
+       MODERN RESPONSIVE MOBILE LAYOUT (ဒဿီ ဝိုင်းပြထားသော အတိုင်းအတာအတိုင်း ညှိထားသည်)
+       ========================================================================== */
+    @media (max-width: 768px), (orientation: portrait) {
+      .workspace { 
+        flex-direction: column; 
+        justify-content: flex-start; 
+        padding: 1vh 4vw; 
+        gap: 1vh; 
+      }
+      .play-area { 
+        flex: none; 
+        height: auto; 
+        width: 100%; 
+      }
+      
+      /* Whiteboard ဘောင်ကို ဝိုင်းထားတဲ့အတိုင်း ဘယ်ညာ အပြည့်ချဲ့ခြင်း */
+      .whiteboard-frame {
+        width: 100%;
+        max-width: 96vw; 
+        padding: 6px; 
+      }
+
+      /* Canvas Box ကို အောက်ခြေထိ ရှည်ထွက်သွားအောင် အမြင့်မြှင့်ခြင်း */
+      .canvas-container { 
+        width: 100%; 
+        height: clamp(55vh, 60vh, 65vh); 
+        max-width: 100%; 
+        max-height: none; 
+      }
+      
+      /* Control Panel ကို Canvas အောက်မှာ သေသပ်စွာ Adaptive Anchoring ပြုလုပ်ခြင်း */
+      .panel { 
+        width: 100%; 
+        height: auto; 
+        max-width: 96vw; 
+        flex-direction: row; 
+        flex-wrap: wrap; 
+        justify-content: space-between; 
+        padding: 8px 10px; 
+        border-radius: 14px; 
+        align-items: center; 
+        margin-top: 5px;
+      }
       .panel-title { display: none; }
       .brush-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; width: auto; max-height: none; overflow: visible; flex: 1; margin: 0 8px; padding-right: 0; }
-      .eraser { width: 38px; height: 38px; }
+      .eraser { width: 36px; height: 36px; }
       .action-container { flex-direction: row; width: auto; gap: 6px; margin-top: 0; }
-      .btn { width: 62px; height: 38px; font-size: 10px; }
-      .meadow-elements, .cloud-container { display: none !important; }
+      .btn { width: 62px; height: 36px; font-size: 10px; }
+      
+      /* မိုဘိုင်းလ်တွင် နောက်ခံ အလှဆင်ဒြပ်စင်များကို စနစ်တကျ အချိုးကျ ကျုံ့ပေးခြင်း (transform: scale) */
+      .meadow-elements {
+        transform: scale(0.85);
+        transform-origin: bottom center;
+        padding: 0 10px;
+      }
+      .cloud-container {
+        transform: scale(0.75);
+        transform-origin: top center;
+      }
     }
 
     /* Effects Particles */
@@ -187,8 +233,7 @@
     <h1 class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</h1>
     <div class="intro-badge">သင်ခန်းစာ : "ဒ" စိမ်းလန်းတဲ့ တောင်ကုန်းမြေပြင်လေးကို အရောင်ခြယ်ကြစို့</div>
     <p class="intro-description">
-      ကလေးတို့ရေ... စိမ်းလန်းစိုပြည်ပြီး သာယာလှပတဲ့ တောင်ကုန်းမြေပြင်ကြီးထဲမှာ ချစ်စရာ ပန်းပွင့်လေးတွေနဲ့ အပင်လေးတွေ ရှိနေတယ်နော်။
-      အဲဒီမှာ မြန်မာအက္ခရာ "ဒ" လေးပုံသဏ္ဌာန် သဘာဝလမ်းကြောင်းကြီးလည်း ရှိနေတာပေါ့။ ကဲ... စုတ်တံလေးတွေကို ကိုင်ပြီး 
+      ကလေးတို့ရေ... စိမ်းလန်းစိုပြည်ပြီး သာယာလှပတဲ့ တောင်ကုန်းမြေပြင်ကြီးထဲမှာ စုတ်တံလေးတွေကို ကိုင်ပြီး 
       "ဒ" လမ်းကြောင်းအတိုင်း ရောင်စုံဆေးလေးတွေ ခြယ်သပြီး တောင်ကုန်းမြေပြင်ကြီးကို လှပအောင် အရောင်ခြယ်ကြရအောင်။
     </p>
     <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
@@ -196,13 +241,14 @@
 
   <div class="game-wrapper" id="gameWrapper">
     
-    <div class="absolute top-4 left-4 z-50 flex space-x-2 pointer-events-auto">
-        <a href="index.html?fromGame=true" class="px-3 py-2 bg-slate-950/90 hover:bg-slate-900 border border-sky-500/30 rounded-xl text-xs text-white flex items-center space-x-1 shadow-md transition-all active:scale-95 cursor-pointer">
-            <span>🏠</span> <span class="hidden sm:inline">ပင်မမြေပုံ</span>
-        </a>
-        <a href="index.html?fromGame=true&showPopup=stage2" class="px-3 py-2 bg-slate-950/90 hover:bg-slate-900 border border-amber-500/30 rounded-xl text-xs text-white flex items-center space-x-1 shadow-md transition-all active:scale-95 cursor-pointer">
-            <span>↩️</span> <span class="hidden sm:inline">နောက်သို့</span>
-        </a>
+    <!-- TOP NAVIGATION BUTTONS (🏠 HOME & 🔄 RESET အသစ် အစားထိုးလဲလှယ်ထားသည်) -->
+    <div class="absolute top-4 left-4 z-50 flex gap-2">
+      <button onclick="location.href='index.html?fromGame=true'" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပင်မစာမျက်နှာ">
+        🏠
+      </button>
+      <button id="btnTopReset" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပြန်စမည်">
+        🔄
+      </button>
     </div>
 
     <div class="workspace">
@@ -379,7 +425,6 @@
         }, 35);
         bfMoveIntervals.push(moveLoop);
 
-        // TOUCH INTERACTION WITH POINTERDOWN
         bf.addEventListener('pointerdown', (e) => {
           e.preventDefault();
           if (fInfo.T) {
@@ -406,7 +451,7 @@
     }
 
     // ==========================================================================
-    // STAGE 3 ENGINE SYSTEM: SUPER SMOOTH DANDELION BALLOON POPPER
+    // STAGE 3 ENGINE SYSTEM: BUBBLE POPPER
     // ==========================================================================
     let stage3BubbleInterval = null;
     const lettersPool = ['ဒ', 'တ', 'င', 'ဒ', 'င', 'ဒ', 'ထ', 'ဒ'];
@@ -434,7 +479,6 @@
         b.style.border = '3px solid #ffffff';
         b.style.left = (10 + Math.random() * 75) + '%';
 
-        // POINTERDOWN INTERACTION (SMOOTH & NO TOUCH DELAY)
         b.addEventListener('pointerdown', (e) => {
           e.preventDefault();
           if (letter === 'ဒ') {
@@ -535,6 +579,12 @@
       document.getElementById('btnReset').onclick = () => {
         if(currentStage === 1) ctx.clearRect(0, 0, canvas.width, canvas.height);
       };
+      
+      // Top Navigation Reset Button Linkage
+      document.getElementById('btnTopReset').onclick = () => {
+        if(currentStage === 1) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      };
+      
       document.getElementById('btnNext').onclick = () => {
         if(currentStage === 1) triggerExcitedMeadowEffectAndNext();
       };
