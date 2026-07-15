@@ -315,16 +315,14 @@
 
   <div class="game-wrapper" id="gameWrapper">
     
-    <!-- TOP NAVIGATION BUTTONS (HOME & BACK) -->
-    <div class="absolute top-4 left-4 z-50 flex space-x-2 pointer-events-auto">
-        <!-- 🏠 Home ခလုတ်ကို index.html သို့ ရောက်အောင် ပြင်ဆင်ထားသည် -->
-        <button onclick="location.href='index.html?fromGame=true'" class="px-3 py-2 bg-slate-950/90 hover:bg-slate-900 border border-sky-500/30 rounded-xl text-xs text-white flex items-center space-x-1 shadow-md transition-all active:scale-95 cursor-pointer">
-            <span>🏠</span> <span class="hidden sm:inline">ပင်မမြေပုံ</span>
-        </button>
-        <!-- ↩️ နောက်သို့ ခလုတ်ကို သက်ဆိုင်ရာ Stage ပြန်ပြောင်းရန် ပြင်ဆင်ထားသည် -->
-        <button onclick="location.href='index.html?fromGame=true&showPopup=stage2'" class="px-3 py-2 bg-slate-950/90 hover:bg-slate-900 border border-amber-500/30 rounded-xl text-xs text-white flex items-center space-x-1 shadow-md transition-all active:scale-95 cursor-pointer">
-            <span>↩️</span> <span class="hidden sm:inline">နောက်သို့</span>
-        </button>
+    <!-- TOP NAVIGATION BUTTONS (HOME & RESET) -->
+    <div class="absolute top-4 left-4 z-50 flex gap-2">
+      <button onclick="location.href='index.html?fromGame=true'" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပင်မစာမျက်နှာ">
+        🏠
+      </button>
+      <button id="btnTopReset" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပြန်စမည်">
+        🔄
+      </button>
     </div>
 
     <div class="workspace">
