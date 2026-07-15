@@ -267,10 +267,10 @@
             if (savedBookmark && parseInt(savedBookmark) === currentPage) {
                 $("#add-bookmark-btn").addClass("active").html("📌 Bookmarked");
             } else {
-                $("#add-bookmark-btn").removeClass("active").html("🔖 Bookmark");
+                $("#add-bookmark-btn").removeClass("active").html("🔖 စာမျက်နှာမှတ်ရန်");
             }
 
-            // ၂။ သိမ်းထားသော Bookmark ရှိပါက "Go to Bookmark" ခလုတ်ကို ဖော်ပြပေးမည်
+            // ၂။ သိမ်းထားသော Bookmark ရှိပါက "မှတ်ထားသောစာမျက်နှာဆီသို့" ခလုတ်ကို ဖော်ပြပေးမည်
             if (savedBookmark) {
                 $("#go-bookmark-btn").fadeIn(200);
             } else {
