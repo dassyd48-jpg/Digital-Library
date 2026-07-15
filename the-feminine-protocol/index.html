@@ -265,9 +265,9 @@
             
             // ၁။ Bookmark လုပ်ပြီးသား စာမျက်နှာဖြစ်ပါက ခလုတ်အရောင်ကို active စတိုင်ပြောင်းမည်
             if (savedBookmark && parseInt(savedBookmark) === currentPage) {
-                $("#add-bookmark-btn").addClass("active").html("📌 Bookmarked");
+                $("#add-bookmark-btn").addClass("active").html("📌 Unbookmarked");
             } else {
-                $("#add-bookmark-btn").removeClass("active").html("🔖 မမှတ်တော့ပါ");
+                $("#add-bookmark-btn").removeClass("active").html("🔖 Bookmarked");
             }
 
             // ၂။ သိမ်းထားသော Bookmark ရှိပါက "မှတ်ထားသောစာမျက်နှာဆီသို့" ခလုတ်ကို ဖော်ပြပေးမည်
