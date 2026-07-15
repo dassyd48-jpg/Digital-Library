@@ -109,33 +109,25 @@
 </head>
 <body class="game-map-container text-white min-h-screen flex flex-col items-center justify-start burmese-font overflow-x-hidden p-4 pb-24">
 
-    <!-- 🔐 Password Screen -->
-    <main id="passwordScreen" class="fixed inset-0 bg-slate-950/90 backdrop-blur-2xl flex items-center justify-center z-50 p-4">
-        <div class="w-full max-w-md p-8 bg-purple-900/40 border-2 border-purple-500/30 rounded-3xl shadow-2xl text-center">
-            <div class="text-6xl mb-4 float-mascot inline-block">🗺️</div>
-            <h1 class="title-font text-3xl font-black bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-300 bg-clip-text text-transparent drop-shadow mb-2 tracking-wide uppercase">
-                Alphabet Quest
-            </h1>
-            <p class="text-sm text-purple-300/90 font-bold mb-6">မြန်မာအက္ခရာ ရှာပုံတော် - အပိုင်း ၃ (ဋ - ဏ)</p>
-            <hr class="border-purple-500/20 mb-6">
+    
+<main id="passwordScreen" class="fixed inset-0 bg-slate-950/90 backdrop-blur-2xl flex items-center justify-center z-50 p-4">
+    <div class="w-full max-w-md p-8 bg-purple-900/40 border-2 border-purple-500/30 rounded-3xl shadow-2xl text-center">
+        <div class="text-6xl mb-4 float-mascot inline-block">🗺️</div>
+        <h1 class="title-font text-3xl font-black bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-300 bg-clip-text text-transparent drop-shadow mb-2 tracking-wide uppercase">
+            Alphabet Quest
+        </h1>
+        <p class="text-sm text-purple-300/90 font-bold mb-6">မြန်မာအက္ခရာ ရှာပုံတော် - အပိုင်း ၃ (ဋ - ဏ)</p>
+        <hr class="border-purple-500/20 mb-6">
 
-            <div id="passwordArea" class="space-y-5">
-                <p class="text-xs text-amber-300/90 font-black">ဂိမ်းမြေပုံထဲဝင်ဖို့ "မှော်ဝင်သော့စာလုံး" ထည့်ပေးပါဦးနော် ✨</p>
-                <input type="password" id="passInput" placeholder="Password ရိုက်ထည့်ပါ..." 
-                    class="w-full px-4 py-3.5 rounded-xl bg-purple-950/90 border-2 border-purple-500/50 text-white text-center font-bold focus:outline-none focus:border-amber-400 transition-all text-base tracking-wider">
-                <p id="errorMsg" class="text-xs text-red-400 font-bold hidden">❌ သော့စာလုံး မှားနေပါတယ်၊ ပြန်ကြိုးစားကြည့်ပါ!</p>
-                <button onclick="checkGamePassword()" class="w-full py-4 px-6 text-lg font-black text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-xl shadow-[0_4px_0_#b45309] active:translate-y-1 active:shadow-none transition-all cursor-pointer">
-                    သော့ဖွင့်ပြီး မြေပုံဖွင့်မည် 🗺️
-                </button>
-            </div>
-
-            <div id="splashActionArea" class="hidden space-y-6">
-                <p class="text-sm text-emerald-400 font-bold">✨ သော့ပွင့်သွားပါပြီ! စွန့်စားခန်းမြေပုံ အဆင်သင့်ပါပဲ။</p>
-                <button onclick="unlockDashboardMap()" class="w-full py-4 px-6 text-xl font-black text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 rounded-xl shadow-[0_4px_0_#065f46] active:translate-y-1 active:shadow-none transition-all cursor-pointer">
-                    🔊 အသံဖွင့်ပြီး စတင်မည်
-                </button>
-            </div>
+        <!-- Password ရိုက်စရာမလိုဘဲ စတင်ရန် ခလုတ်တိုက်ရိုက်ပြသထားမည် -->
+        <div class="space-y-6">
+            <p class="text-sm text-emerald-400 font-bold">✨ စွန့်စားခန်းမြေပုံ အဆင်သင့်ပါပဲ။</p>
+            <button onclick="unlockDashboardMap()" class="w-full py-4 px-6 text-xl font-black text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 rounded-xl shadow-[0_4px_0_#065f46] active:translate-y-1 active:shadow-none transition-all cursor-pointer">
+                🔊 အသံဖွင့်ပြီး စတင်မည်
+            </button>
         </div>
+    </div>
+</main>
     </main>
 
     <!-- 🗺️ Main Game Dashboard -->
