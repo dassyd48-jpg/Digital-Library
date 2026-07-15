@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Paint & Catch the Burmese Letter န - Winter Snow Adventure</title>
+  <title>"န"ကိုအရောင်ခြယ်ပါ - Winter Snow Adventure</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
@@ -29,15 +29,15 @@
       transition: opacity 0.5s ease-out, pointer-events 0.5s;
     }
     .intro-screen.hide { opacity: 0; pointer-events: none; }
-    .intro-emojis { font-size: 32px; margin-bottom: 15px; letter-spacing: 6px; }
-    .intro-main-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 42px; font-weight: 800; color: #38bdf8; margin-bottom: 15px; }
-    .intro-badge { background-color: #0284c7; border-radius: 50px; padding: 10px 30px; font-family: 'Noto Sans Myanmar', sans-serif; font-size: 18px; color: #ffffff; margin-bottom: 25px; }
-    .intro-description { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 18px; color: #94a3b8; max-width: 600px; line-height: 1.8; margin-bottom: 35px; }
-    .btn-start { font-family: 'Noto Sans Myanmar', sans-serif; padding: 14px 60px; font-size: 24px; font-weight: 800; color: white; background: #f97316; border: none; border-radius: 20px; cursor: pointer; box-shadow: 0 8px 0 #ea580c; transition: transform 0.1s; }
+    .intro-emojis { font-size: clamp(24px, 5vw, 32px); margin-bottom: 15px; letter-spacing: 6px; }
+    .intro-main-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(28px, 6vw, 42px); font-weight: 800; color: #38bdf8; margin-bottom: 15px; }
+    .intro-badge { background-color: #0284c7; border-radius: 50px; padding: 10px 30px; font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(14px, 3vw, 18px); color: #ffffff; margin-bottom: 25px; }
+    .intro-description { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(14px, 2.5vw, 18px); color: #94a3b8; max-width: 600px; line-height: 1.8; margin-bottom: 35px; }
+    .btn-start { font-family: 'Noto Sans Myanmar', sans-serif; padding: 14px 60px; font-size: clamp(18px, 4vw, 24px); font-weight: 800; color: white; background: #f97316; border: none; border-radius: 20px; cursor: pointer; box-shadow: 0 8px 0 #ea580c; transition: transform 0.1s; }
     .btn-start:active { transform: translateY(4px); box-shadow: 0 4px 0 #ea580c; }
 
     /* ==========================================================================
-       ENVIRONMENT SCENE DESIGN
+       ENVIRONMENT SCENE DESIGN (Adaptive Anchoring)
        ========================================================================== */
     .game-scene { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
     .winter-bg { position: absolute; inset: 0; background: linear-gradient(to bottom, #fce7f3 0%, #fae8ff 40%, #e0f2fe 40%, #bae6fd 100%); }
@@ -56,23 +56,38 @@
     }
 
     .snowman {
-      position: absolute; left: 50%; transform: translateX(-50%); bottom: 12vh; width: 85px; height: 120px;
+      position: absolute; left: 50%; transform: translateX(-50%); bottom: 12vh; width: clamp(65px, 10vw, 85px); height: clamp(90px, 15vh, 120px);
       background-size: 100% 100%;
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 85 120'><circle cx='42' cy='95' r='24' fill='%23ffffff' stroke='%23cbd5e1' stroke-width='1'/><circle cx='42' cy='58' r='18' fill='%23ffffff' stroke='%23cbd5e1' stroke-width='1'/><circle cx='42' cy='28' r='13' fill='%23ffffff' stroke='%23cbd5e1' stroke-width='1'/><circle cx='38' cy='25' r='2' fill='%230f172a'/><circle cx='46' cy='25' r='2' fill='%230f172a'/><polygon points='42,28 55,31 42,34' fill='%23f97316'/><path d='M32,58 Q15,50 10,55' stroke='%2378350f' stroke-width='3' fill='none'/><path d='M52,58 Q70,52 75,48' stroke='%2378350f' stroke-width='3' fill='none'/><path d='M28,45 Q42,55 56,45' fill='none' stroke='%23f43f5e' stroke-width='6'/></svg>");
       transition: left 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    /* TOP NAVIGATION BUTTONS */
-    .top-nav { position: absolute; top: 20px; left: 20px; z-index: 50; display: flex; gap: 12px; }
-    .nav-btn { width: 50px; height: 50px; background: white; border: 4px solid #38bdf8; border-radius: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 12px rgba(0,0,0,0.1); transition: transform 0.1s; }
-    .nav-btn:active { transform: scale(0.92); }
-    .nav-btn svg { width: 24px; height: 24px; fill: #0369a1; }
+    /* TOP NAVIGATION BUTTONS (HOME & RESET) - အစားထိုးပြင်ဆင်ပြီး */
+    .absolute { position: absolute; }
+    .top-4 { top: 1rem; }
+    .left-4 { left: 1rem; }
+    .z-50 { z-index: 50; }
+    .flex { display: flex; }
+    .gap-2 { gap: 0.5rem; }
+    .w-10 { width: 2.5rem; }
+    .h-10 { height: 2.5rem; }
+    .bg-white { background-color: #ffffff; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    .border-2 { border-width: 2px; }
+    .border-amber-600 { border-color: #d97706; }
+    .items-center { align-items: center; }
+    .justify-center { justify-content: center; }
+    .cursor-pointer { cursor: pointer; }
+    .transition-transform { transition-property: transform; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+    .text-xl { font-size: 1.25rem; }
+    .transform:active { transform: scale(0.95); }
 
-    /* SCORE & LEVEL DASHBOARD */
-    .dashboard-panel { display: none; position: absolute; top: 20px; right: 20px; z-index: 50; background: rgba(255, 255, 255, 0.95); border: 4px solid #38bdf8; border-radius: 20px; padding: 10px 20px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); align-items: center; gap: 15px; font-weight: bold; }
-    .level-badge { background: #0284c7; color: white; padding: 4px 14px; border-radius: 12px; font-size: 14px; text-transform: uppercase; }
-    .score-text { color: #0f172a; font-size: 16px; }
-    .score-val { color: #0284c7; font-size: 24px; font-weight: 900; }
+    /* SCORE & LEVEL DASHBOARD (Adaptive Anchoring) */
+    .dashboard-panel { display: none; position: absolute; top: 1rem; right: 1rem; z-index: 50; background: rgba(255, 255, 255, 0.95); border: 4px solid #38bdf8; border-radius: 20px; padding: 8px 16px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); align-items: center; gap: 12px; font-weight: bold; }
+    .level-badge { background: #0284c7; color: white; padding: 4px 14px; border-radius: 12px; font-size: 12px; text-transform: uppercase; }
+    .score-text { color: #0f172a; font-size: 14px; }
+    .score-val { color: #0284c7; font-size: 20px; font-weight: 900; }
 
     /* FALLING SNOWFLAKES ANIMATION */
     .snow-layer { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
@@ -93,24 +108,33 @@
     }
     .snow-layer.blizzard .snowflake { animation-duration: 1.5s !important; animation-timing-function: ease-in; }
 
-    /* MAIN GAME WORKSPACE INTERFACE */
-    .game-wrapper { position: absolute; inset: 0; z-index: 20; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 4vh; transition: opacity 0.4s; }
+    /* MAIN GAME WORKSPACE INTERFACE (Responsive Layout) */
+    .game-wrapper { position: absolute; inset: 0; z-index: 20; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2vh 2vw; transition: opacity 0.4s; }
     .game-wrapper.hidden { opacity: 0; pointer-events: none; display: none; }
-    .game-container { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 950px; }
+    .game-container { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 950px; gap: 1.5vh; }
     
-    .heading-box { background-color: #1e3a8a; border: 3px solid #ffffff; border-radius: 16px; padding: 6px 24px; margin-bottom: 2vh; box-shadow: 0 8px 16px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; }
-    .heading-text { font-size: 20px; font-weight: 700; color: #ffffff; }
-    .heading-glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #1e3a8a; font-size: 26px; font-weight: 800; background: #ffffff; padding: 0 12px; border-radius: 6px; }
+    .heading-box { background-color: #1e3a8a; border: 3px solid #ffffff; border-radius: 16px; padding: 6px 24px; box-shadow: 0 8px 16px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; }
+    .heading-text { font-size: clamp(14px, 2.5vw, 20px); font-weight: 700; color: #ffffff; }
+    .heading-glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #1e3a8a; font-size: clamp(18px, 3.5vw, 26px); font-weight: 800; background: #ffffff; padding: 0 12px; border-radius: 6px; }
     
-    .stage { display: flex; gap: 20px; align-items: stretch; justify-content: center; width: 100%; }
-    .whiteboard-frame { position: relative; padding: 12px; border-radius: 24px; background-color: #0284c7; box-shadow: 0 20px 40px rgba(0,0,0,0.25); border: 4px solid #ffffff; }
-    .canvas-container { border-radius: 16px; background: #ffffff; overflow: hidden; position: relative; }
-    canvas { display: block; cursor: crosshair; touch-action: none; }
+    .stage { display: flex; gap: 20px; align-items: center; justify-content: center; width: 100%; }
+    .whiteboard-frame { position: relative; padding: 12px; border-radius: 24px; background-color: #0284c7; box-shadow: 0 20px 40px rgba(0,0,0,0.25); border: 4px solid #ffffff; width: auto; max-width: 100%; }
+    
+    /* Responsive Viewport Tools & Clamp for Canvas Container */
+    .canvas-container { 
+      border-radius: 16px; 
+      background: #ffffff; 
+      overflow: hidden; 
+      position: relative; 
+      width: clamp(260px, 65vw, 400px); 
+      height: clamp(260px, 65vw, 400px); 
+    }
+    canvas { display: block; width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
     
     .panel { width: 110px; background-color: rgba(255, 255, 255, 0.95); border-radius: 24px; border: 3px solid #0284c7; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
     .panel-title { font-size: 11px; font-weight: 700; text-align: center; color: #0369a1; }
     
-    .eraser { width: 100%; height: 42px; border-radius: 12px; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #e2e8f0; box-shadow: 0 3px 0 #cbd5e1; }
+    .eraser { width: 100%; height: 42px; border-radius: 12px; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #e2e8f0; box-shadow: 0 3px 0 #cbd5e1; font-size: 20px; }
     .eraser.selected { border-color: #38bdf8; background: #e0f2fe; box-shadow: 0 0 12px #38bdf8; }
     
     .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
@@ -119,7 +143,7 @@
     .swatch { position: absolute; inset: 0; border-radius: 7px; }
     
     .action-container { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: auto; }
-    .btn { width: 100%; height: 44px; border-radius: 12px; border: none; color: white; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .btn { width: 100%; height: 44px; border-radius: 12px; border: none; color: white; font-weight: 700; font-size: 11px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2; }
     .btn-reset { background-color: #ef4444; box-shadow: 0 4px 0 #b91c1c; }
     .btn-next { background-color: #22c55e; box-shadow: 0 4px 0 #16a34a; }
     .btn:active { transform: translateY(3px); box-shadow: none; }
@@ -130,43 +154,100 @@
     .catch-arena { display: none; position: absolute; inset: 0; z-index: 30; overflow: hidden; }
     .falling-letter {
       position: absolute; font-family: 'Noto Sans Myanmar', sans-serif;
-      font-size: 30px; font-weight: 800; width: 65px; height: 65px;
+      font-size: clamp(20px, 4vw, 30px); font-weight: 800; width: clamp(50px, 8vw, 65px); height: clamp(50px, 8vw, 65px);
       background: white; border: 4px solid #38bdf8; border-radius: 50%;
       color: #1e3a8a; display: flex; align-items: center; justify-content: center;
       box-shadow: 0 8px 16px rgba(0,0,0,0.15); cursor: pointer;
     }
 
     /* TOAST / ALERTS */
-    .level-toast { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(15, 23, 42, 0.9); color: #38bdf8; padding: 15px 40px; border-radius: 20px; font-size: 28px; font-weight: 800; border: 3px solid #38bdf8; z-index: 80; box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: none; pointer-events: none; }
+    .level-toast { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(15, 23, 42, 0.9); color: #38bdf8; padding: 15px 40px; border-radius: 20px; font-size: clamp(20px, 5vw, 28px); font-weight: 800; border: 3px solid #38bdf8; z-index: 80; box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: none; pointer-events: none; }
 
     /* VICTORY SUCCESS MODAL */
     .victory-modal { display: none; position: absolute; inset: 0; background: rgba(15, 23, 42, 0.85); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
     .v-box { background: white; border: 6px solid #38bdf8; border-radius: 32px; padding: 40px; max-width: 450px; width: 100%; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); animation: scaleUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     @keyframes scaleUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .v-emoji { font-size: 64px; margin-bottom: 15px; }
-    .v-title { font-size: 28px; font-weight: 800; color: #0f172a; margin-bottom: 10px; }
-    .v-desc { font-size: 16px; color: #475569; line-height: 1.6; margin-bottom: 30px; }
-    .btn-home { background: #0284c7; color: white; width: 100%; padding: 15px; border-radius: 16px; border: none; font-size: 20px; font-weight: 800; cursor: pointer; box-shadow: 0 6px 0 #0369a1; }
+    .v-emoji { font-size: clamp(48px, 10vw, 64px); margin-bottom: 15px; }
+    .v-title { font-size: clamp(22px, 5vw, 28px); font-weight: 800; color: #0f172a; margin-bottom: 10px; }
+    .v-desc { font-size: clamp(14px, 3vw, 16px); color: #475569; line-height: 1.6; margin-bottom: 30px; }
+    .btn-home { font-family: 'Noto Sans Myanmar', sans-serif; background: #0284c7; color: white; width: 100%; padding: 15px; border-radius: 16px; border: none; font-size: clamp(16px, 4vw, 20px); font-weight: 800; cursor: pointer; box-shadow: 0 6px 0 #0369a1; }
     .btn-home:active { transform: translateY(3px); box-shadow: 0 3px 0 #0369a1; }
 
-    @media (max-width: 800px) {
-      .stage { flex-direction: column; align-items: center; }
-      .panel { width: 100%; max-width: 300px; flex-direction: row; }
-      .brush-grid { grid-template-columns: repeat(6, 1fr); }
-      .action-container { flex-direction: row; }
-      .winter-bg, .mountains, .snow-ground, .snowman, .snow-layer { display: none !important; }
+    /* ==========================================================================
+       MOBILE RESPONSIVE OVERRIDES (စုံလင်စွာ ကွက်တိဝင်စေရန် ပြင်ဆင်ချက်)
+       ========================================================================== */
+    @media (max-width: 768px), (orientation: portrait) {
+      .game-wrapper {
+        padding: 1vh 4vw;
+        justify-content: flex-start;
+      }
+      .game-container {
+        gap: 1vh;
+      }
+      .stage { 
+        flex-direction: column; 
+        align-items: center;
+        width: 100%;
+        gap: 1vh;
+      }
+      .whiteboard-frame {
+        width: 100%;
+        max-width: 96vw;
+        padding: 6px;
+      }
+      .canvas-container { 
+        width: 100%; 
+        height: clamp(45vh, 50vh, 55vh);
+        max-width: 100%;
+        max-height: none;
+      }
+      .panel { 
+        width: 100%; 
+        height: auto; 
+        max-width: 96vw; 
+        flex-direction: row; 
+        flex-wrap: wrap; 
+        justify-content: space-between; 
+        padding: 8px 10px; 
+        border-radius: 14px; 
+        align-items: center; 
+        margin-top: 5px;
+        gap: 5px;
+      }
+      .panel-title { display: none; }
+      .brush-grid { 
+        grid-template-columns: repeat(6, 1fr); 
+        gap: 6px; 
+        width: auto; 
+        max-height: none; 
+        overflow: visible; 
+        flex: 1; 
+        margin: 0 8px; 
+        padding-right: 0; 
+      }
+      .eraser { width: 36px; height: 36px; font-size: 16px; }
+      .action-container { flex-direction: row; width: auto; gap: 6px; margin-top: 0; }
+      .btn { width: 65px; height: 36px; font-size: 9px; padding: 2px; }
+      
+      /* Mobile Layout တွင် Background elements များ မပျောက်ပျက်စေဘဲ နေရာချောမွေ့အောင် ထိန်းညှိခြင်း */
+      .winter-bg, .mountains, .snow-ground, .snow-layer { display: block !important; }
+      .snowman {
+        transform: scale(0.65) translateX(-50%);
+        transform-origin: bottom left;
+        bottom: 8vh;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation Controls -->
-  <div class="top-nav">
-    <button class="nav-btn" onclick="goBack()">
-      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+  <!-- Top Navigation Controls - အစားထိုးထည့်သွင်းပြီး -->
+  <div class="absolute top-4 left-4 z-50 flex gap-2">
+    <button onclick="location.href='index.html?fromGame=true'" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပင်မစာမျက်နှာ">
+      🏠
     </button>
-    <button class="nav-btn" onclick="goHome()">
-      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    <button id="btnTopReset" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပြန်စမည်">
+      🔄
     </button>
   </div>
 
@@ -179,15 +260,14 @@
   <!-- Level Announcement Notice Toast -->
   <div class="level-toast" id="levelToast">LEVEL 1 START! ❄️</div>
 
-  <!-- Welcome/Intro Screen Section (မူရင်းဒီဇိုင်းအတိုင်း ပြန်တည်ဆောက်ထားသည်) -->
+  <!-- Welcome/Intro Screen Section -->
   <div class="intro-screen" id="welcomeIntro">
     <div class="intro-emojis">❄️ ⛄ 🏂 🏔️ 🌨️</div>
     <h1 class="intro-main-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</h1>
     <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "န" နှင်းတောကမ္ဘာလေးကို အရောင်ခြယ်ကြစို့</div>
     <p class="intro-description">
       ကလေးတို့ရေ... အေးချမ်းပြီး ပျော်စရာကောင်းတဲ့ နှင်းတောကမ္ဘာကြီးထဲမှာ ချစ်စရာ နှင်းလူသားလေး ရှိနေတယ်နော်။ 
-      အဲဒီမှာ မြန်မာအက္ခရာ "န" လေးပုံသဏ္ဌာန် နှင်းလမ်းကြောင်းကြီးလည်း ရှိနေတာပေါ့။ ကဲ... စုတ်တံလေးတွေကို ကိုင်ပြီး 
-      "န" လမ်းကြောင်းအတိုင်း ရောင်စုံဆေးလေးတွေ ခြယ်သပြီး နှင်းတောကမ္ဘာကြီးကို လှပအောင် အရောင်ခြယ်ကြရအောင်။
+      စုတ်တံလေးတွေကို ကိုင်ပြီး "န" လမ်းကြောင်းအတိုင်း ရောင်စုံဆေးလေးတွေခြယ်ကြရအောင်။
     </p>
     <button class="btn-start" onclick="startGame()">စတင်ကစားမည်</button>
   </div>
@@ -301,6 +381,19 @@
 
     function startGame() {
       document.getElementById('welcomeIntro').classList.add('hide');
+    }
+
+    function resizeCanvas() {
+      // Maintains internal high-quality coordinates regardless of CSS scale
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = 400;
+      canvas.height = 400;
+      redrawBackgroundText();
+    }
+
+    function redrawBackgroundText() {
+      canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><text x='50%' y='47%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='240' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,10'>န</text></svg>\")";
+      canvas.style.backgroundSize = "100% 100%";
     }
 
     function startDrawing(e) {
@@ -442,11 +535,14 @@
       };
 
       document.getElementById('btnReset').onclick = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById('btnTopReset').onclick = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
       document.getElementById('btnNext').onclick = () => startMiniGameMode();
+      
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
     }
 
     function goHome() { window.location.href = 'index.html?fromGame=true'; }
-    function goBack() { window.location.href = 'index.html'; }
 
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mouseup', stopDrawing);
@@ -454,9 +550,6 @@
     canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
-
-    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><text x='50%' y='47%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='240' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,10'>န</text></svg>\")";
-    canvas.style.backgroundSize = "100% 100%";
 
     initGameUI();
   </script>
