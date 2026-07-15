@@ -207,35 +207,72 @@
        MOBILE FLEXIBLE SCALING & LAYOUT ADJUSTMENT
        ========================================================================== */
     @media (max-width: 768px), (orientation: portrait) {
-      .workspace { flex-direction: column; justify-content: flex-start; padding: 1.5vh 2vw; gap: 1.5vh; }
-      .play-area { flex: none; height: auto; width: 100%; }
-      .canvas-container { width: 72vw; height: 72vw; max-width: 55vh; max-height: 55vh; }
-      .panel { width: 100%; height: auto; max-width: 55vh; flex-direction: row; flex-wrap: wrap; justify-content: space-between; padding: 10px 12px; border-radius: 16px; align-items: center; }
-      .panel-title { display: none; }
-      .brush-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; width: auto; max-height: none; overflow: visible; flex: 1; margin: 0 8px; padding-right: 0; }
-      .eraser { width: 38px; height: 38px; }
-      .action-container { flex-direction: row; width: auto; gap: 6px; margin-top: 0; }
-      .btn { width: 62px; height: 38px; font-size: 10px; }
-      
-      .green-pier-land {
-        width: 190px;
-        height: 25vh;
-        border-radius: 0 180px 0 0;
-        display: block !important;
-      }
-      .swaying-grass-group, .blue-fish-bucket { display: none !important; }
-      
-      .fisherman-container {
-        display: block !important;
-        transform: scale(0.65);
-        transform-origin: bottom left;
-        left: 5px;
-        bottom: 2vh;
-      }
-      .water-pond {
-        height: 22vh;
-      }
-    }
+  .workspace { 
+    flex-direction: column; 
+    justify-content: flex-start; 
+    padding: 1vh 4vw; /* ဘေးဘောင် အကွာအဝေးကို ကျဉ်းလိုက်ပါတယ် */
+    gap: 1vh; 
+  }
+  .play-area { 
+    flex: none; 
+    height: auto; 
+    width: 100%; 
+  }
+  
+  /* ၁။ Whiteboard ဘောင်ကို ဝိုင်းထားတဲ့အတိုင်း ဘယ်ညာ အပြည့်ချဲ့ခြင်း */
+  .whiteboard-frame {
+    width: 100%;
+    max-width: 96vw; /* ဖုန်းမျက်နှာပြင် ဘယ်ညာအပြည့်နီးပါး ဖြစ်သွားစေရန် */
+    padding: 6px; /* ဘောင်အနားသတ်ကို နည်းနည်းကျဉ်းပြီး နေရာချဲ့ပါတယ် */
+  }
+
+  /* ၂။ ၎င်းအထဲက Canvas Box ကို အောက်ခြေထိ ရှည်ထွက်သွားအောင် အမြင့်မြှင့်ခြင်း */
+  .canvas-container { 
+    width: 100%; 
+    height: clamp(55vh, 60vh, 65vh); /* အမြင့်ကို မျက်နှာပြင်ရဲ့ 60% ဝန်းကျင်ထိ အရှည်ကြီး ချဲ့လိုက်ပါတယ် */
+    max-width: 100%; 
+    max-height: none; 
+  }
+  
+  /* အောက်က Panel ခလုတ်တန်းကို Canvas အောက်မှာ သေသပ်အောင် ကပ်ထားခြင်း */
+  .panel { 
+    width: 100%; 
+    height: auto; 
+    max-width: 96vw; 
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    padding: 8px 10px; 
+    border-radius: 14px; 
+    align-items: center; 
+    margin-top: 5px;
+  }
+  .panel-title { display: none; }
+  .brush-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; width: auto; max-height: none; overflow: visible; flex: 1; margin: 0 8px; padding-right: 0; }
+  .eraser { width: 36px; height: 36px; }
+  .action-container { flex-direction: row; width: auto; gap: 6px; margin-top: 0; }
+  .btn { width: 62px; height: 36px; font-size: 10px; }
+  
+  /* Background သဘာဝအလှဆင်ကွက်များကို အောက်ခြေမှာပဲ ကွက်တိငြိမ်နေစေရန် */
+  .green-pier-land {
+    width: 160px;
+    height: 18vh;
+    border-radius: 0 160px 0 0;
+    display: block !important;
+  }
+  .swaying-grass-group, .blue-fish-bucket { display: none !important; }
+  
+  .fisherman-container {
+    display: block !important;
+    transform: scale(0.55); /* လူရုပ်လေးကို Canvas နဲ့ မညှိအောင် နည်းနည်းသေးပေးထားပါတယ် */
+    transform-origin: bottom left;
+    left: 2px;
+    bottom: 1vh;
+  }
+  .water-pond {
+    height: 16vh;
+  }
+}
 
     #effectsLayer { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
     .spark { position: absolute; font-size: 16px; animation: blast 1.2s ease-out forwards; }
