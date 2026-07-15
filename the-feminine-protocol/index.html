@@ -120,6 +120,53 @@
             opacity: 0.4; letter-spacing: 3px; pointer-events: none;
             z-index: 15;
         }
+
+        /* 🛠️ Bookmark ခလုတ်စတိုင်လ်များ */
+        .bookmark-controls {
+            position: fixed;
+            top: 15px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 15px;
+            z-index: 100;
+            pointer-events: none; /* စာအုပ်စာမျက်နှာလှန်တာကို မပိတ်ဆို့စေရန် */
+        }
+
+        .bookmark-btn {
+            pointer-events: auto; /* ခလုတ်ကို နှိပ်လို့ရအောင် လုပ်ဆောင်သည် */
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: bold;
+            border: 1px solid #4ed9e6;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(78, 217, 230, 0.2);
+        }
+
+        /* Bookmark မလုပ်ရသေးခင် စတိုင် */
+        #add-bookmark-btn {
+            background: rgba(0, 26, 29, 0.85);
+            color: #4ed9e6;
+        }
+
+        /* Bookmark လုပ်ပြီးသား စတိုင် */
+        #add-bookmark-btn.active {
+            background: #4ed9e6;
+            color: #000;
+            box-shadow: 0 0 15px rgba(78, 217, 230, 0.6);
+        }
+
+        /* Go to Bookmark ပြန်သွားရန် ခလုတ်စတိုင် */
+        #go-bookmark-btn {
+            background: rgba(78, 217, 230, 0.15);
+            color: #4ed9e6;
+            display: none; /* Bookmark မရှိရင် ဖျောက်ထားမည် */
+        }
     </style>
 </head>
 <body>
@@ -141,6 +188,12 @@
     </div>
 
     <div id="book-container">
+        <!-- Bookmark ခလုတ်များ ထားရှိရာ နေရာ -->
+        <div class="bookmark-controls">
+            <button id="go-bookmark-btn" class="bookmark-btn" onclick="goToBookmark()">📖 Go to Bookmark</button>
+            <button id="add-bookmark-btn" class="bookmark-btn" onclick="toggleBookmark()">🔖 Bookmark</button>
+        </div>
+
         <div id="flipbook-wrapper">
             <div id="flipbook"></div>
         </div>
@@ -190,6 +243,50 @@
             } else { alert("ACCESS DENIED: Code မှားယွင်းနေပါသည်။"); }
         }
 
+        // Bookmark အဖွင့်အပိတ် ပြုလုပ်ပေးမည့် Logic
+        function toggleBookmark() {
+            const currentPage = $("#flipbook").turn("page");
+            const savedBookmark = localStorage.getItem("tfp_bookmark_page");
+
+            if (savedBookmark && parseInt(savedBookmark) === currentPage) {
+                // လက်ရှိစာမျက်နှာကို Bookmark ဖြုတ်လိုက်သည်
+                localStorage.removeItem("tfp_bookmark_page");
+                updateBookmarkButtons(currentPage);
+            } else {
+                // လက်ရှိစာမျက်နှာသစ်ကို Bookmark မှတ်သားသည်
+                localStorage.setItem("tfp_bookmark_page", currentPage);
+                updateBookmarkButtons(currentPage);
+            }
+        }
+
+        // Bookmark ခလုတ်များ၏ ပြသမှုကို update လုပ်ပေးမည့် Logic
+        function updateBookmarkButtons(currentPage) {
+            const savedBookmark = localStorage.getItem("tfp_bookmark_page");
+            
+            // ၁။ Bookmark လုပ်ပြီးသား စာမျက်နှာဖြစ်ပါက ခလုတ်အရောင်ကို active စတိုင်ပြောင်းမည်
+            if (savedBookmark && parseInt(savedBookmark) === currentPage) {
+                $("#add-bookmark-btn").addClass("active").html("📌 Bookmarked");
+            } else {
+                $("#add-bookmark-btn").removeClass("active").html("🔖 Bookmark");
+            }
+
+            // ၂။ သိမ်းထားသော Bookmark ရှိပါက "Go to Bookmark" ခလုတ်ကို ဖော်ပြပေးမည်
+            if (savedBookmark) {
+                $("#go-bookmark-btn").fadeIn(200);
+            } else {
+                $("#go-bookmark-btn").fadeOut(200);
+            }
+        }
+
+        // Bookmark မှတ်ထားသော စာမျက်နှာသို့ တိုက်ရိုက်သွားရန်
+        function goToBookmark() {
+            const savedBookmark = localStorage.getItem("tfp_bookmark_page");
+            if (savedBookmark) {
+                isQuizLocked = false; // Page သွားနိုင်ရန် ခေတ္တ unlock လုပ်ပေးသည်
+                $("#flipbook").turn("page", parseInt(savedBookmark));
+            }
+        }
+
         function loadAndInit() {
             const flipbook = $("#flipbook");
             if (flipbook.children().length > 0) return; 
@@ -224,16 +321,19 @@
                             
                             // လက်ရှိစာမျက်နှာက Quiz ဖြစ်ခဲ့လျှင် Next ကို Lock ချမည်
                             isQuizLocked = quizPages.includes(page);
+
+                            // စာမျက်နှာရောက်တိုင်း Bookmark ခလုတ်တွေရဲ့ အခြေအနေကို update လုပ်ပေးရန်
+                            updateBookmarkButtons(page);
                         }
                     }
                 });
 
                 const savedPage = localStorage.getItem("tfp_last_page");
-                if (savedPage) {
-                    flipbook.turn("page", parseInt(savedPage));
-                } else {
-                    flipbook.turn("page", 1);
-                }
+                const initialPage = savedPage ? parseInt(savedPage) : 1;
+                flipbook.turn("page", initialPage);
+
+                // စာအုပ် စဖွင့်ဖွင့်ချင်း Bookmark ခလုတ်များ အခြေအနေ ပြရန်
+                updateBookmarkButtons(initialPage);
             }, 100);
         }
 
