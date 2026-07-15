@@ -232,24 +232,20 @@
             <!-- STAGE 2: PUZZLE FINDING SCREEN LAYER (WITH 3 ROUNDS) -->
             <div class="game-stage-screen flex flex-col items-center justify-start p-2 w-full h-full relative" id="stage2Screen">
               
-              <!-- [ဘောင်ရဲ့အပြင်ဘက် အပေါ်ပိုင်း] ခေါင်းစဉ်နှင့် စာသားများ -->
-              <div class="w-full text-center pt-2 pb-1 shrink-0 flex flex-col items-center gap-1">
-                <h2 class="text-xl font-black text-amber-600 tracking-wide drop-shadow-sm" id="stage2Title">အဆင့် (၂) - "တ" စာလုံးရှာဖွေစို့ (ပွဲစဉ် ၁/၃) 🧪</h2>
-                <p class="text-xs font-bold text-slate-500">ဓာတ်ခွဲခန်းဗူးတွေထဲက "တ" စာလုံးပါတဲ့ဗူးတွေကို နှိပ်ပြီး ဖောက်လိုက်ပါ!</p>
+              <!-- [အကွက်ရဲ့အပြင်ဘက် အပေါ်ဆုံး] စာသားများနှင့် ခေါင်းစဉ်များ သီးသန့်နေမည့်နေရာ -->
+              <div id="stage2TextWrapper" class="w-full text-center pt-2 pb-1 shrink-0 flex flex-col items-center gap-1">
+                <!-- JavaScript မှ ခေါင်းစဉ်နှင့် စာသားများကို ဤနေရာပြင်ပသို့ ထုတ်ပေးမည် -->
+              </div>
+
+              <!-- [Whiteboard အကွက်ပြားကြီး] သင်လိုချင်တဲ့အတိုင်း အောက်ခြေအထိ ကြီးမားကျယ်ပြန့်သွားမည့် အညိုရောင်ဘောင်ကြီး -->
+              <div class="w-[92%] h-[60vh] max-w-sm bg-[#fffdf9] border-4 border-[#7A4B1D] rounded-3xl shadow-xl my-auto p-4 flex items-center justify-center relative overflow-hidden">
                 
-                <div class="text-xs font-black text-slate-700 bg-amber-100/90 px-4 py-1 rounded-full border border-amber-300 shadow-sm mt-1">
-                  ကျန်ရှိသော "တ" ဗူးအရေအတွက်: <span id="targetCount" class="text-pink-600 font-black text-sm mx-1">3</span> ဗူး
-                </div>
-              </div>
-
-              <!-- [ဤနေရာတွင် အညိုရောင် Game Board ကို သီးသန့်ဖန်တီးပြီး အောက်ခြေအထိ ချဲ့ထားသည်] -->
-              <div class="w-full max-w-sm flex-1 bg-[#fffdf9] border-4 border-[#7A4B1D] rounded-3xl shadow-xl my-2 p-4 flex items-center justify-center relative min-h-[400px]">
-                <!-- ဓာတ်ခွဲခန်းဗူးများကိုသာ ဤဘောင်အကျယ်ကြီးထဲတွင် ပြသမည် -->
+                <!-- ဓာတ်ခွဲခန်းဗူးများသာ ဤ Whiteboard ဘောင်အကြီးကြီးထဲတွင် ရှင်းရှင်းလင်းလင်း သန့်သန့်လေး ရှိနေမည် -->
                 <div class="puzzle-grid grid grid-cols-3 gap-6 justify-items-center items-center w-full" id="puzzleGrid">
-                  <!-- JavaScript မှ ဗူးများကို ဤနေရာတွင်သာ လာထည့်ပေးမည် -->
+                  <!-- ဗူးများကိုသာ ဤနေရာတွင် လာထည့်မည် -->
                 </div>
-              </div>
 
+              </div>
             </div>
 
               
@@ -420,12 +416,21 @@
 
     function setupLevel2Round() {
       const grid = document.getElementById('puzzleGrid');
-      grid.innerHTML = ''; 
+      const textWrapper = document.getElementById('stage2TextWrapper');
       
-      document.getElementById('stage2Title').innerHTML = `အဆင့် (၂) - "တ" စာလုံးရှာဖွေစို့ (ပွဲစဉ် ${level2Round}/၃) 🧪`;
+      grid.innerHTML = ''; 
+      textWrapper.innerHTML = ''; 
+      
+      // ခေါင်းစဉ်နှင့် စာသားများကို Whiteboard အပြင်ဘက်သို့ ကွက်တိထုတ်ထားခြင်း
+      textWrapper.innerHTML = `
+        <h2 class="text-xl font-black text-amber-600 tracking-wide drop-shadow-sm" id="stage2Title">အဆင့် (၂) - "တ" စာလုံးရှာဖွေစို့ (ပွဲစဉ် ${level2Round}/၃) 🧪</h2>
+        <p class="text-xs font-bold text-slate-500">ဓာတ်ခွဲခန်းဗူးတွေထဲက "တ" စာလုံးပါတဲ့ဗူးတွေကို နှိပ်ပြီး ဖောက်လိုက်ပါ!</p>
+        <div class="text-xs font-black text-slate-700 bg-amber-100/90 px-4 py-1 rounded-full border border-amber-300 shadow-sm mt-1">
+          ကျန်ရှိသော "တ" ဗူးအရေအတွက်: <span id="targetCount" class="text-pink-600 font-black text-sm mx-1">${level2Round === 1 ? 3 : (level2Round === 2 ? 4 : 5)}</span> ဗူး
+        </div>
+      `;
 
       let itemsData = [];
-
       if (level2Round === 1) {
         remainingFlasksTarget = 3;
         itemsData = [
@@ -461,20 +466,30 @@
         ];
       }
 
-      document.getElementById('targetCount').textContent = remainingFlasksTarget;
       itemsData.sort(() => Math.random() - 0.5);
 
       itemsData.forEach(item => {
         const f = document.createElement('div');
-        f.className = `puzzle-flask ${item.style}`;
+        // ဗူးအရွယ်အစားကို ပိုကြီးပြီး နှိပ်ရလွယ်အောင် Touch Area ညှိခြင်း (w-20 h-24)
+        f.className = `puzzle-flask ${item.style} w-20 h-24 flex items-center justify-center relative transition-all duration-200 cursor-pointer transform active:scale-90 select-none`;
         f.setAttribute('data-letter', item.letter);
+        
+        // ဗူးထဲကစာလုံးကို အလယ်တည့်တည့်တွင် ကလေးဖတ်ရလွယ်အောင် ကြီးကြီးပြခြင်း
+        f.innerHTML = `<span class="text-2xl font-black text-slate-800 drop-shadow-sm pointer-events-none">${item.letter}</span>`;
         
         f.onclick = (e) => {
           if (item.target) {
+            // ၁။ မှန်ကန်သော စာလုံးကို နှိပ်မိသည့်အခါ - ပေါက်ကွဲထွက်သွားမည့် Animation Effect
             const r = f.getBoundingClientRect();
-            createSparks(r.left + 32, r.top + 30);
-            f.style.visibility = 'hidden';
+            createSparks(r.left + 40, r.top + 45); // Spark Effect စင်တာမြှင့်တင်ခြင်း
+            
+            f.style.transform = 'scale(0)';
+            f.style.opacity = '0';
             f.onclick = null;
+            
+            setTimeout(() => {
+              f.style.visibility = 'hidden';
+            }, 200);
             
             remainingFlasksTarget--;
             document.getElementById('targetCount').textContent = remainingFlasksTarget;
@@ -488,8 +503,23 @@
               }
             }
           } else {
-            f.style.animation = 'none';
-            setTimeout(() => f.style.animation = 'flameDance 0.1s 3 alternate linear', 10);
+            // ၂။ မှားယွင်းသော စာလုံးကို နှိပ်မိသည့်အခါ - တုန်ခါပြီး ❌ သင်္ကေတ ပြသခြင်း
+            if (f.classList.contains('is-shaking')) return;
+            
+            f.classList.add('is-shaking');
+            f.style.animation = 'flameDance 0.1s 4 alternate linear';
+            
+            // ❌ Badge လေး ခေတ္တပေါ်လာအောင် လုပ်ဆောင်ခြင်း
+            const wrongBadge = document.createElement('div');
+            wrongBadge.className = 'absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-black shadow animate-ping-once';
+            wrongBadge.innerText = '❌';
+            f.appendChild(wrongBadge);
+            
+            setTimeout(() => {
+              f.style.animation = 'none';
+              f.classList.remove('is-shaking');
+              if (wrongBadge.parentNode) f.removeChild(wrongBadge);
+            }, 400);
           }
         };
         grid.appendChild(f);
