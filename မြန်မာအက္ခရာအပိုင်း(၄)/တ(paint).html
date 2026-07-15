@@ -229,46 +229,56 @@
             <!-- STAGE 1: CANVAS PAINTING WORKSPACE -->
             <canvas id="paintCanvas" width="700" height="800"></canvas>
 
-            <!-- STAGE 2: PUZZLE FINDING SCREEN LAYER (WITH 3 ROUNDS) -->
-            <div class="game-stage-screen flex flex-col items-center justify-between p-2 w-full h-full" id="stage2Screen">
+            <<!-- STAGE 2: PUZZLE FINDING SCREEN LAYER (WITH 3 ROUNDS) -->
+            <div class="game-stage-screen flex flex-col items-center justify-start p-2 w-full h-full relative" id="stage2Screen">
               
-              <!-- ၁။ ခေါင်းစဉ်စာသားကို Game Area (Whiteboard) ရဲ့ အပြင်ဘက် အပေါ်ဆုံးသို့ ရွှေ့ထားသည် -->
-              <div class="w-full text-center py-2 shrink-0">
+             
+              <div class="w-full text-center pt-2 pb-1 shrink-0 flex flex-col items-center gap-1">
                 <h2 class="text-xl font-black text-amber-600 tracking-wide drop-shadow-sm" id="stage2Title">အဆင့် (၂) - "တ" စာလုံးရှာဖွေစို့ (ပွဲစဉ် ၁/၃) 🧪</h2>
-                <p class="text-xs font-bold text-slate-500 mt-0.5">ဓာတ်ခွဲခန်းဗူးတွေထဲက "တ" စာလုံးပါတဲ့ဗူးတွေကို နှိပ်ပြီး ဖောက်လိုက်ပါ!</p>
+                <p class="text-xs font-bold text-slate-500">ဓာတ်ခွဲခန်းဗူးတွေထဲက "တ" စာလုံးပါတဲ့ဗူးတွေကို နှိပ်ပြီး ဖောက်လိုက်ပါ!</p>
+                
+               
+                <div class="text-xs font-black text-slate-700 bg-amber-100/90 px-4 py-1 rounded-full border border-amber-300 shadow-sm mt-1">
+                  ကျန်ရှိသော "တ" ဗူးအရေအတွက်: <span id="targetCount" class="text-pink-600 font-black text-sm mx-1">3</span> ဗူး
+                </div>
               </div>
 
-              <!-- ၂။ Game Area (Whiteboard Frame) ထဲတွင် ဓာတ်ခွဲခန်းဗူးများသက်သက်သာ သန့်သန့်လေး ပြသမည် -->
-              <div class="w-full max-w-sm flex-1 flex items-center justify-center my-auto">
-                <div class="puzzle-grid grid grid-cols-3 gap-4 justify-items-center items-center w-full px-4 py-2" id="puzzleGrid">
-                  <!-- JavaScript မှ ဗူးများကို ဤနေရာတွင်သာ သန့်သန့်လေး လာထည့်ပေးမည် ဖြစ်သည် -->
-                </div>
-              </div>
               
-              <!-- ၃။ ကျန်ရှိသောဗူးအရေအတွက်ပြဘောင်ကို Game Area ရဲ့ အပြင်ဘက် အောက်ဆုံးသို့ ရွှေ့ထားသည် -->
-              <div class="w-full flex justify-center pb-4 shrink-0">
-                <div class="text-sm font-black text-slate-700 bg-gradient-to-r from-amber-100 to-orange-100 px-6 py-2 rounded-full border border-amber-300 shadow-sm animate-pulse">
-                  ကျန်ရှိသော "တ" ဗူးအရေအတွက်: <span id="targetCount" class="text-pink-600 font-black text-xl mx-1">3</span> ဗူး
+              <div class="w-full max-w-sm flex-1 bg-[#fffdf9] border-4 border-[#7A4B1D] rounded-3xl shadow-xl my-2 p-4 flex items-center justify-center relative overflow-hidden min-h-[380px]">
+                
+                
+                <div class="puzzle-grid grid grid-cols-3 gap-6 justify-items-center items-center w-full" id="puzzleGrid">
+                  <!-- JavaScript မှ ဗူးများကို ဤနေရာတွင် Dynamic စနစ်ဖြင့် လာထည့်ပေးမည် -->
                 </div>
+
               </div>
 
             </div>
 
-            <!-- STAGE 3: MIXING CELEBRATION LAYER -->
-            <div class="game-stage-screen flex flex-col items-center justify-between p-2 w-full h-full" id="stage3Screen" style="background: linear-gradient(to bottom, #faf5ff, #f3e8ff);">
-              
-              <!-- ခေါင်းစဉ်ကို အပြင်ဘက် အပေါ်သို့ ရွှေ့သည် -->
-              <div class="w-full text-center py-2 shrink-0">
-                <h2 class="text-xl font-black text-purple-600 tracking-wide">အဆင့် (၃) - မှော်ဓာတ်ရည် ဖော်စပ်အောင်မြင်ပြီ! 🔮</h2>
-                <p class="text-xs font-bold text-slate-500 mt-0.5">မျောတက်လာတဲ့ "တ" စာလုံးမှော်ပူဖောင်းတွေကို ဖောက်ပြီး သိပ္ပံဓာတ်ရည် ပြီးအောင်လုပ်ရအောင်!</p>
-              </div>
+            </div>
 
-              <!-- Game Area အကွက်ထဲတွင် ပူဖောင်းနှင့် အိုးပဲ ထားသည် -->
-              <div class="w-full max-w-sm flex-1 flex items-center justify-center my-auto">
-                <div class="relative w-full h-64 bg-purple-950/5 rounded-3xl border-2 border-dashed border-purple-300 overflow-hidden flex items-end justify-center" id="bubbleArea">
-                  <div class="mixing-pot shadow-lg mb-4"></div>
+            <!-- STAGE 3: MIXING CELEBRATION LAYER -->
+            <div class="game-stage-screen flex flex-col items-center justify-start p-2 w-full h-full relative" id="stage3Screen" style="background: linear-gradient(to bottom, #faf5ff, #f3e8ff);">
+              
+             
+              <div class="w-full text-center pt-2 pb-1 shrink-0 flex flex-col items-center gap-1">
+                <h2 class="text-xl font-black text-purple-600 tracking-wide">အဆင့် (၃) - မှော်ဓာတ်ရည် ဖော်စပ်အောင်မြင်ပြီ! 🔮</h2>
+                <p class="text-xs font-bold text-slate-500">မျောတက်လာတဲ့ "တ" စာလုံးမှော်ပူဖောင်းတွေကို ဖောက်ပြီး သိပ္ပံဓာတ်ရည် ပြီးအောင်လုပ်ရအောင်!</p>
+                
+                <div class="text-xs font-black text-purple-700 bg-purple-100/90 px-4 py-1 rounded-full border border-purple-300 shadow-sm mt-1 animate-bounce">
+                  ကျန်ရှိသော မှော်ပူဖောင်း: <span id="bubbleCount" class="text-purple-600 text-sm font-black mx-1">5</span> ခု
                 </div>
               </div>
+
+              
+              <div class="w-full max-w-sm flex-1 bg-[#fffdf9] border-4 border-[#7A4B1D] rounded-3xl shadow-xl my-2 p-4 flex items-end justify-center relative overflow-hidden min-h-[380px]" id="bubbleArea">
+                
+               
+                <div class="mixing-pot shadow-lg mb-6 mx-auto"></div>
+
+              </div>
+
+            </div>
               
               <!-- အမှတ်ပြစာသားကို အပြင်ဘက် အောက်သို့ ရွှေ့သည် -->
               <div class="w-full flex justify-center pb-4 shrink-0">
