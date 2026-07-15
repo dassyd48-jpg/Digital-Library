@@ -120,7 +120,7 @@
         
         #flipbook .page { background-color: #000; background-size: 100% 100%; position: relative; }
         
-        /* 🛠️ Quiz Styles (Fixed မှ Absolute သို့ ပြောင်းလဲပြင်ဆင်ထားသည်) */
+        /* 🛠️ Quiz Styles */
         #quiz-overlay { 
             display: none; 
             position: absolute; 
@@ -182,7 +182,6 @@
 
     <script>
     const totalPages = 84; 
-    // 🛠️ Array ထဲမှ 2 ကို ဖယ်ထုတ်ထားပြီး ကျန်သော Interactive Tests များကိုသာ ချန်ထားသည်
     const quizPages = [12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80];
     let isQuizLocked = false;
     const myPassword = "DC@MIRROR";
@@ -210,7 +209,6 @@
         return { w, h };
     }
 
-    // 🛠️ Unlock ဖြစ်သည်နှင့် စာအုပ်ကိုဆောက်ပြီး Page 2 သို့ တိုက်ရိုက်လှန်ပေးမည့် စနစ်သစ်
     function unlock() {
         if(document.getElementById("pass").value === myPassword) {
             localStorage.setItem("dc_unlocked", "true");
@@ -239,7 +237,6 @@
         }
     }
 
-    // 🛠️ Quiz Content ကို စာအုပ်၏ Page 2 'div' ထဲသို့ ရွှေ့ပြောင်းထည့်သွင်းပေးသည့် စနစ်
     function startIntroQuiz() {
         const data = introQuiz["2"];
         if(!data) { initBook(); return; }
@@ -258,15 +255,28 @@
         }
     }
 
+    // 🛠️ BUG FIXED: အဖြေရမှတ်များတူနေပါက 'Hybrid (THE HYBRID SOUL)' ရလဒ်ကို တိကျမှန်ကန်စွာ တွက်ချက်ဖော်ပြပေးမည့် စနစ်
     function renderIntroScenario(data, index) {
         let introScores = window.introScores || { A: 0, B: 0, C: 0 };
         window.introScores = introScores;
+        
         if (index >= data.scenarios.length) {
-            let resultKey = Object.keys(introScores).reduce((a, b) => introScores[a] > introScores[b] ? a : b);
-            $("#test-question").html(`<div style="color:var(--gold); margin-bottom:10px; font-weight:bold;">Analysis Result:</div><div style="font-size:13px;">${data.results[resultKey]}</div>`);
+            let maxScore = Math.max(introScores.A, introScores.B, introScores.C);
+            let tiedKeys = Object.keys(introScores).filter(key => introScores[key] === maxScore);
+            
+            let resultHtml = "";
+            if (tiedKeys.length > 1) {
+                resultHtml = data.results.Hybrid;
+            } else {
+                let resultKey = tiedKeys[0];
+                resultHtml = data.results[resultKey];
+            }
+
+            $("#test-question").html(`<div style="color:var(--gold); margin-bottom:10px; font-weight:bold;">Analysis Result:</div><div style="font-size:13px; line-height:1.6;">${resultHtml}</div>`);
             $("#options-container").html('<button class="btn-continue" onclick="initBook()">စာအုပ်ကို စတင်ဖတ်ရှုမည်</button>');
             return;
         }
+        
         const sc = data.scenarios[index];
         $("#test-question").text(sc.q);
         $("#options-container").empty();
@@ -280,10 +290,11 @@
         });
     }
 
+    // 🛠️ BUG FIXED: Intro Quiz ပြီးသွားလျှင် `#quiz-overlay` ကို Page 2 ထဲမှ ဆွဲထုတ်ပြီး `<body>` အောက်သို့ ပြန်ပို့ပေးရန် (ဒါမှ Page 12 ကောင်းကောင်း ပြန်သုံးနိုင်မည်)
     function initBook() {
         requestFullscreenMode();
         $("#quiz-overlay").fadeOut(400, function() {
-            // Intro Quiz ပြီးသွားလျှင် စာအုပ် နောက်တစ်မျက်နှာသို့ အလိုအလျောက် ရွှေ့ပေးမည်
+            $("body").append($("#quiz-overlay"));
             $("#flipbook").turn("next");
         });
         document.getElementById("bgm-dark").play().catch(()=>{});
@@ -319,7 +330,6 @@
                     if (quizPages.includes(page)) {
                         triggerPsychologyTest(page);
                     }
-                    // 🛠️ အကယ်၍ User သည် စာမျက်နှာလှန်ရင်း Page 2 သို့ ရောက်လာပါက Quiz ကို Inline နှိုးပေးမည့် စနစ်
                     if (page === 2) {
                         startIntroQuiz();
                     }
@@ -345,7 +355,6 @@
         if (!test) return;
         
         isQuizLocked = true;
-        // တခြားသော Quiz overlay များကို Body အောက်သို့ ပြန်ပို့ပြီး Fixed Overlay အဖြစ် ပြသခြင်း
         $("body").append($("#quiz-overlay"));
         $("#quiz-overlay").css({"position": "fixed", "width": "100%", "height": "100%"});
         
