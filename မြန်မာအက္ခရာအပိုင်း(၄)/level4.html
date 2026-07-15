@@ -65,20 +65,23 @@
                 🏠
             </button>
 
-            <div id="modeBadge" class="px-5 py-1.5 bg-amber-500 text-slate-950 font-black rounded-full text-xs shadow-[0_3px_0_#b45309] tracking-wide mb-3 uppercase">
+            <div id="modeBadge" class="px-5 py-1.5 bg-amber-500 text-slate-950 font-black rounded-full text-xs shadow-[0_3px_0_#b45309] tracking-wide mb-2 uppercase mx-auto w-fit">
                 အဆင့် (၁) - နားထောင်စို့ 🔊
             </div>
             
-            <h2 id="instructionTitle" class="text-base sm:text-lg font-black text-emerald-300 drop-shadow mb-20">
+            <!-- mb-20 ကို mb-2 လို့ လျှော့ချပြီး ကြယ်တွေနဲ့ ပိုနီးကပ်သွားအောင် လုပ်လိုက်ပါတယ် -->
+            <h2 id="instructionTitle" class="text-base sm:text-lg font-black text-emerald-300 drop-shadow mb-2 text-center">
                 စာလုံးလေးကို နှိပ်ပြီး အသံနားထောင်မယ် 🎧
             </h2>
 
-            <div class="flex gap-2.5 my-2 text-3xl justify-center" id="starsRow">
+            <!-- mb-4 ထည့်ပြီး အောက်က ကတ်ပြားနဲ့ အကွာအဝေးကို အံဝင်ခွင်ကျ ဖြစ်စေပါတယ် -->
+            <div class="flex gap-2.5 my-1 text-3xl justify-center mb-4" id="starsRow">
                 <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
             </div>
         </div>
 
-        <div class="w-full flex justify-center my-auto">
+        <!-- my-auto နေရာမှာ mt-2 mb-4 ပြောင်းပြီး တစ်ခုလုံးကို အပေါ်သို့ တွန်းတင်လိုက်ပါတယ် -->
+        <div class="w-full flex justify-center mt-2 mb-4">
             <div class="mushroom-board w-[320px] h-[320px] rounded-[36px] flex items-center justify-center overflow-hidden">
                 <div id="giantText" class="text-[170px] font-bold text-rose-500 title-font drop-shadow-[0_4px_0_#f1f5f9] select-none pointer-events-none z-10 flex items-center justify-center">
                     
@@ -87,7 +90,8 @@
             </div>
         </div>
 
-        <div class="w-full max-w-md flex flex-col items-center gap-5 mb-2">
+        <!-- gap-5 ကို gap-3 လို့ လျှော့ချပြီး ခလုတ်တွေကို ပိုမိုစုစည်းသွားစေပါတယ် -->
+        <div class="w-full max-w-md flex flex-col items-center gap-3 mb-2">
             
             <div class="flex items-center gap-4 h-14 w-full px-6">
                 <button id="clearBtn" onclick="clearCanvas()" class="btn-pop-3d px-5 h-full bg-rose-500 text-white font-black text-sm rounded-2xl border-2 border-slate-900 shadow-[0_4px_0_#0f172a] cursor-pointer">
