@@ -326,6 +326,334 @@
             ctx.translate(x, y);
             ctx.rotate(player.angle);
 
+            // Shadow on ground/clouds below<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dassy's Alphabet Quest - Mystic Pegasus Islands</title>
+    <!-- Tailwind CSS for sleek UI overlay -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght=400;700;900&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #1e1b4b; /* Deep Indigo Sky */
+            font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .burmese-font {
+            font-family: 'Pyidaungsu', 'Myanmar3', 'Yunghkio', sans-serif;
+        }
+
+        /* Responsive UI Scaling */
+        #hud {
+            top: clamp(1rem, 2vh, 1.5rem);
+            left: clamp(7rem, 15vw, 9rem); 
+            right: clamp(1rem, 2vw, 1.5rem);
+            max-width: clamp(280px, 45vw, 450px);
+        }
+
+        #hp-panel {
+            top: clamp(1rem, 2vh, 1.5rem);
+            right: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .adaptive-panel {
+            width: clamp(280px, 90vw, 420px);
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            border-radius: clamp(1.5rem, 5vw, 3rem);
+        }
+
+        @media (max-width: 768px) {
+            #hud {
+                left: 6.5rem;
+                top: 0.75rem;
+            }
+            #hp-panel {
+                top: auto;
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .adaptive-panel {
+                transform: scale(0.9);
+            }
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- TOP NAVIGATION BUTTONS (HOME & RESET) -->
+    <div class="absolute top-4 left-4 z-50 flex gap-2 pointer-events-auto">
+      <button onclick="location.href='index.html?fromGame=true'" class="w-10 h-10 bg-indigo-950 text-white rounded-xl shadow-md border-2 border-purple-500 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl animate-pulse" title="ပင်မစာမျက်နှာ">
+        🏠
+      </button>
+      <button id="btnTopReset" class="w-10 h-10 bg-indigo-950 text-white rounded-xl shadow-md border-2 border-purple-500 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပြန်စမည်">
+        🔄
+      </button>
+    </div>
+
+    <!-- HUD / Learning Progress & Score Top Overlay -->
+    <div id="hud" class="absolute pointer-events-none z-30 flex flex-col space-y-2">
+        <!-- Learning Progress Bar -->
+        <div class="flex items-center space-x-3 bg-indigo-950/90 backdrop-blur-md p-3 rounded-2xl border border-purple-500/20 shadow-lg">
+            <span class="text-[10px] sm:text-xs font-black text-purple-400 tracking-wider uppercase burmese-font">တိုးတက်မှု</span>
+            <div class="flex-1 bg-black/40 h-3 sm:h-4 rounded-full overflow-hidden p-0.5 border border-white/5">
+                <div id="xp-bar" class="bg-gradient-to-r from-purple-400 via-pink-400 to-fuchsia-400 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <span id="level-display" class="bg-indigo-600 text-white text-[9px] sm:text-[10px] font-black px-2 sm:px-3 py-1 rounded-full uppercase tracking-widest burmese-font">အဆင့် ၁</span>
+        </div>
+        
+        <!-- Score Counter & Active Target Letter Display -->
+        <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2 bg-indigo-950/90 backdrop-blur-md px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl border border-purple-500/20 shadow-lg">
+                <span class="text-lg sm:text-xl">⭐</span>
+                <span id="cash-display" class="text-white font-black tracking-widest text-xs sm:text-sm">0</span>
+            </div>
+            <!-- Dynamic Educational Goal Frame -->
+            <div class="flex items-center space-x-2 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 backdrop-blur-md px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl border border-purple-500/40 shadow-lg animate-pulse">
+                <span class="text-[9px] sm:text-xs font-black text-purple-400 uppercase tracking-wider burmese-font">ပစ်မှတ်:</span>
+                <span id="target-letter-display" class="burmese-font text-xl sm:text-2xl font-bold text-purple-300">မ</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Health Indicator -->
+    <div id="hp-panel" class="absolute z-30 pointer-events-none flex items-center space-x-2 bg-indigo-950/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-purple-500/20 shadow-lg">
+        <span class="text-base sm:text-lg">💖</span>
+        <span id="hp-display" class="text-purple-400 font-black tracking-wider text-xs sm:text-sm">100 / 100</span>
+    </div>
+
+    <!-- Upgrade / Level Up Modal -->
+    <div id="upgrade-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-[100] flex items-center justify-center p-6 transition-all duration-300">
+        <div class="bg-[#1e1b4b] border-2 border-purple-500/20 adaptive-panel text-center shadow-[0_0_100px_rgba(168,85,247,0.15)] scale-95 transition-transform">
+            <div class="relative mb-6">
+                <div class="text-3xl sm:text-4xl">🦄✨🌤️</div>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-purple-400 tracking-wider mb-2 uppercase burmese-font">မြင်းပျံကြီး အစွမ်းမြှင့်ရန်!</h2>
+            <p class="text-purple-200 text-[10px] sm:text-xs tracking-widest mb-6 uppercase burmese-font">ပိုမိုသန်မာလာစေရန် စကြဝဠာအစွမ်းတစ်ခုရွေးချယ်ပါ</p>
+            
+            <div id="upgrade-options" class="space-y-3 sm:space-y-4">
+                <!-- Filled dynamically via javascript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Canvas -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Start / GameOver Screens -->
+    <div id="overlay-screen" class="absolute inset-0 bg-indigo-950/95 backdrop-blur-md z-[90] flex flex-col items-center justify-center text-center p-6">
+        <h1 class="text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-fuchsia-300 tracking-widest mb-2 uppercase drop-shadow-[0_0_30px_rgba(168,85,247,0.3)] burmese-font">မှော်ဝင်မြင်းပျံကျွန်းစု</h1>
+        <p class="text-purple-400 text-[9px] sm:text-[10px] uppercase font-black tracking-[0.3em] mb-12 burmese-font">"မ"အက္ခရာ စွန့်စားခန်းဂိမ်း</p>
+        
+        <div id="game-stats" class="hidden bg-white/5 border border-white/5 rounded-3xl p-5 mb-8 max-w-xs w-full text-left space-y-3 font-sans">
+            <div class="flex justify-between"><span class="text-indigo-200 burmese-font">မှန်ကန်စွာ ပစ်ခတ်နိုင်မှု</span><span id="stat-coins" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-indigo-200 burmese-font">မှားယွင်းမှု ရှောင်ရှားနိုင်မှု</span><span id="stat-kills" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-indigo-200 burmese-font">ကောင်းကင်သို့ ပျံသန်းမှုအဆင့်</span><span id="stat-level" class="text-purple-400 font-bold">အဆင့် ၁</span></div>
+        </div>
+
+        <button id="start-btn" class="px-12 py-5 sm:px-16 sm:py-6 bg-purple-600 hover:bg-purple-500 text-white font-black text-xs sm:text-sm uppercase tracking-[0.2em] rounded-full transition-all shadow-[0_20px_50px_rgba(168,85,247,0.3)] border-b-4 border-purple-800 active:scale-95 pointer-events-auto burmese-font">စတင်ပျံသန်းမည်</button>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'shoot') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(500, now);
+                osc.frequency.exponentialRampToValueAtTime(250, now + 0.12);
+                gainNode.gain.setValueAtTime(0.05, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+                osc.start(now);
+                osc.stop(now + 0.12);
+            } else if (type === 'hit') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(600, now + 0.08);
+                gainNode.gain.setValueAtTime(0.05, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+                osc.start(now);
+                osc.stop(now + 0.08);
+            } else if (type === 'coin') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(650, now);
+                osc.frequency.setValueAtTime(1150, now + 0.04);
+                gainNode.gain.setValueAtTime(0.05, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                osc.start(now);
+                osc.stop(now + 0.15);
+            } else if (type === 'fail') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(140, now);
+                osc.frequency.linearRampToValueAtTime(70, now + 0.25);
+                gainNode.gain.setValueAtTime(0.08, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            } else if (type === 'levelup') {
+                const freqs = [400, 500, 650, 850, 1100];
+                freqs.forEach((f, i) => {
+                    const oscSeq = audioCtx.createOscillator();
+                    const gainSeq = audioCtx.createGain();
+                    oscSeq.connect(gainSeq);
+                    gainSeq.connect(audioCtx.destination);
+                    oscSeq.type = 'sine';
+                    oscSeq.frequency.setValueAtTime(f, now + i * 0.04);
+                    gainSeq.gain.setValueAtTime(0.04, now + i * 0.04);
+                    gainSeq.gain.exponentialRampToValueAtTime(0.01, now + i * 0.04 + 0.1);
+                    oscSeq.start(now + i * 0.04);
+                    oscSeq.stop(now + i * 0.04 + 0.1);
+                });
+            }
+        }
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const burmeseAlphabets = [
+            'က', 'ခ', 'ဂ', 'ဃ', 'င', 'စ', 'ဆ', 'ဇ', 'ဈ', 'ည',
+            'တ', 'ဌ', 'ထ', 'ဒ', 'ဓ', 'န', 'ပ', 'ဖ', 'ဗ', 'ဘ', 'မ',
+            'ယ', 'ရ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ', 'ဏ', 'ဎ'
+        ];
+
+        const game = {
+            running: false,
+            paused: false,
+            score: 0,
+            correctPops: 0,
+            incorrectPops: 0,
+            targetLetter: 'မ',
+            camera: { x: 0, y: 0 }
+        };
+
+        const player = {
+            x: 0,
+            y: 0,
+            vx: 0,
+            vy: 0,
+            angle: 0,
+            radius: 22, 
+            hp: 100,
+            maxHp: 100,
+            xp: 0,
+            maxXp: 100,
+            level: 1,
+            speed: 5.2, // Pegasus flies swift and light
+            baseSpeed: 5.2,
+            range: 290,         
+            damage: 50,
+            shootCooldown: 0.20, 
+            lastShotTime: 0
+        };
+
+        const keys = {};
+        const entities = {
+            projectiles: [],
+            letterBubbles: [], 
+            collectibles: [],  
+            scenery: []        
+        };
+
+        function initScenery() {
+            entities.scenery = [];
+            const mapRadius = 1600;
+
+            // 1. Twinkling Sky Stars (ကောင်းကင်ကြယ်လေးများ)
+            for (let i = 0; i < 45; i++) {
+                entities.scenery.push({
+                    type: 'star',
+                    x: (Math.random() - 0.5) * mapRadius * 2,
+                    y: (Math.random() - 0.5) * mapRadius * 2,
+                    radius: 1 + Math.random() * 2,
+                    pulseSpeed: 0.02 + Math.random() * 0.05,
+                    pulseOffset: Math.random() * Math.PI
+                });
+            }
+
+            // 2. Floating Ancient Islands (ကျွန်းပျံလေးများ)
+            for (let i = 0; i < 18; i++) {
+                entities.scenery.push({
+                    type: 'island',
+                    x: (Math.random() - 0.5) * mapRadius * 2,
+                    y: (Math.random() - 0.5) * mapRadius * 2,
+                    width: 70 + Math.random() * 60,
+                    height: 35 + Math.random() * 25
+                });
+            }
+        }
+
+        // Keep target letter strictly as "မ"
+        function changeTargetLetter() {
+            game.targetLetter = 'မ';
+            document.getElementById('target-letter-display').innerText = game.targetLetter;
+        }
+
+        function drawStar(ctx, star) {
+            ctx.save();
+            const glow = star.radius * (1 + Math.sin(Date.now() * star.pulseSpeed + star.pulseOffset) * 0.4);
+            ctx.fillStyle = Math.random() > 0.3 ? '#fef08a' : '#ffffff';
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, glow, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawIsland(ctx, x, y, w, h) {
+            ctx.save();
+            ctx.translate(x, y);
+            
+            // Base rock structure
+            ctx.fillStyle = '#4b5563';
+            ctx.beginPath();
+            ctx.moveTo(-w/2, 0);
+            ctx.lineTo(0, h);
+            ctx.lineTo(w/2, 0);
+            ctx.closePath();
+            ctx.fill();
+
+            // Grassy green top
+            ctx.fillStyle = '#a3e635';
+            ctx.beginPath();
+            ctx.ellipse(0, 0, w/2, h/3, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function drawPlayer(ctx, x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(player.angle);
+
             // Shadow on ground/clouds below
             ctx.fillStyle = 'rgba(15, 23, 42, 0.2)';
             ctx.beginPath();
@@ -494,8 +822,9 @@
         function spawnLetterBubble() {
             if (!game.running || game.paused) return;
 
+            // ပြင်ဆင်ချက် - ပစ်မှတ်တိမ်တိုက်တွေ ပေါ်လာမယ့်အကွာအဝေးကို နီးနီးနားနား (220 to 320 pixels) သို့ လျှော့ချလိုက်သည်
             const angle = Math.random() * Math.PI * 2;
-            const dist = 360 + Math.random() * 200;
+            const dist = 220 + Math.random() * 100;
             const x = player.x + Math.cos(angle) * dist;
             const y = player.y + Math.sin(angle) * dist;
 
@@ -506,12 +835,23 @@
                 chosenLetter = filtered[Math.floor(Math.random() * filtered.length)];
             }
 
+            // ပြင်ဆင်ချက် - တိမ်တိုက်တွေ ကစားသမားဆီသို့ တည့်တည့်ဦးတည် ရွေ့လျားလာစေရန် Velocity (vx, vy) ကို တွက်ချက်သည်
+            const toPlayerX = player.x - x;
+            const toPlayerY = player.y - y;
+            const toPlayerDist = Math.sqrt(toPlayerX * toPlayerX + toPlayerY * toPlayerY);
+            
+            // တိမ်တိုက်ရဲ့ ရွေ့လျားမှု အမြန်နှုန်းနှုန်း
+            const moveSpeed = 0.8 + Math.random() * 0.6; 
+            const vx = (toPlayerX / toPlayerDist) * moveSpeed;
+            const vy = (toPlayerY / toPlayerDist) * moveSpeed;
+
             entities.letterBubbles.push({
                 x,
                 y,
+                vx,
+                vy,
                 letter: chosenLetter,
                 scale: 1.0 + Math.random() * 0.25,
-                speed: 0.5 + Math.random() * 0.4, 
                 angleOffset: Math.random() * Math.PI * 2,
                 hp: 1,
                 spawnTime: Date.now() 
@@ -654,9 +994,10 @@
                     continue;
                 }
 
+                // ပြင်ဆင်ချက် - တိမ်တိုက်များကို ကစားသမားဆီသို့ အမှန်တကယ် ဦးတည်ရွေ့လျားစေပြီး လှိုင်းတွန့် ပုံစံလေးမျောစေသည်
                 const driftTime = Date.now() * 0.001 + bubble.angleOffset;
-                bubble.x += Math.sin(driftTime) * 0.8 * dt;
-                bubble.y += Math.cos(driftTime * 0.3) * 0.5 * dt;
+                bubble.x += (bubble.vx + Math.sin(driftTime) * 0.2) * dt;
+                bubble.y += (bubble.vy + Math.cos(driftTime * 0.3) * 0.2) * dt;
 
                 const dx = player.x - bubble.x;
                 const dy = player.y - bubble.y;
@@ -678,7 +1019,7 @@
                     }
                 }
 
-                if (Math.abs(bubble.y - player.y) > 600 || Math.abs(bubble.x - player.x) > 800) {
+                if (Math.abs(bubble.y - player.y) > 700 || Math.abs(bubble.x - player.x) > 900) {
                     entities.letterBubbles.splice(idx, 1);
                 }
             }
