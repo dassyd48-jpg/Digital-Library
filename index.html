@@ -50,64 +50,62 @@
           { "@type": "ListItem", "position": 9, "item": { "@type": "Book", "name": "The Ghost In His Mind" }},
           { "@type": "ListItem", "position": 10, "item": { "@type": "Book", "name": "Beyond The Mask" }},
           { "@type": "ListItem", "position": 11, "item": { "@type": "Book", "name": "The Dominance Code" }},
-          { "@type": "ListItem", "position": 12, "item": { "@type": "Book", "name": "Generational Trauma" }},
-        
+          { "@type": "ListItem", "position": 12, "item": { "@type": "Book", "name": "Generational Trauma" }}
         ]
       }
     }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Special+Elite&family=Arimo:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Used Inter for maximum modern premium feel and Cinzel for luxury headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --metallic-gold: #b38b59;
-            --bright-gold: #e5b869;
-            --header-crimson: #1a0000;
-            --body-black: #050505;
-            --text-gray: #a0a0a0;
+            --metallic-gold: #c5a880;
+            --bright-gold: #f3dca2;
+            --deep-dark: #09090b;
+            --card-bg: #121214;
+            --text-light: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --premium-glow: rgba(197, 168, 128, 0.15);
         }
 
         body, html {
             margin: 0;
             padding: 0;
-            background-color: var(--body-black);
-            color: var(--text-gray);
-            font-family: 'Special Elite', cursive;
+            background-color: var(--deep-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.01em;
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
 
-        /* --- 1. VISUAL GATEWAY SCREEN (အလင်းရောင် ကွက်တိပြင်ဆင်ချက်) --- */
+        /* --- 1. VISUAL GATEWAY SCREEN (Luxury Minimalist Revamp) --- */
         #gateway-screen {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100vh;
-            background-color: var(--body-black);
+            background-color: var(--deep-dark);
             z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.8s ease-in-out, visibility 0.8s;
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s;
         }
 
         .gateway-bg-wrapper {
             position: relative;
-            width: 100%;
-            height: 100vh;
+            width: 90%;
+            height: 80vh;
             max-width: 1200px;
-            max-height: 700px;
-            background: url('gateway-bg.jpg') no-repeat center center;
-            background-size: contain;
+            background: radial-gradient(circle at center, #1c1917 0%, var(--deep-dark) 70%);
+            border: 1px solid rgba(197, 168, 128, 0.1);
+            border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        #gateway-screen::before {
-            content: '';
-            position: absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(0, 0, 0, 0.2); z-index: 1; pointer-events: none;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         #gateway-screen.fade-out {
@@ -116,227 +114,400 @@
         }
 
         .door-click-zones {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
+            display: flex;
+            gap: 40px;
+            width: 80%;
+            height: 60%;
+            justify-content: center;
+            align-items: center;
         }
 
         .click-zone {
-            position: absolute;
-            bottom: 12%;       
-            width: 22.5%;      
-            height: 52%;       
+            width: 45%;      
+            height: 100%;       
             cursor: pointer;
-            border-radius: 150px 150px 0 0;
-            transition: all 0.4s ease;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        .zone-psychology {
-            left: 20%;         
+        .click-zone::before {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: var(--text-muted);
+            transition: all 0.4s;
         }
+
+        .zone-psychology::before { content: "PSYCHOLOGY VAULT"; }
+        .zone-kids::before { content: "KIDS ACADEMY"; }
+
         .zone-psychology:hover {
-            background: rgba(139, 0, 0, 0.15);
-            box-shadow: 0 0 40px rgba(255, 0, 0, 0.6), inset 0 0 30px rgba(255, 0, 0, 0.4);
+            border-color: rgba(239, 68, 68, 0.3);
+            background: linear-gradient(to bottom, rgba(239, 68, 68, 0.05), transparent);
+            box-shadow: 0 0 50px rgba(239, 68, 68, 0.1);
+            transform: translateY(-5px);
         }
+        .zone-psychology:hover::before { color: #ef4444; }
 
-        .zone-kids {
-            left: 56.5%;       
-        }
         .zone-kids:hover {
-            background: rgba(212, 175, 55, 0.15);
-            box-shadow: 0 0 40px rgba(212, 175, 55, 0.6), inset 0 0 30px rgba(212, 175, 55, 0.4);
+            border-color: rgba(197, 168, 128, 0.3);
+            background: linear-gradient(to bottom, rgba(197, 168, 128, 0.05), transparent);
+            box-shadow: 0 0 50px rgba(197, 168, 128, 0.15);
+            transform: translateY(-5px);
         }
-
-        @media (max-width: 1200px) {
-            .gateway-bg-wrapper {
-                width: 100vw;
-                height: calc(100vw * (700 / 1200)); 
-                max-height: 100vh;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .back-to-gateway-btn { bottom: 20px; right: 20px; padding: 10px 15px; font-size: 0.7rem; }
-            .shelf { grid-template-columns: 1fr; gap: 25px; }
-        }
+        .zone-kids:hover::before { color: var(--bright-gold); }
 
         /* 2. HEADER & MAIN CONTENT */
         header {
             text-align: center;
-            padding: 100px 20px;
-            background-color: var(--header-crimson);
-            border-bottom: 1px solid #2a0000;
+            padding: 120px 20px 80px;
+            background: linear-gradient(to bottom, #111012 0%, var(--deep-dark) 100%);
+            position: relative;
         }
 
         header h1 {
-            font-family: 'Cinzel Decorative', serif;
-            background: linear-gradient(to bottom, #d4af37 0%, #b38b59 50%, #8a6d3b 100%);
+            font-family: 'Cinzel', serif;
+            background: linear-gradient(135deg, #fff 30%, var(--metallic-gold) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: clamp(2.5rem, 8vw, 4.2rem);
+            font-size: clamp(2rem, 6vw, 3.5rem);
             margin: 0;
-            letter-spacing: 10px;
-            text-transform: uppercase; font-weight: 900;
+            letter-spacing: 8px;
+            font-weight: 700;
         }
 
-        header p { color: #660000;
-            font-size: 1rem; margin-top: 20px; letter-spacing: 6px; font-weight: bold; }
-
-        .category-container { width: 90%;
-            max-width: 1200px; margin: 60px auto; }
-        .category-title {
-            font-family: 'Cinzel Decorative', serif;
+        header p { 
             color: var(--metallic-gold);
-            font-size: 2rem; text-transform: uppercase;
-            letter-spacing: 4px; border-left: 4px solid var(--metallic-gold);
-            padding-left: 20px; margin-bottom: 30px;
+            font-size: 0.85rem; 
+            margin-top: 20px; 
+            letter-spacing: 6px; 
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .category-container { 
+            width: 90%;
+            max-width: 1300px; 
+            margin: 40px auto; 
+        }
+        
+        .category-title {
+            font-family: 'Cinzel', serif;
+            color: #fff;
+            font-size: 1.75rem; 
+            text-transform: uppercase;
+            letter-spacing: 3px; 
+            margin-bottom: 40px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .category-title::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background: linear-gradient(to right, rgba(197, 168, 128, 0.3), transparent);
         }
 
         .shelf {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px; padding-bottom: 60px;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 35px; 
+            padding-bottom: 60px;
         }
 
         .vault-item {
-            background: #0a0a0a;
-            border: 1px solid #151515;
-            padding: 30px; transition: 0.5s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 24px; 
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
         }
 
-        .vault-item:hover { transform: translateY(-10px); border-color: var(--metallic-gold); }
-        .vault-item img { width: 100%; height: 400px; object-fit: cover;
-            border: 1px solid #222; margin-bottom: 25px; }
+        .vault-item:hover { 
+            transform: translateY(-8px); 
+            border-color: rgba(197, 168, 128, 0.3);
+            box-shadow: 0 20px 40px var(--premium-glow);
+        }
+        
+        .vault-item img { 
+            width: 100%; 
+            height: 420px; 
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 24px; 
+            transition: transform 0.5s;
+        }
+        
+        .vault-item:hover img {
+            transform: scale(1.02);
+        }
 
-        .tag { color: #444; font-size: 0.7rem;
-            letter-spacing: 3px; margin-bottom: 10px; text-transform: uppercase; }
+        .tag { 
+            color: var(--metallic-gold); 
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 2px; 
+            margin-bottom: 12px; 
+            text-transform: uppercase; 
+        }
 
         .title {
-            font-family: 'Cinzel Decorative', serif;
-            font-size: 1.2rem; color: #fff; margin-bottom: 20px; min-height: 60px;
-            display: flex; align-items: center; justify-content: center; text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem; 
+            color: #fff; 
+            margin-bottom: 15px; 
+            min-height: 55px;
+            display: flex; 
+            align-items: center; 
+            font-weight: 500;
+            line-height: 1.4;
         }
 
-        .price { font-size: 1.4rem; color: var(--metallic-gold); margin-bottom: 30px; text-align: center; }
+        .price { 
+            font-size: 1.3rem; 
+            color: #fff;
+            font-weight: 600; 
+            margin-bottom: 24px;
+            font-family: 'Inter', sans-serif;
+        }
 
-        .btn-box { display: flex; flex-direction: column; gap: 12px; }
+        .btn-box { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            margin-top: auto;
+        }
 
         .btn {
             text-decoration: none;
-            padding: 15px;
-            font-weight: bold; text-transform: uppercase;
-            letter-spacing: 2px; transition: 0.3s;
-            font-size: 0.9rem; text-align: center; cursor: pointer;
+            padding: 14px;
+            font-weight: 600; 
+            text-transform: uppercase;
+            letter-spacing: 1.5px; 
+            transition: all 0.3s ease;
+            font-size: 0.8rem; 
+            text-align: center; 
+            cursor: pointer;
+            border-radius: 8px;
         }
 
-        .btn-preview { border: 1px solid #222; color: #555; background: transparent; }
-        .btn-preview:hover { border-color: var(--metallic-gold); color: #fff; }
+        .btn-preview { 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            color: var(--text-light); 
+            background: rgba(255, 255, 255, 0.02); 
+        }
+        
+        .btn-preview:hover { 
+            border-color: var(--text-light);
+            background: rgba(255, 255, 255, 0.05);
+        }
 
-        .btn-buy { background-color: #0088cc; color: #fff; border: none; }
-        .btn-buy:hover { background: #00a2f0; box-shadow: 0 0 20px rgba(0, 136, 204, 0.4); }
+        .btn-buy { 
+            background: linear-gradient(135deg, var(--bright-gold) 0%, var(--metallic-gold) 100%); 
+            color: #121214; 
+            border: none; 
+        }
+        
+        .btn-buy:hover { 
+            transform: scale(1.01);
+            box-shadow: 0 8px 24px rgba(197, 168, 128, 0.3); 
+        }
 
-        .divider { border: 0; height: 1px; background: linear-gradient(to right, transparent, #333, transparent);
-            margin: 60px 0; }
+        .divider { 
+            border: 0; 
+            height: 1px; 
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+            margin: 60px 0; 
+        }
 
         /* FEEDBACK SECTION */
-        .feedback-container { width: 90%;
-            max-width: 1200px; margin: 0 auto 80px; }
-        .feedback-grid { display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .feedback-card { background: #0c0c0c;
-            border: 1px dashed #222; padding: 25px; }
-        .stars { color: var(--metallic-gold); margin-bottom: 15px; }
-        .feedback-text { color: #888; font-size: 0.9rem; line-height: 1.6; font-style: italic; }
-        .reviewer-name { color: #555; font-size: 0.8rem; text-align: right; margin-top: 15px; }
+        .feedback-container { 
+            width: 90%;
+            max-width: 1300px; 
+            margin: 40px auto 100px; 
+        }
+        
+        .feedback-grid { 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 30px; 
+        }
+        
+        .feedback-card { 
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.02); 
+            padding: 30px; 
+            border-radius: 16px;
+        }
+        
+        .stars { 
+            color: var(--metallic-gold); 
+            margin-bottom: 20px; 
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+        
+        .feedback-text { 
+            color: var(--text-muted); 
+            font-size: 0.95rem; 
+            line-height: 1.7; 
+            font-weight: 300;
+        }
+        
+        .reviewer-name { 
+            color: var(--metallic-gold); 
+            font-size: 0.8rem; 
+            margin-top: 25px; 
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
 
         /* REVIEW MODAL */
         .review-modal {
             display: none;
             position: fixed; z-index: 10000; left: 0; top: 0;
-            width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(8px);
+            width: 100%; height: 100%; background-color: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(12px);
             align-items: center; justify-content: center; padding: 20px;
+            box-sizing: border-box;
         }
+        
         .modal-content {
-            background-color: #0a0a0a;
-            border: 1px solid var(--metallic-gold);
+            background-color: var(--card-bg);
+            border: 1px solid rgba(197, 168, 128, 0.2);
+            border-radius: 20px;
             padding: 40px; width: 100%; max-width: 650px;
-            animation: fadeIn 0.4s ease; position: relative; max-height: 85vh; overflow-y: auto;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            position: relative; max-height: 85vh; overflow-y: auto;
+            box-sizing: border-box;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
         }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .close-modal { position: absolute;
-            top: 15px; right: 20px; color: #555; font-size: 30px; cursor: pointer;
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .close-modal { 
+            position: absolute;
+            top: 20px; right: 25px; 
+            color: var(--text-muted); 
+            font-size: 28px; 
+            cursor: pointer;
+            transition: color 0.2s;
         }
-        .modal-book-title { font-family: 'Cinzel Decorative', serif; color: #fff; font-size: 1.3rem; text-align: center;
-            margin-bottom: 30px; border-bottom: 1px solid #1c1c1c; padding-bottom: 15px; }
-        .review-section { margin-bottom: 25px; }
-        .review-section-title { color: var(--metallic-gold); font-size: 1rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase;
-            display: flex; align-items: center; gap: 10px; }
-        .review-text { color: #ccc; font-size: 0.95rem;
-            line-height: 1.8; white-space: pre-line; background: #0f0f0f; padding: 20px; border-left: 2px solid #333;
+        .close-modal:hover { color: #fff; }
+        
+        .modal-book-title { 
+            font-family: 'Cinzel', serif; 
+            color: #fff; 
+            font-size: 1.5rem; 
+            text-align: center;
+            margin-bottom: 30px; 
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .review-section { margin-bottom: 30px; }
+        
+        .review-section-title { 
+            color: var(--metallic-gold); 
+            font-size: 0.9rem; 
+            font-weight: 600; 
+            margin-bottom: 14px; 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+        
+        .review-text { 
+            color: #d4d4d8; 
+            font-size: 0.95rem;
+            line-height: 1.8; 
+            white-space: pre-line; 
+            background: rgba(0,0,0,0.2); 
+            padding: 24px; 
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.02);
         }
 
-        footer { padding: 80px 20px; color: #d4af37; font-size: 0.8rem; letter-spacing: 5px;
-            text-transform: uppercase; text-align: center; width: 100%; }
+        footer { 
+            padding: 60px 20px; 
+            color: var(--text-muted); 
+            font-size: 0.75rem; 
+            letter-spacing: 3px;
+            text-transform: uppercase; 
+            text-align: center; 
+            width: 100%; 
+            border-top: 1px solid rgba(255,255,255,0.02);
+            box-sizing: border-box;
+        }
         
         /* STICKY BACK TO GATEWAY BUTTON STYLE */
         .back-to-gateway-btn {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: rgba(10, 10, 10, 0.9);
+            background: rgba(18, 18, 20, 0.9);
             color: var(--bright-gold);
-            border: 1px solid var(--metallic-gold);
-            padding: 12px 20px;
-            font-family: 'Cinzel Decorative', serif;
+            border: 1px solid rgba(197, 168, 128, 0.3);
+            padding: 14px 24px;
+            font-family: 'Cinzel', serif;
             font-size: 0.75rem;
-            font-weight: bold;
+            font-weight: 600;
             letter-spacing: 2px;
             cursor: pointer;
             z-index: 999;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            border-radius: 50px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: all 0.3s ease;
             display: none;
         }
 
         .back-to-gateway-btn:hover {
             background: var(--bright-gold);
-            color: #000;
-            box-shadow: 0 0 15px rgba(229, 184, 105, 0.5);
+            color: #121214;
             transform: translateY(-3px);
         }
 
-        /* ၂။ TABLET မျက်နှာပြင်အတွက် သီးသန့်ညှိချက် (Screen အကျယ် 1024px အောက်) */
-        @media (max-width: 1024px) {
-            .click-zone {
-                bottom: 12vh;
-                width: 22%;
-                height: 45vh;
-            }
-            .zone-psychology { left: 22%; }
-            .zone-kids { left: 56%; }
-        }
-
-        /* ၃။ PHONE မျက်နှာပြင်အတွက် သီးသန့်ညှိချက် (Screen အကျယ် 768px အောက်) */
+        /* RESPONSIVE RESPONSIVENESS REFINEMENT */
         @media (max-width: 768px) {
-            .gateway-bg-wrapper {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 1200 / 700;
+            .door-click-zones {
+                flex-direction: column;
+                height: 80%;
+                gap: 20px;
             }
             .click-zone {
-                bottom: 5vh;    /* ဖုန်းပေါ်က တံခါး အနိမ့်အမြင့်ကို ဒီ % နဲ့ ညှိပါ */
-                width: 23%;     /* ဖုန်းပေါ်က အလင်းရောင်အကျယ် */
-                height: 55%;    /* ဖုန်းပေါ်က အလင်းရောင်အမြင့် */
+                width: 100%;
+                height: 45%;
             }
-            .zone-psychology { left: 21%; } /* ဖုန်းပေါ်က ဘယ်ဘက်တံခါးနေရာ */
-            .zone-kids { left: 55%; }       /* ဖုန်းပေါ်က ညာဘက်တံခါးနေရာ */
-            
-            .back-to-gateway-btn { bottom: 20px; right: 20px; padding: 10px 15px; font-size: 0.7rem; }
-            .shelf { grid-template-columns: 1fr; gap: 25px; }
+            .shelf {
+                grid-template-columns: 1fr;
+            }
+            .vault-item img {
+                height: 380px;
+            }
+            .modal-content {
+                padding: 30px 20px;
+            }
+            .back-to-gateway-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+            }
         }
     </style>
 </head>
@@ -384,7 +555,7 @@
                 </div>
             </div>
 
-            <<div class="vault-item">
+            <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
                 <img src="the-alpha-shadow/page1.jpg" alt="The Alpha's Shadow" loading="lazy">
                 <div class="title">The Alpha's Shadow</div>
@@ -450,7 +621,7 @@
                 <div class="title">The Irreplaceable Queen</div>
                 <div class="price">16,700 MMK</div>
                 <div class="btn-box">
-                    <button class="btn btn-preview" onclick="openReview('The Irreplaceable Queen','၁။ အချစ်ရေးနှင့် ဆက်ဆံရေးတွင် အမြဲတမ်း အားနည်းပြီး တစ်ဖက်လူ၏အလိုကျ လိုက်လျောအောက်ကျို့နေရသူများ။\n၂။ ဆက်ဆံရေးတစ်ခုအတွင်း မိမိကိုယ်ကို အကာအကွယ်မပေးနိုင်ဘဲ သားကောင် (Victim) ဘဝသို့ ရောက်ရှိနေသူများ။\n၃။ အပေါ်ယံအချစ်ရေး လမ်းညွှန်ချက်များထက် မိမိ၏စိတ်ခံစားချက်ကို စနစ်တကျ ထိန်းချုပ်အုပ်စိုးလိုသူများ။','၁။ သာမန်စာအုပ်များကဲ့သို့ သည်းခံခွင့်လွှတ်ရုံမျှမဟုတ်ဘဲ မိမိကိုယ်ပိုင်တန်ဖိုးကို မြှင့်တင်ပေးမည့် High-Value စွမ်းအင်များကို နားလည်လာမည်။\n၂။ စာအုပ်တွင်ပါဝင်သော Intro Quiz နှင့် Interactive Test များကြောင့် ဆက်ဆံရေးအတွင်း မိမိ၌ရှိနေသည့် အားနည်းချက်များကို ထိုးထွင်းသိမြင်ပြီး ဉာဏ်ပွင့်သွားမည်။\n၃။ မည်သည့်အခြေအနေမျိုးတွင်မဆို สိတ်ပိုင်းဆိုင်ရာ တုန်လှုပ်ခြင်းမရှိဘဲ ဘုရင်မတစ်ပါးကဲ့သို့ ခိုင်မာပြတ်သားစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
+                    <button class="btn btn-preview" onclick="openReview('The Irreplaceable Queen','၁။ အချစ်ရေးနှင့် ဆက်ဆံရေးတွင် အမြဲတမ်း အားနည်းပြီး တစ်ဖက်လူ၏အလိုကျ လိုက်လျောအောက်ကျို့နေရသူများ။\n၂။ ဆက်ဆံရေးတစ်ခုအတွင်း မိမိကိုယ်ကို အကာအကွယ်မပေးနိုင်ဘဲ သားကောင် (Victim) ဘဝသို့ ရောက်ရှိနေသူများ။\n၃။ အပေါ်ယံအချစ်ရေး လမ်းညွှန်ချက်များထက် မိမိ၏စိတ်ခံစားချက်ကို စနစ်တကျ ထိန်းချုပ်အုပ်စိုးလိုသူများ။','၁။ သာမန်စာအုပ်များကဲ့သို့ သည်းခံခွင့်လွှတ်ရုံမျှမဟုတ်ဘဲ မိမိကိုယ်ပိုင်တန်ဖိုးကို မြှင့်တင်ပေးမည့် High-Value စွမ်းအင်များကို နားလည်လာမည်။\n၂။ စာအုပ်တွင်ပါဝင်သော Intro Quiz Intro Quiz နှင့် Interactive Test များကြောင့် ဆက်ဆံရေးအတွင်း မိမိ၌ရှိနေသည့် အားနည်းချက်များကို ထိုးထွင်းသိမြင်ပြီး ဉာဏ်ပွင့်သွားမည်။\n၃။ မည်သည့်အခြေအနေမျိုးတွင်မဆို สိတ်ပိုင်းဆိုင်ရာ တုန်လှုပ်ခြင်းမရှိဘဲ ဘုရင်မတစ်ပါးကဲ့သို့ ခိုင်မာပြတ်သားစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
                     <a href="the-irreplaceable-queen/index.html" class="btn btn-preview">Read Preview</a>
                     <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
                 </div>
@@ -492,7 +663,7 @@
                 </div>
             </div>
             
-        <div class="vault-item">
+            <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
                 <img src="generational-trauma/page1.jpg" alt="Generational Trauma" loading="lazy">
                 <div class="title">Generational Trauma</div>
@@ -552,7 +723,6 @@
                 if (backBtn) backBtn.style.display = 'block';
                 document.getElementById('psychology-vault').scrollIntoView({ behavior: 'smooth' });
             } else if (vaultType === 'kids') {
-                // ကလေးနဲ့ ပတ်သက်တာနှိပ်ရင် သီးသန့် Gateway စာမျက်နှာအသစ်သို့ တိုက်ရိုက်သွားမည်
                 window.location.href = 'kids-landing.html';
             }
         }
