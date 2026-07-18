@@ -56,60 +56,41 @@
     }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Special+Elite&family=Arimo:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Clean Brand Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Arimo:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --metallic-gold: #b38b59;
-            --bright-gold: #e5b869;
-            --header-crimson: #0a0101;
-            --body-black: #030305;
-            --text-gray: #b0b5be;
-            --midnight-blue: #060b14;
-            --medium-gray: #2d3139;
-            --card-glow: rgba(10, 25, 47, 0.6);
+            --brand-white: #ffffff;
+            --brand-black: #000000;
+            --bg-dark: #0a0a0a;
+            --text-muted: #86868b; /* Apple/Nike style subtle gray */
+            --border-color: #212124;
+            --accent-blue: #0071e3;
         }
 
         body, html {
             margin: 0;
             padding: 0;
-            background-color: var(--body-black);
-            color: var(--text-gray);
-            font-family: 'Special Elite', cursive;
+            background-color: var(--brand-black);
+            color: var(--brand-white);
+            font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- 1. VISUAL GATEWAY SCREEN UPGRADED --- */
+        /* --- NIKE/APPLE STYLE MINIMALIST GATEWAY SCREEN --- */
         #gateway-screen {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100vh;
-            background-color: var(--midnight-blue);
+            background-color: var(--brand-black);
             z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.8s ease-in-out, visibility 0.8s;
-        }
-
-        .gateway-bg-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            max-width: 1200px;
-            max-height: 700px;
-            background: url('gateway-bg.jpg') no-repeat center center;
-            background-size: contain;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #gateway-screen::before {
-            content: '';
-            position: absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(6, 11, 20, 0.4); z-index: 1; pointer-events: none;
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s;
         }
 
         #gateway-screen.fade-out {
@@ -117,196 +98,239 @@
             visibility: hidden;
         }
 
-        .door-click-zones {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-        }
-
-        .click-zone {
-            position: absolute;
-            bottom: 12%;       
-            width: 22.5%;      
-            height: 52%;       
-            cursor: pointer;
-            border-radius: 150px 150px 0 0;
-            background-color: var(--medium-gray);
-            border: 2px solid rgba(229, 184, 105, 0.2);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            box-sizing: border-box;
-            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        /* Zone Labels setup to bring radiant titles */
-        .click-zone::after {
-            font-family: 'Cinzel Decorative', serif;
-            color: var(--bright-gold);
-            font-size: clamp(0.7rem, 1.5vw, 1.1rem);
-            font-weight: 900;
-            letter-spacing: 2px;
+        .gateway-clean-content {
             text-align: center;
-            text-shadow: 0 0 10px rgba(229, 184, 105, 0.6);
-            transition: all 0.4s ease;
+            max-width: 600px;
+            padding: 40px 20px;
         }
 
-        .zone-psychology {
-            left: 20%;         
-        }
-        .zone-psychology::after {
-            content: "PSYCHOLOGY VAULT";
-        }
-        .zone-psychology:hover {
-            transform: translateY(-8px) scale(1.03);
-            background: #363b45;
-            border-color: var(--bright-gold);
-            box-shadow: 0 0 45px rgba(229, 184, 105, 0.7), inset 0 0 25px rgba(229, 184, 105, 0.3);
+        .gateway-brand {
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 5px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            text-transform: uppercase;
         }
 
-        .zone-kids {
-            left: 56.5%;       
-        }
-        .zone-kids::after {
-            content: "KIDS ACADEMY";
-        }
-        .zone-kids:hover {
-            transform: translateY(-8px) scale(1.03);
-            background: #363b45;
-            border-color: var(--bright-gold);
-            box-shadow: 0 0 45px rgba(229, 184, 105, 0.7), inset 0 0 25px rgba(229, 184, 105, 0.3);
+        .gateway-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin: 0 0 20px 0;
+            color: var(--brand-white);
         }
 
-        @media (max-width: 1200px) {
-            .gateway-bg-wrapper {
-                width: 100vw;
-                height: calc(100vw * (700 / 1200)); 
-                max-height: 100vh;
-            }
+        .gateway-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 40px;
+            font-weight: 400;
         }
 
-        /* 2. HEADER & MAIN CONTENT */
+        .gateway-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Professional Clean Action Buttons */
+        .btn-gate {
+            display: inline-block;
+            text-decoration: none;
+            padding: 16px 32px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 30px;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .btn-gate-primary {
+            background-color: var(--brand-white);
+            color: var(--brand-black);
+            border: none;
+        }
+
+        .btn-gate-primary:hover {
+            background-color: #e8e8ed;
+            transform: scale(1.02);
+        }
+
+        .btn-gate-secondary {
+            background-color: transparent;
+            color: var(--brand-white);
+            border: 1px solid #424245;
+        }
+
+        .btn-gate-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            border-color: var(--brand-white);
+            transform: scale(1.02);
+        }
+
+        /* NAVIGATION BAR */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 4%;
+            border-bottom: 1px solid var(--border-color);
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* MAIN CONTENT SECTION */
         header {
             text-align: center;
-            padding: 100px 20px;
-            background: linear-gradient(180deg, var(--header-crimson) 0%, var(--body-black) 100%);
-            border-bottom: 1px solid #111622;
+            padding: 80px 20px 40px;
         }
 
         header h1 {
-            font-family: 'Cinzel Decorative', serif;
-            background: linear-gradient(to bottom, #f3d18c 0%, #b38b59 50%, #6e542b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: clamp(2.5rem, 8vw, 4.2rem);
+            font-size: clamp(2.2rem, 6vw, 3.8rem);
+            font-weight: 800;
             margin: 0;
-            letter-spacing: 10px;
-            text-transform: uppercase; font-weight: 900;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+            letter-spacing: -1px;
         }
 
-        header p { color: #801818;
-            font-size: 1rem; margin-top: 20px; letter-spacing: 6px; font-weight: bold; }
+        header p { 
+            color: var(--text-muted);
+            font-size: 1.1rem; 
+            margin-top: 15px; 
+            letter-spacing: 0px;
+            font-weight: 400; 
+        }
 
-        .category-container { width: 90%;
-            max-width: 1200px; margin: 60px auto; }
+        .category-container { 
+            width: 92%;
+            max-width: 1400px; 
+            margin: 40px auto; 
+        }
+        
         .category-title {
-            font-family: 'Cinzel Decorative', serif;
-            color: var(--metallic-gold);
-            font-size: 2rem; text-transform: uppercase;
-            letter-spacing: 4px; border-left: 4px solid var(--metallic-gold);
-            padding-left: 20px; margin-bottom: 30px;
+            font-size: 1.5rem; 
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 30px;
+            color: var(--brand-white);
         }
 
         .shelf {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px; padding-bottom: 60px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; 
+            padding-bottom: 60px;
         }
 
-        /* PREMIUM FLOATING VAULT ITEM CARDS */
+        /* PROFESSIONAL SNEAKER/PRODUCT CARD GRID */
         .vault-item {
-            background: #0b0f17;
-            border: 1px solid #1a2233;
-            padding: 30px; 
-            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 30px var(--card-glow);
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            padding: 20px; 
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative;
-            overflow: hidden;
-        }
-
-        .vault-item::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(229,184,105,0.03) 0%, transparent 100%);
-            pointer-events: none;
+            display: flex;
+            flex-direction: column;
         }
 
         .vault-item:hover { 
-            transform: translateY(-12px); 
-            border-color: var(--bright-gold); 
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 40px rgba(229, 184, 105, 0.15);
+            border-color: #424245; 
+            transform: translateY(-4px);
         }
         
         .vault-item img { 
             width: 100%; 
-            height: 400px; 
+            height: 380px; 
             object-fit: cover;
-            border: 1px solid #1a2333; 
-            margin-bottom: 25px; 
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            border-radius: 8px;
+            margin-bottom: 20px; 
+            background: #141414;
         }
 
-        .vault-item:hover img {
-            transform: scale(1.02);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.8), 0 0 25px rgba(6, 11, 20, 0.8);
+        .tag { 
+            color: var(--text-muted); 
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px; 
+            margin-bottom: 8px; 
+            text-transform: uppercase; 
         }
-
-        .tag { color: #535f75; font-size: 0.7rem;
-            letter-spacing: 3px; margin-bottom: 10px; text-transform: uppercase; }
 
         .title {
-            font-family: 'Cinzel Decorative', serif;
-            font-size: 1.2rem; color: #fff; margin-bottom: 20px; min-height: 60px;
-            display: flex; align-items: center; justify-content: center; text-align: center;
+            font-size: 1.15rem; 
+            font-weight: 700;
+            color: var(--brand-white); 
+            margin-bottom: 10px; 
+            line-height: 1.4;
         }
 
-        .price { font-size: 1.4rem; color: var(--bright-gold); margin-bottom: 30px; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .price { 
+            font-size: 1.05rem; 
+            color: var(--brand-white); 
+            margin-bottom: 25px; 
+            font-weight: 400;
+        }
 
-        .btn-box { display: flex; flex-direction: column; gap: 12px; }
+        .btn-box { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            margin-top: auto;
+        }
 
         .btn {
             text-decoration: none;
-            padding: 15px;
-            font-weight: bold; text-transform: uppercase;
-            letter-spacing: 2px; transition: 0.3s;
-            font-size: 0.9rem; text-align: center; cursor: pointer;
+            padding: 14px;
+            font-weight: 600; 
+            border-radius: 25px;
+            transition: all 0.2s ease;
+            font-size: 0.85rem; 
+            text-align: center; 
+            cursor: pointer;
+            box-sizing: border-box;
         }
 
-        .btn-preview { border: 1px solid #1f2a3f; color: #72819d; background: transparent; }
-        .btn-preview:hover { border-color: var(--bright-gold); color: #fff; background: rgba(229, 184, 105, 0.05); }
+        .btn-preview { 
+            border: 1px solid #424245; 
+            color: var(--brand-white); 
+            background: transparent; 
+        }
+        
+        .btn-preview:hover { 
+            background: rgba(255, 255, 255, 0.08); 
+            border-color: var(--brand-white);
+        }
 
-        .btn-buy { background: linear-gradient(135deg, #0077b3 0%, #0099e6 100%); color: #fff; border: none; box-shadow: 0 4px 15px rgba(0, 153, 230, 0.2); }
-        .btn-buy:hover { background: linear-gradient(135deg, #0088cc 0%, #00a6ff 100%); box-shadow: 0 0 25px rgba(0, 166, 255, 0.6); }
+        .btn-buy { 
+            background-color: var(--brand-white); 
+            color: var(--brand-black); 
+            border: none; 
+        }
+        
+        .btn-buy:hover { 
+            background-color: #e8e8ed; 
+        }
 
-        .divider { border: 0; height: 1px; background: linear-gradient(to right, transparent, #1f2a3f, transparent);
-            margin: 60px 0; }
-
-        /* INFINITE MARQUEE FEEDBACK SECTION */
+        /* MINIMALIST MARQUEE FEEDBACK */
         .feedback-container { 
             width: 100%;
             max-width: 100vw; 
-            margin: 0 auto 80px; 
+            margin: 60px auto 100px; 
             overflow: hidden;
             position: relative;
-            padding: 20px 0;
         }
         
         .feedback-container::before, .feedback-container::after {
@@ -316,13 +340,13 @@
             z-index: 3;
             pointer-events: none;
         }
-        .feedback-container::before { left: 0; background: linear-gradient(to right, var(--body-black), transparent); }
-        .feedback-container::after { right: 0; background: linear-gradient(to left, var(--body-black), transparent); }
+        .feedback-container::before { left: 0; background: linear-gradient(to right, var(--brand-black), transparent); }
+        .feedback-container::after { right: 0; background: linear-gradient(to left, var(--brand-black), transparent); }
 
         .marquee-wrapper {
             display: flex;
             width: max-content;
-            animation: marqueeTrack 25s linear infinite;
+            animation: marqueeTrack 30s linear infinite;
         }
         
         .marquee-wrapper:hover {
@@ -335,130 +359,112 @@
         }
 
         .feedback-card { 
-            background: #0b1019;
-            border: 1px solid #182338; 
-            padding: 25px; 
-            width: 350px;
-            margin: 0 15px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color); 
+            padding: 24px; 
+            width: 360px;
+            margin: 0 12px;
+            border-radius: 8px;
             box-sizing: border-box;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            transition: border-color 0.3s ease;
         }
-        .feedback-card:hover {
-            border-color: var(--metallic-gold);
-        }
-        .stars { color: var(--bright-gold); margin-bottom: 15px; }
-        .feedback-text { color: #8e99aa; font-size: 0.9rem; line-height: 1.6; font-style: italic; }
-        .reviewer-name { color: #53627c; font-size: 0.8rem; text-align: right; margin-top: 15px; }
+        
+        .stars { color: #ffb100; margin-bottom: 12px; font-size: 0.85rem; }
+        .feedback-text { color: #e8e8ed; font-size: 0.9rem; line-height: 1.6; }
+        .reviewer-name { color: var(--text-muted); font-size: 0.8rem; text-align: right; margin-top: 15px; font-weight: 600; }
 
-        /* REVIEW MODAL */
+        /* MODERN INFO MODAL */
         .review-modal {
             display: none;
             position: fixed; z-index: 10000; left: 0; top: 0;
-            width: 100%; height: 100%; background-color: rgba(3, 5, 8, 0.96);
-            backdrop-filter: blur(10px);
+            width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
             align-items: center; justify-content: center; padding: 20px;
         }
-        .modal-content {
-            background-color: #0b1019;
-            border: 1px solid var(--bright-gold);
-            padding: 40px; width: 100%; max-width: 650px;
-            animation: fadeIn 0.4s ease; position: relative; max-height: 85vh; overflow-y: auto;
-            box-shadow: 0 0 50px rgba(229, 184, 105, 0.2);
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .close-modal { position: absolute;
-            top: 15px; right: 20px; color: #53627c; font-size: 30px; cursor: pointer; transition: color 0.3s;
-        }
-        .close-modal:hover { color: #fff; }
-        .modal-book-title { font-family: 'Cinzel Decorative', serif; color: #fff; font-size: 1.3rem; text-align: center;
-            margin-bottom: 30px; border-bottom: 1px solid #1a253a; padding-bottom: 15px; }
-        .review-section { margin-bottom: 25px; }
-        .review-section-title { color: var(--bright-gold); font-size: 1rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase;
-            display: flex; align-items: center; gap: 10px; }
-        .review-text { color: #ccd2db; font-size: 0.95rem;
-            line-height: 1.8; white-space: pre-line; background: #070b12; padding: 20px; border-left: 2px solid var(--metallic-gold);
-        }
-
-        footer { padding: 80px 20px; color: var(--bright-gold); font-size: 0.8rem; letter-spacing: 5px;
-            text-transform: uppercase; text-align: center; width: 100%; background: #04070d; border-top: 1px solid #101724; }
         
-        /* STICKY BACK TO GATEWAY BUTTON STYLE */
+        .modal-content {
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            padding: 40px; width: 100%; max-width: 600px;
+            border-radius: 16px;
+            animation: modalFadeIn 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
+            position: relative; max-height: 80vh; overflow-y: auto;
+        }
+        
+        @keyframes modalFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .close-modal { position: absolute;
+            top: 20px; right: 25px; color: var(--text-muted); font-size: 28px; cursor: pointer; transition: color 0.2s;
+        }
+        .close-modal:hover { color: var(--brand-white); }
+        
+        .modal-book-title { font-size: 1.4rem; font-weight: 800; color: var(--brand-white); text-align: left;
+            margin-bottom: 25px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+        
+        .review-section { margin-bottom: 25px; }
+        .review-section-title { color: var(--brand-white); font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .review-text { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; white-space: pre-line; background: #141414; padding: 16px; border-radius: 8px; }
+
+        footer { padding: 60px 20px; color: var(--text-muted); font-size: 0.8rem; font-weight: 500; text-align: center; width: 100%; border-top: 1px solid var(--border-color); box-sizing: border-box; }
+        
+        /* FLOATING BACK BUTTON */
         .back-to-gateway-btn {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: rgba(11, 16, 25, 0.95);
-            color: var(--bright-gold);
-            border: 1px solid var(--metallic-gold);
-            padding: 12px 20px;
-            font-family: 'Cinzel Decorative', serif;
-            font-size: 0.75rem;
-            font-weight: bold;
-            letter-spacing: 2px;
+            background: var(--brand-white);
+            color: var(--brand-black);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
             cursor: pointer;
             z-index: 999;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
             display: none;
         }
 
         .back-to-gateway-btn:hover {
-            background: var(--bright-gold);
-            color: #000;
-            box-shadow: 0 0 20px rgba(229, 184, 105, 0.6);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+            background-color: #e8e8ed;
         }
 
-        /* TABLET ADJUSTMENTS */
-        @media (max-width: 1024px) {
-            .click-zone {
-                bottom: 12vh;
-                width: 22%;
-                height: 45vh;
-            }
-            .zone-psychology { left: 22%; }
-            .zone-kids { left: 56%; }
-        }
-
-        /* PHONE ADJUSTMENTS */
         @media (max-width: 768px) {
-            .gateway-bg-wrapper {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 1200 / 700;
-            }
-            .click-zone {
-                bottom: 5vh;    
-                width: 23%;     
-                height: 55%;    
-            }
-            .zone-psychology { left: 21%; } 
-            .zone-kids { left: 55%; }       
-            
-            .back-to-gateway-btn { bottom: 20px; right: 20px; padding: 10px 15px; font-size: 0.7rem; }
-            .shelf { grid-template-columns: 1fr; gap: 25px; }
+            .gateway-actions { flex-direction: column; width: 100%; gap: 12px; }
+            .btn-gate { width: 100%; text-align: center; }
+            .back-to-gateway-btn { bottom: 20px; right: 20px; padding: 10px 20px; }
+            .shelf { grid-template-columns: 1fr; gap: 24px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- CLEAN HIGH-END GATEWAY MODAL -->
     <div id="gateway-screen">
-        <div class="gateway-bg-wrapper">
-            <div class="door-click-zones">
-                <div class="click-zone zone-psychology" onclick="enterVault('psychology')" title="Open Psychology Vault"></div>
-                <div class="click-zone zone-kids" onclick="enterVault('kids')" title="Open Kids Academy"></div>
+        <div class="gateway-clean-content">
+            <div class="gateway-brand">Dassy Digital Ecosystem</div>
+            <h2 class="gateway-title">Choose Your Destination.</h2>
+            <p class="gateway-subtitle">Explore premium interactive insights on dark psychology and human dynamics, or access educational paths for early learning development.</p>
+            <div class="gateway-actions">
+                <button class="btn-gate btn-gate-primary" onclick="enterVault('psychology')">Psychology Archive</button>
+                <button class="btn-gate btn-gate-secondary" onclick="enterVault('kids')">Kids Academy</button>
             </div>
         </div>
     </div>
 
+    <!-- MINIMAL NAVIGATION -->
+    <nav>
+        <div class="nav-logo">Dassy Block Vault</div>
+    </nav>
+
     <header id="main-header">
-        <h1>DASSY BLOCK VAULT</h1>
-        <p>THE GATE TO FORBIDDEN SECRETS</p>
+        <h1>Psychology & Relations.</h1>
+        <p>Unlock structured strategy layouts & deep behavioural mechanics.</p>
     </header>
 
     <section id="psychology-vault" class="category-container">
-        <h2 class="category-title">Psychology Archive</h2>
+        <h2 class="category-title">All Digital Books ({12})</h2>
         <div class="shelf">
             
             <!-- Book 1 -->
@@ -559,7 +565,7 @@
                 <div class="title">The Irreplaceable Queen</div>
                 <div class="price">16,700 MMK</div>
                 <div class="btn-box">
-                    <button class="btn btn-preview" onclick="openReview('The Irreplaceable Queen','၁။ အချစ်ရေးနှင့် ဆက်ဆံရေးတွင် အမြဲတမ်း အားနည်းပြီး တစ်ဖက်လူ၏အလိုကျ လိုက်လျောအောက်ကျို့နေရသူများ။\n၂။ ဆက်ဆံရေးတစ်ခုအတွင်း မိမိကိုယ်ကို အကာအကွယ်မပေးနိုင်ဘဲ သားကောင် (Victim) ဘဝသို့ ရောက်ရှိနေသူများ။\n၃။ အပေါ်ယံအချစ်ရေး လမ်းညွှန်ချက်များထက် မိမိ၏စိတ်ခံစားချက်ကို စနစ်တကျ ထိန်းချုပ်အုပ်စိုးလိုသူများ။','၁။ သာမန်စာအုပ်များကဲ့သို့ သည်းခံခွင့်လွှတ်ရုံမျှမဟုတ်ဘဲ မိမိကိုယ်ပိုင်တန်ဖိုးကို မြှင့်တင်ပေးမည့် High-Value စွမ်းအင်များကို နားလည်လာမည်။\n၂။ စာအုပ်တွင်ပါဝင်သော Intro Quiz နှင့် Interactive Test များကြောင့် ဆက်ဆံရေးအတွင်း မိမိ၌ရှိနေသည့် အားနည်းချက်များကို ထိုးထွင်းသိမြင်ပြီး ဉာဏ်ပွင့်သွားမည်။\n၃။ မည်သည့်အခြေအနေမျိုးတွင်မဆို สိတ်ပိုင်းဆိုင်ရာ တုန်လှုပ်ခြင်းမရှိဘဲ ဘုရင်မတစ်ပါးကဲ့သို့ ခိုင်မာပြတ်သားစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
+                    <button class="btn btn-preview" onclick="openReview('The Irreplaceable Queen','၁။ အချစ်ရေးနှင့် ဆက်ဆံရေးတွင် အမြဲတမ်း အားနည်းပြီး တစ်ဖက်လူ၏အလိုကျ လိုက်လျောအောက်ကျို့နေရသူများ။\n၂။ ဆက်ဆံရေးတစ်ခုအတွင်း မိမိကိုယ်ကို အကာအကွယ်မပေးနိုင်ဘဲ သားကောင် (Victim) ဘဝသို့ ရောက်ရှိနေသူများ။\n၃။ အပေါ်ယံအချစ်ရေး လမ်းညွှန်ချက်များထက် မိမိ၏စိတ်ခံစားချက်ကို စနစ်တကျ ထိန်းချုပ်အုပ်စိုးလိုသူများ။','၁။ သာမန်စာအုပ်များကဲ့သို့ သည်းခံခွင့်လွှတ်ရုံမျှမဟုတ်ဘဲ မိမိကိုယ်ပိုင်တန်ဖိုးကို မြှင့်တင်ပေးမည့် High-Value စွမ်းအင်များကို နားလည်လာမည်။\n၂။ စာအုပ်တွင်ပါဝင်သော Intro Quiz Intro Quiz နှင့် Interactive Test များကြောင့် ဆက်ဆံရေးအတွင်း မိမိ၌ရှိနေသည့် အားနည်းချက်များကို ထိုးထွင်းသိမြင်ပြီး ဉာဏ်ပွင့်သွားမည်။\n၃။ မည်သည့်အခြေအနေမျိုးတွင်မဆို สိတ်ပိုင်းဆိုင်ရာ တုန်လှုပ်ခြင်းမရှိဘဲ ဘုရင်မတစ်ပါးကဲ့သို့ ခိုင်မာပြတ်သားစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
                     <a href="the-irreplaceable-queen/index.html" class="btn btn-preview">Read Preview</a>
                     <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">ဒီလျှို့ဝှက်ချက်ကို ပိုင်ဆိုင်မယ်</a>
                 </div>
@@ -620,49 +626,50 @@
         </div>
     </section>
 
-    <!-- REFACTORED SMOOTH INFINITE MARQUEE TESTIMONIALS -->
+    <!-- CLEAN HORIZONTAL CONTINUOUS MARQUEE -->
     <section class="feedback-container">
-        <h2 class="category-title">Verified Reader Feedbacks</h2>
+        <h2 class="category-title" style="padding-left: 4%;">Reader Feedback.</h2>
         <div class="marquee-wrapper">
-            <!-- First Set -->
             <div class="feedback-card">
                 <div class="stars">★★★★★</div>
                 <p class="feedback-text">"The Feminine Protocol ဖတ်ပြီးမှ ကိုယ့်ရဲ့ တည်ရှိမှု Aura ကို ဘယ်လိုထိန်းရမလဲ သဘောပေါက်သွားတယ်။ စကားအများကြီး ပြောစရာမလိုဘဲ လူတွေကို လွှမ်းမိုးနိုင်လာသလို ခံစားရတယ်။"</p>
-                <div class="reviewer-name">- Verified Female Reader</div>
+                <div class="reviewer-name">Verified Female Reader</div>
             </div>
             <div class="feedback-card">
                 <div class="stars">★★★★★</div>
                 <p class="feedback-text">"Beyond the Mask ကတော့ လုံးဝ လက်စွဲပါပဲ။ ပတ်ဝန်းကျင်က လူတွေရဲ့ မျက်နှာဖုံးတွေကို ကြိုမြင်ရတော့ သားကောင်မဖြစ်တော့ဘူး။ High-Value ဖြစ်ချင်သူတွေ ဖတ်သင့်ပါတယ်။"</p>
-                <div class="reviewer-name">- Anonymous Reader</div>
+                <div class="reviewer-name">Anonymous Reader</div>
             </div>
-            <!-- Second Set cloned for seamless looping -->
+            <!-- Loop Clones -->
             <div class="feedback-card">
                 <div class="stars">★★★★★</div>
                 <p class="feedback-text">"The Feminine Protocol ဖတ်ပြီးမှ ကိုယ့်ရဲ့ တည်ရှိမှု Aura ကို ဘယ်လိုထိန်းရမလဲ သဘောပေါက်သွားတယ်။ စကားအများကြီး ပြောစရာမလိုဘဲ လူတွေကို လွှမ်းမိုးနိုင်လာသလို ခံစားရတယ်။"</p>
-                <div class="reviewer-name">- Verified Female Reader</div>
+                <div class="reviewer-name">Verified Female Reader</div>
             </div>
             <div class="feedback-card">
                 <div class="stars">★★★★★</div>
                 <p class="feedback-text">"Beyond the Mask ကတော့ လုံးဝ လက်စွဲပါပဲ။ ပတ်ဝန်းကျင်က လူတွေရဲ့ မျက်နှာဖုံးတွေကို ကြိုမြင်ရတော့ သားကောင်မဖြစ်တော့ဘူး။ High-Value ဖြစ်ချင်သူတွေ ဖတ်သင့်ပါတယ်။"</p>
-                <div class="reviewer-name">- Anonymous Reader</div>
+                <div class="reviewer-name">Anonymous Reader</div>
             </div>
         </div>
     </section>
 
-    <footer>© DASSY DIGITAL LIBRARY | ALL RIGHTS RESERVED</footer>
+    <footer>© DASSY DIGITAL LIBRARY. ALL RIGHTS RESERVED.</footer>
 
-    <button id="backToGatewayBtn" class="back-to-gateway-btn" onclick="returnToGateway()">🏛️ Back to Gateway</button>
+    <!-- STICKY DISCREET CONTROLLER FOR ENTERING GATEWAY BACK -->
+    <button id="backToGatewayBtn" class="back-to-gateway-btn" onclick="returnToGateway()">Change Destination</button>
 
+    <!-- SLEEK MODAL DIALOG -->
     <div id="reviewModal" class="review-modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeReview()">&times;</span>
             <div id="modalBookTitle" class="modal-book-title">Book Title</div>
             <div class="review-section">
-                <div class="review-section-title"><span>✦</span> ဘယ်သူတွေ ဖတ်ရှုသင့်လဲ။</div>
+                <div class="review-section-title">ဘယ်သူတွေ ဖတ်ရှုသင့်လဲ။</div>
                 <div id="modalTargetText" class="review-text">Target Reader Data</div>
             </div>
             <div class="review-section">
-                <div class="review-section-title"><span>✦</span> ဖတ်ရှုပြီးလျှင် ဘာတွေရရှိမလဲ။</div>
+                <div class="review-section-title">ဖတ်ရှုပြီးလျှင် ဘာတွေရရှိမလဲ။</div>
                 <div id="modalBenefitText" class="review-text">Benefit Data</div>
             </div>
         </div>
