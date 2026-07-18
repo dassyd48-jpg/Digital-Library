@@ -56,7 +56,6 @@
     }
     </script>
 
-    <!-- Google Fonts: Used Inter for maximum modern premium feel and Cinzel for luxury headings -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
@@ -68,6 +67,12 @@
             --text-light: #f4f4f5;
             --text-muted: #a1a1aa;
             --premium-glow: rgba(197, 168, 128, 0.15);
+            
+            /* INTRO NEW COLORS */
+            --intro-bg: #030a16; /* Deep Midnight Blue */
+            --intro-gold-text: #ffd700; /* Radiant Medium Gold */
+            --intro-card-gray: #4a4b4d; /* Medium Gray */
+            --intro-card-border: #6b6d70; /* Light Gray for Border */
         }
 
         body, html {
@@ -81,12 +86,12 @@
             overflow-x: hidden;
         }
 
-        /* --- 1. VISUAL GATEWAY SCREEN (Luxury Minimalist Revamp) --- */
+        /* --- 1. VISUAL GATEWAY SCREEN (UPDATED BRANDING) --- */
         #gateway-screen {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100vh;
-            background-color: var(--deep-dark);
+            background-color: var(--intro-bg); /* နက်ပြာရောင် */
             z-index: 9999;
             display: flex;
             align-items: center;
@@ -99,13 +104,13 @@
             width: 90%;
             height: 80vh;
             max-width: 1200px;
-            background: radial-gradient(circle at center, #1c1917 0%, var(--deep-dark) 70%);
-            border: 1px solid rgba(197, 168, 128, 0.1);
+            background: radial-gradient(circle at center, #0a192f 0%, var(--intro-bg) 80%);
+            border: 1px solid rgba(255, 215, 0, 0.15);
             border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
         }
 
         #gateway-screen.fade-out {
@@ -116,8 +121,8 @@
         .door-click-zones {
             display: flex;
             gap: 40px;
-            width: 80%;
-            height: 60%;
+            width: 85%;
+            height: 65%;
             justify-content: center;
             align-items: center;
         }
@@ -127,42 +132,53 @@
             height: 100%;       
             cursor: pointer;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            background: rgba(255, 255, 255, 0.02);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--intro-card-border); /* ခဲရောင် Border */
+            background: var(--intro-card-gray); /* ခဲလတ်လတ်ရောင် */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .click-zone::before {
             font-family: 'Cinzel', serif;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             letter-spacing: 4px;
-            color: var(--text-muted);
-            transition: all 0.4s;
+            color: var(--intro-gold-text); /* ရွှေရောင်လတ်လတ်စာသား */
+            font-weight: 700;
+            text-align: center;
+            transition: all 0.3s;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .zone-psychology::before { content: "PSYCHOLOGY VAULT"; }
         .zone-kids::before { content: "KIDS ACADEMY"; }
 
+        /* Hover States for Interactive Feel */
         .zone-psychology:hover {
-            border-color: rgba(239, 68, 68, 0.3);
-            background: linear-gradient(to bottom, rgba(239, 68, 68, 0.05), transparent);
-            box-shadow: 0 0 50px rgba(239, 68, 68, 0.1);
-            transform: translateY(-5px);
+            border-color: #ffd700;
+            background: #57585a; 
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.25);
+            transform: translateY(-8px);
         }
-        .zone-psychology:hover::before { color: #ef4444; }
+        .zone-psychology:hover::before {
+            transform: scale(1.05);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        }
 
         .zone-kids:hover {
-            border-color: rgba(197, 168, 128, 0.3);
-            background: linear-gradient(to bottom, rgba(197, 168, 128, 0.05), transparent);
-            box-shadow: 0 0 50px rgba(197, 168, 128, 0.15);
-            transform: translateY(-5px);
+            border-color: #ffd700;
+            background: #57585a;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.25);
+            transform: translateY(-8px);
         }
-        .zone-kids:hover::before { color: var(--bright-gold); }
+        .zone-kids:hover::before {
+            transform: scale(1.05);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        }
 
         /* 2. HEADER & MAIN CONTENT */
         header {
@@ -455,7 +471,6 @@
             box-sizing: border-box;
         }
         
-        /* STICKY BACK TO GATEWAY BUTTON STYLE */
         .back-to-gateway-btn {
             position: fixed;
             bottom: 30px;
@@ -483,16 +498,18 @@
             transform: translateY(-3px);
         }
 
-        /* RESPONSIVE RESPONSIVENESS REFINEMENT */
         @media (max-width: 768px) {
             .door-click-zones {
                 flex-direction: column;
-                height: 80%;
-                gap: 20px;
+                height: 85%;
+                gap: 25px;
             }
             .click-zone {
                 width: 100%;
-                height: 45%;
+                height: 46%;
+            }
+            .click-zone::before {
+                font-size: 1.1rem;
             }
             .shelf {
                 grid-template-columns: 1fr;
@@ -513,6 +530,7 @@
 </head>
 <body>
 
+    <!-- VISUAL GATEWAY SCREEN WITH NEW LUXURY BLUE, GRAY & GOLD STYLING -->
     <div id="gateway-screen">
         <div class="gateway-bg-wrapper">
             <div class="door-click-zones">
@@ -531,18 +549,20 @@
         <h2 class="category-title">Psychology Archive</h2>
         <div class="shelf">
             
+            <!-- Book 1 -->
             <div class="vault-item">
                 <div class="tag">Masculinity & Authority</div>
                 <img src="morden-gentleman/page1.jpg" alt="The Modern Gentleman" loading="lazy">
                 <div class="title">The Modern Gentleman</div>
                 <div class="price">15,500 MMK</div>
                 <div class="btn-box">
-                    <button class="btn btn-preview" onclick="openReview('The Modern Gentleman','၁။ ယောက်ျားပီသသော ရင့်ကျက်တည်ငြိမ်မှုနှင့် ကိုယ်ပိုင်ပုံရိပ် (Masculine Image) ကို အဆင့်မြှင့်တင်လိုသော အမျိုးသားများ။\n၂။ လူမှုပတ်ဝန်းကျင်နှင့် လုပ်ငန်းခွင်တွင် အများ၏ လေးစားမှုကို ရရှိစေမည့် နေထိုင်ပြောဆိုနည်းများကို သိလိုသူများ။','၁။ စစ်မှန်သော Gentleman တစ်ဦး၏ စရိုက်လက္ခဏာများနှင့် အပြုအမူဆိုင်ရာ စံနှုန်းများကို ပါးနပ်စွာ နားလည်သွားမည်။\n၂။ မိမိ၏ ဩဇာနှင့် ဆွဲဆောင်မှုကို အပြောအဆို၊ ဝတ်စားဆင်ယင်မှုတို့ဖြင့် အဆင့်အတန်းမြင့်မြင့် ဖော်ဆောင်နိုင်လာမည်။')">Read Review</button>
+                    <button class="btn btn-preview" onclick="openReview('The Modern Gentleman','၁။ ယောက်ျားပီသသော ရင့်ကျက်တည်ငြိမ်မှုနှင့် ကိုယ်ပိုင်ပုံရိပ် (Masculine Image) ကို အဆင့်မြှင့်တင်လိုသော အမျိုးသားများ။\n၂။ လူမှုပတ်ဝန်းကျင်နှင့် လုပ်ငန်းခွင်တွင် အများ၏ လေးစားမှုကို ရရှိစေမည့် နေထိုင်ပြောဆိုနည်းများကို သိလိုသူများ။','၁။ စစ်မှန်သော Gentleman တစ်ဦး၏ စရိုက်လက္ხဏာများနှင့် အပြုအမူဆိုင်ရာ စံနှုန်းများကို ပါးနပ်စွာ နားလည်သွားမည်။\n၂။ မိမိ၏ ဩဇာနှင့် ဆွဲဆောင်မှုကို အပြောအဆို၊ ဝတ်စားဆင်ယင်မှုတို့ဖြင့် အဆင့်အတန်းမြင့်မြင့် ဖော်ဆောင်နိုင်လာမည်။')">Read Review</button>
                     <a href="morden-gentleman/index.html" class="btn btn-preview">Read Preview</a>
                     <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
                 </div>
             </div>
 
+            <!-- Book 2 -->
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
                 <img src="the-feminine-protocol/page1.jpg" alt="The Feminine Protocol" loading="lazy">
@@ -555,6 +575,7 @@
                 </div>
             </div>
 
+            <!-- Book 3 -->
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
                 <img src="the-alpha-shadow/page1.jpg" alt="The Alpha's Shadow" loading="lazy">
@@ -567,6 +588,7 @@
                 </div>
             </div>
 
+            <!-- Book 4 -->
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
                 <img src="the-architect-of-influence/page1.jpg" alt="The Architect Of Influence" loading="lazy">
@@ -579,18 +601,20 @@
                 </div>
             </div>
 
+            <!-- Book 5 -->
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
                 <img src="beyond-the-mask/page1.jpg" alt="Beyond the Mask" loading="lazy">
                 <div class="title">Beyond the Mask</div>
                 <div class="price">7,690 MMK</div>
                 <div class="btn-box">
-                    <button class="btn btn-preview" onclick="openReview('Beyond the Mask','၁။ လူမှုပတ်ဝန်းကျင်တွင် လူများက နေ့စဉ် ပုံစံအမျိုးမျိုးဖြင့် မျက်နှာဖုံးစွပ်၍ ဆက်ဆံနေထိုင်ကြသည့် သဘာဝကို သိလိုသူများ။\n၂။ မိမိအနားရှိသူများ၊ သူငယ်ချင်းများနှင့် ချစ်သူလက်တွဲဖော်ကအစ မိမိအပေါ် မည်သည့်မျက်နှာဖုံး တပ်ဆင်ထားသည်ကို ပါးနပ်စွာ ရိပ်မိလိုသူများ။\n၃။ သာမန်အပေါ်ယံ အမူအရာများနောက်ကွယ်က လူတို့၏ \'တကယ့်မျက်နှာစာအစစ်\' နှင့် လျှို့ဝှက်ချက်များကို အကဲခတ်လိုသူများ။','၁။ လူမှုဆက်ဆံရေးအတွင်း တစ်ဖက်လူ၏ အကွက်များနှင့် ဟန်ဆောင်မှုများကို ကြိုတင်မြင်သာအောင် ကွင်းကွင်းကွက်ကွက် အကဲတ်တတ်လာမည်။\n၂။ မိမိအပေါ် လှည့်စားနေသည့် မျက်နှာဖုံးများကို ခွာချနိုင်ပြီး စိတ္တဗေဒနည်းကျ မျက်စိပွင့်လင်းသွားစေမည်။\n၃။ ပတ်ဝန်းကျင်၏ ကစားကွက်များကြားတွင် မိမိဘက်မှ စိတ်ပိုင်းဆိုင်ရာ ဟန်ချက်မပျက်ဘဲ High-Value အပြည့်ဖြင့် ခိုင်မာစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
+                    <button class="btn btn-preview" onclick="openReview('Beyond the Mask','၁။ လူမှုပတ်ဝန်းကျင်တွင် လူများက နေ့စဉ် ပုံစံအမျိုးမျိုးဖြင့် မျက်နှာဖုံးစွပ်၍ ဆက်ဆံနေထိုင်ကြသည့် သဘာဝကို သိလိုသူများ။\n၂။ မိမိအနားရှိသူများ၊ သူငယ်ချင်းများနှင့် ချစ်သူလက်တွဲဖော်ကအစ မိမိအပေါ် မည်သည့်မျက်နှာဖုံး တပ်ဆင်ထားသည်ကို ပါးနပ်စွာ ရိပ်မိလိုသူများ။\n၃။ သာမန်အပေါ်ယံ အမူအရာများနောက်ကွယ်က လူတို့၏ \'တကယ့်မျက်နှာစာအစစ်\' နှင့် လျှို့ဝှက်ချက်များကို အကဲခတ်လိုသူများ။','၁။ လူမှုဆက်ဆံရေးအတွင်း တစ်ဖက်လူ၏ အကွက်များနှင့် ဟန်ဆောင်မှုများကို ကြိုတင်မြင်သာအောင် ကွင်းကွက်ကွက်ကွက် အကဲတ်တတ်လာမည်။\n၂။ မိမိအပေါ် လှည့်စားနေသည့် မျက်နှာဖုံးများကို ခွာချနိုင်ပြီး စိတ္တဗေဒနည်းကျ မျက်စိပွင့်လင်းသွားစေမည်။\n၃။ ပတ်ဝန်းကျင်၏ ကစားကွက်များကြားတွင် မိမိဘက်မှ စိတ်ပိုင်းဆိုင်ရာ ဟန်ချက်မပျက်ဘဲ High-Value အပြည့်ဖြင့် ခိုင်မာစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
                     <a href="beyond-the-mask/index.html" class="btn btn-preview">Read Preview</a>
                     <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
                 </div>
             </div>
 
+            <!-- Book 6 -->
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
                 <img src="the-ghost-in-his-mind/page1.jpg" alt="Ghost" loading="lazy">
@@ -603,6 +627,7 @@
                 </div>
             </div>
 
+            <!-- Book 7 -->
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
                 <img src="dream-woman/page1.jpg" alt="Dream Woman" loading="lazy">
@@ -615,18 +640,20 @@
                 </div>
             </div>
 
+            <!-- Book 8 -->
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
                 <img src="the-irreplaceable-queen/page1.jpg" alt="Queen" loading="lazy">
                 <div class="title">The Irreplaceable Queen</div>
                 <div class="price">16,700 MMK</div>
                 <div class="btn-box">
-                    <button class="btn btn-preview" onclick="openReview('The Irreplaceable Queen','၁။ အချစ်ရေးနှင့် ဆက်ဆံရေးတွင် အမြဲတမ်း အားနည်းပြီး တစ်ဖက်လူ၏အလိုကျ လိုက်လျောအောက်ကျို့နေရသူများ။\n၂။ ဆက်ဆံရေးတစ်ခုအတွင်း မိမိကိုယ်ကို အကာအကွယ်မပေးနိုင်ဘဲ သားကောင် (Victim) ဘဝသို့ ရောက်ရှိနေသူများ။\n၃။ အပေါ်ယံအချစ်ရေး လမ်းညွှန်ချက်များထက် မိမိ၏စိတ်ခံစားချက်ကို စနစ်တကျ ထိန်းချုပ်အုပ်စိုးလိုသူများ။','၁။ သာမန်စာအုပ်များကဲ့သို့ သည်းခံခွင့်လွှတ်ရုံမျှမဟုတ်ဘဲ မိမိကိုယ်ပိုင်တန်ဖိုးကို မြှင့်တင်ပေးမည့် High-Value စွမ်းအင်များကို နားလည်လာမည်။\n၂။ စာအုပ်တွင်ပါဝင်သော Intro Quiz Intro Quiz နှင့် Interactive Test များကြောင့် ဆက်ဆံရေးအတွင်း မိမိ၌ရှိနေသည့် အားနည်းချက်များကို ထိုးထွင်းသိမြင်ပြီး ဉာဏ်ပွင့်သွားမည်။\n၃။ မည်သည့်အခြေအနေမျိုးတွင်မဆို สိတ်ပိုင်းဆိုင်ရာ တုန်လှုပ်ခြင်းမရှိဘဲ ဘုရင်မတစ်ပါးကဲ့သို့ ခိုင်မာပြတ်သားစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
+                    <button class="btn btn-preview" onclick="openReview('The Irreplaceable Queen','၁။ အချစ်ရေးနှင့် ဆက်ဆံရေးတွင် အမြဲတမ်း အားနည်းပြီး တစ်ဖက်လူ၏အလိုကျ လိုက်လျောအောက်ကျို့နေရသူများ။\n၂။ ဆက်ဆံရေးတစ်ခုအတွင်း မိမိကိုယ်ကို အကာအကွယ်မပေးနိုင်ဘဲ သားကောင် (Victim) ဘဝသို့ ရောက်ရှိနေသူများ။\n၃။ အပေါ်ယံအချစ်ရေး လမ်းညွှန်ချက်များထက် မိမိ၏စိတ်ခံစားချက်ကို စနစ်တကျ ထိန်းချုပ်အုပ်စိုးလိုသူများ။','၁။ သာမန်စာအုပ်များကဲ့သို့ သည်းခံခွင့်လွှတ်ရုံမျှမဟုတ်ဘဲ မိမိကိုယ်ပိုင်တန်ဖိုးကို မြှင့်တင်ပေးမည့် High-Value စွမ်းအင်များကို နားလည်လာမည်။\n၂။ စာအုပ်တွင်ပါဝင်သော Intro Quiz နှင့် Interactive Test များကြောင့် ဆက်ဆံရေးအတွင်း မိမိ၌ရှိနေသည့် အားနည်းချက်များကို ထိုးထွင်းသိမြင်ပြီး ဉာဏ်ပွင့်သွားမည်။\n၃။ မည်သည့်အခြေအနေမျိုးတွင်မဆို စိတ်ပိုင်းဆိုင်ရာ တုန်လှုပ်ခြင်းမရှိဘဲ ဘုရင်မတစ်ပါးကဲ့သို့ ခိုင်မာပြတ်သားစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
                     <a href="the-irreplaceable-queen/index.html" class="btn btn-preview">Read Preview</a>
                     <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
                 </div>
             </div>
 
+            <!-- Book 9 -->
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
                 <img src="the-unreadable-shadow/page1.jpg" alt="Shadow" loading="lazy">
@@ -639,18 +666,20 @@
                 </div>
             </div>
 
+            <!-- Book 10 -->
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
                 <img src="the-unspoken-magnet/page1.jpg" alt="Magnet" loading="lazy">
                 <div class="title">The Unspoken Magnet</div>
                 <div class="price">5,490 MMK</div>
                 <div class="btn-box">
-                    <button class="btn btn-preview" onclick="openReview('The Unspoken Magnet','၁။ အမျိုးသမီးတစ်ဦး၏ နောက်သို့ အတင်းအကျပ် လိုက်လံတောင်းတခြင်းမျိုးမှ ရုန်းထွက်လိုသည့် အမျိုးသားများ။\n၂။ စကားများများပြောပြီး အာရုံစိုက်မှု တောင်းခံမည့်အစား တည်ငြိမ်ပြီး ထိရောက်သော စကားမဲ့ဗျူဟာကို အသုံးချလိုသူများ။\n၃။ မိမိ၏ ပင်ကိုယ် Masculine Aura (ယောက်ျားပီသသော အရှိန်အဝါ) ကို အမြင့်ဆုံးအဆင့်သို့ မြှင့်တင်လိုသူများ။','၁။ တစ်ဖက်လူ၏ မသိစိတ် (Shadow) အထိ စိုးမိုးချုပ်ကိုင်နိုင်မည့် ပြတ်သားသော အကြည့်နှင့် အပြုအမူဆိုင်ရာ စိတ္တဗေဒညှို့ဓာတ်များကို တတ်မြောက်သွားမည်။\n၂။ အတင်းအကျပ် လိုက်ပူဆာစရာမလိုဘဲ တစ်ဖက်လူက မိမိအနားမှ မခွာနိုင်အောင် ဆွဲငင်ဖမ်းစားနိုင်သည့် အတတ်ပညာကို သိရှိရမည်။\n၃။ အမျိုးသမီးများ လေးစားအားကိုးရမည့် \'ဧကရာဇ် (Emperor)\' တစ်ဦးကဲ့သို့ စစ်မှန်ပြီး အဆင့်အတန်းမြင့်သော ဆွဲဆောင်မှုစွမ်းအားကို ပိုင်ဆိုင်လာမည်။')">Read Review</button>
+                    <button class="btn btn-preview" onclick="openReview('The Unspoken Magnet','၁။ အမျိုးသမီးတစ်ဦး၏ နောက်သို့ အတင်းအကျပ် လိုက်လံတောင်းတခြင်းမျိုးမှ ရုန်းထွက်လိုသည့် အမျိုးသားများ။\n၂။ စကားများများပြောပြီး အာရုံစိုက်မှု တောင်းခံမည့်အစား တည်ငြိမ်ပြီး ထိရောက်သော စကားမဲ့ဗျူဟာကို အသုံးချလိုသူများ။\n၃။ မိမိ၏ ပင်ကိုယ် Masculine Aura (ယောက်ျားပီသသော အရှိန်အဝါ) ကို အမြင့်ဆုံးအဆင့်သို့ မြှင့်တင်လိုသူများ။','၁။ တစ်ဖက်လူ၏ မသိစိတ် (Shadow) အထိ စိုးမိုးချုပ်ကိုင်နိုင်မည့် ပြတ်သားသော အကြည့်နှင့် အပြုအမူဆိုင်ရာ စိတ္တဗေဒညှို့ဓာတ်များကို တတ်မြောက်သွားမည်။\n၂။ အတင်းအကျပ် လိုက်ပူဆာစရာမလိုဘဲ တစ်ဖက်လူက မိမိအနားမှ မခွာနိုင်အောင် ဆွဲင်ဖမ်းစားနိုင်သည့် အတတ်ပညာကို သိရှိရမည်။\n၃။ အမျိုးသမီးများ လေးစားအားကိုးရမည့် \'ဧကရာဇ် (Emperor)\' တစ်ဦးကဲ့သို့ စစ်မှန်ပြီး အဆင့်အတန်းမြင့်သော ဆွဲဆောင်မှုစွမ်းအားကို ပိုင်ဆိုင်လာမည်။')">Read Review</button>
                     <a href="the-unspoken-magnet/index.html" class="btn btn-preview">Read Preview</a>
                     <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
                 </div>
             </div>
 
+            <!-- Book 11 -->
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
                 <img src="dominance-code/pages/page2.jpg" alt="The Dominance Code" loading="lazy">
@@ -663,6 +692,7 @@
                 </div>
             </div>
             
+            <!-- Book 12 -->
             <div class="vault-item">
                 <div class="tag">Psychology Archive</div>
                 <img src="generational-trauma/page1.jpg" alt="Generational Trauma" loading="lazy">
