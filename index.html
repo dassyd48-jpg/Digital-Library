@@ -56,61 +56,60 @@
     }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Special+Elite&family=Arimo:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --metallic-gold: #c5a880;
-            --bright-gold: #f3dca2;
-            --deep-dark: #09090b;
-            --card-bg: #121214;
-            --text-light: #f4f4f5;
-            --text-muted: #a1a1aa;
-            --premium-glow: rgba(197, 168, 128, 0.15);
-            
-            /* INTRO NEW COLORS */
-            --intro-bg: #030a16; /* Deep Midnight Blue */
-            --intro-gold-text: #ffd700; /* Radiant Medium Gold */
-            --intro-card-gray: #4a4b4d; /* Medium Gray */
-            --intro-card-border: #6b6d70; /* Light Gray for Border */
+            --metallic-gold: #b38b59;
+            --bright-gold: #e5b869;
+            --header-crimson: #0a0101;
+            --body-black: #030305;
+            --text-gray: #b0b5be;
+            --midnight-blue: #060b14;
+            --medium-gray: #2d3139;
+            --card-glow: rgba(10, 25, 47, 0.6);
         }
 
         body, html {
             margin: 0;
             padding: 0;
-            background-color: var(--deep-dark);
-            color: var(--text-light);
-            font-family: 'Inter', sans-serif;
-            letter-spacing: -0.01em;
+            background-color: var(--body-black);
+            color: var(--text-gray);
+            font-family: 'Special Elite', cursive;
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
 
-        /* --- 1. VISUAL GATEWAY SCREEN (UPDATED BRANDING) --- */
+        /* --- 1. VISUAL GATEWAY SCREEN UPGRADED --- */
         #gateway-screen {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100vh;
-            background-color: var(--intro-bg); /* နက်ပြာရောင် */
+            background-color: var(--midnight-blue);
             z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s;
+            transition: opacity 0.8s ease-in-out, visibility 0.8s;
         }
 
         .gateway-bg-wrapper {
             position: relative;
-            width: 90%;
-            height: 80vh;
+            width: 100%;
+            height: 100vh;
             max-width: 1200px;
-            background: radial-gradient(circle at center, #0a192f 0%, var(--intro-bg) 80%);
-            border: 1px solid rgba(255, 215, 0, 0.15);
-            border-radius: 24px;
+            max-height: 700px;
+            background: url('gateway-bg.jpg') no-repeat center center;
+            background-size: contain;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        #gateway-screen::before {
+            content: '';
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(6, 11, 20, 0.4); z-index: 1; pointer-events: none;
         }
 
         #gateway-screen.fade-out {
@@ -119,418 +118,331 @@
         }
 
         .door-click-zones {
-            display: flex;
-            gap: 40px;
-            width: 85%;
-            height: 65%;
-            justify-content: center;
-            align-items: center;
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
         }
 
         .click-zone {
-            width: 45%;      
-            height: 100%;       
+            position: absolute;
+            bottom: 12%;       
+            width: 22.5%;      
+            height: 52%;       
             cursor: pointer;
-            border-radius: 20px;
-            border: 2px solid var(--intro-card-border); /* ခဲရောင် Border */
-            background: var(--intro-card-gray); /* ခဲလတ်လတ်ရောင် */
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
+            border-radius: 150px 150px 0 0;
+            background-color: var(--medium-gray);
+            border: 2px solid rgba(229, 184, 105, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            box-sizing: border-box;
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .click-zone::before {
-            font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
-            letter-spacing: 4px;
-            color: var(--intro-gold-text); /* ရွှေရောင်လတ်လတ်စာသား */
-            font-weight: 700;
+        /* Zone Labels setup to bring radiant titles */
+        .click-zone::after {
+            font-family: 'Cinzel Decorative', serif;
+            color: var(--bright-gold);
+            font-size: clamp(0.7rem, 1.5vw, 1.1rem);
+            font-weight: 900;
+            letter-spacing: 2px;
             text-align: center;
-            transition: all 0.3s;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 10px rgba(229, 184, 105, 0.6);
+            transition: all 0.4s ease;
         }
 
-        .zone-psychology::before { content: "PSYCHOLOGY VAULT"; }
-        .zone-kids::before { content: "KIDS ACADEMY"; }
-
-        /* Hover States for Interactive Feel */
+        .zone-psychology {
+            left: 20%;         
+        }
+        .zone-psychology::after {
+            content: "PSYCHOLOGY VAULT";
+        }
         .zone-psychology:hover {
-            border-color: #ffd700;
-            background: #57585a; 
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.25);
-            transform: translateY(-8px);
-        }
-        .zone-psychology:hover::before {
-            transform: scale(1.05);
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            transform: translateY(-8px) scale(1.03);
+            background: #363b45;
+            border-color: var(--bright-gold);
+            box-shadow: 0 0 45px rgba(229, 184, 105, 0.7), inset 0 0 25px rgba(229, 184, 105, 0.3);
         }
 
-        .zone-kids:hover {
-            border-color: #ffd700;
-            background: #57585a;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.25);
-            transform: translateY(-8px);
+        .zone-kids {
+            left: 56.5%;       
         }
-        .zone-kids:hover::before {
-            transform: scale(1.05);
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        .zone-kids::after {
+            content: "KIDS ACADEMY";
+        }
+        .zone-kids:hover {
+            transform: translateY(-8px) scale(1.03);
+            background: #363b45;
+            border-color: var(--bright-gold);
+            box-shadow: 0 0 45px rgba(229, 184, 105, 0.7), inset 0 0 25px rgba(229, 184, 105, 0.3);
+        }
+
+        @media (max-width: 1200px) {
+            .gateway-bg-wrapper {
+                width: 100vw;
+                height: calc(100vw * (700 / 1200)); 
+                max-height: 100vh;
+            }
         }
 
         /* 2. HEADER & MAIN CONTENT */
         header {
             text-align: center;
-            padding: 120px 20px 80px;
-            background: linear-gradient(to bottom, #111012 0%, var(--deep-dark) 100%);
-            position: relative;
+            padding: 100px 20px;
+            background: linear-gradient(180deg, var(--header-crimson) 0%, var(--body-black) 100%);
+            border-bottom: 1px solid #111622;
         }
 
         header h1 {
-            font-family: 'Cinzel', serif;
-            background: linear-gradient(135deg, #fff 30%, var(--metallic-gold) 100%);
+            font-family: 'Cinzel Decorative', serif;
+            background: linear-gradient(to bottom, #f3d18c 0%, #b38b59 50%, #6e542b 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-size: clamp(2.5rem, 8vw, 4.2rem);
             margin: 0;
-            letter-spacing: 8px;
-            font-weight: 700;
+            letter-spacing: 10px;
+            text-transform: uppercase; font-weight: 900;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
         }
 
-        header p { 
-            color: var(--metallic-gold);
-            font-size: 0.85rem; 
-            margin-top: 20px; 
-            letter-spacing: 6px; 
-            font-weight: 500;
-            opacity: 0.8;
-        }
+        header p { color: #801818;
+            font-size: 1rem; margin-top: 20px; letter-spacing: 6px; font-weight: bold; }
 
-        .category-container { 
-            width: 90%;
-            max-width: 1300px; 
-            margin: 40px auto; 
-        }
-        
+        .category-container { width: 90%;
+            max-width: 1200px; margin: 60px auto; }
         .category-title {
-            font-family: 'Cinzel', serif;
-            color: #fff;
-            font-size: 1.75rem; 
-            text-transform: uppercase;
-            letter-spacing: 3px; 
-            margin-bottom: 40px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .category-title::after {
-            content: '';
-            flex-grow: 1;
-            height: 1px;
-            background: linear-gradient(to right, rgba(197, 168, 128, 0.3), transparent);
+            font-family: 'Cinzel Decorative', serif;
+            color: var(--metallic-gold);
+            font-size: 2rem; text-transform: uppercase;
+            letter-spacing: 4px; border-left: 4px solid var(--metallic-gold);
+            padding-left: 20px; margin-bottom: 30px;
         }
 
         .shelf {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 35px; 
-            padding-bottom: 60px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px; padding-bottom: 60px;
         }
 
+        /* PREMIUM FLOATING VAULT ITEM CARDS */
         .vault-item {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 24px; 
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            display: flex;
-            flex-direction: column;
+            background: #0b0f17;
+            border: 1px solid #1a2233;
+            padding: 30px; 
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 30px var(--card-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vault-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(229,184,105,0.03) 0%, transparent 100%);
+            pointer-events: none;
         }
 
         .vault-item:hover { 
-            transform: translateY(-8px); 
-            border-color: rgba(197, 168, 128, 0.3);
-            box-shadow: 0 20px 40px var(--premium-glow);
+            transform: translateY(-12px); 
+            border-color: var(--bright-gold); 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 40px rgba(229, 184, 105, 0.15);
         }
         
         .vault-item img { 
             width: 100%; 
-            height: 420px; 
+            height: 400px; 
             object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 24px; 
-            transition: transform 0.5s;
+            border: 1px solid #1a2333; 
+            margin-bottom: 25px; 
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
         }
-        
+
         .vault-item:hover img {
             transform: scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.8), 0 0 25px rgba(6, 11, 20, 0.8);
         }
 
-        .tag { 
-            color: var(--metallic-gold); 
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 2px; 
-            margin-bottom: 12px; 
-            text-transform: uppercase; 
-        }
+        .tag { color: #535f75; font-size: 0.7rem;
+            letter-spacing: 3px; margin-bottom: 10px; text-transform: uppercase; }
 
         .title {
-            font-family: 'Cinzel', serif;
-            font-size: 1.25rem; 
-            color: #fff; 
-            margin-bottom: 15px; 
-            min-height: 55px;
-            display: flex; 
-            align-items: center; 
-            font-weight: 500;
-            line-height: 1.4;
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.2rem; color: #fff; margin-bottom: 20px; min-height: 60px;
+            display: flex; align-items: center; justify-content: center; text-align: center;
         }
 
-        .price { 
-            font-size: 1.3rem; 
-            color: #fff;
-            font-weight: 600; 
-            margin-bottom: 24px;
-            font-family: 'Inter', sans-serif;
-        }
+        .price { font-size: 1.4rem; color: var(--bright-gold); margin-bottom: 30px; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 
-        .btn-box { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            margin-top: auto;
-        }
+        .btn-box { display: flex; flex-direction: column; gap: 12px; }
 
         .btn {
             text-decoration: none;
-            padding: 14px;
-            font-weight: 600; 
-            text-transform: uppercase;
-            letter-spacing: 1.5px; 
-            transition: all 0.3s ease;
-            font-size: 0.8rem; 
-            text-align: center; 
-            cursor: pointer;
-            border-radius: 8px;
+            padding: 15px;
+            font-weight: bold; text-transform: uppercase;
+            letter-spacing: 2px; transition: 0.3s;
+            font-size: 0.9rem; text-align: center; cursor: pointer;
         }
 
-        .btn-preview { 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            color: var(--text-light); 
-            background: rgba(255, 255, 255, 0.02); 
-        }
-        
-        .btn-preview:hover { 
-            border-color: var(--text-light);
-            background: rgba(255, 255, 255, 0.05);
-        }
+        .btn-preview { border: 1px solid #1f2a3f; color: #72819d; background: transparent; }
+        .btn-preview:hover { border-color: var(--bright-gold); color: #fff; background: rgba(229, 184, 105, 0.05); }
 
-        .btn-buy { 
-            background: linear-gradient(135deg, var(--bright-gold) 0%, var(--metallic-gold) 100%); 
-            color: #121214; 
-            border: none; 
-        }
-        
-        .btn-buy:hover { 
-            transform: scale(1.01);
-            box-shadow: 0 8px 24px rgba(197, 168, 128, 0.3); 
-        }
+        .btn-buy { background: linear-gradient(135deg, #0077b3 0%, #0099e6 100%); color: #fff; border: none; box-shadow: 0 4px 15px rgba(0, 153, 230, 0.2); }
+        .btn-buy:hover { background: linear-gradient(135deg, #0088cc 0%, #00a6ff 100%); box-shadow: 0 0 25px rgba(0, 166, 255, 0.6); }
 
-        .divider { 
-            border: 0; 
-            height: 1px; 
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
-            margin: 60px 0; 
-        }
+        .divider { border: 0; height: 1px; background: linear-gradient(to right, transparent, #1f2a3f, transparent);
+            margin: 60px 0; }
 
-        /* FEEDBACK SECTION */
+        /* INFINITE MARQUEE FEEDBACK SECTION */
         .feedback-container { 
-            width: 90%;
-            max-width: 1300px; 
-            margin: 40px auto 100px; 
+            width: 100%;
+            max-width: 100vw; 
+            margin: 0 auto 80px; 
+            overflow: hidden;
+            position: relative;
+            padding: 20px 0;
         }
         
-        .feedback-grid { 
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 30px; 
+        .feedback-container::before, .feedback-container::after {
+            content: '';
+            position: absolute;
+            top: 0; width: 15%; height: 100%;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .feedback-container::before { left: 0; background: linear-gradient(to right, var(--body-black), transparent); }
+        .feedback-container::after { right: 0; background: linear-gradient(to left, var(--body-black), transparent); }
+
+        .marquee-wrapper {
+            display: flex;
+            width: max-content;
+            animation: marqueeTrack 25s linear infinite;
         }
         
+        .marquee-wrapper:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes marqueeTrack {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
         .feedback-card { 
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.02); 
-            padding: 30px; 
-            border-radius: 16px;
+            background: #0b1019;
+            border: 1px solid #182338; 
+            padding: 25px; 
+            width: 350px;
+            margin: 0 15px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: border-color 0.3s ease;
         }
-        
-        .stars { 
-            color: var(--metallic-gold); 
-            margin-bottom: 20px; 
-            font-size: 0.9rem;
-            letter-spacing: 2px;
+        .feedback-card:hover {
+            border-color: var(--metallic-gold);
         }
-        
-        .feedback-text { 
-            color: var(--text-muted); 
-            font-size: 0.95rem; 
-            line-height: 1.7; 
-            font-weight: 300;
-        }
-        
-        .reviewer-name { 
-            color: var(--metallic-gold); 
-            font-size: 0.8rem; 
-            margin-top: 25px; 
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
+        .stars { color: var(--bright-gold); margin-bottom: 15px; }
+        .feedback-text { color: #8e99aa; font-size: 0.9rem; line-height: 1.6; font-style: italic; }
+        .reviewer-name { color: #53627c; font-size: 0.8rem; text-align: right; margin-top: 15px; }
 
         /* REVIEW MODAL */
         .review-modal {
             display: none;
             position: fixed; z-index: 10000; left: 0; top: 0;
-            width: 100%; height: 100%; background-color: rgba(5, 5, 5, 0.85);
-            backdrop-filter: blur(12px);
+            width: 100%; height: 100%; background-color: rgba(3, 5, 8, 0.96);
+            backdrop-filter: blur(10px);
             align-items: center; justify-content: center; padding: 20px;
-            box-sizing: border-box;
         }
-        
         .modal-content {
-            background-color: var(--card-bg);
-            border: 1px solid rgba(197, 168, 128, 0.2);
-            border-radius: 20px;
+            background-color: #0b1019;
+            border: 1px solid var(--bright-gold);
             padding: 40px; width: 100%; max-width: 650px;
-            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-            position: relative; max-height: 85vh; overflow-y: auto;
-            box-sizing: border-box;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            animation: fadeIn 0.4s ease; position: relative; max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 0 50px rgba(229, 184, 105, 0.2);
         }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .close-modal { 
-            position: absolute;
-            top: 20px; right: 25px; 
-            color: var(--text-muted); 
-            font-size: 28px; 
-            cursor: pointer;
-            transition: color 0.2s;
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .close-modal { position: absolute;
+            top: 15px; right: 20px; color: #53627c; font-size: 30px; cursor: pointer; transition: color 0.3s;
         }
         .close-modal:hover { color: #fff; }
-        
-        .modal-book-title { 
-            font-family: 'Cinzel', serif; 
-            color: #fff; 
-            font-size: 1.5rem; 
-            text-align: center;
-            margin-bottom: 30px; 
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-        
-        .review-section { margin-bottom: 30px; }
-        
-        .review-section-title { 
-            color: var(--metallic-gold); 
-            font-size: 0.9rem; 
-            font-weight: 600; 
-            margin-bottom: 14px; 
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-        }
-        
-        .review-text { 
-            color: #d4d4d8; 
-            font-size: 0.95rem;
-            line-height: 1.8; 
-            white-space: pre-line; 
-            background: rgba(0,0,0,0.2); 
-            padding: 24px; 
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.02);
+        .modal-book-title { font-family: 'Cinzel Decorative', serif; color: #fff; font-size: 1.3rem; text-align: center;
+            margin-bottom: 30px; border-bottom: 1px solid #1a253a; padding-bottom: 15px; }
+        .review-section { margin-bottom: 25px; }
+        .review-section-title { color: var(--bright-gold); font-size: 1rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase;
+            display: flex; align-items: center; gap: 10px; }
+        .review-text { color: #ccd2db; font-size: 0.95rem;
+            line-height: 1.8; white-space: pre-line; background: #070b12; padding: 20px; border-left: 2px solid var(--metallic-gold);
         }
 
-        footer { 
-            padding: 60px 20px; 
-            color: var(--text-muted); 
-            font-size: 0.75rem; 
-            letter-spacing: 3px;
-            text-transform: uppercase; 
-            text-align: center; 
-            width: 100%; 
-            border-top: 1px solid rgba(255,255,255,0.02);
-            box-sizing: border-box;
-        }
+        footer { padding: 80px 20px; color: var(--bright-gold); font-size: 0.8rem; letter-spacing: 5px;
+            text-transform: uppercase; text-align: center; width: 100%; background: #04070d; border-top: 1px solid #101724; }
         
+        /* STICKY BACK TO GATEWAY BUTTON STYLE */
         .back-to-gateway-btn {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: rgba(18, 18, 20, 0.9);
+            background: rgba(11, 16, 25, 0.95);
             color: var(--bright-gold);
-            border: 1px solid rgba(197, 168, 128, 0.3);
-            padding: 14px 24px;
-            font-family: 'Cinzel', serif;
+            border: 1px solid var(--metallic-gold);
+            padding: 12px 20px;
+            font-family: 'Cinzel Decorative', serif;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: bold;
             letter-spacing: 2px;
             cursor: pointer;
             z-index: 999;
-            border-radius: 50px;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
             transition: all 0.3s ease;
             display: none;
         }
 
         .back-to-gateway-btn:hover {
             background: var(--bright-gold);
-            color: #121214;
+            color: #000;
+            box-shadow: 0 0 20px rgba(229, 184, 105, 0.6);
             transform: translateY(-3px);
         }
 
+        /* TABLET ADJUSTMENTS */
+        @media (max-width: 1024px) {
+            .click-zone {
+                bottom: 12vh;
+                width: 22%;
+                height: 45vh;
+            }
+            .zone-psychology { left: 22%; }
+            .zone-kids { left: 56%; }
+        }
+
+        /* PHONE ADJUSTMENTS */
         @media (max-width: 768px) {
-            .door-click-zones {
-                flex-direction: column;
-                height: 85%;
-                gap: 25px;
+            .gateway-bg-wrapper {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1200 / 700;
             }
             .click-zone {
-                width: 100%;
-                height: 46%;
+                bottom: 5vh;    
+                width: 23%;     
+                height: 55%;    
             }
-            .click-zone::before {
-                font-size: 1.1rem;
-            }
-            .shelf {
-                grid-template-columns: 1fr;
-            }
-            .vault-item img {
-                height: 380px;
-            }
-            .modal-content {
-                padding: 30px 20px;
-            }
-            .back-to-gateway-btn {
-                bottom: 20px;
-                right: 20px;
-                padding: 12px 20px;
-            }
+            .zone-psychology { left: 21%; } 
+            .zone-kids { left: 55%; }       
+            
+            .back-to-gateway-btn { bottom: 20px; right: 20px; padding: 10px 15px; font-size: 0.7rem; }
+            .shelf { grid-template-columns: 1fr; gap: 25px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- VISUAL GATEWAY SCREEN WITH NEW LUXURY BLUE, GRAY & GOLD STYLING -->
     <div id="gateway-screen">
         <div class="gateway-bg-wrapper">
             <div class="door-click-zones">
@@ -556,9 +468,9 @@
                 <div class="title">The Modern Gentleman</div>
                 <div class="price">15,500 MMK</div>
                 <div class="btn-box">
-                    <button class="btn btn-preview" onclick="openReview('The Modern Gentleman','၁။ ယောက်ျားပီသသော ရင့်ကျက်တည်ငြိမ်မှုနှင့် ကိုယ်ပိုင်ပုံရိပ် (Masculine Image) ကို အဆင့်မြှင့်တင်လိုသော အမျိုးသားများ။\n၂။ လူမှုပတ်ဝန်းကျင်နှင့် လုပ်ငန်းခွင်တွင် အများ၏ လေးစားမှုကို ရရှိစေမည့် နေထိုင်ပြောဆိုနည်းများကို သိလိုသူများ။','၁။ စစ်မှန်သော Gentleman တစ်ဦး၏ စရိုက်လက္ხဏာများနှင့် အပြုအမူဆိုင်ရာ စံနှုန်းများကို ပါးနပ်စွာ နားလည်သွားမည်။\n၂။ မိမိ၏ ဩဇာနှင့် ဆွဲဆောင်မှုကို အပြောအဆို၊ ဝတ်စားဆင်ယင်မှုတို့ဖြင့် အဆင့်အတန်းမြင့်မြင့် ဖော်ဆောင်နိုင်လာမည်။')">Read Review</button>
+                    <button class="btn btn-preview" onclick="openReview('The Modern Gentleman','၁။ ယောက်ျားပီသသော ရင့်ကျက်တည်ငြိမ်မှုနှင့် ကိုယ်ပိုင်ပုံရိပ် (Masculine Image) ကို အဆင့်မြှင့်တင်လိုသော အမျိုးသားများ။\n၂။ လူမှုပတ်ဝန်းကျင်နှင့် လုပ်ငန်းခွင်တွင် အများ၏ လေးစားမှုကို ရရှိစေမည့် နေထိုင်ပြောဆိုနည်းများကို သိလိုသူများ။','၁။ စစ်မှန်သော Gentleman တစ်ဦး၏ စရိုက်လက္ခဏာများနှင့် အပြုအမူဆိုင်ရာ စံနှုန်းများကို ပါးနပ်စွာ နားလည်သွားမည်။\n၂။ မိမိ၏ ဩဇာနှင့် ဆွဲဆောင်မှုကို အပြောအဆို၊ ဝတ်စားဆင်ယင်မှုတို့ဖြင့် အဆင့်အတန်းမြင့်မြင့် ဖော်ဆောင်နိုင်လာမည်။')">Read Review</button>
                     <a href="morden-gentleman/index.html" class="btn btn-preview">Read Preview</a>
-                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Unlock Exclusive Access 🔑</a>
                 </div>
             </div>
 
@@ -571,7 +483,7 @@
                 <div class="btn-box">
                     <button class="btn btn-preview" onclick="openReview('The Feminine Protocol','အပေါ်ယံ ရုပ်ပိုင်းဆိုင်ရာ အလှအပများထက် ပိုမိုနက်နဲလှသော မိန်းမသားတစ်ယောက်၏ အတွင်းစိတ်အခံနှင့် မမြင်ရသည့် စွမ်းအင်အရှိန်အဝါ (Feminine Aura) ကို ဗျူဟာမြောက် အသုံးချတတ်ပုံများကို ပါးနပ်စွာ ရိပ်မိနားလည်လိုသည့် အမျိုးသားများ ဖတ်ရှုရန် ထိပ်တန်းကျမ်းဖြစ်သည်။','၁။ မလိုလားအပ်သည့် စကားလုံးများဖြင့် အားအင်ကုန်ခမ်းခံမည့်အစား မိန်းမသားတစ်ဦး၏ အားသာချက် Protocol များကို စနစ်တကျအသုံးပြုကာ ပတ်ဝန်းကျင်နှင့် လူများကို မည်သို့ လျှို့ဝှက်ညှို့ယူလွှမ်းမိုးတတ်သလဲဆိုသည့် အမျိုးသမီးထု၏ စိတ်အမှောင်ခြမ်းဗျူဟာများကို ဖော်ထုတ်သိရှိသွားမည်။\n၂။ ကိုယ့်ကိုယ်ကိုယ် ယုံကြည်မှု ကုန်ခမ်းနေသည့် အမျိုးသမီးများကို တည်ငြိမ်ခန့်ညားသော Aura ပိုင်ရှင်အဖြစ် ပြောင်းလဲပေးနိုင်သည့် premium လမ်းညွှန်ချက်များကို ထိုးထွင်းသိမြင်သွားမည်။\n၃။ ဆက်ဆံရေးအတွင်း အမျိုးသားများအနေဖြင့် တုန်လှုပ်ခြင်းမရှိဘဲ အသာစီးရယူကာ တည်ငြိမ်ခန့်ညားစွာ ကိုင်တွယ်နိုင်မည့် စွမ်းရည်များ ရရှိမည်။')">Read Review</button>
                     <a href="the-feminine-protocol/index.html" class="btn btn-preview">Read Preview</a>
-                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">ဒီလျှို့ဝှက်ချက်ကို ပိုင်ဆိုင်မယ်</a>
                 </div>
             </div>
 
@@ -584,7 +496,7 @@
                 <div class="btn-box">
                     <button class="btn btn-preview" onclick="openReview('The Alpha\'s Shadow','အမျိုးသားများ၏ မသိစိတ်အမှောင်ခြမ်းဗျူဟာများနှင့် ၎င်းတို့၏ စိတ်ကွယ်ရာ အရိပ် (The Alpha\'s Shadow) ကို ထိုးထွင်းသိမြင်ပြီး ဆက်ဆံရေးတွင် ပါးနပ်စွာ အသာစီးရယူ လွှမ်းမိုးလိုသည့် အမျိုးသမီးများ ဖတ်ရှုရန် ထိပ်တန်းကျမ်းဖြစ်သည်။','၁။ အမျိုးသားတို့၏ အနိမ့်ဆုံး စိတ်ခံစားချက်များနှင့် အားနည်းချက်များကို သိပ္ပံနှင့် စိတ္တဗေဒနည်းကျကျ ထိုးထွင်းသိမြင် နားလည်သွားမည်။\n၂။ ဘဝစစ်ပွဲများနှင့် ဆက်ဆံရေးများတွင် သားကောင်အဖြစ် အနိုင်ကျင့် မခံရစေရန် မိမိကိုယ်ကိုယ် အရိပ်တစ်ခုလို လျှို့ဝှက်အကာအကွယ်ပေးတတ်လာမည်။\n၃။ မည်သည့်အခြေအနေမျိုးတွင်မဆို စိတ်ပိုင်းဆိုင်ရာ တုန်လှုပ်ခြင်းမရှိဘဲ တည်ငြိမ်ရင့်ကျက်စွာဖြင့် အမျိုးသားထုကို လွှမ်းမိုးထိန်းချုပ်နိုင်မည့် Premium ဗျူဟာများကို တတ်မြောက်မည်။')">Read Review</button>
                     <a href="the-alpha-shadow/index.html" class="btn btn-preview">Read Preview</a>
-                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Unlock Exclusive Access 🔑</a>
                 </div>
             </div>
 
@@ -597,7 +509,7 @@
                 <div class="btn-box">
                     <button class="btn btn-preview" onclick="openReview('The Architect Of Influence','၁။ စီးပွားရေးလုပ်ငန်းကို ဦးဆောင်နေပြီး ညှိနှိုင်းဆွေးနွေးပွဲ (Negotiation) နယ်ပယ်တွင် အမြဲအသာစီးရလိုသူများ။\n၂။ အတင်းအကျပ် ဖိအားပေးစရာမလိုဘဲ တစ်ဖက်လူက မိမိအလိုကျ လိုလိုလားလား ဖြစ်လာအောင် လွှမ်းမိုးလိုသူများ။\n၃။ Client များ၊ ပါတနာများနှင့် ဝန်ထမ်းများအပေါ် စကားလုံးထက် မိမိ၏ တည်ရှိမှု Aura ဖြင့် ဩဇာသက်ရောက်ချင်သူများ။','၁။ သာမန်အပေါ်ယံစကားပြောနည်းများထက် ပိုမိုနက်နဲသော \'စကားမဲ့လွှမ်းမိုးနည်း\' များကို စနစ်တကျ တတ်မြောက်သွားမည်။\n၂။ မိမိ၏ လုပ်ငန်းခွင်ရပ်တည်မှု (Status) နှင့် ပြတ်သားသော ဆုံးဖြတ်ချက်များကို အကွက်ကျကျ ဗိသုကာပညာရပ်တစ်ခုလို တည်ဆောက်တတ်လာမည်။\n၃။ Сီးပွားရေးလောကတွင် အတင်းအဓမ္မ Force သုံးမည့်အစား ဉာဏ်ပညာဖြင့် အားလုံး၏အထက်မှ ပါးနပ်စွာ ဦးဆောင်ချုပ်ကိုင်နိုင်မည်။')">Read Review</button>
                     <a href="the-architect-of-influence/index.html" class="btn btn-preview">Read Preview</a>
-                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">ဒီလျှို့ဝှက်ချက်ကို ပိုင်ဆိုင်မယ်</a>
                 </div>
             </div>
 
@@ -608,9 +520,9 @@
                 <div class="title">Beyond the Mask</div>
                 <div class="price">7,690 MMK</div>
                 <div class="btn-box">
-                    <button class="btn btn-preview" onclick="openReview('Beyond the Mask','၁။ လူမှုပတ်ဝန်းကျင်တွင် လူများက နေ့စဉ် ပုံစံအမျိုးမျိုးဖြင့် မျက်နှာဖုံးစွပ်၍ ဆက်ဆံနေထိုင်ကြသည့် သဘာဝကို သိလိုသူများ။\n၂။ မိမိအနားရှိသူများ၊ သူငယ်ချင်းများနှင့် ချစ်သူလက်တွဲဖော်ကအစ မိမိအပေါ် မည်သည့်မျက်နှာဖုံး တပ်ဆင်ထားသည်ကို ပါးနပ်စွာ ရိပ်မိလိုသူများ။\n၃။ သာမန်အပေါ်ယံ အမူအရာများနောက်ကွယ်က လူတို့၏ \'တကယ့်မျက်နှာစာအစစ်\' နှင့် လျှို့ဝှက်ချက်များကို အကဲခတ်လိုသူများ။','၁။ လူမှုဆက်ဆံရေးအတွင်း တစ်ဖက်လူ၏ အကွက်များနှင့် ဟန်ဆောင်မှုများကို ကြိုတင်မြင်သာအောင် ကွင်းကွက်ကွက်ကွက် အကဲတ်တတ်လာမည်။\n၂။ မိမိအပေါ် လှည့်စားနေသည့် မျက်နှာဖုံးများကို ခွာချနိုင်ပြီး စိတ္တဗေဒနည်းကျ မျက်စိပွင့်လင်းသွားစေမည်။\n၃။ ပတ်ဝန်းကျင်၏ ကစားကွက်များကြားတွင် မိမိဘက်မှ စိတ်ပိုင်းဆိုင်ရာ ဟန်ချက်မပျက်ဘဲ High-Value အပြည့်ဖြင့် ခိုင်မာစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
+                    <button class="btn btn-preview" onclick="openReview('Beyond the Mask','၁။ လူမှုပတ်ဝန်းကျင်တွင် လူများက နေ့စဉ် ပုံစံအမျိုးမျိုးဖြင့် မျက်နှာဖုံးစွပ်၍ ဆက်ဆံနေထိုင်ကြသည့် သဘာဝကို သိလိုသူများ။\n၂။ မိမိအနားရှိသူများ၊ သူငယ်ချင်းများနှင့် ချစ်သူလက်တွဲဖော်ကအစ မိမိအပေါ် မည်သည့်မျက်နှာဖုံး တပ်ဆင်ထားသည်ကို ပါးနပ်စွာ ရိပ်မိလိုသူများ။\n၃။ သာမန်အပေါ်ယံ အမူအရာများနောက်ကွယ်က လူတို့၏ \'တကယ့်မျက်နှာစာအစစ်\' နှင့် လျှို့ဝှက်ချက်များကို အကဲခတ်လိုသူများ။','၁။ လူမှုဆက်ဆံရေးအတွင်း တစ်ဖက်လူ၏ အကွက်များနှင့် ဟန်ဆောင်မှုများကို ကြိုတင်မြင်သာအောင် ကွင်းကွင်းကွက်ကွက် အကဲတ်တတ်လာမည်။\n၂။ မိမိအပေါ် လှည့်စားနေသည့် မျက်နှာဖုံးများကို ခွာချနိုင်ပြီး စိတ္တဗေဒနည်းကျ မျက်စိပွင့်လင်းသွားစေမည်။\n၃။ ပတ်ဝန်းကျင်၏ ကစားကွက်များကြားတွင် မိမိဘက်မှ စိတ်ပိုင်းဆိုင်ရာ ဟန်ချက်မပျက်ဘဲ High-Value အပြည့်ဖြင့် ခိုင်မာစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
                     <a href="beyond-the-mask/index.html" class="btn btn-preview">Read Preview</a>
-                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Unlock Exclusive Access 🔑</a>
                 </div>
             </div>
 
@@ -623,7 +535,7 @@
                 <div class="btn-box">
                     <button class="btn btn-preview" onclick="openReview('The Phantom of His Mind','၁။ အချစ်ရေးတွင် သာမန်အဆင့်ထက်ကျော်လွန်၍ တစ်ဖက်အမျိုးသား၏ စိတ်အာရုံထဲတွင် မေ့ဖျောက်၍မရနိုင်သော ပုံရိပ်တစ်ခု ဖြစ်လိုသူများ။\n၂။ ရုပ်ပိုင်းဆိုင်ရာ အပေါ်ယံချည်နှောင်မှုထက် ပိုမိုနက်နဲသော တစ်ဖက်လူ၏ မသိစိတ်အမှောင်ကမ္ဘာ (Subconscious Mind) ကို စိုးမိုးလိုသူများ။\n၃။ ဆက်ဆံရေးအတွင်း မိမိကိုယ်ကို အမြတ်ထုတ်မခံရစေရန် တစ်ဖက်လူ၏ စိတ်ကစားပုံဗျူဟာများကို ကြိုတင်သိရှိလိုသူများ။','၁။ အမျိုးသားတစ်ဦး၏ အတွေး၊ အာရုံနှင့် နေ့စဉ်ဘဝထဲတွင် မိမိ၏တည်ရှိမှုကို \'အရိပ်မဲ့ဝိညာဉ်တစ်ခု\' ကဲ့သို့ ထာဝရစွဲလမ်းကျန်ရစ်စေမည့် စိတ္တဗေဒလှည့်ကွက်များကို တတ်မြောက်သွားမည်။\n၂။ အပေါ်ယံ အလိုက်အထိုက်နေရသည့် ဘဝမှရုန်းထွက်ကာ တစ်ဖက်လူ၏ စိတ်ကမ္ဘာကို ဗျူဟာမြောက် ကျူးကျော်စိုးမိုးနိုင်မည့် နည်းလမ်းများကို သိရှိရမည်။\n၃။ ဆက်ဆံရေးနယ်ပယ်တွင် တစ်ဖက်လူ၏ စိတ်ကစားမှုများကို ကြိုတင်ရိပ်မိပြီး မိမိဘက်မှ အမြဲတမ်း အသာစီးရယူ ခိုင်မာစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
                     <a href="the-ghost-in-his-mind/index.html" class="btn btn-preview">Read Preview</a>
-                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">ဒီလျှို့ဝှက်ချက်ကို ပိုင်ဆိုင်မယ်</a>
                 </div>
             </div>
 
@@ -636,7 +548,7 @@
                 <div class="btn-box">
                     <button class="btn btn-preview" onclick="openReview('How a Man Picks His Dream Woman','၁။ ယောက်ျားများမှာ ရုပ်ရည်လှပရုံ၊ အလိုလိုက်ရုံဖြင့် အသည်းစွဲချစ်လာလိမ့်မည်ဟု အပေါ်ယံထင်မှတ်နေသူများ။\n၂။ တစ်ဖက်လူနောက်သို့ အမြဲလိုက်လံတွယ်ကပ်နေရပြီး အချစ်ရေးတွင် အောက်စီးမှ သားကောင်ဖြစ်နေသည့် အမျိုးသမီးများ။\n၃။ ယောက်ျားတစ်ဦး၏ မသိစိတ် (Subconscious Mind) က တကယ့်ကို တမ်းတရိုသေရမည့် Dream Woman စံနှုန်းကို သိလိုသူများ။','၁။ ယောက်ျားတစ်ယောက်က ဘဝလက်တွဲဖော်ကို မည်သည့်စံနှုန်းများဖြင့် လျှို့ဝှက်ရွေးချယ်တတ်ကြောင်း စိတ္တဗေဒနည်းကျ နားလည်သွားမည်။\n၂။ မိမိဘက်က လိုက်ရှာစရာမလိုဘဲ တစ်ဖက်လူက မဆုံးရှုံးချင်ရလောက်အောင် လေးစားတန်ဖိုးထားရမည့် High-Value စရိုက်လက္ခဏာကို တည်ဆောက်တတ်လာမည်။\n၃။ မိမိ၏ ပင်ကိုယ်ညှို့ဓာတ်ကို အမြင့်ဆုံးမြှင့်တင်ပြီး တစ်ဖက်လူ၏ နှလုံးသားကို အထက်စီးမှ အပိုင်စား စိုးမိုးနိုင်မည့် နည်းလမ်းများကို ရရှိမည်။')">Read Review</button>
                     <a href="dream-woman/index.html" class="btn btn-preview">Read Preview</a>
-                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Unlock Exclusive Access 🔑</a>
                 </div>
             </div>
 
@@ -647,9 +559,9 @@
                 <div class="title">The Irreplaceable Queen</div>
                 <div class="price">16,700 MMK</div>
                 <div class="btn-box">
-                    <button class="btn btn-preview" onclick="openReview('The Irreplaceable Queen','၁။ အချစ်ရေးနှင့် ဆက်ဆံရေးတွင် အမြဲတမ်း အားနည်းပြီး တစ်ဖက်လူ၏အလိုကျ လိုက်လျောအောက်ကျို့နေရသူများ။\n၂။ ဆက်ဆံရေးတစ်ခုအတွင်း မိမိကိုယ်ကို အကာအကွယ်မပေးနိုင်ဘဲ သားကောင် (Victim) ဘဝသို့ ရောက်ရှိနေသူများ။\n၃။ အပေါ်ယံအချစ်ရေး လမ်းညွှန်ချက်များထက် မိမိ၏စိတ်ခံစားချက်ကို စနစ်တကျ ထိန်းချုပ်အုပ်စိုးလိုသူများ။','၁။ သာမန်စာအုပ်များကဲ့သို့ သည်းခံခွင့်လွှတ်ရုံမျှမဟုတ်ဘဲ မိမိကိုယ်ပိုင်တန်ဖိုးကို မြှင့်တင်ပေးမည့် High-Value စွမ်းအင်များကို နားလည်လာမည်။\n၂။ စာအုပ်တွင်ပါဝင်သော Intro Quiz နှင့် Interactive Test များကြောင့် ဆက်ဆံရေးအတွင်း မိမိ၌ရှိနေသည့် အားနည်းချက်များကို ထိုးထွင်းသိမြင်ပြီး ဉာဏ်ပွင့်သွားမည်။\n၃။ မည်သည့်အခြေအနေမျိုးတွင်မဆို စိတ်ပိုင်းဆိုင်ရာ တုန်လှုပ်ခြင်းမရှိဘဲ ဘုရင်မတစ်ပါးကဲ့သို့ ခိုင်မာပြတ်သားစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
+                    <button class="btn btn-preview" onclick="openReview('The Irreplaceable Queen','၁။ အချစ်ရေးနှင့် ဆက်ဆံရေးတွင် အမြဲတမ်း အားနည်းပြီး တစ်ဖက်လူ၏အလိုကျ လိုက်လျောအောက်ကျို့နေရသူများ။\n၂။ ဆက်ဆံရေးတစ်ခုအတွင်း မိမိကိုယ်ကို အကာအကွယ်မပေးနိုင်ဘဲ သားကောင် (Victim) ဘဝသို့ ရောက်ရှိနေသူများ။\n၃။ အပေါ်ယံအချစ်ရေး လမ်းညွှန်ချက်များထက် မိမိ၏စိတ်ခံစားချက်ကို စနစ်တကျ ထိန်းချုပ်အုပ်စိုးလိုသူများ။','၁။ သာမန်စာအုပ်များကဲ့သို့ သည်းခံခွင့်လွှတ်ရုံမျှမဟုတ်ဘဲ မိမိကိုယ်ပိုင်တန်ဖိုးကို မြှင့်တင်ပေးမည့် High-Value စွမ်းအင်များကို နားလည်လာမည်။\n၂။ စာအုပ်တွင်ပါဝင်သော Intro Quiz နှင့် Interactive Test များကြောင့် ဆက်ဆံရေးအတွင်း မိမိ၌ရှိနေသည့် အားနည်းချက်များကို ထိုးထွင်းသိမြင်ပြီး ဉာဏ်ပွင့်သွားမည်။\n၃။ မည်သည့်အခြေအနေမျိုးတွင်မဆို สိတ်ပိုင်းဆိုင်ရာ တုန်လှုပ်ခြင်းမရှိဘဲ ဘုရင်မတစ်ပါးကဲ့သို့ ခိုင်မာပြတ်သားစွာ ရပ်တည်နိုင်မည်။')">Read Review</button>
                     <a href="the-irreplaceable-queen/index.html" class="btn btn-preview">Read Preview</a>
-                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">ဒီလျှို့ဝှက်ချက်ကို ပိုင်ဆိုင်မယ်</a>
                 </div>
             </div>
 
@@ -662,7 +574,7 @@
                 <div class="btn-box">
                     <button class="btn btn-preview" onclick="openReview('The Unreadable Shadow','၁။ လူမှုပတ်ဝန်းကျင်နှင့် ဆက်ဆံရေးကစားကွက်များကြားတွင် အလွယ်တကူ အဖတ်ခံလိုက်ရပြီး အမြဲအောက်ကျို့နေရသူများ။\n၂။ တစ်ဖက်လူက မိမိ၏ အတွေး၊ စိတ်ကူးနှင့် အကွက်များကို ကြိုတင်မခန့်မှန်းနိုင်အောင် နေထိုင်လိုသူများ။\n၃။ အပေါ်ယံစာအုပ်များထက် လူ့လောကထဲတွင် မိမိကိုယ်ကို အကာအကွယ်ပေးမည့် ဗျူဟာမြောက်လက်နက်ကို ရှာဖွေနေသူများ။','၁။ မည်သူမျှ လာရောက်မကစားနိုင်သည့်၊ အတွေးအကွက်ကို ကြိုတင်ဖတ်၍မရသည့် \'The Unreadable Shadow\' တစ်ယောက်အဖြစ် မည်သို့ရပ်တည်ရမည်ကို တတ်မြောက်သွားမည်။\n၂။ လူမှုနယ်ပယ်စစ်ပွဲများတွင် သားကောင်အဖြစ် အနိုင်ကျင့်မခံရစေရန် မိမိကိုယ်ကိုယ် ပါးနပ်စွာ အကာအကွယ်ပေးတတ်လာမည်။\n၃။ ဆက်ဆံရေးတိုင်းတွင် တစ်ဖက်လူထက် အမြဲခြေတစ်လှမ်းဦးအောင် ကြိုမြင်နိုင်ပြီး အထက်စီးမှ ပါးနပ်စွာ အနိုင်ယူနိုင်မည့် ဗျူဟာများကို ပိုင်ဆိုင်ရမည်။')">Read Review</button>
                     <a href="the-unreadable-shadow/index.html" class="btn btn-preview">Read Preview</a>
-                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Unlock Exclusive Access 🔑</a>
                 </div>
             </div>
 
@@ -673,9 +585,9 @@
                 <div class="title">The Unspoken Magnet</div>
                 <div class="price">5,490 MMK</div>
                 <div class="btn-box">
-                    <button class="btn btn-preview" onclick="openReview('The Unspoken Magnet','၁။ အမျိုးသမီးတစ်ဦး၏ နောက်သို့ အတင်းအကျပ် လိုက်လံတောင်းတခြင်းမျိုးမှ ရုန်းထွက်လိုသည့် အမျိုးသားများ။\n၂။ စကားများများပြောပြီး အာရုံစိုက်မှု တောင်းခံမည့်အစား တည်ငြိမ်ပြီး ထိရောက်သော စကားမဲ့ဗျူဟာကို အသုံးချလိုသူများ။\n၃။ မိမိ၏ ပင်ကိုယ် Masculine Aura (ယောက်ျားပီသသော အရှိန်အဝါ) ကို အမြင့်ဆုံးအဆင့်သို့ မြှင့်တင်လိုသူများ။','၁။ တစ်ဖက်လူ၏ မသိစိတ် (Shadow) အထိ စိုးမိုးချုပ်ကိုင်နိုင်မည့် ပြတ်သားသော အကြည့်နှင့် အပြုအမူဆိုင်ရာ စိတ္တဗေဒညှို့ဓာတ်များကို တတ်မြောက်သွားမည်။\n၂။ အတင်းအကျပ် လိုက်ပူဆာစရာမလိုဘဲ တစ်ဖက်လူက မိမိအနားမှ မခွာနိုင်အောင် ဆွဲင်ဖမ်းစားနိုင်သည့် အတတ်ပညာကို သိရှိရမည်။\n၃။ အမျိုးသမီးများ လေးစားအားကိုးရမည့် \'ဧကရာဇ် (Emperor)\' တစ်ဦးကဲ့သို့ စစ်မှန်ပြီး အဆင့်အတန်းမြင့်သော ဆွဲဆောင်မှုစွမ်းအားကို ပိုင်ဆိုင်လာမည်။')">Read Review</button>
+                    <button class="btn btn-preview" onclick="openReview('The Unspoken Magnet','၁။ အမျိုးသမီးတစ်ဦး၏ နောက်သို့ အတင်းအကျပ် လိုက်လံတောင်းတခြင်းမျိုးမှ ရုန်းထွက်လိုသည့် အမျိုးသားများ။\n၂။ စကားများများပြောပြီး အာရုံစိုက်မှု တောင်းခံမည့်အစား တည်ငြိမ်ပြီး ထိရောက်သော စကားမဲ့ဗျူဟာကို အသုံးချလိုသူများ။\n၃။ မိမိ၏ ပင်ကိုယ် Masculine Aura (ယောက်ျားပီသသော အရှိန်အဝါ) ကို အမြင့်ဆုံးအဆင့်သို့ မြှင့်တင်လိုသူများ။','၁။ တစ်ဖက်လူ၏ မသိစိတ် (Shadow) အထိ စိုးမိုးချုပ်ကိုင်နိုင်မည့် ပြတ်သားသော အကြည့်နှင့် အပြုအမူဆိုင်ရာ စိတ္တဗေဒညှို့ဓာတ်များကို တတ်မြောက်သွားမည်။\n၂။ အတင်းအကျပ် လိုက်ပူဆာစရာမလိုဘဲ တစ်ဖက်လူက မိမိအနားမှ မခွာနိုင်အောင် ဆွဲငင်ဖမ်းစားနိုင်သည့် အတတ်ပညာကို သိရှိရမည်။\n၃။ အမျိုးသမီးများ လေးစားအားကိုးရမည့် \'ဧကရာဇ် (Emperor)\' တစ်ဦးကဲ့သို့ စစ်မှန်ပြီး အဆင့်အတန်းမြင့်သော ဆွဲဆောင်မှုစွမ်းအားကို ပိုင်ဆိုင်လာမည်။')">Read Review</button>
                     <a href="the-unspoken-magnet/index.html" class="btn btn-preview">Read Preview</a>
-                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">ဒီလျှို့ဝှက်ချက်ကို ပိုင်ဆိုင်မယ်</a>
                 </div>
             </div>
 
@@ -688,7 +600,7 @@
                 <div class="btn-box">
                     <button class="btn btn-preview" onclick="openReview('The Dominance Code','၁။ လုပ်ငန်းခွင်နှင့် လူမှုပတ်ဝန်းကျင်တွင် ထိပ်ဆုံးမှနေ၍ ရင့်ကျက်တည်ငြိမ်စွာ ဦးဆောင်လိုသူများ။\n၂။ လူများကို ဒေါသ သို့မဟုတ် အတင်းအကျပ် အမိန့်ပေးခြင်းဖြင့် ထိန်းချုပ်ရန် ကြိုးစားနေမိသူများ။\n၃။ စကားလုံး အေးအေးဆေးဆေးနှင့် တည်ငြိမ်လှသည့် Aura (အရှိန်အဝါ) ကို အသုံးချပြီး ဩဇာထူထောင်လိုသူများ။','၁။ စစ်မှန်သော ဩဇာ (Power) နှင့် အတင်းအကျပ် အင်အား (Force) တို့၏ ကွာခြားချက်ကို သိပ္ပံနှင့် စိတ္တဗေဒနည်းကျကျ နားလည်သွားမည်။\n၂။ တစ်ဖက်လူက မိမိအပေါ် အလိုလို ခန့်ညားရိုသေလာအောင် ပါးနပ်စွာ ဆွဲဆောင်နိုင်မည့် နည်းဗျူဟာများကို တတ်မြောက်လိမ့်မည်။\n၃။ အတင်းအဓမ္မ ဖိအားပေးစရာမလိုဘဲ အားလုံး၏အထက်မှ ပါးနပ်စွာ ဦးဆောင်နိုင်သော စစ်မှန်သည့် ခေါင်းဆောင် (Leader) တစ်ဦး ဖြစ်လာမည်။')">Read Review</button>
                     <a href="dominance-code/index.html" class="btn btn-preview">Read Preview</a>
-                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Unlock Exclusive Access 🔑</a>
                 </div>
             </div>
             
@@ -701,16 +613,29 @@
                 <div class="btn-box">
                     <button class="btn btn-preview" onclick="openReview('Generational Trauma','၁။ မိသားစု သို့မဟုတ် မိဘများထံမှ သမိုင်းမတင်သော စိတ်ဒဏ်ရာများ၊ စိတ်အကျဉ်းအကျပ်များကို ခံစားနေရသူများ။\n၂။ အတိတ်က နာကျင်မှုတွေကြောင့် ပစ္စုပ္ပန်ဆက်ဆံရေးနှင့် ဘဝတိုးတက်မှုများတွင် ရှေ့မဆက်နိုင်ဘဲ ပိတ်မိနေသူများ။\n၃။ မိမိမျိုးဆက်မှစ၍ အဆိပ်အတောက်ဖြစ်စေသော စိတ်ဒဏ်ရာကွင်းဆက် (Toxic Cycle) များကို အပြီးတိုင် ဖြတ်တောက်လိုသူများ။','၁။ မျိုးဆက်တစ်ခုမှ တစ်ခုသို့ လက်ဆင့်ကမ်းလာသော စိတ်ဒဏ်ရာ (Generational Trauma) များ၏ အရင်းအမြစ်ကို ရှာဖွေကုစားနည်းများကို နားလည်သွားမည်။\n၂။ မိမိကိုယ်မိမိ နားလည်ခွင့်လွှတ်လာနိုင်ပြီး စိတ်ပိုင်းဆိုင်ရာ လွတ်မြောက်မှုနှင့် တည်ငြိမ်မှုကို ရရှိစေမည်။\n၃။ နောက်ထပ် မျိုးဆက်သစ်များထံသို့ ထိုစိတ်ဒဏ်ရာများ ဆက်မပါသွားစေရန် ပါးနပ်စွာ ကာကွယ် တားဆီးနိုင်လိမ့်မည်။')">Read Review</button>
                     <a href="generational-trauma/index.html" class="btn btn-preview">Read Preview</a>
-                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">Telegram မှာ မေးမြန်းမယ်</a>
+                    <a href="https://t.me/Dassy_Digital_Library" class="btn btn-buy">ဒီလျှို့ဝှက်ချက်ကို ပိုင်ဆိုင်မယ်</a>
                 </div>
             </div>
             
         </div>
     </section>
 
+    <!-- REFACTORED SMOOTH INFINITE MARQUEE TESTIMONIALS -->
     <section class="feedback-container">
         <h2 class="category-title">Verified Reader Feedbacks</h2>
-        <div class="feedback-grid">
+        <div class="marquee-wrapper">
+            <!-- First Set -->
+            <div class="feedback-card">
+                <div class="stars">★★★★★</div>
+                <p class="feedback-text">"The Feminine Protocol ဖတ်ပြီးမှ ကိုယ့်ရဲ့ တည်ရှိမှု Aura ကို ဘယ်လိုထိန်းရမလဲ သဘောပေါက်သွားတယ်။ စကားအများကြီး ပြောစရာမလိုဘဲ လူတွေကို လွှမ်းမိုးနိုင်လာသလို ခံစားရတယ်။"</p>
+                <div class="reviewer-name">- Verified Female Reader</div>
+            </div>
+            <div class="feedback-card">
+                <div class="stars">★★★★★</div>
+                <p class="feedback-text">"Beyond the Mask ကတော့ လုံးဝ လက်စွဲပါပဲ။ ပတ်ဝန်းကျင်က လူတွေရဲ့ မျက်နှာဖုံးတွေကို ကြိုမြင်ရတော့ သားကောင်မဖြစ်တော့ဘူး။ High-Value ဖြစ်ချင်သူတွေ ဖတ်သင့်ပါတယ်။"</p>
+                <div class="reviewer-name">- Anonymous Reader</div>
+            </div>
+            <!-- Second Set cloned for seamless looping -->
             <div class="feedback-card">
                 <div class="stars">★★★★★</div>
                 <p class="feedback-text">"The Feminine Protocol ဖတ်ပြီးမှ ကိုယ့်ရဲ့ တည်ရှိမှု Aura ကို ဘယ်လိုထိန်းရမလဲ သဘောပေါက်သွားတယ်။ စကားအများကြီး ပြောစရာမလိုဘဲ လူတွေကို လွှမ်းမိုးနိုင်လာသလို ခံစားရတယ်။"</p>
