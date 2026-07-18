@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dassy's Alphabet Quest - Mighty Whale Trench</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght=400;700;900&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #032541;
+            font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .burmese-font {
+            font-family: 'Pyidaungsu', 'Myanmar3', 'Yunghkio', sans-serif;
+        }
+
+        /* Responsive UI Scaling */
+        #hud {
+            top: clamp(1rem, 2vh, 1.5rem);
+            left: clamp(7rem, 15vw, 9rem); 
+            right: clamp(1rem, 2vw, 1.5rem);
+            max-width: clamp(280px, 45vw, 450px);
+        }
+
+        #hp-panel {
+            top: clamp(1rem, 2vh, 1.5rem);
+            right: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        /* Adaptive Anchoring for Modal Windows */
+        .adaptive-panel {
+            width: clamp(280px, 90vw, 420px);
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            border-radius: clamp(1.5rem, 5vw, 3rem);
+        }
+
+        /* Mobile Scale Optimization */
+        @media (max-width: 768px) {
+            .mobile-scale {
+                transform: scale(0.85);
+                transform-origin: top left;
+            }
+            #hud {
+                left: 6.5rem;
+                top: 0.75rem;
+            }
+            #hp-panel {
+                top: auto;
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .adaptive-panel {
+                transform: scale(0.9);
+            }
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- TOP NAVIGATION BUTTONS (HOME & RESET) -->
+    <div class="absolute top-4 left-4 z-50 flex gap-2 pointer-events-auto">
+      <button onclick="location.href='index.html?fromGame=true'" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-cyan-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပင်မစာမျက်နှာ">
+        🏠
+      </button>
+      <button id="btnTopReset" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-cyan-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပြန်စမည်">
+        🔄
+      </button>
+    </div>
+
+    <!-- HUD (HEADS-UP DISPLAY) -->
+    <div id="hud" class="absolute pointer-events-none z-30 flex flex-col space-y-2">
+        <!-- Learning Progress Bar -->
+        <div class="flex items-center space-x-3 bg-blue-950/90 backdrop-blur-md p-3 rounded-2xl border border-cyan-500/20 shadow-lg">
+            <span class="text-[10px] sm:text-xs font-black text-cyan-400 tracking-wider uppercase burmese-font">တိုးတက်မှု</span>
+            <div class="flex-1 bg-black/40 h-3 sm:h-4 rounded-full overflow-hidden p-0.5 border border-white/5">
+                <div id="xp-bar" class="bg-gradient-to-r from-blue-400 via-cyan-400 to-sky-400 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <span id="level-display" class="bg-blue-600 text-white text-[9px] sm:text-[10px] font-black px-2 sm:px-3 py-1 rounded-full uppercase tracking-widest burmese-font">အဆင့် ၁</span>
+        </div>
+        
+        <!-- Score Counter & Active Target Letter Display -->
+        <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2 bg-blue-950/90 backdrop-blur-md px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl border border-cyan-500/20 shadow-lg">
+                <span class="text-lg sm:text-xl">🐚</span>
+                <span id="cash-display" class="text-white font-black tracking-widest text-xs sm:text-sm">0</span>
+            </div>
+            <!-- Dynamic Educational Goal Frame -->
+            <div class="flex items-center space-x-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-md px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl border border-cyan-500/40 shadow-lg animate-pulse">
+                <span class="text-[9px] sm:text-xs font-black text-cyan-400 uppercase tracking-wider burmese-font">ပစ်မှတ်:</span>
+                <span id="target-letter-display" class="burmese-font text-xl sm:text-2xl font-bold text-cyan-300">ဗ</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Health Indicator -->
+    <div id="hp-panel" class="absolute z-30 pointer-events-none flex items-center space-x-2 bg-blue-950/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-cyan-500/20 shadow-lg">
+        <span class="text-base sm:text-lg">💙</span>
+        <span id="hp-display" class="text-cyan-400 font-black tracking-wider text-xs sm:text-sm">100 / 100</span>
+    </div>
+
+    <!-- Upgrade / Level Up Modal -->
+    <div id="upgrade-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-[100] flex items-center justify-center p-6 transition-all duration-300">
+        <div class="bg-[#032541] border-2 border-cyan-500/20 adaptive-panel text-center shadow-[0_0_100px_rgba(34,211,238,0.15)] scale-95 transition-transform">
+            <div class="relative mb-6">
+                <div class="text-3xl sm:text-4xl">🐳✨🌋</div>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-cyan-400 tracking-wider mb-2 uppercase burmese-font">ဝေလငါးကြီး အစွမ်းမြှင့်ရန်!</h2>
+            <p class="text-blue-200 text-[10px] sm:text-xs tracking-widest mb-6 uppercase burmese-font">ဝေလငါးကြီးအတွက် အစွမ်းတစ်ခုရွေးချယ်ပါ</p>
+            
+            <div id="upgrade-options" class="space-y-3 sm:space-y-4">
+                <!-- Filled dynamically via javascript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Canvas -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Start / GameOver Screens -->
+    <div id="overlay-screen" class="absolute inset-0 bg-blue-950/95 backdrop-blur-md z-[90] flex flex-col items-center justify-center text-center p-6">
+        <h1 class="text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-sky-300 tracking-widest mb-2 uppercase drop-shadow-[0_0_30px_rgba(34,211,238,0.3)] burmese-font">ဝေလငါးကြီး၏ ပင်လယ်နက်စွန့်စားခန်း</h1>
+        <p class="text-cyan-400 text-[9px] sm:text-[10px] uppercase font-black tracking-[0.3em] mb-12 burmese-font">"ဗ"အက္ခရာ ပစ်ဂိမ်း</p>
+        
+        <div id="game-stats" class="hidden bg-white/5 border border-white/5 rounded-3xl p-5 mb-8 max-w-xs w-full text-left space-y-3 font-sans">
+            <div class="flex justify-between"><span class="text-blue-200 burmese-font">"ဗ" ကျောက်ဆောင် စုဆောင်းမိမှု</span><span id="stat-coins" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-blue-200 burmese-font">မှားယွင်းမှု ရှောင်ရှားနိုင်မှု</span><span id="stat-kills" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-blue-200 burmese-font">ရောက်ရှိသည့် ပင်လယ်ရေအနက်</span><span id="stat-level" class="text-cyan-400 font-bold">အဆင့် ၁</span></div>
+        </div>
+
+        <button id="start-btn" class="px-12 py-5 sm:px-16 sm:py-6 bg-cyan-600 hover:bg-cyan-500 text-white font-black text-xs sm:text-sm uppercase tracking-[0.2em] rounded-full transition-all shadow-[0_20px_50px_rgba(34,211,238,0.3)] border-b-4 border-cyan-800 active:scale-95 pointer-events-auto burmese-font">ရေအောက်သို့ငုပ်မည်</button>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'shoot') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(150, now + 0.15);
+                gainNode.gain.setValueAtTime(0.06, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                osc.start(now);
+                osc.stop(now + 0.15);
+            } else if (type === 'hit') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(300, now);
+                osc.frequency.exponentialRampToValueAtTime(500, now + 0.1);
+                gainNode.gain.setValueAtTime(0.06, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'coin') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(700, now);
+                osc.frequency.setValueAtTime(1100, now + 0.05);
+                gainNode.gain.setValueAtTime(0.05, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.16);
+                osc.start(now);
+                osc.stop(now + 0.16);
+            } else if (type === 'fail') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.linearRampToValueAtTime(70, now + 0.3);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'shield') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(300, now);
+                osc.frequency.exponentialRampToValueAtTime(900, now + 0.4);
+                gainNode.gain.setValueAtTime(0.06, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            } else if (type === 'levelup') {
+                const freqs = [350, 450, 600, 800, 1050];
+                freqs.forEach((f, i) => {
+                    const oscSeq = audioCtx.createOscillator();
+                    const gainSeq = audioCtx.createGain();
+                    oscSeq.connect(gainSeq);
+                    gainSeq.connect(audioCtx.destination);
+                    oscSeq.type = 'sine';
+                    oscSeq.frequency.setValueAtTime(f, now + i * 0.04);
+                    gainSeq.gain.setValueAtTime(0.04, now + i * 0.04);
+                    gainSeq.gain.exponentialRampToValueAtTime(0.01, now + i * 0.04 + 0.1);
+                    oscSeq.start(now + i * 0.04);
+                    oscSeq.stop(now + i * 0.04 + 0.1);
+                });
+            }
+        }
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const burmeseAlphabets = [
+            'က', 'ခ', 'ဂ', 'ဃ', 'င', 'စ', 'ဆ', 'ဇ', 'ဈ', 'ည',
+            'တ', 'ဌ', 'ထ', 'ဒ', 'ဓ', 'န', 'ပ', 'ဖ', 'ဗ', 'ဘ', 'မ',
+            'ယ', 'ရ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ', 'ဏ', 'ဎ'
+        ];
+
+        const game = {
+            running: false,
+            paused: false,
+            score: 0,
+            correctPops: 0,
+            incorrectPops: 0,
+            targetLetter: 'ဗ',
+            camera: { x: 0, y: 0 }
+        };
+
+        const player = {
+            x: 0,
+            y: 0,
+            vx: 0,
+            vy: 0,
+            angle: 0,
+            radius: 24, 
+            hp: 100,
+            maxHp: 100,
+            xp: 0,
+            maxXp: 100,
+            level: 1,
+            speed: 4.5,
+            baseSpeed: 4.5,
+            range: 260,         
+            damage: 50,
+            shootCooldown: 0.25,
+            lastShotTime: 0,
+            shieldTime: 0, 
+            shieldActive: false
+        };
+
+        const keys = {};
+        const entities = {
+            projectiles: [],
+            letterBubbles: [], 
+            collectibles: [],  
+            scenery: [],       
+            shields: []       
+        };
+
+        function initScenery() {
+            entities.scenery = [];
+            entities.shields = [];
+            const mapRadius = 1600;
+
+            // 1. Hydrothermal Thermal Vents
+            for (let i = 0; i < 20; i++) {
+                entities.scenery.push({
+                    type: 'vent',
+                    x: (Math.random() - 0.5) * mapRadius * 2,
+                    y: (Math.random() - 0.5) * mapRadius * 2,
+                    baseWidth: 30 + Math.random() * 20,
+                    height: 50 + Math.random() * 40
+                });
+            }
+
+            // 2. Basalt Rocks
+            for (let i = 0; i < 30; i++) {
+                entities.scenery.push({
+                    type: 'basalt',
+                    x: (Math.random() - 0.5) * mapRadius * 2,
+                    y: (Math.random() - 0.5) * mapRadius * 2,
+                    radius: 20 + Math.random() * 30
+                });
+            }
+        }
+
+        function spawnShieldItem() {
+            if (!game.running || game.paused) return;
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 400 + Math.random() * 200;
+            entities.shields.push({
+                x: player.x + Math.cos(angle) * dist,
+                y: player.y + Math.sin(angle) * dist,
+                radius: 15,
+                pulse: 0
+            });
+        }
+        setInterval(spawnShieldItem, 12000); 
+
+        function changeTargetLetter() {
+            game.targetLetter = 'ဗ';
+            document.getElementById('target-letter-display').innerText = game.targetLetter;
+        }
+
+        function drawVent(ctx, x, y, baseWidth, height) {
+            ctx.save();
+            ctx.translate(x, y);
+            
+            // Draw vent body
+            ctx.fillStyle = '#1e293b';
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 3;
+            
+            ctx.beginPath();
+            ctx.moveTo(-baseWidth / 2, 0);
+            ctx.lineTo(-baseWidth / 4, -height);
+            ctx.lineTo(baseWidth / 4, -height);
+            ctx.lineTo(baseWidth / 2, 0);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Glowing volcanic core tip
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath();
+            ctx.ellipse(0, -height, baseWidth / 4, 4, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Geyser bubble stream rising
+            const time = Date.now() * 0.003;
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.4)'; 
+            for (let i = 0; i < 4; i++) {
+                const pY = -height - ((time + i * 12) % 40);
+                const pX = Math.sin(time + i) * 8;
+                ctx.beginPath();
+                ctx.arc(pX, pY, 3 + i, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            ctx.restore();
+        }
+
+        function drawBasalt(ctx, x, y, radius) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.fillStyle = '#0f172a';
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 2;
+
+            ctx.beginPath();
+            for (let i = 0; i < 6; i++) {
+                const angle = (i * Math.PI) / 3;
+                const r = radius * (0.8 + Math.random() * 0.2);
+                ctx.lineTo(Math.cos(angle) * r, Math.sin(angle) * r);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function drawPlayer(ctx, x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(player.angle);
+
+            // Shadow
+            ctx.fillStyle = 'rgba(2, 44, 78, 0.4)';
+            ctx.beginPath();
+            ctx.ellipse(0, 6, 22, 32, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Whale Side Flippers
+            ctx.fillStyle = '#0284c7';
+            ctx.beginPath();
+            ctx.ellipse(-22, -2, 6, 14, Math.PI / 4, 0, Math.PI * 2);
+            ctx.ellipse(22, -2, 6, 14, -Math.PI / 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Massive Whale Main Body
+            ctx.fillStyle = '#0369a1'; 
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 18, 28, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Whale Belly Grooves
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 1.5;
+            for (let i = -2; i <= 2; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * 4, -10);
+                ctx.lineTo(i * 3, 16);
+                ctx.stroke();
+            }
+
+            // Mighty Tail Fin
+            ctx.fillStyle = '#0284c7';
+            ctx.beginPath();
+            ctx.moveTo(0, 26);
+            ctx.quadraticCurveTo(-16, 42, -20, 44);
+            ctx.quadraticCurveTo(0, 36, 0, 28);
+            ctx.quadraticCurveTo(0, 36, 20, 44);
+            ctx.quadraticCurveTo(16, 42, 0, 26);
+            ctx.fill();
+
+            // Whale Eyes
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(-15, -12, 2.5, 0, Math.PI * 2);
+            ctx.arc(15, -12, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath();
+            ctx.arc(-15, -12, 1.2, 0, Math.PI * 2);
+            ctx.arc(15, -12, 1.2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Blowhole decoration effect
+            ctx.fillStyle = '#38bdf8';
+            ctx.beginPath();
+            ctx.ellipse(0, -16, 2, 3, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+
+            // Draw Active Shield Aura
+            if (player.shieldActive) {
+                ctx.save();
+                ctx.strokeStyle = '#22d3ee';
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#22d3ee';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(x, y, player.radius + 15, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // High-sonar radar ring
+            ctx.strokeStyle = 'rgba(34, 211, 238, 0.2)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([6, 6]);
+            ctx.beginPath();
+            ctx.arc(x, y, player.range, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]); 
+        }
+
+        function drawDeepSeaShell(ctx, shell) {
+            const { x, y, letter, scale } = shell;
+            const isTarget = letter === game.targetLetter;
+
+            ctx.save();
+            ctx.translate(x, y);
+
+            const floating = Math.sin(Date.now() * 0.004 + shell.angleOffset) * 5;
+            ctx.translate(0, floating);
+
+            let coreColor = isTarget ? '#06b6d4' : '#ef4444'; 
+            let glowColor = isTarget ? 'rgba(6, 182, 212, 0.3)' : 'rgba(239, 68, 68, 0.2)';
+
+            // Ambient Aura Glow
+            ctx.fillStyle = glowColor;
+            ctx.beginPath();
+            ctx.arc(0, 0, 26 * scale, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Outer Spiky shell
+            ctx.fillStyle = coreColor;
+            ctx.beginPath();
+            for(let i = 0; i < 5; i++) {
+                ctx.lineTo(0, -20 * scale);
+                ctx.lineTo(6 * scale, -6 * scale);
+                ctx.rotate((Math.PI * 2) / 5);
+            }
+            ctx.closePath();
+            ctx.fill();
+
+            // Shiny center core
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(0, 0, 11 * scale, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+
+            // Burmese Font Text Configuration
+            ctx.save();
+            ctx.translate(x, y + floating);
+            ctx.fillStyle = isTarget ? '#0369a1' : '#991b1b';
+            ctx.font = `bold ${20 * scale}px Pyidaungsu, "Myanmar3", "Yunghkio", sans-serif`;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.fillText(letter, 0, 0);
+            ctx.restore();
+        }
+
+        window.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()] = true; });
+        window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (!game.running || game.paused) return;
+            fireManualProjectile(e.clientX, e.clientY);
+        });
+
+        canvas.addEventListener('touchstart', (e) => {
+            if (!game.running || game.paused) return;
+            const touch = e.touches[0];
+            fireManualProjectile(touch.clientX, touch.clientY);
+        }, { passive: true });
+
+        function fireManualProjectile(screenX, screenY) {
+            const now = Date.now() / 1000;
+            if (now - player.lastShotTime < player.shootCooldown) return;
+
+            const worldX = screenX + game.camera.x;
+            const worldY = screenY + game.camera.y;
+
+            const dx = worldX - player.x;
+            const dy = worldY - player.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist === 0) return;
+
+            playSound('shoot');
+            entities.projectiles.push({
+                x: player.x,
+                y: player.y,
+                vx: (dx / dist) * 14, 
+                vy: (dy / dist) * 14,
+                radius: 8,
+                waveScale: 1 
+            });
+
+            player.lastShotTime = now;
+        }
+
+        function spawnLetterBubble() {
+            if (!game.running || game.paused) return;
+
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 360 + Math.random() * 200;
+            const x = player.x + Math.cos(angle) * dist;
+            const y = player.y + Math.sin(angle) * dist;
+
+            const isTargetSpawn = Math.random() < 0.45;
+            let chosenLetter = game.targetLetter; 
+            if (!isTargetSpawn) {
+                const filtered = burmeseAlphabets.filter(char => char !== game.targetLetter);
+                chosenLetter = filtered[Math.floor(Math.random() * filtered.length)];
+            }
+
+            entities.letterBubbles.push({
+                x,
+                y,
+                letter: chosenLetter,
+                scale: 1.0 + Math.random() * 0.25,
+                speed: 0.3 + Math.random() * 0.5, 
+                angleOffset: Math.random() * Math.PI * 2,
+                hp: 1,
+                spawnTime: Date.now() 
+            });
+        }
+
+        setInterval(spawnLetterBubble, 950);
+
+        const UPGRADE_POOL = [
+            { id: 'dmg', name: "ဒီလှိုင်းပြင်း စွမ်းအင်", desc: '+၂၅% ဝေလငါး၏ ရေပန်းအား တိုးမြှင့်ခြင်း', stat: 'damage', factor: 1.25 },
+            { id: 'rng', name: 'ပင်လယ်နက် အသံချဲ့စက်', desc: '+၁၅% ဆိုနာရေဒါ ပိုမိုကျယ်ပြန့်လာခြင်း', stat: 'range', factor: 1.15 },
+            { id: 'spd', name: 'အမြန်နှုန်းမြှင့် အမြီးရေတောင်ပံ', desc: '+၁၅% ဝေလငါးကြီး၏ ကူးခတ်မှုမြန်နှုန်း တိုးမြှင့်ခြင်း', stat: 'baseSpeed', factor: 1.15 },
+            { id: 'rate', name: 'အသက်ရှူပေါက် လျင်မြန်စွာမှုတ်ထုတ်ခြင်း', desc: '-၁၅% ကျည်ပြန်ဖြည့်ချိန် ပိုမိုမြန်ဆန်ခြင်း', stat: 'shootCooldown', factor: 0.85 }
+        ];
+
+        function triggerLevelUp() {
+            playSound('levelup');
+            player.level++;
+            player.xp = 0;
+            player.maxXp = Math.round(player.maxXp * 1.5);
+            
+            const optionsContainer = document.getElementById('upgrade-options');
+            optionsContainer.innerHTML = '';
+            
+            const shuffled = [...UPGRADE_POOL].sort(() => 0.5 - Math.random()).slice(0, 3);
+            shuffled.forEach(upg => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-4 bg-[#1e3a8a]/40 border border-cyan-500/20 hover:border-cyan-400 rounded-2xl flex items-center justify-between text-left transition-all active:scale-95 pointer-events-auto";
+                btn.innerHTML = `
+                    <div class="burmese-font">
+                        <h4 class="text-white font-black text-xs sm:text-sm tracking-wide uppercase">${upg.name}</h4>
+                        <p class="text-blue-200 text-[9px] sm:text-[10px] mt-1 uppercase tracking-wider">${upg.desc}</p>
+                    </div>
+                    <span class="text-lg">🐋</span>
+                `;
+                btn.onclick = () => applyUpgrade(upg);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('upgrade-modal').classList.remove('hidden');
+            game.paused = true;
+        }
+
+        function applyUpgrade(upg) {
+            player[upg.stat] *= upg.factor;
+            if(upg.stat === 'baseSpeed') player.speed = player.baseSpeed;
+            document.getElementById('upgrade-modal').classList.add('hidden');
+            game.paused = false;
+        }
+
+        let lastTime = performance.now();
+
+        function updateGame(dt) {
+            if (!game.running || game.paused) return;
+
+            if (player.hp <= 0) {
+                gameOver();
+                return;
+            }
+
+            if (player.shieldActive) {
+                player.shieldTime -= dt;
+                if (player.shieldTime <= 0) {
+                    player.shieldActive = false;
+                }
+            }
+
+            let onVent = false;
+            for (let i = 0; i < entities.scenery.length; i++) {
+                const item = entities.scenery[i];
+                if (item.type === 'vent') {
+                    const dx = player.x - item.x;
+                    const dy = player.y - item.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < item.baseWidth + 10) {
+                        onVent = true;
+                        break;
+                    }
+                }
+            }
+
+            if (onVent) {
+                player.speed = player.baseSpeed * 1.6;
+            } else {
+                player.speed = player.baseSpeed;
+            }
+
+            let moveX = 0;
+            let moveY = 0;
+
+            if (keys['w'] || keys['arrowup']) moveY = -1;
+            if (keys['s'] || keys['arrowdown']) moveY = 1;
+            if (keys['a'] || keys['arrowleft']) moveX = -1;
+            if (keys['d'] || keys['arrowright']) moveX = 1;
+
+            if (moveX !== 0 && moveY !== 0) {
+                moveX *= 0.7071;
+                moveY *= 0.7071;
+            }
+
+            player.x += moveX * player.speed * dt;
+            player.y += moveY * player.speed * dt;
+
+            if (moveX !== 0 || moveY !== 0) {
+                player.angle = Math.atan2(moveY, moveX) + Math.PI/2;
+            }
+
+            const mapLimit = 1500;
+            player.x = Math.max(-mapLimit, Math.min(mapLimit, player.x));
+            player.y = Math.max(-mapLimit, Math.min(mapLimit, player.y));
+
+            game.camera.x += (player.x - window.innerWidth / 2 - game.camera.x) * 0.1 * dt;
+            game.camera.y += (player.y - window.innerHeight / 2 - game.camera.y) * 0.1 * dt;
+
+            for (let i = entities.shields.length - 1; i >= 0; i--) {
+                const s = entities.shields[i];
+                s.pulse += 0.05 * dt;
+                const dx = player.x - s.x;
+                const dy = player.y - s.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < player.radius + s.radius) {
+                    playSound('shield');
+                    player.shieldActive = true;
+                    player.shieldTime = 360; 
+                    entities.shields.splice(i, 1);
+                }
+            }
+
+            for (let i = entities.projectiles.length - 1; i >= 0; i--) {
+                const proj = entities.projectiles[i];
+                proj.x += proj.vx * dt;
+                proj.y += proj.vy * dt;
+                proj.waveScale += 0.08 * dt; 
+
+                const flightDistance = Math.sqrt((proj.x - player.x) ** 2 + (proj.y - player.y) ** 2);
+                if (flightDistance > player.range + 200) {
+                    entities.projectiles.splice(i, 1);
+                    continue;
+                }
+
+                let projectileHit = false;
+
+                for (let j = entities.letterBubbles.length - 1; j >= 0; j--) {
+                    const bubble = entities.letterBubbles[j];
+                    const dx = bubble.x - proj.x;
+                    const dy = bubble.y - proj.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < (22 * bubble.scale) + proj.radius) {
+                        projectileHit = true;
+                        
+                        if (bubble.letter === game.targetLetter) {
+                            playSound('hit');
+                            entities.letterBubbles.splice(j, 1);
+                            
+                            game.correctPops++;
+                            game.score += 15;
+                            player.xp += 25; 
+                            if (player.xp >= player.maxXp) triggerLevelUp();
+
+                            entities.collectibles.push({
+                                x: bubble.x,
+                                y: bubble.y,
+                                value: 25
+                            });
+
+                            changeTargetLetter(); 
+                        } else {
+                            playSound('fail');
+                            game.incorrectPops++;
+                            entities.letterBubbles.splice(j, 1);
+                        }
+                        break; 
+                    }
+                }
+
+                if (projectileHit) {
+                    entities.projectiles.splice(i, 1);
+                }
+            }
+
+            for (let idx = entities.letterBubbles.length - 1; idx >= 0; idx--) {
+                const bubble = entities.letterBubbles[idx];
+
+                if (bubble.letter !== game.targetLetter && (Date.now() - bubble.spawnTime > 5000)) {
+                    entities.letterBubbles.splice(idx, 1);
+                    continue;
+                }
+
+                const driftTime = Date.now() * 0.001 + bubble.angleOffset;
+                bubble.x += Math.sin(driftTime) * 0.7 * dt;
+                bubble.y += Math.cos(driftTime * 0.5) * 0.5 * dt;
+
+                const dx = player.x - bubble.x;
+                const dy = player.y - bubble.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < player.radius + 18) {
+                    if (bubble.letter === game.targetLetter) {
+                        playSound('coin');
+                        game.correctPops++;
+                        game.score += 25;
+                        player.xp += 30;
+                        if (player.xp >= player.maxXp) triggerLevelUp();
+                        entities.letterBubbles.splice(idx, 1);
+                        changeTargetLetter();
+                    } else {
+                        playSound('fail');
+                        entities.letterBubbles.splice(idx, 1);
+                        if (!player.shieldActive) {
+                            player.hp = Math.max(0, player.hp - 15);
+                        }
+                    }
+                }
+
+                if (Math.abs(bubble.y - player.y) > 600 || Math.abs(bubble.x - player.x) > 800) {
+                    entities.letterBubbles.splice(idx, 1);
+                }
+            }
+
+            for (let i = entities.collectibles.length - 1; i >= 0; i--) {
+                const item = entities.collectibles[i];
+                const dx = player.x - item.x;
+                const dy = player.y - item.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < player.range) {
+                    item.x += (dx / dist) * 7.5 * dt;
+                    item.y += (dy / dist) * 7.5 * dt;
+                }
+
+                if (dist < player.radius + 10) {
+                    playSound('coin');
+                    player.xp += item.value;
+                    if (player.xp >= player.maxXp) triggerLevelUp();
+                    entities.collectibles.splice(i, 1);
+                }
+            }
+
+            document.getElementById('xp-bar').style.width = `${(player.xp / player.maxXp) * 100}%`;
+            document.getElementById('level-display').innerText = `အဆင့် ${player.level}`;
+            document.getElementById('cash-display').innerText = game.score;
+            document.getElementById('hp-display').innerText = `${Math.max(0, Math.round(player.hp))} / ${player.maxHp}`;
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save();
+            ctx.translate(-game.camera.x, -game.camera.y);
+
+            // Abyssal Background Floor
+            ctx.fillStyle = '#02182b'; 
+            ctx.fillRect(player.x - 2000, player.y - 2000, 4000, 4000);
+
+            // Render Volcanic Hydrothermal Vents
+            entities.scenery.forEach(item => {
+                if (item.type === 'vent') drawVent(ctx, item.x, item.y, item.baseWidth, item.height);
+            });
+
+            // Render Basalt Rocks
+            entities.scenery.forEach(item => {
+                if (item.type === 'basalt') drawBasalt(ctx, item.x, item.y, item.radius);
+            });
+
+            // Render Glow Shields
+            entities.shields.forEach(s => {
+                ctx.save();
+                const radiusGlow = s.radius + Math.sin(s.pulse) * 4;
+                ctx.fillStyle = 'rgba(34, 211, 238, 0.2)';
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, radiusGlow + 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#22d3ee';
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, radiusGlow, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '14px Fredoka One';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('🛡️', s.x, s.y);
+                ctx.restore();
+            });
+
+            // Render Glowing Bioluminescent Crystals
+            entities.collectibles.forEach(item => {
+                ctx.fillStyle = '#22d3ee'; 
+                ctx.beginPath();
+                ctx.arc(item.x, item.y, 5, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Render Sonar Wave Jets
+            entities.projectiles.forEach(proj => {
+                ctx.save();
+                ctx.strokeStyle = '#22d3ee';
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                ctx.arc(proj.x, proj.y, proj.radius * proj.waveScale, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.restore();
+            });
+
+            // Render Deep Sea Crystals with Letters
+            entities.letterBubbles.forEach(bubble => drawDeepSeaShell(ctx, bubble));
+
+            // Render Player
+            drawPlayer(ctx, player.x, player.y);
+
+            ctx.restore();
+        }
+
+        function gameLoop(now) {
+            let dt = (now - lastTime) / 16.666;
+            lastTime = now;
+            if (dt > 4) dt = 4; 
+
+            updateGame(dt);
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            player.hp = player.maxHp;
+            player.xp = 0;
+            player.level = 1;
+            player.x = 0;
+            player.y = 0;
+            player.angle = 0;
+            player.shieldActive = false;
+            player.shieldTime = 0;
+            game.score = 0;
+            game.correctPops = 0;
+            game.incorrectPops = 0;
+            entities.letterBubbles = [];
+            entities.projectiles = [];
+            entities.collectibles = [];
+            entities.shields = [];
+            
+            initScenery();
+            changeTargetLetter();
+            
+            document.getElementById('overlay-screen').classList.add('hidden');
+            game.running = true;
+        }
+
+        function gameOver() {
+            game.running = false;
+            document.getElementById('stat-coins').innerText = game.correctPops;
+            document.getElementById('stat-kills').innerText = game.incorrectPops;
+            document.getElementById('stat-level').innerText = `အဆင့် ${player.level}`;
+            document.getElementById('game-stats').classList.remove('hidden');
+            document.getElementById('start-btn').innerText = "ပြန်လည်စတင်မည်";
+            document.getElementById('overlay-screen').classList.remove('hidden');
+        }
+
+        document.getElementById('start-btn').onclick = startGame;
+        document.getElementById('btnTopReset').onclick = startGame;
+
+        window.onload = function() {
+            requestAnimationFrame(gameLoop);
+        };
+    </script>
+</body>
+</html>

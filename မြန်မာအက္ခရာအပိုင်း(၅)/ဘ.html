@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dassy's Alphabet Quest - Mystic Ogre Forest</title>
+    <!-- Tailwind CSS for sleek UI overlay -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght=400;700;900&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #022c22; /* Deep Forest Green */
+            font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .burmese-font {
+            font-family: 'Pyidaungsu', 'Myanmar3', 'Yunghkio', sans-serif;
+        }
+
+        /* Responsive UI Scaling */
+        #hud {
+            top: clamp(1rem, 2vh, 1.5rem);
+            left: clamp(7rem, 15vw, 9rem); 
+            right: clamp(1rem, 2vw, 1.5rem);
+            max-width: clamp(280px, 45vw, 450px);
+        }
+
+        #hp-panel {
+            top: clamp(1rem, 2vh, 1.5rem);
+            right: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .adaptive-panel {
+            width: clamp(280px, 90vw, 420px);
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            border-radius: clamp(1.5rem, 5vw, 3rem);
+        }
+
+        @media (max-width: 768px) {
+            #hud {
+                left: 6.5rem;
+                top: 0.75rem;
+            }
+            #hp-panel {
+                top: auto;
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .adaptive-panel {
+                transform: scale(0.9);
+            }
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- TOP NAVIGATION BUTTONS (HOME & RESET) -->
+    <div class="absolute top-4 left-4 z-50 flex gap-2 pointer-events-auto">
+      <button onclick="location.href='index.html?fromGame=true'" class="w-10 h-10 bg-emerald-950 text-white rounded-xl shadow-md border-2 border-emerald-500 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl animate-pulse" title="ပင်မစာမျက်နှာ">
+        🏠
+      </button>
+      <button id="btnTopReset" class="w-10 h-10 bg-emerald-950 text-white rounded-xl shadow-md border-2 border-emerald-500 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပြန်စမည်">
+        🔄
+      </button>
+    </div>
+
+    <!-- HUD / Learning Progress & Score Top Overlay -->
+    <div id="hud" class="absolute pointer-events-none z-30 flex flex-col space-y-2">
+        <!-- Learning Progress Bar -->
+        <div class="flex items-center space-x-3 bg-emerald-950/90 backdrop-blur-md p-3 rounded-2xl border border-emerald-500/20 shadow-lg">
+            <span class="text-[10px] sm:text-xs font-black text-emerald-400 tracking-wider uppercase burmese-font">တိုးတက်မှု</span>
+            <div class="flex-1 bg-black/40 h-3 sm:h-4 rounded-full overflow-hidden p-0.5 border border-white/5">
+                <div id="xp-bar" class="bg-gradient-to-r from-emerald-400 via-green-400 to-lime-400 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <span id="level-display" class="bg-emerald-600 text-white text-[9px] sm:text-[10px] font-black px-2 sm:px-3 py-1 rounded-full uppercase tracking-widest burmese-font">အဆင့် ၁</span>
+        </div>
+        
+        <!-- Score Counter & Active Target Letter Display -->
+        <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2 bg-emerald-950/90 backdrop-blur-md px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl border border-emerald-500/20 shadow-lg">
+                <span class="text-lg sm:text-xl">🏮</span>
+                <span id="cash-display" class="text-white font-black tracking-widest text-xs sm:text-sm">0</span>
+            </div>
+            <!-- Dynamic Educational Goal Frame -->
+            <div class="flex items-center space-x-2 bg-gradient-to-r from-emerald-500/20 to-green-500/20 backdrop-blur-md px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl border border-emerald-500/40 shadow-lg animate-pulse">
+                <span class="text-[9px] sm:text-xs font-black text-emerald-400 uppercase tracking-wider burmese-font">ပစ်မှတ်:</span>
+                <span id="target-letter-display" class="burmese-font text-xl sm:text-2xl font-bold text-emerald-300">ဘ</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Health Indicator -->
+    <div id="hp-panel" class="absolute z-30 pointer-events-none flex items-center space-x-2 bg-emerald-950/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-emerald-500/20 shadow-lg">
+        <span class="text-base sm:text-lg">💚</span>
+        <span id="hp-display" class="text-emerald-400 font-black tracking-wider text-xs sm:text-sm">100 / 100</span>
+    </div>
+
+    <!-- Upgrade / Level Up Modal -->
+    <div id="upgrade-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-[100] flex items-center justify-center p-6 transition-all duration-300">
+        <div class="bg-[#022c22] border-2 border-emerald-500/20 adaptive-panel text-center shadow-[0_0_100px_rgba(16,185,129,0.15)] scale-95 transition-transform">
+            <div class="relative mb-6">
+                <div class="text-3xl sm:text-4xl">👹✨🍄</div>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-emerald-400 tracking-wider mb-2 uppercase burmese-font">ဘီလူးကြီး အစွမ်းမြှင့်ရန်!</h2>
+            <p class="text-emerald-200 text-[10px] sm:text-xs tracking-widest mb-6 uppercase burmese-font">ပိုမိုသန်မာလာစေရန် အစွမ်းတစ်ခုရွေးချယ်ပါ</p>
+            
+            <div id="upgrade-options" class="space-y-3 sm:space-y-4">
+                <!-- Filled dynamically via javascript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Canvas -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Start / GameOver Screens -->
+    <div id="overlay-screen" class="absolute inset-0 bg-emerald-950/95 backdrop-blur-md z-[90] flex flex-col items-center justify-center text-center p-6">
+        <h1 class="text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-green-400 to-lime-300 tracking-widest mb-2 uppercase drop-shadow-[0_0_30px_rgba(16,185,129,0.3)] burmese-font">မှော်ဝင်ဘီလူးတောအုပ်</h1>
+        <p class="text-emerald-400 text-[9px] sm:text-[10px] uppercase font-black tracking-[0.3em] mb-12 burmese-font">"ဘ"အက္ခရာ စွန့်စားခန်းဂိမ်း</p>
+        
+        <div id="game-stats" class="hidden bg-white/5 border border-white/5 rounded-3xl p-5 mb-8 max-w-xs w-full text-left space-y-3 font-sans">
+            <div class="flex justify-between"><span class="text-emerald-200 burmese-font">မှန်ကန်စွာ ပစ်ခတ်နိုင်မှု</span><span id="stat-coins" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-emerald-200 burmese-font">မှားယွင်းမှု ရှောင်ရှားနိုင်မှု</span><span id="stat-kills" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-emerald-200 burmese-font">တောနက်ထဲသို့ ရောက်ရှိမှုအဆင့်</span><span id="stat-level" class="text-emerald-400 font-bold">အဆင့် ၁</span></div>
+        </div>
+
+        <button id="start-btn" class="px-12 py-5 sm:px-16 sm:py-6 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs sm:text-sm uppercase tracking-[0.2em] rounded-full transition-all shadow-[0_20px_50px_rgba(16,185,129,0.3)] border-b-4 border-emerald-800 active:scale-95 pointer-events-auto burmese-font">တောအုပ်ထဲသို့ ဝင်မည်</button>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'shoot') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(350, now);
+                osc.frequency.exponentialRampToValueAtTime(100, now + 0.15);
+                gainNode.gain.setValueAtTime(0.06, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                osc.start(now);
+                osc.stop(now + 0.15);
+            } else if (type === 'hit') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(250, now);
+                osc.frequency.exponentialRampToValueAtTime(450, now + 0.1);
+                gainNode.gain.setValueAtTime(0.06, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'coin') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.setValueAtTime(1000, now + 0.05);
+                gainNode.gain.setValueAtTime(0.05, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.16);
+                osc.start(now);
+                osc.stop(now + 0.16);
+            } else if (type === 'fail') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(120, now);
+                osc.frequency.linearRampToValueAtTime(60, now + 0.3);
+                gainNode.gain.setValueAtTime(0.1, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'levelup') {
+                const freqs = [300, 400, 550, 750, 1000];
+                freqs.forEach((f, i) => {
+                    const oscSeq = audioCtx.createOscillator();
+                    const gainSeq = audioCtx.createGain();
+                    oscSeq.connect(gainSeq);
+                    gainSeq.connect(audioCtx.destination);
+                    oscSeq.type = 'sine';
+                    oscSeq.frequency.setValueAtTime(f, now + i * 0.04);
+                    gainSeq.gain.setValueAtTime(0.04, now + i * 0.04);
+                    gainSeq.gain.exponentialRampToValueAtTime(0.01, now + i * 0.04 + 0.1);
+                    oscSeq.start(now + i * 0.04);
+                    oscSeq.stop(now + i * 0.04 + 0.1);
+                });
+            }
+        }
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const burmeseAlphabets = [
+            'က', 'ခ', 'ဂ', 'ဃ', 'င', 'စ', 'ဆ', 'ဇ', 'ဈ', 'ည',
+            'တ', 'ဌ', 'ထ', 'ဒ', 'ဓ', 'န', 'ပ', 'ဖ', 'ဗ', 'ဘ', 'မ',
+            'ယ', 'ရ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ', 'ဏ', 'ဎ'
+        ];
+
+        const game = {
+            running: false,
+            paused: false,
+            score: 0,
+            correctPops: 0,
+            incorrectPops: 0,
+            targetLetter: 'ဘ',
+            camera: { x: 0, y: 0 }
+        };
+
+        const player = {
+            x: 0,
+            y: 0,
+            vx: 0,
+            vy: 0,
+            angle: 0,
+            radius: 25, 
+            hp: 100,
+            maxHp: 100,
+            xp: 0,
+            maxXp: 100,
+            level: 1,
+            speed: 4.8, 
+            baseSpeed: 4.8,
+            range: 280,         
+            damage: 50,
+            shootCooldown: 0.22, 
+            lastShotTime: 0
+        };
+
+        const keys = {};
+        const entities = {
+            projectiles: [],
+            letterBubbles: [], 
+            collectibles: [],  
+            scenery: [],
+            fireflies: [] 
+        };
+
+        function initScenery() {
+            entities.scenery = [];
+            entities.fireflies = [];
+            const mapRadius = 1600;
+
+            // 1. Glowing & Poison Mushrooms
+            for (let i = 0; i < 25; i++) {
+                entities.scenery.push({
+                    type: Math.random() < 0.3 ? 'poison_mushroom' : 'mushroom',
+                    x: (Math.random() - 0.5) * mapRadius * 2,
+                    y: (Math.random() - 0.5) * mapRadius * 2,
+                    radius: 12 + Math.random() * 10
+                });
+            }
+
+            // 2. Ancient Trees
+            for (let i = 0; i < 25; i++) {
+                entities.scenery.push({
+                    type: 'tree',
+                    x: (Math.random() - 0.5) * mapRadius * 2,
+                    y: (Math.random() - 0.5) * mapRadius * 2,
+                    radius: 35 + Math.random() * 25
+                });
+            }
+
+            // 3. Ambient Fireflies particles
+            for (let i = 0; i < 40; i++) {
+                entities.fireflies.push({
+                    x: (Math.random() - 0.5) * mapRadius * 2,
+                    y: (Math.random() - 0.5) * mapRadius * 2,
+                    size: 1.5 + Math.random() * 2.5,
+                    pulse: Math.random() * Math.PI * 2,
+                    speedY: -0.2 - Math.random() * 0.3,
+                    speedX: (Math.random() - 0.5) * 0.4
+                });
+            }
+        }
+
+        // Keep target letter strictly as "ဘ"
+        function changeTargetLetter() {
+            game.targetLetter = 'ဘ';
+            document.getElementById('target-letter-display').innerText = game.targetLetter;
+        }
+
+        function drawMushroom(ctx, x, y, radius, isPoison) {
+            ctx.save();
+            ctx.translate(x, y);
+            
+            // Stem
+            ctx.fillStyle = '#e2e8f0';
+            ctx.fillRect(-radius/4, 0, radius/2, radius);
+
+            // Cap
+            ctx.fillStyle = isPoison ? '#ef4444' : '#a855f7'; 
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, Math.PI, 0);
+            ctx.fill();
+
+            // Glowing Dots
+            ctx.fillStyle = isPoison ? '#facc15' : '#34d399';
+            ctx.beginPath();
+            ctx.arc(-radius/3, -radius/3, radius/6, 0, Math.PI*2);
+            ctx.arc(radius/3, -radius/3, radius/6, 0, Math.PI*2);
+            ctx.arc(0, -radius/1.5, radius/6, 0, Math.PI*2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function drawTree(ctx, x, y, radius) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            // Trunk
+            ctx.fillStyle = '#451a03';
+            ctx.fillRect(-radius/3, 0, radius/1.5, radius*1.5);
+
+            // Foliage Layers
+            ctx.fillStyle = '#064e3b';
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#047857';
+            ctx.beginPath();
+            ctx.arc(0, -radius*0.5, radius*0.8, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function drawPlayer(ctx, x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(player.angle);
+
+            // Shadow
+            ctx.fillStyle = 'rgba(1, 35, 19, 0.4)';
+            ctx.beginPath();
+            ctx.arc(0, 5, 24, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Ogre Horns
+            ctx.fillStyle = '#047857';
+            ctx.beginPath();
+            ctx.moveTo(-20, -15);
+            ctx.lineTo(-28, -25);
+            ctx.lineTo(-12, -20);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(20, -15);
+            ctx.lineTo(28, -25);
+            ctx.lineTo(12, -20);
+            ctx.closePath();
+            ctx.fill();
+
+            // Main Face
+            ctx.fillStyle = '#10b981';
+            ctx.beginPath();
+            ctx.arc(0, 0, player.radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Nose
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.arc(0, -2, 7, 0, Math.PI * 2);
+            ctx.fill();
+
+            // White Tusks
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.moveTo(-10, 8);
+            ctx.lineTo(-13, 2);
+            ctx.lineTo(-7, 2);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(10, 8);
+            ctx.lineTo(13, 2);
+            ctx.lineTo(7, 2);
+            ctx.closePath();
+            ctx.fill();
+
+            // Glowing Eyes
+            ctx.fillStyle = '#facc15';
+            ctx.beginPath();
+            ctx.arc(-10, -10, 4, 0, Math.PI * 2);
+            ctx.arc(10, -10, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.arc(-10, -10, 1.5, 0, Math.PI * 2);
+            ctx.arc(10, -10, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+
+            // Radar Ring
+            ctx.strokeStyle = 'rgba(52, 211, 153, 0.2)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([6, 6]);
+            ctx.beginPath();
+            ctx.arc(x, y, player.range, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]); 
+        }
+
+        function drawMysticLantern(ctx, lantern) {
+            const { x, y, letter, scale } = lantern;
+            const isTarget = letter === game.targetLetter;
+
+            ctx.save();
+            ctx.translate(x, y);
+
+            const floating = Math.sin(Date.now() * 0.004 + lantern.angleOffset) * 6;
+            ctx.translate(0, floating);
+
+            let coreColor = isTarget ? '#10b981' : '#f43f5e';
+            let glowColor = isTarget ? 'rgba(16, 185, 129, 0.3)' : 'rgba(244, 63, 94, 0.2)';
+
+            // Ambient Glow
+            ctx.fillStyle = glowColor;
+            ctx.beginPath();
+            ctx.arc(0, 0, 28 * scale, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Lantern Structure
+            ctx.fillStyle = coreColor;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 16 * scale, 22 * scale, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Lantern Golden Caps
+            ctx.fillStyle = '#facc15';
+            ctx.fillRect(-10 * scale, -24 * scale, 20 * scale, 4 * scale);
+            ctx.fillRect(-10 * scale, 20 * scale, 20 * scale, 4 * scale);
+
+            // Paper area
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 11 * scale, 16 * scale, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+
+            // Burmese Font Text Configuration
+            ctx.save();
+            ctx.translate(x, y + floating);
+            ctx.fillStyle = isTarget ? '#065f46' : '#9f1239';
+            ctx.font = `bold ${21 * scale}px Pyidaungsu, "Myanmar3", "Yunghkio", sans-serif`;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.fillText(letter, 0, 0);
+            ctx.restore();
+        }
+
+        window.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()] = true; });
+        window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (!game.running || game.paused) return;
+            fireManualProjectile(e.clientX, e.clientY);
+        });
+
+        canvas.addEventListener('touchstart', (e) => {
+            if (!game.running || game.paused) return;
+            const touch = e.touches[0];
+            fireManualProjectile(touch.clientX, touch.clientY);
+        }, { passive: true });
+
+        function fireManualProjectile(screenX, screenY) {
+            const now = Date.now() / 1000;
+            if (now - player.lastShotTime < player.shootCooldown) return;
+
+            const worldX = screenX + game.camera.x;
+            const worldY = screenY + game.camera.y;
+
+            const dx = worldX - player.x;
+            const dy = worldY - player.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist === 0) return;
+
+            playSound('shoot');
+            entities.projectiles.push({
+                x: player.x,
+                y: player.y,
+                vx: (dx / dist) * 13, 
+                vy: (dy / dist) * 13,
+                radius: 7
+            });
+
+            player.lastShotTime = now;
+        }
+
+        function spawnLetterBubble() {
+            if (!game.running || game.paused) return;
+
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 360 + Math.random() * 200;
+            const x = player.x + Math.cos(angle) * dist;
+            const y = player.y + Math.sin(angle) * dist;
+
+            const isTargetSpawn = Math.random() < 0.45;
+            let chosenLetter = game.targetLetter; 
+            if (!isTargetSpawn) {
+                const filtered = burmeseAlphabets.filter(char => char !== game.targetLetter);
+                chosenLetter = filtered[Math.floor(Math.random() * filtered.length)];
+            }
+
+            entities.letterBubbles.push({
+                x,
+                y,
+                letter: chosenLetter,
+                scale: 1.0 + Math.random() * 0.25,
+                speed: 0.4 + Math.random() * 0.5, 
+                angleOffset: Math.random() * Math.PI * 2,
+                hp: 1,
+                spawnTime: Date.now() 
+            });
+        }
+
+        setInterval(spawnLetterBubble, 900);
+
+        const UPGRADE_POOL = [
+            { id: 'dmg', name: "ဧရာမဘီလူးစွမ်းအင်", desc: '+၂၅% မှော်ဘောလုံး ပျက်စီးနိုင်စွမ်းအား တိုးမြှင့်ခြင်း', stat: 'damage', factor: 1.25 },
+            { id: 'rng', name: 'ဘီလူးမျက်လုံး ရေဒါ', desc: '+၁၅% တောအုပ်ဆိုနာ အကွာအဝေး ပိုကျယ်လာခြင်း', stat: 'range', factor: 1.15 },
+            { id: 'spd', name: 'အမြန်နှုန်းမြှင့် ဖိနပ်', desc: '+၁၅% ဘီလူးကြီး ပြေးနှုန်း ပိုမိုမြန်ဆန်လာခြင်း', stat: 'baseSpeed', factor: 1.15 },
+            { id: 'rate', name: 'လျင်မြန်စွာပစ်ခတ်ခြင်း', desc: '-၁၅% မှော်လုံးထုတ်လွှတ်မှု အေးခဲချိန် လျော့ကျခြင်း', stat: 'shootCooldown', factor: 0.85 }
+        ];
+
+        function triggerLevelUp() {
+            playSound('levelup');
+            player.level++;
+            player.xp = 0;
+            player.maxXp = Math.round(player.maxXp * 1.5);
+            
+            const optionsContainer = document.getElementById('upgrade-options');
+            optionsContainer.innerHTML = '';
+            
+            const shuffled = [...UPGRADE_POOL].sort(() => 0.5 - Math.random()).slice(0, 3);
+            shuffled.forEach(upg => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-4 bg-[#064e3b]/40 border border-emerald-500/20 hover:border-emerald-400 rounded-2xl flex items-center justify-between text-left transition-all active:scale-95 pointer-events-auto";
+                btn.innerHTML = `
+                    <div class="burmese-font">
+                        <h4 class="text-white font-black text-xs sm:text-sm tracking-wide uppercase">${upg.name}</h4>
+                        <p class="text-emerald-200 text-[9px] sm:text-[10px] mt-1 uppercase tracking-wider">${upg.desc}</p>
+                    </div>
+                    <span class="text-lg">👹</span>
+                `;
+                btn.onclick = () => applyUpgrade(upg);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('upgrade-modal').classList.remove('hidden');
+            game.paused = true;
+        }
+
+        function applyUpgrade(upg) {
+            player[upg.stat] *= upg.factor;
+            if(upg.stat === 'baseSpeed') player.speed = player.baseSpeed;
+            document.getElementById('upgrade-modal').classList.add('hidden');
+            game.paused = false;
+        }
+
+        let lastTime = performance.now();
+
+        function updateGame(dt) {
+            if (!game.running || game.paused) return;
+
+            if (player.hp <= 0) {
+                gameOver();
+                return;
+            }
+
+            // Hazard Check: Check if stepping near Red Poison Mushroom
+            let onPoisonMushroom = false;
+            for (let i = 0; i < entities.scenery.length; i++) {
+                const item = entities.scenery[i];
+                if (item.type === 'poison_mushroom') {
+                    const dx = player.x - item.x;
+                    const dy = player.y - item.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < item.radius + 10) {
+                        onPoisonMushroom = true;
+                        player.hp = Math.max(0, player.hp - 0.25 * dt); 
+                        break;
+                    }
+                }
+            }
+
+            if (onPoisonMushroom) {
+                player.speed = player.baseSpeed * 0.5; 
+            } else {
+                player.speed = player.baseSpeed;
+            }
+
+            let moveX = 0;
+            let moveY = 0;
+
+            if (keys['w'] || keys['arrowup']) moveY = -1;
+            if (keys['s'] || keys['arrowdown']) moveY = 1;
+            if (keys['a'] || keys['arrowleft']) moveX = -1;
+            if (keys['d'] || keys['arrowright']) moveX = 1;
+
+            if (moveX !== 0 && moveY !== 0) {
+                moveX *= 0.7071;
+                moveY *= 0.7071;
+            }
+
+            player.x += moveX * player.speed * dt;
+            player.y += moveY * player.speed * dt;
+
+            if (moveX !== 0 || moveY !== 0) {
+                player.angle = Math.atan2(moveY, moveX) + Math.PI/2;
+            }
+
+            const mapLimit = 1500;
+            player.x = Math.max(-mapLimit, Math.min(mapLimit, player.x));
+            player.y = Math.max(-mapLimit, Math.min(mapLimit, player.y));
+
+            game.camera.x += (player.x - window.innerWidth / 2 - game.camera.x) * 0.1 * dt;
+            game.camera.y += (player.y - window.innerHeight / 2 - game.camera.y) * 0.1 * dt;
+
+            // Move Fireflies
+            for (let i = 0; i < entities.fireflies.length; i++) {
+                const ff = entities.fireflies[i];
+                ff.pulse += 0.05 * dt;
+                ff.y += ff.speedY * dt;
+                ff.x += ff.speedX * dt;
+                
+                if (ff.y < -mapLimit) ff.y = mapLimit;
+                if (ff.x < -mapLimit) ff.x = mapLimit;
+                if (ff.x > mapLimit) ff.x = -mapLimit;
+            }
+
+            for (let i = entities.projectiles.length - 1; i >= 0; i--) {
+                const proj = entities.projectiles[i];
+                proj.x += proj.vx * dt;
+                proj.y += proj.vy * dt;
+
+                const flightDistance = Math.sqrt((proj.x - player.x) ** 2 + (proj.y - player.y) ** 2);
+                if (flightDistance > player.range + 200) {
+                    entities.projectiles.splice(i, 1);
+                    continue;
+                }
+
+                let projectileHit = false;
+
+                for (let j = entities.letterBubbles.length - 1; j >= 0; j--) {
+                    const bubble = entities.letterBubbles[j];
+                    const dx = bubble.x - proj.x;
+                    const dy = bubble.y - proj.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < (20 * bubble.scale) + proj.radius) {
+                        projectileHit = true;
+                        
+                        if (bubble.letter === game.targetLetter) {
+                            playSound('hit');
+                            entities.letterBubbles.splice(j, 1);
+                            
+                            game.correctPops++;
+                            game.score += 15;
+                            player.xp += 25; 
+                            if (player.xp >= player.maxXp) triggerLevelUp();
+
+                            entities.collectibles.push({
+                                x: bubble.x,
+                                y: bubble.y,
+                                value: 25,
+                                isHerb: Math.random() < 0.35 
+                            });
+
+                            changeTargetLetter(); 
+                        } else {
+                            playSound('fail');
+                            game.incorrectPops++;
+                            entities.letterBubbles.splice(j, 1);
+                        }
+                        break; 
+                    }
+                }
+
+                if (projectileHit) {
+                    entities.projectiles.splice(i, 1);
+                }
+            }
+
+            for (let idx = entities.letterBubbles.length - 1; idx >= 0; idx--) {
+                const bubble = entities.letterBubbles[idx];
+
+                if (bubble.letter !== game.targetLetter && (Date.now() - bubble.spawnTime > 5000)) {
+                    entities.letterBubbles.splice(idx, 1);
+                    continue;
+                }
+
+                const driftTime = Date.now() * 0.001 + bubble.angleOffset;
+                bubble.x += Math.sin(driftTime) * 0.6 * dt;
+                bubble.y += Math.cos(driftTime * 0.4) * 0.4 * dt;
+
+                const dx = player.x - bubble.x;
+                const dy = player.y - bubble.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < player.radius + 16) {
+                    if (bubble.letter === game.targetLetter) {
+                        playSound('coin');
+                        game.correctPops++;
+                        game.score += 25;
+                        player.xp += 30;
+                        if (player.xp >= player.maxXp) triggerLevelUp();
+                        entities.letterBubbles.splice(idx, 1);
+                        changeTargetLetter();
+                    } else {
+                        playSound('fail');
+                        entities.letterBubbles.splice(idx, 1);
+                        player.hp = Math.max(0, player.hp - 15);
+                    }
+                }
+
+                if (Math.abs(bubble.y - player.y) > 600 || Math.abs(bubble.x - player.x) > 800) {
+                    entities.letterBubbles.splice(idx, 1);
+                }
+            }
+
+            for (let i = entities.collectibles.length - 1; i >= 0; i--) {
+                const item = entities.collectibles[i];
+                const dx = player.x - item.x;
+                const dy = player.y - item.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < player.range) {
+                    item.x += (dx / dist) * 7.5 * dt;
+                    item.y += (dy / dist) * 7.5 * dt;
+                }
+
+                if (dist < player.radius + 10) {
+                    playSound('coin');
+                    player.xp += item.value;
+                    if (item.isHerb) {
+                        player.hp = Math.min(player.maxHp, player.hp + 20); 
+                    }
+                    if (player.xp >= player.maxXp) triggerLevelUp();
+                    entities.collectibles.splice(i, 1);
+                }
+            }
+
+            document.getElementById('xp-bar').style.width = `${(player.xp / player.maxXp) * 100}%`;
+            document.getElementById('level-display').innerText = `အဆင့် ${player.level}`;
+            document.getElementById('cash-display').innerText = game.score;
+            document.getElementById('hp-display').innerText = `${Math.max(0, Math.round(player.hp))} / ${player.maxHp}`;
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save();
+            ctx.translate(-game.camera.x, -game.camera.y);
+
+            // Forest Floor background
+            ctx.fillStyle = '#02231c'; 
+            ctx.fillRect(player.x - 2000, player.y - 2000, 4000, 4000);
+
+            // Render Glowing Mushrooms
+            entities.scenery.forEach(item => {
+                if (item.type === 'mushroom') drawMushroom(ctx, item.x, item.y, item.radius, false);
+                if (item.type === 'poison_mushroom') drawMushroom(ctx, item.x, item.y, item.radius, true);
+            });
+
+            // Render Ancient Trees
+            entities.scenery.forEach(item => {
+                if (item.type === 'tree') drawTree(ctx, item.x, item.y, item.radius);
+            });
+
+            // Render Fireflies (Behind elements)
+            entities.fireflies.forEach(ff => {
+                ctx.save();
+                const glow = ff.size + Math.sin(ff.pulse) * 1.5;
+                ctx.fillStyle = `rgba(234, 244, 21, ${0.3 + Math.sin(ff.pulse) * 0.25})`;
+                ctx.shadowColor = '#eab308';
+                ctx.shadowBlur = 8;
+                ctx.beginPath();
+                ctx.arc(ff.x, ff.y, glow, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+
+            // Render Collectibles (Essence vs Herbs)
+            entities.collectibles.forEach(item => {
+                ctx.save();
+                if (item.isHerb) {
+                    ctx.fillStyle = '#22c55e'; 
+                    ctx.shadowColor = '#22c55e';
+                    ctx.shadowBlur = 8;
+                    ctx.beginPath();
+                    ctx.arc(item.x, item.y, 6, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = '8px sans-serif';
+                    ctx.fillText('🌿', item.x - 4, item.y + 3);
+                } else {
+                    ctx.fillStyle = '#6ee7b7'; 
+                    ctx.beginPath();
+                    ctx.arc(item.x, item.y, 4.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.restore();
+            });
+
+            // Render Magic Orbs (Projectiles)
+            entities.projectiles.forEach(proj => {
+                ctx.save();
+                ctx.fillStyle = '#a7f3d0';
+                ctx.shadowColor = '#10b981';
+                ctx.shadowBlur = 10;
+                ctx.beginPath();
+                ctx.arc(proj.x, proj.y, proj.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+
+            // Render Floating Forest Lanterns with Letters
+            entities.letterBubbles.forEach(bubble => drawMysticLantern(ctx, bubble));
+
+            // Render Player
+            drawPlayer(ctx, player.x, player.y);
+
+            ctx.restore();
+        }
+
+        function gameLoop(now) {
+            let dt = (now - lastTime) / 16.666;
+            lastTime = now;
+            if (dt > 4) dt = 4; 
+
+            updateGame(dt);
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            player.hp = player.maxHp;
+            player.xp = 0;
+            player.level = 1;
+            player.x = 0;
+            player.y = 0;
+            player.angle = 0;
+            game.score = 0;
+            game.correctPops = 0;
+            game.incorrectPops = 0;
+            entities.letterBubbles = [];
+            entities.projectiles = [];
+            entities.collectibles = [];
+            
+            initScenery();
+            changeTargetLetter();
+            
+            document.getElementById('overlay-screen').classList.add('hidden');
+            game.running = true;
+        }
+
+        function gameOver() {
+            game.running = false;
+            document.getElementById('stat-coins').innerText = game.correctPops;
+            document.getElementById('stat-kills').innerText = game.incorrectPops;
+            document.getElementById('stat-level').innerText = `အဆင့် ${player.level}`;
+            document.getElementById('game-stats').classList.remove('hidden');
+            document.getElementById('start-btn').innerText = "ပြန်လည်စတင်မည်";
+            document.getElementById('overlay-screen').classList.remove('hidden');
+        }
+
+        document.getElementById('start-btn').onclick = startGame;
+        document.getElementById('btnTopReset').onclick = startGame;
+
+        window.onload = function() {
+            requestAnimationFrame(gameLoop);
+        };
+    </script>
+</body>
+</html>

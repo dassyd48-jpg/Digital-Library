@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Find and Paint Letters - Dassy Digital Library</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght=400;700;900&display=swap');
+
+        :root {
+            --sky-blue: #5bc0be;
+            --grass-green: #76c893;
+            --flower-core: #ffffff;
+            --text-dark: #2d3748;
+            --target-yellow: #f1c40f;
+            --dark-green: #2a9d3a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body, html {
+            width: 100%; height: 100%; overflow: hidden;
+            font-family: "Noto Sans Myanmar", "Pyidaungsu", "Myanmar Text", system-ui, sans-serif;
+            user-select: none; -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        /* ---------- Cartoon Garden Animated Background ---------- */
+        body {
+            background: linear-gradient(180deg, #5ecfff 0%, #b4ecff 40%, #a3e635 85%, #4ade80 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Rainbow Decor */
+        .rainbow {
+            position: absolute; top: 12%; left: -5%; width: 110%; height: clamp(80px, 15vh, 160px);
+            border-radius: 50%; border: clamp(6px, 1vw, 12px) solid rgba(255, 107, 107, 0.4);
+            border-bottom: 0; transform: rotate(5deg); pointer-events: none; z-index: 0;
+        }
+        .rainbow::before {
+            content: ''; position: absolute; inset: calc(clamp(6px, 1vw, 12px) * -2); border-radius: 50%;
+            border: clamp(6px, 1vw, 12px) solid rgba(255, 230, 109, 0.4); border-bottom: 0;
+        }
+        .rainbow::after {
+            content: ''; position: absolute; inset: calc(clamp(6px, 1vw, 12px) * -3); border-radius: 50%;
+            border: clamp(6px, 1vw, 12px) solid rgba(138, 212, 235, 0.4); border-bottom: 0;
+        }
+
+        /* Decorative Flowers in BG */
+        .bg-flower {
+            position: absolute; background: #fff; border-radius: 50%; opacity: 0.35; pointer-events: none;
+        }
+        .bg-flower::before, .bg-flower::after {
+            content: ''; position: absolute; background: inherit; border-radius: 50%; width: 100%; height: 100%;
+        }
+        .bg-flower::before { transform: rotate(30deg); }
+        .bg-flower::after { transform: rotate(60deg); }
+        .bf-1 { width: clamp(25px, 5vw, 40px); height: clamp(25px, 5vw, 40px); bottom: 8%; left: 5%; background: #ff9ff3; }
+        .bf-2 { width: clamp(30px, 6vw, 50px); height: clamp(30px, 6vw, 50px); bottom: 12%; right: 5%; background: #feca57; }
+
+        /* ---------- နေမင်းကြီး (Adaptive Positioning) ---------- */
+        .sun {
+            position: absolute; top: clamp(15px, 3vh, 30px); right: clamp(15px, 4vw, 50px);
+            width: clamp(60px, 12vw, 90px); height: clamp(60px, 12vw, 90px); border-radius: 50%;
+            background: radial-gradient(circle, #fff3cc 0%, #ffeb3b 70%, #ff9800 100%);
+            box-shadow: 0 0 20px #ffeb3b88, 0 0 40px #ff980044;
+            z-index: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            animation: sunPulse 4s ease-in-out infinite;
+        }
+
+        .sun-eyes { display: flex; gap: clamp(8px, 1.5vw, 16px); margin-top: 5px; margin-bottom: 4px; height: 8px; align-items: center; }
+        .sun-eye { width: clamp(5px, 1vw, 8px); height: clamp(5px, 1vw, 8px); background: #e67e22; border-radius: 50%; animation: eyeBlink 3s infinite; }
+        .sun-mouth-css { width: clamp(16px, 3vw, 24px); height: clamp(8px, 1.5vh, 12px); border-bottom: 4px solid #e67e22; border-radius: 0 0 15px 15px; margin-top: 2px; transition: all 0.2s; }
+        
+        .sun.happy .sun-eye:last-child { transform: scaleY(0.1); }
+        .sun.happy .sun-mouth-css { height: clamp(12px, 2vh, 18px); border-bottom-width: 5px; }
+
+        /* ---------- Game Intro Overlay Screen ---------- */
+        #intro-screen {
+            position: fixed; inset: 0;
+            background: linear-gradient(180deg, #5ecfff 0%, #b4ecff 40%, #a3e635 85%, #4ade80 100%);
+            z-index: 200; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 20px;
+        }
+
+        .intro-card {
+            background: rgba(255, 255, 255, 0.95); padding: clamp(25px, 5vw, 45px) clamp(20px, 4vw, 35px); border-radius: 35px;
+            border: 6px solid var(--grass-green); text-align: center; max-width: 450px; width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            animation: introPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .intro-title { color: #1e824c; font-size: clamp(1.5rem, 5vw, 2.2rem); font-weight: 900; margin-bottom: 12px; }
+        .intro-subtitle { color: #4b5563; font-size: clamp(0.95rem, 3vw, 1.15rem); font-weight: 700; margin-bottom: 25px; line-height: 1.6; }
+        
+        .btn-start {
+            background: #6ee46b; color: #0a3d10; border: 4px solid #2a9d3a;
+            border-radius: 25px; padding: clamp(10px, 2vh, 15px) clamp(25px, 5vw, 45px); font-size: clamp(1.1rem, 4vw, 1.4rem);
+            font-weight: 900; cursor: pointer; box-shadow: 0 8px 0 #2a9d3a;
+            transition: all 0.1s; width: 100%;
+        }
+        .btn-start:active { transform: translateY(4px); box-shadow: 0 4px 0 #2a9d3a; }
+
+        /* ---------- Main Container ---------- */
+        .container {
+            position: relative; display: none; flex-direction: column;
+            align-items: center; justify-content: center; 
+            width: 100%; max-width: 650px; max-height: 100vh;
+            z-index: 10; padding: clamp(10px, 3vw, 20px);
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            border: 4px solid var(--grass-green); border-radius: 22px;
+            padding: clamp(8px, 1.5vh, 12px) clamp(15px, 4vw, 30px); text-align: center;
+            box-shadow: 0 6px 0 var(--dark-green), 0 10px 20px rgba(0,0,0,0.1);
+            margin-bottom: clamp(10px, 2vh, 20px); width: 100%;
+        }
+
+        h1 { color: #1e824c; font-size: clamp(1.2rem, 4vw, 1.6rem); margin: 0; font-weight: 900; }
+        .guide-text { color: #b33939; font-weight: 800; margin-top: 4px; font-size: clamp(0.85rem, 2.5vw, 1rem); }
+
+        .score-board {
+            background: white; padding: 6px 20px; border-radius: 15px;
+            border: 3px solid var(--grass-green); color: #1e824c;
+            font-weight: 800; margin-bottom: clamp(10px, 2vh, 15px); box-shadow: 0 4px 0 var(--grass-green);
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        }
+
+        /* ---------- Painting Area Grid ---------- */
+        .painting-canvas {
+            background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(5px);
+            padding: clamp(12px, 3vw, 25px); border-radius: 30px; border: 6px solid var(--grass-green);
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(8px, 1.5vw, 12px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; min-height: 280px;
+        }
+
+        .segment {
+            aspect-ratio: 1 / 1; width: 100%;
+            background: white; border: 4px solid #eee; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: clamp(28px, 6vw, 45px); cursor: pointer; transition: all 0.2s;
+            color: #2c3e50; font-weight: 900; box-shadow: 0 4px 0 #ddd;
+        }
+
+        .segment:active { transform: translateY(2px); box-shadow: 0 2px 0 #ddd; }
+        .segment.painted { border-color: rgba(255,255,255,0.5); color: white; box-shadow: 0 4px 0 rgba(0,0,0,0.1); }
+        .segment.wrong { animation: shake 0.4s ease; background: #ffebee; border-color: #ef9a9a; box-shadow: 0 4px 0 #ef9a9a; }
+
+        /* ---------- Congratulation Layout ---------- */
+        .congratulations-box {
+            grid-column: span 4; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center; padding: 20px;
+            animation: introPop 0.5s ease;
+        }
+        .congrats-title { color: #d84315; font-size: clamp(1.6rem, 5vw, 2.2rem); font-weight: 900; margin-bottom: 10px; }
+        .congrats-text { color: #2e7d32; font-size: clamp(1rem, 3.5vw, 1.3rem); font-weight: 800; line-height: 1.6; margin-bottom: 20px; }
+
+        /* ---------- Palette ---------- */
+        .palette {
+            margin-top: clamp(15px, 2.5vh, 25px); background: white; padding: 10px 20px;
+            border-radius: 50px; border: 3px solid var(--grass-green);
+            display: flex; gap: clamp(8px, 2vw, 12px); box-shadow: 0 6px 0 var(--grass-green);
+        }
+
+        .color-circle {
+            width: clamp(35px, 8vw, 45px); height: clamp(35px, 8vw, 45px); border-radius: 50%; cursor: pointer;
+            border: 3px solid transparent; transition: transform 0.2s;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+        }
+        .color-circle.selected { border-color: #1e824c; transform: scale(1.15); }
+
+        /* ---------- Controls Buttons ---------- */
+        .controls { margin-top: clamp(15px, 2.5vh, 25px); display: flex; gap: 15px; width: 100%; justify-content: center; }
+        .btn {
+            background: var(--target-yellow); color: #4a2c00; border: 4px solid #cc8a00;
+            border-radius: 18px; padding: 10px 25px; font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+            font-weight: 900; cursor: pointer; box-shadow: 0 6px 0 #cc8a00; transition: transform 0.1s;
+        }
+        .btn:active { transform: translateY(3px); box-shadow: 0 3px 0 #cc8a00; }
+        
+        .btn-next-lesson { background: #6ee46b; border-color: #2a9d3a; color: #0a3d10; box-shadow: 0 6px 0 #2a9d3a; }
+        .btn-finish { background: #ff7675; border-color: #d63031; color: #fff; box-shadow: 0 6px 0 #d63031; padding: 12px 40px; font-size: 1.3rem; }
+
+        /* ---------- Mobile Layout Optimization ---------- */
+        @media (max-width: 768px) {
+            .container { max-width: 92%; }
+            .segment { border-width: 3px; border-radius: 14px; }
+            .intro-card { border-width: 4px; }
+            .rainbow { top: 15%; }
+        }
+
+        /* ---------- Animations ---------- */
+        @keyframes sunPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+        @keyframes eyeBlink { 0%, 90%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
+        @keyframes introPop { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .success-pop { animation: pop 0.4s ease; }
+    </style>
+</head>
+<body>
+    
+    <!-- TOP NAVIGATION BUTTONS (HOME & RESET) -->
+    <div style="position: absolute; top: 16px; left: 16px; z-index: 250; display: flex; gap: 8px;">
+      <button onclick="location.href='index.html?fromGame=true'" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" style="width: 40px; height: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 2px solid #d84315; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px;" title="ပင်မစာမျက်နှာ">
+        🏠
+      </button>
+      <button id="btnTopReset" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" style="width: 40px; height: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 2px solid #d84315; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px;" title="ပြန်စမည်">
+        🔄
+      </button>
+    </div>
+
+    <div id="intro-screen">
+        <div class="intro-card">
+            <h1 class="intro-title">မင်္ဂလာပါရှင်</h1>
+            <p class="intro-subtitle">မြန်မာအက္ခရာ (ပ၊ ဖ၊ ဗ၊ ဘ၊ မ) လေးတွေကို အလှည့်ကျ ရှာဖွေပြီး ဆွဲဆောင်မှုရှိတဲ့ အရောင်လေးတွေ ခြယ်သရအောင်နော်</p>
+            <button class="btn-start" onclick="startGame()">ဂိမ်းစဆော့မယ် 🚀</button>
+        </div>
+    </div>
+
+    <div class="rainbow" aria-hidden="true"></div>
+    <div class="bg-flower bf-1" aria-hidden="true"></div>
+    <div class="bg-flower bf-2" aria-hidden="true"></div>
+
+    <div class="sky" aria-hidden="true">
+        <div class="sun" id="game-sun">
+            <div class="sun-eyes">
+                <div class="sun-eye"></div>
+                <div class="sun-eye"></div>
+            </div>
+            <div class="sun-mouth-css"></div>
+        </div>
+    </div>
+
+    <div class="container" id="main-game-container">
+        <header>
+            <h1 id="header-title">"ပ" ကို ရှာပြီး အရောင်ခြယ်ရအောင်</h1>
+            <p class="guide-text" id="header-guide">"ပ" အက္ခရာကိုပဲ ရွေးပြီး အရောင်ခြယ်ပါ</p>
+        </header>
+
+        <div class="score-board">ရှာတွေ့သည့် အရေအတွက်: <span id="found-count">0</span> / <span id="total-target">6</span></div>
+
+        <div class="painting-canvas" id="canvas"></div>
+
+        <div class="palette" id="palette">
+            <div class="color-circle selected" style="background: #2ecc71;" data-color="#2ecc71"></div>
+            <div class="color-circle" style="background: #e74c3c;" data-color="#e74c3c"></div>
+            <div class="color-circle" style="background: #9b59b6;" data-color="#9b59b6"></div>
+            <div class="color-circle" style="background: #3498db;" data-color="#3498db"></div>
+            <div class="color-circle" style="background: #e67e22;" data-color="#e67e22"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="btn-reset-bottom" onclick="initGame()">ပြန်စမည်</button>
+            <button class="btn btn-next-lesson" id="next-btn" style="display: none;" onclick="goToNextLesson()">နောက်သင်ခန်းစာအသစ်သွားမယ်</button>
+        </div>
+    </div>
+
+    <script>
+        const allLetters = ['က', 'ခ', 'ဂ', 'ဃ', 'င', 'စ', 'ဆ', 'ဇ', 'ဈ', 'ည', 'ဋ', 'ဌ', 'ဍ', 'ဎ', 'ဏ', 'တ', 'ထ', 'ဒ', 'ဓ', 'န'];
+        const targetLettersPool = ['ပ', 'ဖ', 'ဗ', 'ဘ', 'မ'];
+        let poolIndex = 0;
+        let targetLetter = targetLettersPool[poolIndex];
+
+        let foundCount = 0;
+        const totalTarget = 6; 
+        let selectedColor = '#2ecc71';
+
+        const canvas = document.getElementById('canvas');
+        const foundDisplay = document.getElementById('found-count');
+        const nextBtn = document.getElementById('next-btn');
+        const gameSun = document.getElementById('game-sun');
+        const palette = document.getElementById('palette');
+        const btnResetBottom = document.getElementById('btn-reset-bottom');
+
+        // ---------- WEB AUDIO API (NO EXTERNAL LINK NEEDED) ----------
+        let audioCtx = null;
+        let isPlayingBGM = false;
+        let noteTimeout = null;
+
+        // Sweet and Happy Melodic Pattern for Kids Game (Major Pentatonic)
+        const melody = [261.63, 293.66, 329.63, 392.00, 440.00, 392.00, 329.63, 293.66]; // C4, D4, E4, G4, A4...
+        let melodyIndex = 0;
+
+        function startBGM() {
+            if (isPlayingBGM) return;
+            
+            // Initialize Audio Context on user click
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            isPlayingBGM = true;
+            playNextNote();
+        }
+
+        function playNextNote() {
+            if (!isPlayingBGM || !audioCtx) return;
+
+            let osc = audioCtx.createOscillator();
+            let gainNode = audioCtx.createGain();
+
+            // Triangle wave gives a soft, cute cartoonish flute/synth sound perfect for kids
+            osc.type = 'triangle'; 
+            osc.frequency.setValueAtTime(melody[melodyIndex], audioCtx.currentTime);
+
+            // Smooth volume envelope to avoid clicking noises
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.1); // Keep it pleasant and soft
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.4);
+
+            melodyIndex = (melodyIndex + 1) % melody.length;
+            
+            // Loop pace (400ms per note - fast, happy and energetic rhythm)
+            noteTimeout = setTimeout(playNextNote, 400);
+        }
+
+        function stopBGM() {
+            isPlayingBGM = false;
+            clearTimeout(noteTimeout);
+        }
+
+        function startGame() {
+            startBGM(); // Instantly triggers pure digital sound synthesize
+            document.getElementById('intro-screen').style.display = 'none';
+            document.getElementById('main-game-container').style.display = 'flex';
+            poolIndex = 0;
+            targetLetter = targetLettersPool[poolIndex];
+            initGame();
+        }
+
+        document.getElementById('btnTopReset').addEventListener('click', () => {
+            startBGM();
+            if(poolIndex >= targetLettersPool.length) {
+                startGame();
+            } else {
+                initGame();
+            }
+        });
+
+        document.querySelectorAll('.color-circle').forEach(circle => {
+            circle.onclick = () => {
+                document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+                circle.classList.add('selected');
+                selectedColor = circle.dataset.color;
+            };
+        });
+
+        function initGame() {
+            canvas.innerHTML = '';
+            foundCount = 0;
+            foundDisplay.innerText = '0';
+            nextBtn.style.display = 'none';
+            canvas.classList.remove('success-pop');
+            gameSun.classList.remove('happy');
+            
+            palette.style.display = 'flex';
+            btnResetBottom.style.display = 'block';
+
+            document.getElementById('header-title').innerText = `"${targetLetter}" ကို ရှာပြီး အရောင်ခြယ်ရအောင်`;
+            document.getElementById('header-guide').innerText = `"${targetLetter}" အက္ခရာကိုပဲ ရွေးပြီး အရောင်ခြယ်ပါ`;
+
+            let blocksArray = [];
+            
+            for (let i = 0; i < totalTarget; i++) {
+                blocksArray.push({ letter: targetLetter, isTarget: true });
+            }
+            
+            while (blocksArray.length < 12) {
+                let randomLetter = allLetters[Math.floor(Math.random() * allLetters.length)];
+                blocksArray.push({ letter: randomLetter, isTarget: false });
+            }
+
+            blocksArray.sort(() => Math.random() - 0.5);
+
+            blocksArray.forEach(item => {
+                const seg = document.createElement('div');
+                seg.className = 'segment';
+                seg.innerText = item.letter;
+                seg.onclick = () => {
+                    startBGM(); // Safe fallback to start audio if needed
+                    handlePaint(seg, item.letter);
+                };
+                canvas.appendChild(seg);
+            });
+        }
+
+        function handlePaint(seg, letter) {
+            if (seg.classList.contains('painted')) return;
+
+            if (letter === targetLetter) {
+                seg.style.background = selectedColor;
+                seg.classList.add('painted');
+                foundCount++;
+                foundDisplay.innerText = foundCount;
+
+                gameSun.classList.add('happy');
+                setTimeout(() => {
+                    if (foundCount < totalTarget) gameSun.classList.remove('happy');
+                }, 800);
+
+                if (foundCount === totalTarget) {
+                    canvas.classList.add('success-pop');
+                    gameSun.classList.add('happy');
+                    
+                    setTimeout(() => {
+                        handleNextSteps();
+                    }, 400);
+                }
+            } else {
+                seg.classList.add('wrong');
+                setTimeout(() => seg.classList.remove('wrong'), 400);
+            }
+        }
+
+        function handleNextSteps() {
+            if (poolIndex < targetLettersPool.length - 1) {
+                nextBtn.style.display = 'block';
+            } else {
+                showCelebrationScreen();
+            }
+        }
+
+        function goToNextLesson() {
+            poolIndex++;
+            if (poolIndex < targetLettersPool.length) {
+                targetLetter = targetLettersPool[poolIndex];
+                initGame();
+            }
+        }
+
+        function showCelebrationScreen() {
+            poolIndex = targetLettersPool.length; 
+            canvas.innerHTML = `
+                <div class="congratulations-box">
+                    <h2 class="congrats-title">🎉 သိပ်တော်တယ်ကွယ် 🎉</h2>
+                    <p class="congrats-text">အက္ခရာ (ပ၊ ဖ၊ ဗ၊ ဘ၊ မ) အားလုံးကို<br>အောင်မြင်စွာ ရှာဖွေခြယ်သပြီးသွားပါပြီရှင်။ 🌟</p>
+                    <button class="btn btn-finish" onclick="stopBGM(); location.href='index.html?fromGame=true'">ပြီးပြီ 🌟</button>
+                </div>
+            `;
+            palette.style.display = 'none';
+            btnResetBottom.style.display = 'none';
+            nextBtn.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

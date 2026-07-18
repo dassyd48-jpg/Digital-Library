@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dassy's Alphabet Quest - Undersea Kingdom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght@400;700;900&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0c4a6e; /* Deep Ocean Blue Base */
+            font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .burmese-font {
+            font-family: 'Pyidaungsu', 'Myanmar3', 'Yunghkio', sans-serif;
+        }
+
+        /* Responsive UI Scaling with clamp() */
+        #hud {
+            top: clamp(1rem, 2vh, 1.5rem);
+            left: clamp(7rem, 15vw, 9rem); /* Prevent overlapping with top-left buttons */
+            right: clamp(1rem, 2vw, 1.5rem);
+            max-width: clamp(280px, 45vw, 450px);
+        }
+
+        #hp-panel {
+            top: clamp(1rem, 2vh, 1.5rem);
+            right: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        /* Adaptive Anchoring for Modal Windows */
+        .adaptive-panel {
+            width: clamp(280px, 90vw, 420px);
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            border-radius: clamp(1.5rem, 5vw, 3rem);
+        }
+
+        /* Mobile Scale Optimization */
+        @media (max-width: 768px) {
+            .mobile-scale {
+                transform: scale(0.85);
+                transform-origin: top left;
+            }
+            #hud {
+                left: 6.5rem;
+                top: 0.75rem;
+            }
+            #hp-panel {
+                top: auto;
+                bottom: 1rem;
+                right: 1rem;
+            }
+            .adaptive-panel {
+                transform: scale(0.9);
+            }
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- TOP NAVIGATION BUTTONS (HOME & RESET) -->
+    <div class="absolute top-4 left-4 z-50 flex gap-2 pointer-events-auto">
+      <button onclick="location.href='index.html?fromGame=true'" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-sky-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပင်မစာမျက်နှာ">
+        🏠
+      </button>
+      <button id="btnTopReset" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-sky-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပြန်စမည်">
+        🔄
+      </button>
+    </div>
+
+    <!-- HUD (HEADS-UP DISPLAY) -->
+    <div id="hud" class="absolute pointer-events-none z-30 flex flex-col space-y-2">
+        <div class="flex items-center space-x-3 bg-slate-900/90 backdrop-blur-md p-3 rounded-2xl border border-sky-500/20 shadow-lg">
+            <span class="text-[10px] sm:text-xs font-black text-sky-400 tracking-wider uppercase burmese-font">တိုးတက်မှု</span>
+            <div class="flex-1 bg-black/40 h-3 sm:h-4 rounded-full overflow-hidden p-0.5 border border-white/5">
+                <div id="xp-bar" class="bg-gradient-to-r from-sky-400 via-cyan-400 to-indigo-400 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <span id="level-display" class="bg-sky-600 text-white text-[9px] sm:text-[10px] font-black px-2 sm:px-3 py-1 rounded-full uppercase tracking-widest burmese-font">လှိုင်း ၁</span>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2 bg-slate-900/90 backdrop-blur-md px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl border border-sky-500/20 shadow-lg">
+                <span class="text-lg sm:text-xl">🐚</span>
+                <span id="cash-display" class="text-white font-black tracking-widest text-xs sm:text-sm">0</span>
+            </div>
+            <div class="flex items-center space-x-2 bg-gradient-to-r from-sky-500/20 to-cyan-500/20 backdrop-blur-md px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl border border-sky-500/40 shadow-lg animate-pulse">
+                <span class="text-[9px] sm:text-xs font-black text-sky-400 uppercase tracking-wider burmese-font">ပစ်မှတ်:</span>
+                <span id="target-letter-display" class="burmese-font text-xl sm:text-2xl font-bold text-sky-300">ပ</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- HP PANEL -->
+    <div id="hp-panel" class="absolute z-30 pointer-events-none flex items-center space-x-2 bg-slate-900/90 backdrop-blur-md px-4 py-2 rounded-2xl border border-sky-500/20 shadow-lg">
+        <span class="text-base sm:text-lg">💙</span>
+        <span id="hp-display" class="text-sky-400 font-black tracking-wider text-xs sm:text-sm">100 / 100</span>
+    </div>
+
+    <!-- UPGRADE MODAL -->
+    <div id="upgrade-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-[100] flex items-center justify-center p-6 transition-all duration-300">
+        <div class="bg-[#1e293b] border-2 border-sky-500/20 adaptive-panel text-center shadow-[0_0_100px_rgba(14,165,233,0.15)] scale-95 transition-transform">
+            <div class="relative mb-6">
+                <div class="text-3xl sm:text-4xl">🦐✨🌊</div>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-sky-400 tracking-wider mb-2 uppercase burmese-font">အစွမ်းမြှင့်တင်ရန်!</h2>
+            <p class="text-neutral-400 text-[10px] sm:text-xs tracking-widest mb-6 uppercase burmese-font">ရေအောက်စွမ်းရည်တစ်ခု ရွေးချယ်ပါ</p>
+            
+            <div id="upgrade-options" class="space-y-3 sm:space-y-4">
+                <!-- Upgrades dynamic render -->
+            </div>
+        </div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- INTRO & GAME OVER OVERLAY SCREEN -->
+    <div id="overlay-screen" class="absolute inset-0 bg-slate-950/95 backdrop-blur-md z-[90] flex flex-col items-center justify-center text-center p-6">
+        <h1 class="text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-400 to-indigo-400 tracking-widest mb-2 uppercase drop-shadow-[0_0_30px_rgba(14,165,233,0.3)] burmese-font">ရေအောက်ကမ္ဘာ</h1>
+        <p class="text-sky-400 text-[9px] sm:text-[10px] uppercase font-black tracking-[0.3em] mb-12 burmese-font">"ပ"အက္ခရာ ပစ်ဂိမ်း</p>
+        
+        <div id="game-stats" class="hidden bg-white/5 border border-white/5 rounded-3xl p-5 mb-8 max-w-xs w-full text-left space-y-3 font-sans">
+            <div class="flex justify-between"><span class="text-neutral-400 burmese-font">"ပ" ရရှိမှု</span><span id="stat-coins" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-neutral-400 burmese-font">မှားယွင်းမှု ရှောင်ရှားနိုင်မှု</span><span id="stat-kills" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-neutral-400 burmese-font">ရောက်ရှိသည့် လှိုင်းအဆင့်</span><span id="stat-level" class="text-sky-400 font-bold">လှိုင်း ၁</span></div>
+        </div>
+
+        <button id="start-btn" class="px-12 py-5 sm:px-16 sm:py-6 bg-sky-600 hover:bg-sky-500 text-white font-black text-xs sm:text-sm uppercase tracking-[0.2em] rounded-full transition-all shadow-[0_20px_50px_rgba(14,165,233,0.3)] border-b-4 border-sky-800 active:scale-95 pointer-events-auto burmese-font">စတင်ကစားမည်</button>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'shoot') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(300, now + 0.12);
+                gainNode.gain.setValueAtTime(0.05, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+                osc.start(now);
+                osc.stop(now + 0.12);
+            } else if (type === 'hit') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(350, now);
+                osc.frequency.exponentialRampToValueAtTime(550, now + 0.08);
+                gainNode.gain.setValueAtTime(0.06, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+                osc.start(now);
+                osc.stop(now + 0.08);
+            } else if (type === 'coin') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(900, now);
+                osc.frequency.setValueAtTime(1300, now + 0.05);
+                gainNode.gain.setValueAtTime(0.05, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.14);
+                osc.start(now);
+                osc.stop(now + 0.14);
+            } else if (type === 'fail') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(200, now);
+                osc.frequency.linearRampToValueAtTime(100, now + 0.2);
+                gainNode.gain.setValueAtTime(0.09, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                osc.start(now);
+                osc.stop(now + 0.2);
+            } else if (type === 'levelup') {
+                const freqs = [450, 550, 700, 950, 1150];
+                freqs.forEach((f, i) => {
+                    const oscSeq = audioCtx.createOscillator();
+                    const gainSeq = audioCtx.createGain();
+                    oscSeq.connect(gainSeq);
+                    gainSeq.connect(audioCtx.destination);
+                    oscSeq.type = 'sine';
+                    oscSeq.frequency.setValueAtTime(f, now + i * 0.04);
+                    gainSeq.gain.setValueAtTime(0.04, now + i * 0.04);
+                    gainSeq.gain.exponentialRampToValueAtTime(0.01, now + i * 0.04 + 0.1);
+                    oscSeq.start(now + i * 0.04);
+                    oscSeq.stop(now + i * 0.04 + 0.1);
+                });
+            }
+        }
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const burmeseAlphabets = [
+            'က', 'ခ', 'ဂ', 'ဃ', 'င', 'စ', 'ဆ', 'ဇ', 'ဈ', 'ည',
+            'တ', 'ဌ', 'ထ', 'ဒ', 'ဓ', 'န', 'ပ', 'ဖ', 'ဗ', 'ဘ', 'မ',
+            'ယ', 'ရ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ', 'ဏ', 'ဎ'
+        ];
+
+        const game = {
+            running: false,
+            paused: false,
+            score: 0,
+            correctPops: 0,
+            incorrectPops: 0,
+            targetLetter: 'ပ',
+            camera: { x: 0, y: 0 }
+        };
+
+        const player = {
+            x: 0,
+            y: 0,
+            vx: 0,
+            vy: 0,
+            angle: 0,
+            radius: 18,
+            hp: 100,
+            maxHp: 100,
+            xp: 0,
+            maxXp: 100,
+            level: 1,
+            speed: 4.8, 
+            range: 230,         
+            damage: 50,
+            shootCooldown: 0.22, 
+            lastShotTime: 0
+        };
+
+        const keys = {};
+        const entities = {
+            projectiles: [],
+            letterBubbles: [], 
+            collectibles: [],  
+            scenery: []        
+        };
+
+        function initScenery() {
+            entities.scenery = [];
+            const mapRadius = 1600;
+
+            // 1. Vibrant Corals
+            for (let i = 0; i < 30; i++) {
+                entities.scenery.push({
+                    type: 'coral',
+                    x: (Math.random() - 0.5) * mapRadius * 2,
+                    y: (Math.random() - 0.5) * mapRadius * 2,
+                    color: ['#f43f5e', '#ec4899', '#f97316'][Math.floor(Math.random() * 3)],
+                    branches: 3 + Math.floor(Math.random() * 3)
+                });
+            }
+
+            // 2. Wavy Seaweeds
+            for (let i = 0; i < 45; i++) {
+                entities.scenery.push({
+                    type: 'seaweed',
+                    x: (Math.random() - 0.5) * mapRadius * 2,
+                    y: (Math.random() - 0.5) * mapRadius * 2,
+                    height: 40 + Math.random() * 40,
+                    waveOffset: Math.random() * Math.PI * 2
+                });
+            }
+
+            // 3. Starfish
+            for (let i = 0; i < 25; i++) {
+                entities.scenery.push({
+                    type: 'starfish',
+                    x: (Math.random() - 0.5) * mapRadius * 2,
+                    y: (Math.random() - 0.5) * mapRadius * 2,
+                    scale: 0.8 + Math.random() * 0.5,
+                    angle: Math.random() * Math.PI * 2
+                });
+            }
+        }
+
+        function changeTargetLetter() {
+            game.targetLetter = 'ပ'; // Always "ပ" as requested
+            document.getElementById('target-letter-display').innerText = game.targetLetter;
+        }
+
+        function drawCoral(ctx, x, y, color, branches) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 6;
+            ctx.lineCap = 'round';
+
+            for (let i = 0; i < branches; i++) {
+                ctx.beginPath();
+                ctx.moveTo(0, 10);
+                const angle = -Math.PI/2 + (i - (branches-1)/2) * 0.4;
+                const length = 25 + Math.random() * 15;
+                const bx = Math.cos(angle) * length;
+                const by = Math.sin(angle) * length;
+                ctx.lineTo(bx, by);
+                
+                ctx.lineTo(bx + Math.cos(angle - 0.3) * 10, by + Math.sin(angle - 0.3) * 10);
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+
+        function drawSeaweed(ctx, x, y, height, waveOffset) {
+            ctx.save();
+            ctx.strokeStyle = '#10b981'; 
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            
+            const segments = 5;
+            let currentY = y;
+            let currentX = x;
+            const segHeight = height / segments;
+            
+            const time = Date.now() * 0.003 + waveOffset;
+            
+            for (let i = 0; i < segments; i++) {
+                currentY -= segHeight;
+                currentX += Math.sin(time + i) * 4;
+                ctx.lineTo(currentX, currentY);
+            }
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function drawStarfish(ctx, x, y, scale, angle) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            ctx.fillStyle = '#fb7185'; 
+            
+            ctx.beginPath();
+            for (let i = 0; i < 5; i++) {
+                ctx.lineTo(0, -12 * scale);
+                ctx.lineTo(3 * scale, -4 * scale);
+                ctx.rotate((Math.PI * 2) / 5);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawPlayer(ctx, x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(player.angle);
+
+            ctx.fillStyle = 'rgba(2, 132, 199, 0.2)';
+            ctx.beginPath();
+            ctx.arc(0, 6, 16, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = '#fca5a5';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(-4, -12);
+            ctx.quadraticCurveTo(-15, -28, -12, -40);
+            ctx.moveTo(4, -12);
+            ctx.quadraticCurveTo(15, -28, 12, -40);
+            ctx.stroke();
+
+            ctx.fillStyle = '#f87171'; 
+            ctx.beginPath();
+            ctx.moveTo(-6, 4);
+            ctx.lineTo(0, 22);
+            ctx.lineTo(6, 4);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.fillStyle = '#ef4444';
+            ctx.fillRect(-8, 21, 5, 6);
+            ctx.fillRect(3, 21, 5, 6);
+
+            ctx.fillStyle = '#fca5a5';
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 10, 13, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#f87171';
+            ctx.beginPath();
+            ctx.moveTo(-7, -6);
+            ctx.lineTo(0, -17); 
+            ctx.lineTo(7, -6);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath();
+            ctx.arc(-7, -6, 2.5, 0, Math.PI * 2);
+            ctx.arc(7, -6, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([4, 6]);
+            ctx.beginPath();
+            ctx.arc(x, y, player.range, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]); 
+        }
+
+        function drawSeaShell(ctx, bubble) {
+            const { x, y, letter, scale } = bubble;
+            const isTarget = letter === game.targetLetter;
+
+            ctx.save();
+            ctx.translate(x, y);
+
+            const floating = Math.sin(Date.now() * 0.004 + bubble.angleOffset) * 4;
+            ctx.translate(0, floating);
+
+            let coreColor = isTarget ? '#fbbf24' : '#ef4444';
+            let ridgeColor = isTarget ? '#d97706' : '#991b1b';
+
+            ctx.fillStyle = coreColor;
+            ctx.beginPath();
+            ctx.moveTo(0, 16 * scale);
+            ctx.quadraticCurveTo(-22 * scale, -8 * scale, -16 * scale, -18 * scale);
+            ctx.quadraticCurveTo(0, -24 * scale, 16 * scale, -18 * scale);
+            ctx.quadraticCurveTo(22 * scale, -8 * scale, 0, 16 * scale);
+            ctx.fill();
+
+            ctx.strokeStyle = ridgeColor;
+            ctx.lineWidth = 2 * scale;
+            for(let i = -2; i <= 2; i++) {
+                ctx.beginPath();
+                ctx.moveTo(0, 14 * scale);
+                ctx.lineTo(i * 6 * scale, -18 * scale);
+                ctx.stroke();
+            }
+
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(x, y + floating - 2 * scale);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `bold ${20 * scale}px Pyidaungsu, "Myanmar3", "Yunghkio", sans-serif`;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = 'rgba(0,0,0,0.4)';
+            ctx.shadowBlur = 4;
+            ctx.fillText(letter, 0, 0);
+            ctx.restore();
+        }
+
+        window.addEventListener('keydown', (e) => { 
+            keys[e.key.toLowerCase()] = true; 
+            // Spacebar shoot support
+            if (e.code === 'Space') {
+                e.preventDefault();
+                fireKeyboardProjectile();
+            }
+        });
+        window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (!game.running || game.paused) return;
+            fireManualProjectile(e.clientX, e.clientY);
+        });
+
+        canvas.addEventListener('touchstart', (e) => {
+            if (!game.running || game.paused) return;
+            const touch = e.touches[0];
+            fireManualProjectile(touch.clientX, touch.clientY);
+        }, { passive: true });
+
+        // Shoot towards where the player is currently facing (Spacebar)
+        function fireKeyboardProjectile() {
+            if (!game.running || game.paused) return;
+            const now = Date.now() / 1000;
+            if (now - player.lastShotTime < player.shootCooldown) return;
+
+            // Player angle is adjusted by Math.PI/2 in rendering, subtract to get true movement vector
+            const shootAngle = player.angle - Math.PI/2;
+            const vx = Math.cos(shootAngle) * 12;
+            const vy = Math.sin(shootAngle) * 12;
+
+            playSound('shoot');
+            entities.projectiles.push({
+                x: player.x,
+                y: player.y,
+                vx: vx,
+                vy: vy,
+                radius: 6
+            });
+
+            player.lastShotTime = now;
+        }
+
+        // Shoot towards the mouse click / touch position
+        function fireManualProjectile(screenX, screenY) {
+            const now = Date.now() / 1000;
+            if (now - player.lastShotTime < player.shootCooldown) return;
+
+            const worldX = screenX + game.camera.x;
+            const worldY = screenY + game.camera.y;
+
+            const dx = worldX - player.x;
+            const dy = worldY - player.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist === 0) return;
+
+            playSound('shoot');
+            entities.projectiles.push({
+                x: player.x,
+                y: player.y,
+                vx: (dx / dist) * 12, 
+                vy: (dy / dist) * 12,
+                radius: 6
+            });
+
+            player.lastShotTime = now;
+        }
+
+        function spawnLetterBubble() {
+            if (!game.running || game.paused) return;
+
+            const angle = Math.random() * Math.PI * 2;
+            const dist = 350 + Math.random() * 200;
+            const x = player.x + Math.cos(angle) * dist;
+            const y = player.y + Math.sin(angle) * dist;
+
+            const isTargetSpawn = Math.random() < 0.45;
+            let chosenLetter = game.targetLetter; 
+            if (!isTargetSpawn) {
+                const filtered = burmeseAlphabets.filter(char => char !== game.targetLetter);
+                chosenLetter = filtered[Math.floor(Math.random() * filtered.length)];
+            }
+
+            entities.letterBubbles.push({
+                x,
+                y,
+                letter: chosenLetter,
+                scale: 1.0 + Math.random() * 0.22,
+                speed: 0.5 + Math.random() * 0.6, 
+                angleOffset: Math.random() * Math.PI * 2,
+                hp: 1,
+                spawnTime: Date.now() 
+            });
+        }
+
+        setInterval(spawnLetterBubble, 950);
+
+        const UPGRADE_POOL = [
+            { id: 'dmg', name: "ရေပူဖောင်း ဖိအားမြှင့်စနစ်", desc: '+၂၅% ရေပူဖောင်း ပစ်ခတ်မှုအားပြင်းခြင်း', stat: 'damage', factor: 1.25 },
+            { id: 'rng', name: 'ရေအောက် ရေဒါစနစ်', desc: '+၁၅% ပတ်ဝန်းကျင် ရှာဖွေနိုင်မှု အကွာအဝေး', stat: 'range', factor: 1.15 },
+            { id: 'spd', name: 'ဂျက်လေဟုန် အမြီးတပ်ဆင်ခြင်း', desc: '+၁၅% ရေကူးနှုန်း ပိုမိုမြန်ဆန်ခြင်း', stat: 'speed', factor: 1.15 },
+            { id: 'rate', name: 'ပါးဟက် အသက်ရှူစနစ်', desc: '-၁၅% ကျည်ပြန်ဖြည့်ချိန် မြန်ဆန်ခြင်း', stat: 'shootCooldown', factor: 0.85 }
+        ];
+
+        function triggerLevelUp() {
+            playSound('levelup');
+            player.level++;
+            player.xp = 0;
+            player.maxXp = Math.round(player.maxXp * 1.5);
+            
+            const optionsContainer = document.getElementById('upgrade-options');
+            optionsContainer.innerHTML = '';
+            
+            const shuffled = [...UPGRADE_POOL].sort(() => 0.5 - Math.random()).slice(0, 3);
+            shuffled.forEach(upg => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-4 bg-[#334155] border border-white/5 hover:border-sky-500 rounded-2xl flex items-center justify-between text-left transition-all active:scale-95 pointer-events-auto";
+                btn.innerHTML = `
+                    <div class="burmese-font">
+                        <h4 class="text-white font-black text-xs sm:text-sm tracking-wide uppercase">${upg.name}</h4>
+                        <p class="text-neutral-400 text-[9px] sm:text-[10px] mt-1 uppercase tracking-wider">${upg.desc}</p>
+                    </div>
+                    <span class="text-lg">🌊</span>
+                `;
+                btn.onclick = () => applyUpgrade(upg);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('upgrade-modal').classList.remove('hidden');
+            game.paused = true;
+        }
+
+        function applyUpgrade(upg) {
+            player[upg.stat] *= upg.factor;
+            document.getElementById('upgrade-modal').classList.add('hidden');
+            game.paused = false;
+        }
+
+        let lastTime = performance.now();
+
+        function updateGame(dt) {
+            if (!game.running || game.paused) return;
+
+            // Trigger Game Over if player HP drops to 0 or below
+            if (player.hp <= 0) {
+                gameOver();
+                return;
+            }
+
+            let moveX = 0;
+            let moveY = 0;
+
+            if (keys['w'] || keys['arrowup']) moveY = -1;
+            if (keys['s'] || keys['arrowdown']) moveY = 1;
+            if (keys['a'] || keys['arrowleft']) moveX = -1;
+            if (keys['d'] || keys['arrowright']) moveX = 1;
+
+            if (moveX !== 0 && moveY !== 0) {
+                moveX *= 0.7071;
+                moveY *= 0.7071;
+            }
+
+            player.x += moveX * player.speed * dt;
+            player.y += moveY * player.speed * dt;
+
+            if (moveX !== 0 || moveY !== 0) {
+                player.angle = Math.atan2(moveY, moveX) + Math.PI/2;
+            }
+
+            const mapLimit = 1500;
+            player.x = Math.max(-mapLimit, Math.min(mapLimit, player.x));
+            player.y = Math.max(-mapLimit, Math.min(mapLimit, player.y));
+
+            game.camera.x += (player.x - window.innerWidth / 2 - game.camera.x) * 0.1 * dt;
+            game.camera.y += (player.y - window.innerHeight / 2 - game.camera.y) * 0.1 * dt;
+
+            for (let i = entities.projectiles.length - 1; i >= 0; i--) {
+                const proj = entities.projectiles[i];
+                proj.x += proj.vx * dt;
+                proj.y += proj.vy * dt;
+
+                const flightDistance = Math.sqrt((proj.x - player.x) ** 2 + (proj.y - player.y) ** 2);
+                if (flightDistance > player.range + 200) {
+                    entities.projectiles.splice(i, 1);
+                    continue;
+                }
+
+                let projectileHit = false;
+
+                for (let j = entities.letterBubbles.length - 1; j >= 0; j--) {
+                    const bubble = entities.letterBubbles[j];
+                    const dx = bubble.x - proj.x;
+                    const dy = bubble.y - proj.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < (20 * bubble.scale) + proj.radius) {
+                        projectileHit = true;
+                        
+                        if (bubble.letter === game.targetLetter) {
+                            playSound('hit');
+                            entities.letterBubbles.splice(j, 1);
+                            
+                            game.correctPops++;
+                            game.score += 15;
+                            player.xp += 25; 
+                            if (player.xp >= player.maxXp) triggerLevelUp();
+
+                            entities.collectibles.push({
+                                x: bubble.x,
+                                y: bubble.y,
+                                value: 25
+                            });
+
+                            changeTargetLetter(); 
+                        } else {
+                            playSound('fail');
+                            game.incorrectPops++;
+                            entities.letterBubbles.splice(j, 1);
+                        }
+                        break; 
+                    }
+                }
+
+                if (projectileHit) {
+                    entities.projectiles.splice(i, 1);
+                }
+            }
+
+            for (let idx = entities.letterBubbles.length - 1; idx >= 0; idx--) {
+                const bubble = entities.letterBubbles[idx];
+
+                if (bubble.letter !== game.targetLetter && (Date.now() - bubble.spawnTime > 5000)) {
+                    entities.letterBubbles.splice(idx, 1);
+                    continue;
+                }
+
+                const driftTime = Date.now() * 0.001 + bubble.angleOffset;
+                bubble.x += Math.sin(driftTime) * 1.0 * dt;
+                bubble.y += Math.cos(driftTime * 0.6) * 0.8 * dt;
+
+                const dx = player.x - bubble.x;
+                const dy = player.y - bubble.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < player.radius + 18) {
+                    if (bubble.letter === game.targetLetter) {
+                        playSound('coin');
+                        game.correctPops++;
+                        game.score += 25;
+                        player.xp += 30;
+                        if (player.xp >= player.maxXp) triggerLevelUp();
+                        entities.letterBubbles.splice(idx, 1);
+                        changeTargetLetter();
+                    } else {
+                        playSound('fail');
+                        entities.letterBubbles.splice(idx, 1);
+                        player.hp = Math.max(0, player.hp - 10); // Decremented smoothly and safely
+                    }
+                }
+
+                if (Math.abs(bubble.y - player.y) > 600 || Math.abs(bubble.x - player.x) > 800) {
+                    entities.letterBubbles.splice(idx, 1);
+                }
+            }
+
+            for (let i = entities.collectibles.length - 1; i >= 0; i--) {
+                const item = entities.collectibles[i];
+                const dx = player.x - item.x;
+                const dy = player.y - item.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < player.range) {
+                    item.x += (dx / dist) * 7.5 * dt;
+                    item.y += (dy / dist) * 7.5 * dt;
+                }
+
+                if (dist < player.radius + 10) {
+                    playSound('coin');
+                    player.xp += item.value;
+                    if (player.xp >= player.maxXp) triggerLevelUp();
+                    entities.collectibles.splice(i, 1);
+                }
+            }
+
+            document.getElementById('xp-bar').style.width = `${(player.xp / player.maxXp) * 100}%`;
+            document.getElementById('level-display').innerText = `လှိုင်း ${player.level}`;
+            document.getElementById('cash-display').innerText = game.score;
+            document.getElementById('hp-display').innerText = `${Math.max(0, Math.round(player.hp))} / ${player.maxHp}`;
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save();
+            ctx.translate(-game.camera.x, -game.camera.y);
+
+            ctx.fillStyle = '#075985'; 
+            ctx.fillRect(player.x - 2000, player.y - 2000, 4000, 4000);
+
+            ctx.strokeStyle = 'rgba(14, 165, 233, 0.06)';
+            ctx.lineWidth = 2;
+            for (let x = -2000; x < 2000; x += 180) {
+                ctx.beginPath(); ctx.moveTo(x, -2000); ctx.lineTo(x, 2000); ctx.stroke();
+            }
+
+            entities.scenery.forEach(item => {
+                if (item.type === 'coral') drawCoral(ctx, item.x, item.y, item.color, item.branches);
+            });
+
+            entities.scenery.forEach(item => {
+                if (item.type === 'seaweed') drawSeaweed(ctx, item.x, item.y, item.height, item.waveOffset);
+            });
+
+            entities.scenery.forEach(item => {
+                if (item.type === 'starfish') drawStarfish(ctx, item.x, item.y, item.scale, item.angle);
+            });
+
+            entities.collectibles.forEach(item => {
+                ctx.fillStyle = '#22d3ee'; 
+                ctx.beginPath();
+                ctx.arc(item.x, item.y, 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.arc(item.x - 2, item.y - 2, 2, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            entities.projectiles.forEach(proj => {
+                ctx.save();
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)'; 
+                ctx.strokeStyle = '#e0f2fe';
+                ctx.lineWidth = 1.5;
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = '#38bdf8';
+                ctx.beginPath();
+                ctx.arc(proj.x, proj.y, proj.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                ctx.restore();
+            });
+
+            entities.letterBubbles.forEach(bubble => drawSeaShell(ctx, bubble));
+
+            drawPlayer(ctx, player.x, player.y);
+
+            ctx.restore();
+        }
+
+        function gameLoop(now) {
+            let dt = (now - lastTime) / 16.666;
+            lastTime = now;
+            if (dt > 4) dt = 4; 
+
+            updateGame(dt);
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            player.hp = player.maxHp;
+            player.xp = 0;
+            player.level = 1;
+            player.x = 0;
+            player.y = 0;
+            player.angle = 0;
+            game.score = 0;
+            game.correctPops = 0;
+            game.incorrectPops = 0;
+            entities.letterBubbles = [];
+            entities.projectiles = [];
+            entities.collectibles = [];
+            game.paused = false;
+            
+            initScenery();
+            changeTargetLetter();
+            
+            document.getElementById('overlay-screen').classList.add('hidden');
+            game.running = true;
+        }
+
+        function gameOver() {
+            game.running = false;
+            document.getElementById('stat-coins').innerText = game.correctPops;
+            document.getElementById('stat-kills').innerText = game.incorrectPops;
+            document.getElementById('stat-level').innerText = `လှိုင်း ${player.level}`;
+            document.getElementById('game-stats').classList.remove('hidden');
+            document.getElementById('start-btn').innerText = "ပြန်လည်ကစားမည်";
+            document.getElementById('overlay-screen').classList.remove('hidden');
+        }
+
+        // Connect button events
+        document.getElementById('start-btn').onclick = startGame;
+        document.getElementById('btnTopReset').onclick = startGame;
+
+        window.onload = function() {
+            requestAnimationFrame(gameLoop);
+        };
+    </script>
+</body>
+</html>

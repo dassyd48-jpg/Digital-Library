@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>အက္ခရာ ပထမဆုံးသင်ခန်းစာ - လမ်းမကြီးပေါ်က စွန့်စားခန်း</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; position: relative; }
+    
+    body {
+      font-family: 'Noto Sans Myanmar', 'Fredoka', system-ui, sans-serif;
+      min-height: 100vh;
+      background: #d4ebd2;
+    }
+
+    /* TOP NAVIGATION BUTTONS */
+    .top-nav-container {
+      position: absolute;
+      top: clamp(10px, 2vh, 20px);
+      left: clamp(10px, 2vw, 20px);
+      z-index: 250;
+      display: flex;
+      gap: 8px;
+    }
+    .top-nav-btn {
+      width: clamp(38px, 5vw, 44px);
+      height: clamp(38px, 5vw, 44px);
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border: 2px solid #b45309;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: clamp(16px, 2.5vw, 20px);
+      transition: transform 0.1s;
+    }
+    .top-nav-btn:active { transform: scale(0.95); }
+
+    /* INTRO SCREEN */
+    .intro-screen {
+      position: absolute; inset: 0; 
+      background-color: #0f172a;
+      z-index: 300; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center;
+      transition: opacity 0.5s ease-out, pointer-events 0.5s;
+    }
+    .intro-screen.hide { opacity: 0; pointer-events: none; }
+    .intro-emojis { font-size: clamp(24px, 4vw, 32px); margin-bottom: 15px; letter-spacing: 6px; }
+    .intro-main-title { font-size: clamp(28px, 5vw, 42px); font-weight: 800; color: #4ade80; margin-bottom: 15px; }
+    .intro-badge { background-color: #15803d; border-radius: 50px; padding: 10px 30px; font-size: clamp(14px, 2vw, 18px); color: #ffffff; margin-bottom: 25px; }
+    .intro-description { font-size: clamp(14px, 2vw, 18px); color: #94a3b8; max-width: 600px; line-height: 1.8; margin-bottom: 35px; }
+    .btn-start { padding: 14px 60px; font-size: clamp(18px, 3vw, 24px); font-weight: 800; color: white; background: #f97316; border: none; border-radius: 20px; cursor: pointer; box-shadow: 0 8px 0 #ea580c; transition: transform 0.1s; }
+    .btn-start:active { transform: translateY(4px); box-shadow: 0 4px 0 #ea580c; }
+
+    /* ENVIRONMENT SCENE DESIGN */
+    .game-scene { position: absolute; inset: 0; z-index: 1; pointer-events: none; width: 100%; height: 100%; }
+    .cloud { position: absolute; background: #ffffff; border-radius: 100px; opacity: 0.9; }
+    .c1 { width: clamp(100px, 15vw, 180px); height: clamp(35px, 5vh, 60px); left: 10%; top: 8vh; }
+    .c2 { width: clamp(80px, 10vw, 120px); height: clamp(25px, 4vh, 45px); right: 15%; top: 12vh; }
+
+    .green-hills {
+      position: absolute; left: 0; right: 0; bottom: 20vh; height: 35vh;
+      background-size: 100% 100%;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'><path d='M0,220 Q250,160 500,240 T1000,200 L1000,300 L0,300 Z' fill='%2398d98e'/><path d='M0,250 Q300,200 650,260 T1000,230 L1000,300 L0,300 Z' fill='%237bc970'/><circle cx='100' cy='250' r='20' fill='%234c933f'/><circle cx='115' cy='245' r='18' fill='%234c933f'/><circle cx='85' cy='252' r='15' fill='%234c933f'/><circle cx='250' cy='260' r='25' fill='%2328631d'/><circle cx='275' cy='255' r='20' fill='%2328631d'/><circle cx='780' cy='240' r='30' fill='%2328631d'/><circle cx='810' cy='235' r='25' fill='%2328631d'/></svg>");
+    }
+
+    .road {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 20vh;
+      background-color: #55626b; border-top: 4px solid #ffffff;
+    }
+    .road-lines {
+      position: absolute; left: 0; right: 0; top: 45%; height: 10px;
+      background-image: linear-gradient(90deg, #ffffff 60%, transparent 60%); background-size: 60px 100%;
+    }
+
+    .tree { position: absolute; bottom: 19.5vh; transform-origin: bottom center; animation: treeSway 4s infinite ease-in-out alternate; }
+    .tree-main {
+      right: 12%; width: clamp(70px, 9vw, 110px); height: clamp(110px, 15vh, 180px);
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 180'><rect x='50' y='110' width='10' height='70' fill='%231b5314'/><path d='M55,10 C20,60 25,120 55,120 C85,120 90,60 55,10 Z' fill='%239ad688'/><path d='M55,10 C35,60 40,110 55,110 Z' fill='%23b2e5a2' opacity='0.6'/><path d='M55,30 L55,120 M55,50 L35,35 M55,70 L40,55 M55,60 L75,45 M55,85 L70,70' stroke='%231b5314' stroke-width='3' stroke-linecap='round'/></svg>");
+    }
+    .tree-middle { left: 28%; width: clamp(40px, 5vw, 55px); height: clamp(70px, 9vh, 95px); animation-delay: -1s; animation-duration: 3.5s; }
+    .tree-small { left: 4%; width: clamp(30px, 4vw, 45px); height: clamp(60px, 8vh, 80px); animation-delay: -2s; animation-duration: 4.5s; }
+    .tree-middle, .tree-small {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 55 95'><rect x='25' y='55' width='5' height='40' fill='%231b5314'/><path d='M27.5,5 C10,30 12,60 27.5,60 C43,60 45,30 27.5,5 Z' fill='%237bc970'/><path d='M27.5,5 L27.5,60 M27.5,25 L18,18 M27.5,35 L20,28 M27.5,30 L37,22 M27.5,42 L35,35' stroke='%231b5314' stroke-width='1.5' stroke-linecap='round'/></svg>");
+    }
+
+    @keyframes treeSway { 0% { transform: rotate(-1.5deg); } 100% { transform: rotate(2deg); } }
+
+    .car-container { position: absolute; left: 0; right: 0; bottom: 0; height: 100%; z-index: 5; overflow: hidden; }
+    .car { position: absolute; left: -150px; height: clamp(30px, 5vh, 45px); width: clamp(60px, 10vw, 90px); background-size: 100% 100%; background-repeat: no-repeat; }
+    .car1 { bottom: 9vh; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 45'><path d='M10,30 L20,15 Q35,10 55,15 L75,25 Q85,25 85,32 L80,38 L10,38 Z' fill='%23facc15'/><rect x='22' y='18' width='16' height='10' fill='%2338bdf8' rx='2'/><rect x='42' y='18' width='16' height='10' fill='%2338bdf8' rx='2'/><circle cx='25' cy='38' r='7' fill='%231e293b'/><circle cx='25' cy='38' r='3' fill='%2394a3b8'/><circle cx='65' cy='38' r='7' fill='%231e293b'/><circle cx='65' cy='38' r='3' fill='%2394a3b8'/></svg>"); animation: driveCar 14s infinite linear; }
+    .car2 { bottom: 2vh; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 45'><path d='M15,35 L20,18 Q40,12 60,18 L70,35 Z' fill='%23ef4444'/><rect x='10' y='28' width='75' height='10' fill='%23ef4444' rx='3'/><circle cx='25' cy='38' r='8' fill='%231e293b'/><circle cx='25' cy='38' r='3' fill='%23ffffff'/><circle cx='65' cy='38' r='8' fill='%231e293b'/><circle cx='65' cy='38' r='3' fill='%23ffffff'/></svg>"); animation: driveCar 10s infinite linear; animation-delay: -4s; }
+
+    @keyframes driveCar { 0% { left: -120px; } 100% { left: 105vw; } }
+    .car.boosted { animation: boostDrive 0.8s forwards cubic-bezier(0.4, 0, 0.2, 1) !important; }
+    @keyframes boostDrive { 0% { transform: scale(1); } 100% { left: 105vw; transform: scale(1.1); } }
+
+    /* WORKSPACE INTERFACE */
+    .game-wrapper {
+      position: absolute; inset: 0; z-index: 20;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: clamp(10px, 3vh, 30px);
+    }
+    .game-container { position: relative; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 900px; }
+    
+    .heading-box {
+      background-color: #166534; border: 3px solid #ffffff; border-radius: 16px;
+      padding: 6px 20px; margin-bottom: clamp(10px, 2vh, 20px); box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .heading-text { font-size: clamp(14px, 2vw, 18px); font-weight: 700; color: #ffffff; }
+    .heading-glyph { color: #166534; font-size: clamp(18px, 2.5vw, 24px); font-weight: 800; background: #ffffff; padding: 2px 12px; border-radius: 6px; }
+    
+    .stage { display: flex; gap: clamp(10px, 2vw, 20px); align-items: stretch; justify-content: center; width: 100%; }
+    .whiteboard-frame {
+      position: relative; padding: 10px; border-radius: 24px; background-color: #15803d;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2); border: 4px solid #ffffff;
+      display: flex; align-items: center; justify-content: center;
+    }
+    
+    .canvas-container { 
+      border-radius: 16px; background: #ffffff; overflow: hidden; position: relative;
+      width: clamp(260px, 50vw, 420px); height: clamp(260px, 50vw, 420px);
+    }
+    canvas { width: 100% !important; height: 100% !important; display: block; cursor: crosshair; touch-action: none; }
+    
+    /* ==========================================================================
+       SCREEN-WIDE DYNAMIC BALL GAME OVERLAY (ခေါင်းစဉ် အလယ်တည့်တည့်သို့ ရွှေ့ဆလိုက်သည်)
+       ========================================================================== */
+    .ball-game-screen {
+      position: absolute; inset: 0; z-index: 100;
+      display: none; flex-direction: column;
+      pointer-events: none;
+    }
+    
+    /* ခလုတ်များနှင့် မကွယ်စေရန် Padding Left နေရာချန်ပြီး အလယ်တည့်တည့်တွင် ပြသပေးသော Header */
+    .game-score-banner {
+      width: 100%; 
+      padding: clamp(10px, 2.5vh, 20px); 
+      padding-left: clamp(110px, 15vw, 140px); /* ဘယ်ဘက်ခလုတ်များအတွက် နေရာချန်ထားခြင်း */
+      background: rgba(22, 101, 52, 0.95);
+      color: #fff; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      font-weight: 700; 
+      border-bottom: 4px solid #fff; 
+      z-index: 110; 
+      pointer-events: auto;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .level-badge { background: #eab308; color: #1e3a1e; padding: 4px 12px; border-radius: 8px; font-size: 14px; }
+    
+    .ball-area {
+      position: relative; flex-grow: 1; width: 100%; overflow: hidden; pointer-events: auto;
+    }
+    
+    /* ဇောက်ထိုးမဖြစ်စေရန် Rotate ဖယ်ရှားပြီး တည့်တည့်မတ်မတ် အပေါ်တက်စေသော ဘောလုံးဒီဇိုင်း */
+    .game-ball {
+      position: absolute; bottom: -80px; width: 75px; height: 75px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 32px; font-weight: 800; color: #ffffff; cursor: pointer;
+      box-shadow: inset -10px -10px 20px rgba(0,0,0,0.3), inset 8px 8px 15px rgba(255,255,255,0.6), 0 8px 15px rgba(0,0,0,0.2);
+      user-select: none; 
+      animation: floatUpStraight var(--speed) linear forwards; /* တည့်တည့်တက်မည့် Animation သို့ ပြောင်းလဲ */
+      text-shadow: 1px 2px 4px rgba(0,0,0,0.4);
+    }
+    
+    /* ဇောက်ထိုးမဖြစ်ဘဲ စာလုံးပုံစံ အမှန်အတိုင်း အပေါ်သို့ တည့်တည့်တက်သွားစေမည့် ကွက်တိ Animation */
+    @keyframes floatUpStraight {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-50vh) translateX(var(--wobble)); }
+      100% { transform: translateY(-115vh) translateX(var(--wobble)); }
+    }
+    
+    .game-ball.wrong-shake { animation: shake 0.3s ease-in-out; }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    /* WIN OVERLAY */
+    .win-overlay {
+      position: absolute; inset: 0; background: rgba(15, 23, 42, 0.9);
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 200; color: #fff; text-align: center; padding: 20px;
+    }
+
+    /* SIDE PANEL & CONTROLS */
+    .panel {
+      width: clamp(100px, 12vw, 120px); background-color: rgba(255, 255, 255, 0.95); 
+      border-radius: 24px; border: 3px solid #15803d; padding: 12px 8px; 
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+    .panel-title { font-size: 11px; font-weight: 700; text-align: center; color: #166534; }
+    .eraser {
+      width: 100%; height: clamp(36px, 5vh, 42px); border-radius: 12px; background: white;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; border: 2px solid #e2e8f0; box-shadow: 0 3px 0 #cbd5e1; font-size: 16px;
+    }
+    .eraser.selected { border-color: #4ade80; background: #dcfce7; box-shadow: 0 0 12px #4ade80; }
+    
+    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; width: 100%; margin-top: auto; }
+    .brush { aspect-ratio: 1/1; border-radius: 10px; cursor: pointer; position: relative; background: white; border: 2px solid #e2e8f0; }
+    .brush.selected { border-color: #15803d; transform: scale(1.05); box-shadow: 0 0 8px #15803d; }
+    .swatch { position: absolute; inset: 0; border-radius: 7px; }
+    
+    .action-container { display: flex; flex-direction: column; gap: 6px; width: 100%; margin-top: auto; }
+    .btn {
+      width: 100%; height: clamp(38px, 5vh, 44px); border-radius: 12px; border: none; color: white;
+      font-weight: 700; font-size: 11px; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2;
+    }
+    .btn-reset { background-color: #ef4444; box-shadow: 0 4px 0 #b91c1c; }
+    .btn-next { background-color: #22c55e; box-shadow: 0 4px 0 #16a34a; }
+    .btn:active { transform: translateY(3px); box-shadow: none; }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 768px) {
+      .game-wrapper { justify-content: flex-end; padding-bottom: 22vh; }
+      .heading-box { margin-bottom: 8px; padding: 4px 14px; }
+      .stage { flex-direction: column; align-items: center; gap: 8px; }
+      .canvas-container { width: clamp(240px, 68vw, 340px); height: clamp(240px, 68vw, 340px); }
+      .panel { width: clamp(240px, 68vw, 340px); max-width: 100%; flex-direction: row; height: auto; padding: 6px 10px; border-radius: 16px; }
+      .panel-title { display: none; }
+      .eraser { width: 45px; height: 38px; margin: 0; }
+      .brush-grid { grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 0; width: auto; flex-grow: 1; }
+      .action-container { flex-direction: row; gap: 4px; margin: 0; width: auto; }
+      .btn { width: 55px; height: 38px; font-size: 9px; }
+      
+      .tree-main { transform: scale(0.7); right: 5%; bottom: 19.5vh; }
+      .tree-middle { transform: scale(0.7); left: 15%; }
+      .tree-small { display: none; }
+      .cloud { transform: scale(0.7); }
+      .game-score-banner { padding-left: clamp(90px, 15vw, 110px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAVIGATION BUTTONS -->
+  <div class="top-nav-container">
+    <button onclick="location.href='index.html?fromGame=true'" class="top-nav-btn" title="ပင်မစာမျက်နှာ">🏠</button>
+    <button id="btnTopReset" class="top-nav-btn" title="ပြန်စမည်">🔄</button>
+  </div>
+
+  <!-- မိတ်ဆက်မျက်နှာပြင် (Intro Screen) -->
+  <div class="intro-screen" id="welcomeIntro">
+    <div class="intro-emojis">🌳 🚗 🌤️ 🛣️ 🚙</div>
+    <h1 class="intro-main-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</h1>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ - "ပ" ကို ပျော်ပျော်ရွှင်ရွှင် သင်ယူကြစို့</div>
+    <p class="intro-description">
+      ကလေးတို့ရေ... စိမ်းလန်းစိုပြည်တဲ့ သစ်ပင်ကြီးတွေ စုတ်တံလေးတွေကို ကိုင်ပြီး "ပ" လမ်းကြောင်းအတိုင်း 
+      ဆေးလှလှလေးတွေ ခြယ်သပြီး စွန့်စားခန်းထွက်ကြစို့။
+    </p>
+    <button class="btn-start" onclick="startGame()">စတင်ကစားမည်</button>
+  </div>
+
+  <!-- နောက်ခံ သဘာဝအလှဆင်ကွက်များ -->
+  <div class="game-scene">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="green-hills"></div>
+    <div class="tree tree-small"></div>
+    <div class="tree tree-middle"></div>
+    <div class="tree tree-main"></div>
+    <div class="road">
+      <div class="road-lines"></div>
+      <div class="car-container">
+        <div class="car car1" id="car1"></div>
+        <div class="car car2" id="car2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ဆေးရောင်ခြယ် Workspace -->
+  <div class="game-wrapper" id="paintWorkspace">
+    <div class="game-container">
+      <div class="heading-box">
+        <span class="heading-text">အက္ခရာ</span>
+        <span class="heading-glyph">ပ</span>
+        <span class="heading-text">ကို ခြယ်သစို့။</span>
+      </div>
+
+      <div class="stage">
+        <div class="whiteboard-frame">
+          <div class="canvas-container">
+            <canvas id="paintCanvas" width="400" height="400"></canvas>
+          </div>
+        </div>
+
+        <aside class="panel" id="sidePanel">
+          <div class="panel-title">မှော်ဆေးရည်</div>
+          <div class="eraser" id="eraser">🧼</div>
+          <div class="brush-grid" id="brushGrid"></div>
+          <div class="action-container">
+            <button class="btn btn-reset" id="btnReset">↻<br>ဖျက်မည်</button>
+            <button class="btn btn-next" id="btnNext">⭐<br>ရှေ့သို့</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN-WIDE BALL GAME SCREEN -->
+  <div class="ball-game-screen" id="ballGameScreen">
+    <div class="game-score-banner">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: clamp(16px, 3vw, 22px);">"ပ"ဘောလုံးဖောက်မယ်</span>
+        <span class="level-badge" id="levelBadge">အဆင့် - ၁</span>
+      </div>
+      <span id="scoreText" style="font-size: clamp(14px, 2.5vw, 18px);">ဖောက်ပြီးသမျှ - ၀ / ၅</span>
+    </div>
+    <div class="ball-area" id="ballArea"></div>
+  </div>
+
+  <!-- အောင်မြင်မှု ဂုဏ်ပြုလွှာ Overlay -->
+  <div class="win-overlay" id="winOverlay">
+    <h2 id="winTitle" style="font-size: clamp(22px, 5vw, 36px); color: #4ade80; margin-bottom: 15px;">🌟 တော်လိုက်တာ ကလေးတို့ရေ 🌟</h2>
+    <p id="winDesc" style="font-size: clamp(14px, 2.5vw, 20px); margin-bottom: 30px; max-width: 500px; line-height: 1.6;">
+      အဆင့် (၁) ကို အောင်မြင်သွားပါပြီ။ နောက်တစ်ဆင့်မှာ ဘောလုံးတွေ ပိုမြန်လာမယ်နော်။ အဆင်သင့်ပဲလား။
+    </p>
+    <button class="btn-start" id="btnWinAction" style="padding: 12px 40px; font-size: 18px;">နောက်တစ်ဆင့် သွားမည် 🚀</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    let isPainting = false;
+    let currentColor = '#22c55e';
+    let isEraser = false;
+    let brushSize = 24;
+    let lastX = 0, lastY = 0;
+    let isAnimating = false;
+    
+    // Level & Ball Game Configurations
+    let currentLevel = 1;
+    let score = 0;
+    let ballInterval;
+    
+    const levelConfigs = {
+      1: { target: 5, speedMin: 4, speedMax: 5.5, interval: 1300 },
+      2: { target: 8, speedMin: 3, speedMax: 4.2, interval: 1000 },
+      3: { target: 10, speedMin: 2, speedMax: 3.2, interval: 800 }
+    };
+
+    const distractors = ['က', 'ခ', 'င', 'စ', 'ထ', 'မ', 'န', 'လ'];
+    const ballColors = [
+      'radial-gradient(circle at 30% 30%, #ff4b4b, #b70000)',
+      'radial-gradient(circle at 30% 30%, #3b82f6, #1d4ed8)',
+      'radial-gradient(circle at 30% 30%, #eab308, #a16207)',
+      'radial-gradient(circle at 30% 30%, #ec4899, #be185d)',
+      'radial-gradient(circle at 30% 30%, #a855f7, #6b21a8)',
+      'radial-gradient(circle at 30% 30%, #f97316, #c2410c)'
+    ];
+
+    const colors = ['#22c55e', '#16a34a', '#ef4444', '#3b82f6', '#eab308', '#ec4899'];
+
+    function startGame() {
+      document.getElementById('welcomeIntro').classList.add('hide');
+    }
+
+    function getCanvasCoordinates(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+      const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+      return {
+        x: (clientX - rect.left) * (canvas.width / rect.width),
+        y: (clientY - rect.top) * (canvas.height / rect.height)
+      };
+    }
+
+    function startDrawing(e) {
+      isPainting = true;
+      const coords = getCanvasCoordinates(e);
+      lastX = coords.x; lastY = coords.y;
+    }
+    function stopDrawing() { isPainting = false; ctx.beginPath(); }
+
+    function draw(e) {
+      if (!isPainting) return;
+      const coords = getCanvasCoordinates(e);
+      ctx.lineWidth = brushSize; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+      if (isEraser) {
+        ctx.globalCompositeOperation = 'destination-out'; ctx.lineWidth = 36;
+      } else {
+        ctx.globalCompositeOperation = 'source-over'; ctx.strokeStyle = currentColor;
+      }
+
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(coords.x, coords.y); ctx.stroke();
+      lastX = coords.x; lastY = coords.y;
+    }
+
+    // ==========================================================================
+    // SCREEN-WIDE BALL GAME LOGIC
+    // ==========================================================================
+    function startBallGame() {
+      triggerCarBoostEffect();
+      
+      setTimeout(() => {
+        document.getElementById('paintWorkspace').style.display = 'none';
+        document.getElementById('ballGameScreen').style.display = 'flex';
+        setupLevel();
+      }, 800);
+    }
+
+    function setupLevel() {
+      score = 0;
+      const config = levelConfigs[currentLevel];
+      
+      document.getElementById('levelBadge').innerText = `အဆင့် - ${convertToBurmeseNumber(currentLevel)}`;
+      document.getElementById('scoreText').innerText = `ဖောက်ပြီးသမျှ - ၀ / ${convertToBurmeseNumber(config.target)}`;
+      document.getElementById('ballArea').innerHTML = '';
+      
+      if (ballInterval) clearInterval(ballInterval);
+      ballInterval = setInterval(createBall, config.interval);
+    }
+
+    function createBall() {
+      const area = document.getElementById('ballArea');
+      if (!area) return;
+      
+      const ball = document.createElement('div');
+      ball.className = 'game-ball';
+      
+      const config = levelConfigs[currentLevel];
+      const isTarget = Math.random() > 0.35;
+      const letter = isTarget ? 'ပ' : distractors[Math.floor(Math.random() * distractors.length)];
+      ball.innerText = letter;
+      
+      ball.style.background = ballColors[Math.floor(Math.random() * ballColors.length)];
+      
+      const size = Math.floor(Math.random() * 15) + 65; 
+      ball.style.width = `${size}px`;
+      ball.style.height = `${size}px`;
+      ball.style.left = `${Math.random() * (area.clientWidth - size)}px`;
+      
+      const speed = Math.random() * (config.speedMax - config.speedMin) + config.speedMin;
+      ball.style.setProperty('--speed', `${speed}s`);
+      ball.style.setProperty('--wobble', `${Math.random() * 40 - 20}px`);
+      
+      const ballPopEvent = (e) => {
+        e.preventDefault();
+        if (letter === 'ပ') {
+          score++;
+          document.getElementById('scoreText').innerText = `ဖောက်ပြီးသမျှ - ${convertToBurmeseNumber(score)} / ${convertToBurmeseNumber(config.target)}`;
+          ball.remove();
+          
+          if (score >= config.target) {
+            handleLevelComplete();
+          }
+        } else {
+          ball.classList.add('wrong-shake');
+          setTimeout(() => ball.classList.remove('wrong-shake'), 300);
+        }
+      };
+      
+      ball.addEventListener('mousedown', ballPopEvent);
+      ball.addEventListener('touchstart', ballPopEvent, { passive: false });
+      ball.addEventListener('animationend', () => ball.remove());
+      
+      area.appendChild(ball);
+    }
+
+    function handleLevelComplete() {
+      clearInterval(ballInterval);
+      const overlay = document.getElementById('winOverlay');
+      const title = document.getElementById('winTitle');
+      const desc = document.getElementById('winDesc');
+      const btn = document.getElementById('btnWinAction');
+      
+      overlay.style.display = 'flex';
+      
+      if (currentLevel < 3) {
+        title.innerText = `🌟 တော်လိုက်တာ ကလေးတို့ရေ 🌟`;
+        desc.innerText = `အဆင့် (${convertToBurmeseNumber(currentLevel)}) ကို အောင်မြင်သွားပါပြီ။ နောက်တစ်ဆင့်မှာ ဘောလုံးတွေ ပိုမြန်လာမယ်နော်။ အဆင်သင့်ပဲလား။`;
+        btn.innerText = `အဆင့် (${convertToBurmeseNumber(currentLevel + 1)}) သို့ သွားမည် 🚀`;
+        btn.onclick = () => {
+          currentLevel++;
+          overlay.style.display = 'none';
+          setupLevel();
+        };
+      } else {
+        title.innerText = `🏆 အောင်ပွဲခံပြီ 🏆`;
+        desc.innerText = `"ပ" အက္ခရာစွန့်စားခန်း Level အားလုံးကို အောင်မြင်စွာ ကစားပြီးပါပြီ။ ကလေးတို့ တကယ့်ကို တော်ကြတယ်ကွယ်။`;
+        btn.innerText = `အစကနေ ပြန်ကစားမည် 🔄`;
+        btn.onclick = resetToStage1;
+      }
+    }
+
+    function resetToStage1() {
+      if (ballInterval) clearInterval(ballInterval);
+      currentLevel = 1;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      document.getElementById('winOverlay').style.display = 'none';
+      document.getElementById('ballGameScreen').style.display = 'none';
+      document.getElementById('paintWorkspace').style.display = 'flex';
+    }
+
+    function convertToBurmeseNumber(num) {
+      const myanmarNumbers = ['၀', '၁', '၂', '၃', '၄', '၅', '၆', '၇', '၈', '၉'];
+      return num.toString().split('').map(d => myanmarNumbers[parseInt(d)] || d).join('');
+    }
+
+    function triggerCarBoostEffect() {
+      if (isAnimating) return;
+      isAnimating = true;
+      const car1 = document.getElementById('car1');
+      const car2 = document.getElementById('car2');
+      car1.classList.add('boosted'); car2.classList.add('boosted');
+      setTimeout(() => {
+        car1.classList.remove('boosted'); car2.classList.remove('boosted');
+        isAnimating = false;
+      }, 1200);
+    }
+
+    function initGameUI() {
+      const grid = document.getElementById('brushGrid');
+      grid.innerHTML = '';
+      
+      colors.forEach((color, i) => {
+        const div = document.createElement('div');
+        div.className = 'brush' + (i === 0 ? ' selected' : '');
+        div.innerHTML = `<div class="swatch" style="background:${color}"></div>`;
+        div.onclick = () => {
+          isEraser = false; currentColor = color;
+          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+          document.getElementById('eraser').classList.remove('selected');
+          div.classList.add('selected');
+        };
+        grid.appendChild(div);
+      });
+
+      document.getElementById('eraser').onclick = () => {
+        isEraser = true;
+        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+        document.getElementById('eraser').classList.add('selected');
+      };
+
+      document.getElementById('btnReset').onclick = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById('btnTopReset').onclick = resetToStage1;
+      document.getElementById('btnNext').onclick = startBallGame;
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); }, { passive: false });
+
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><text x='50%' y='47%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='240' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,10'>ပ</text></svg>\")";
+    canvas.style.backgroundSize = "100% 100%";
+
+    initGameUI();
+  </script>
+</body>
+</html>

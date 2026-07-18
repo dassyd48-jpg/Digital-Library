@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hidden Alphabet Safari - Level 5 Candy Land (Realistic Motion)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #fce7f3; /* Soft Pink Candy Background */
+            font-family: 'Fredoka One', 'Pyidaungsu', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        /* Adaptive UI scaling using viewport units and clamp */
+        .adaptive-header {
+            top: clamp(12px, 2.5vh, 24px);
+            left: clamp(12px, 3vw, 24px);
+            right: clamp(12px, 3vw, 24px);
+        }
+        .adaptive-title-card {
+            padding: clamp(6px, 1.2vh, 12px) clamp(12px, 2.5vw, 24px);
+            border-width: clamp(3px, 0.5vw, 5px);
+        }
+        .adaptive-letter {
+            font-size: clamp(1.75rem, 5vh, 2.5rem);
+        }
+        .adaptive-score {
+            padding: clamp(4px, 1vh, 8px) clamp(10px, 2vw, 18px);
+            font-size: clamp(0.9rem, 2vh, 1.2rem);
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- TOP NAVIGATION BUTTONS (HOME & RESET) -->
+    <div class="absolute top-4 left-4 z-50 flex gap-2 pointer-events-auto">
+      <button onclick="stopBGM(); location.href='index.html?fromGame=true'" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပင်မစာမျက်နှာ">
+        🏠
+      </button>
+      <button id="btnTopBack" onclick="resetCurrentGame()" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="နောက်သို့">
+        🔄
+      </button>
+    </div>
+
+    <!-- UI Overlay Header -->
+    <div class="adaptive-header absolute left-4 right-4 pointer-events-none z-30 flex justify-between items-center">
+        <div class="flex flex-col space-y-1 pl-24"> <!-- Left padded to protect top nav buttons -->
+            <div class="bg-pink-500 text-white text-[10px] sm:text-[11px] font-black px-3 py-0.5 sm:py-1 rounded-full w-max shadow-md uppercase tracking-wider">
+                Level 5 : ပ - မ
+            </div>
+            <div class="adaptive-title-card flex items-center space-x-2 sm:space-x-3 bg-white/95 backdrop-blur-md rounded-3xl border-pink-400 shadow-xl">
+                <span class="text-[10px] sm:text-xs font-black text-pink-900 uppercase tracking-wide">ရှာရမယ့်စာလုံး:</span>
+                <span id="target-display" class="adaptive-letter font-bold text-pink-600 font-sans leading-none">ပ</span>
+            </div>
+        </div>
+
+        <div class="flex space-x-2 self-start mt-1">
+            <div class="adaptive-score bg-white/90 backdrop-blur-md rounded-2xl border-2 border-pink-400 flex items-center space-x-1.5 shadow-lg">
+                <span class="text-sm sm:text-lg">⭐</span>
+                <span id="score-display" class="font-black text-pink-900">0</span>
+                <span class="text-[10px] sm:text-xs text-pink-600 font-bold">/100</span>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="safariCanvas"></canvas>
+
+    <div id="start-screen" class="absolute inset-0 bg-pink-900/95 backdrop-blur-md z-[90] flex flex-col items-center justify-center text-center p-6">
+        <div class="text-5xl sm:text-6xl mb-6 animate-pulse">🍭🍬🍩🧁🍰</div>
+        <h1 class="text-3xl sm:text-5xl font-black text-white tracking-wide mb-3 drop-shadow-md">သကြားလုံးနှင့် မုန့်ချိုချိုကမ္ဘာ</h1>
+        <div class="bg-pink-500 text-white font-black px-6 py-2 rounded-full text-xs sm:text-sm mb-4 tracking-widest uppercase">
+            သင်ခန်းစာ (Level 5) : ပ၊ ဖ၊ ဗ၊ ဘ၊ မ
+        </div>
+        <p class="text-pink-200 text-xs sm:text-sm max-w-md mb-8 sm:mb-12 font-medium px-4">ချိုမြိန်လှတဲ့ သကြားလုံးကမ္ဘာထဲမှာ ဒိုးနတ်မုန့်လေးတွေ လိမ့်နေပြီး သကြားလုံးလေးတွေ ဝဲပျံနေကြပါတယ်။ ရှာရမယ့် စာလုံးသယ်လာတဲ့ မုန့်လေးတွေကို တို့ထိပြီး ဖမ်းယူကြရအောင်။</p>
+        
+        <button id="play-btn" class="px-10 sm:px-14 py-4 sm:py-5 bg-pink-500 hover:bg-pink-400 text-white font-black text-base sm:text-lg rounded-full shadow-[0_12px_30px_rgba(236,72,153,0.4)] border-b-4 border-pink-700 active:scale-95 transition-all">စတင်ကစားမည်</button>
+    </div>
+
+    <div id="victory-screen" class="hidden absolute inset-0 bg-slate-900/85 backdrop-blur-md z-[100] flex flex-col items-center justify-center text-center p-6">
+        <div class="text-6xl sm:text-7xl mb-4 animate-bounce">🏆🎉🍭🍬🍩</div>
+        <h2 class="text-3xl sm:text-5xl font-black text-white mb-2 drop-shadow-md">ပါးစပ်ထဲချိုသွားတာပဲကွယ်!</h2>
+        <p class="text-amber-300 text-base sm:text-lg font-bold mb-8">Level 5 ကို ၁၀၀ မှတ်အပြည့်ဖြင့် အောင်မြင်စွာ ဆော့ကစားပြီးပါပြီ။</p>
+        <button onclick="stopBGM(); location.reload()" class="px-10 sm:px-12 py-3 sm:py-4 bg-pink-500 hover:bg-pink-400 text-white font-black text-lg sm:text-xl rounded-full shadow-[0_8px_25px_rgba(236,72,153,0.4)] border-b-4 border-pink-700 active:scale-95 transition-all">
+            အစမှ ပြန်ဆော့မည် 🔄
+        </button>
+    </div>
+
+    <script>
+        let audioCtx = null;
+        let isPlayingBGM = false;
+        let bgmTimeout = null;
+
+        // Kids Game Happy Pentatonic Melody
+        const melody = [261.63, 293.66, 329.63, 392.00, 440.00, 392.00, 329.63, 293.66];
+        let melodyIndex = 0;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function startBGM() {
+            initAudio();
+            if (isPlayingBGM) return;
+            isPlayingBGM = true;
+            playNextBGMNote();
+        }
+
+        function playNextBGMNote() {
+            if (!isPlayingBGM || !audioCtx) return;
+
+            let osc = audioCtx.createOscillator();
+            let gainNode = audioCtx.createGain();
+
+            osc.type = 'triangle'; 
+            osc.frequency.setValueAtTime(melody[melodyIndex], audioCtx.currentTime);
+
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 0.1); 
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.4);
+
+            melodyIndex = (melodyIndex + 1) % melody.length;
+            bgmTimeout = setTimeout(playNextBGMNote, 400);
+        }
+
+        function stopBGM() {
+            isPlayingBGM = false;
+            clearTimeout(bgmTimeout);
+        }
+
+        function playSound(type) {
+            initAudio();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(550, now);
+                osc.frequency.exponentialRampToValueAtTime(1100, now + 0.12);
+                gain.gain.setValueAtTime(0.06, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                osc.start(now); osc.stop(now + 0.12);
+            } else if (type === 'wrong') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(260, now);
+                osc.frequency.linearRampToValueAtTime(140, now + 0.2);
+                gain.gain.setValueAtTime(0.07, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                osc.start(now); osc.stop(now + 0.2);
+            } else if (type === 'victory') {
+                const notes = [523.25, 659.25, 783.99, 987.77, 1046.50, 1318.51];
+                notes.forEach((f, i) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g); g.connect(audioCtx.destination);
+                    o.frequency.setValueAtTime(f, now + i*0.06);
+                    g.gain.setValueAtTime(0.04, now + i*0.06);
+                    g.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    o.start(now + i*0.06); o.stop(now + 0.5);
+                });
+            }
+        }
+
+        const canvas = document.getElementById('safariCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Responsive Scale Factor calculation based on device screen size
+        let baseScale = 1;
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Adjust scale factor based on standard mobile width threshold (768px)
+            if (canvas.width < 768) {
+                baseScale = Math.max(0.65, canvas.width / 768);
+            } else {
+                baseScale = 1;
+            }
+            initCandyScenery();
+        }
+        window.addEventListener('resize', resize);
+
+        const level5Targets = ['ပ', 'ဖ', 'ဗ', 'ဘ', 'မ'];
+        const fullAlphabetPool = [
+            'က', 'ခ', 'ဂ', 'ဃ', 'င', 'စ', 'ဆ', 'ဇ', 'ဈ', 'ည', 
+            'ဋ', 'ဌ', 'ဍ', 'ဎ', 'ဏ', 'တ', 'ထ', 'ဒ', 'ဓ', 'န', 
+            'ပ', 'ဖ', 'ဗ', 'ဘ', 'မ', 'ယ', 'ရ', 'လ', 'ဝ', 'သ', 
+            'ဟ', 'ဠ', 'အ'
+        ];
+        
+        const candyObjects = [
+            { emoji: '🍩', moveType: 'roll' },       
+            { emoji: '🍬', moveType: 'sway' },       
+            { emoji: '🍭', moveType: 'sway' },       
+            { emoji: '🧁', moveType: 'jiggle' },     
+            { emoji: '🍰', moveType: 'slide' }       
+        ];
+
+        const gameState = {
+            isPlaying: false,
+            score: 0,
+            targetIndex: 0,
+            targetLetter: 'ပ',
+            candies: [], 
+            particles: [],
+            bgSweets: []
+        };
+
+        function initCandyScenery() {
+            gameState.bgSweets = [];
+            const sweetCount = canvas.width < 768 ? 6 : 10;
+            for (let i = 0; i < sweetCount; i++) {
+                gameState.bgSweets.push({
+                    x: Math.random() * canvas.width,
+                    y: 60 + Math.random() * (canvas.height * 0.35),
+                    emoji: Math.random() > 0.5 ? '✨' : '🌸',
+                    size: (20 + Math.random() * 20) * baseScale
+                });
+            }
+        }
+
+        function rotateLevel5Target() {
+            gameState.targetIndex = (gameState.targetIndex + 1) % level5Targets.length;
+            gameState.targetLetter = level5Targets[gameState.targetIndex];
+            document.getElementById('target-display').innerText = gameState.targetLetter;
+        }
+
+        function spawnCandyObject() {
+            if (!gameState.isPlaying) return;
+
+            const fromLeft = Math.random() > 0.5;
+            // Spawn perfectly outside the viewport boundaries to prevent sudden appearance pops
+            const offset = 100 * baseScale;
+            const x = fromLeft ? -offset : canvas.width + offset;
+            
+            const item = candyObjects[Math.floor(Math.random() * candyObjects.length)];
+            
+            // Modern adaptive anchoring for element spawn zones
+            let y = canvas.height * 0.25 + Math.random() * (canvas.height * 0.35);
+            const groundOffset = 120 * baseScale;
+            if (item.moveType === 'roll' || item.moveType === 'jiggle') {
+                y = canvas.height - groundOffset; 
+            }
+
+            let speed = (1.3 + Math.random() * 1.3) * (fromLeft ? 1 : -1);
+            if (canvas.width < 768) speed *= 0.85; // Gently throttle speed on tight mobile views
+
+            const isTarget = Math.random() < 0.42;
+            let letter = gameState.targetLetter;
+            
+            if (!isTarget) {
+                const filteredDistractors = fullAlphabetPool.filter(l => l !== gameState.targetLetter);
+                letter = filteredDistractors[Math.floor(Math.random() * filteredDistractors.length)];
+            }
+
+            gameState.candies.push({
+                x, y, speed,
+                emoji: item.emoji,
+                moveType: item.moveType,
+                letter,
+                animTime: Math.random() * 100, 
+                isFleeing: false,
+                offsetY: 0,
+                rotationAngle: 0
+            });
+        }
+
+        function createSweetBurst(x, y) {
+            for (let i = 0; i < 15; i++) {
+                gameState.particles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 7,
+                    vy: (Math.random() - 0.5) * 7 - 1,
+                    size: (5 + Math.random() * 6) * baseScale,
+                    alpha: 1,
+                    color: `hsl(${Math.random() * 60 + 330}, 100%, 70%)` 
+                });
+            }
+        }
+
+        function handleInteraction(clientX, clientY) {
+            if (!gameState.isPlaying) return;
+            startBGM(); // Safe fallback to wake audio routing stack
+
+            for (let i = gameState.candies.length - 1; i >= 0; i--) {
+                const obj = gameState.candies[i];
+                const currentY = obj.y + obj.offsetY;
+                const dx = obj.x - clientX;
+                // Scale click target offset calculation dynamically
+                const dy = (currentY - (20 * baseScale)) - clientY; 
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                // Hitbox dynamically adjustments match graphic sizes accurately
+                const hitRadius = 65 * baseScale;
+                if (distance < hitRadius && !obj.isFleeing) {
+                    if (obj.letter === gameState.targetLetter) {
+                        playSound('correct');
+                        createSweetBurst(obj.x, currentY);
+                        gameState.score += 10;
+                        document.getElementById('score-display').innerText = gameState.score;
+                        
+                        gameState.candies.splice(i, 1);
+                        
+                        if (gameState.score >= 100) {
+                            gameState.isPlaying = false;
+                            stopBGM();
+                            playSound('victory');
+                            document.getElementById('victory-screen').classList.remove('hidden');
+                        } else {
+                            rotateLevel5Target();
+                        }
+                    } else {
+                        playSound('wrong');
+                        obj.isFleeing = true;
+                        obj.speed *= 3.5; 
+                    }
+                    break;
+                }
+            }
+        }
+
+        canvas.addEventListener('mousedown', (e) => handleInteraction(e.clientX, e.clientY));
+        canvas.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            handleInteraction(touch.clientX, touch.clientY);
+        }, { passive: true });
+
+        function update() {
+            for (let i = gameState.candies.length - 1; i >= 0; i--) {
+                const obj = gameState.candies[i];
+                obj.animTime += 0.06;
+
+                if (obj.moveType === 'roll') {
+                    obj.rotationAngle = obj.x * 0.022; 
+                    obj.offsetY = 0;
+                } else if (obj.moveType === 'sway') {
+                    obj.offsetY = Math.sin(obj.animTime * 1.2) * (16 * baseScale);
+                    obj.rotationAngle = Math.sin(obj.animTime * 0.8) * 0.15;
+                } else if (obj.moveType === 'jiggle') {
+                    obj.offsetY = -Math.abs(Math.sin(obj.animTime * 2)) * (25 * baseScale);
+                    obj.rotationAngle = 0;
+                } else {
+                    obj.offsetY = 0;
+                    obj.rotationAngle = 0;
+                }
+
+                obj.x += obj.speed;
+
+                const boundaryOffset = 120 * baseScale;
+                if (obj.speed > 0 && obj.x > canvas.width + boundaryOffset) {
+                    gameState.candies.splice(i, 1);
+                } else if (obj.speed < 0 && obj.x < -boundaryOffset) {
+                    gameState.candies.splice(i, 1);
+                }
+            }
+
+            for (let i = gameState.particles.length - 1; i >= 0; i--) {
+                const p = gameState.particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= 0.025;
+                if (p.alpha <= 0) {
+                    gameState.particles.splice(i, 1);
+                }
+            }
+        }
+
+        function draw() {
+            let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#fbcfe8'); 
+            gradient.addColorStop(0.5, '#fce7f3'); 
+            gradient.addColorStop(1, '#fae8ff'); 
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Modern Adaptive Ground Anchoring
+            const groundHeight = 75 * baseScale;
+            ctx.fillStyle = '#f472b6';
+            ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);
+
+            gameState.bgSweets.forEach(item => {
+                ctx.font = `${item.size}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                ctx.fillText(item.emoji, item.x, item.y);
+            });
+
+            gameState.candies.forEach(obj => {
+                const finalY = obj.y + obj.offsetY;
+
+                ctx.save();
+                ctx.translate(obj.x, finalY);
+                // Apply proportional scale factor for beautiful mobile scaling layout
+                ctx.scale(baseScale, baseScale);
+                ctx.rotate(obj.rotationAngle);
+
+                if (obj.moveType === 'jiggle' && obj.offsetY > -4) {
+                    ctx.scale(1.15, 0.85); 
+                }
+
+                ctx.font = '58px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(obj.emoji, 0, 0);
+                ctx.restore();
+
+                // Sweet Frosted Alphabet Bubble
+                ctx.save();
+                ctx.translate(obj.x, finalY - (60 * baseScale));
+                ctx.scale(baseScale, baseScale);
+                
+                const isCorrect = level5Targets.includes(obj.letter);
+                ctx.strokeStyle = '#db2777'; 
+                ctx.lineWidth = 3.5;
+                ctx.fillStyle = isCorrect ? 'rgba(244,114,182,0.35)' : 'rgba(255,255,255,0.85)';
+                ctx.shadowColor = '#f472b6';
+                ctx.shadowBlur = 5;
+                
+                ctx.beginPath();
+                ctx.arc(0, 0, 24, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                
+                ctx.shadowBlur = 0;
+
+                ctx.fillStyle = isCorrect ? '#be185d' : '#475569';
+                ctx.font = 'bold 24px Pyidaungsu, Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(obj.letter, 0, 0);
+                ctx.restore();
+            });
+
+            // Draw Particles
+            gameState.particles.forEach(p => {
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
+                ctx.font = `${p.size}px Arial`;
+                ctx.fillText('🍬', p.x, p.y);
+                ctx.restore();
+            });
+        }
+
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function resetCurrentGame() {
+            startBGM();
+            startGame();
+        }
+
+        function startGame() {
+            startBGM();
+            gameState.score = 0;
+            gameState.targetIndex = 0;
+            gameState.targetLetter = level5Targets[0];
+            gameState.candies = [];
+            gameState.particles = [];
+            document.getElementById('score-display').innerText = '0';
+            document.getElementById('target-display').innerText = gameState.targetLetter;
+            document.getElementById('victory-screen').classList.add('hidden');
+            
+            resize(); 
+            document.getElementById('start-screen').classList.add('hidden');
+            gameState.isPlaying = true;
+        }
+
+        setInterval(spawnCandyObject, 1150);
+
+        document.getElementById('play-btn').onclick = startGame;
+        resize();
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Burmese Alphabet Hide & Seek - Lesson 5 (Winter Wonderland)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=600;700&family=Noto+Sans+Myanmar:wght=700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; user-select: none; }
+    
+    body {
+      font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+      background: linear-gradient(to bottom, #3f51b5 0%, #90caf9 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: clamp(5px, 2vw, 15px);
+    }
+
+    /* ==========================================================================
+       HEADER PANEL (RESPONSIVE)
+       ========================================================================= */
+    .header-panel {
+      width: 100%; max-width: 800px; background: white; border: clamp(3px, 0.5vw, 5px) solid #5c6bc0;
+      border-radius: 20px; padding: clamp(6px, 1.5vw, 12px) clamp(10px, 3vw, 24px); display: flex; align-items: center;
+      justify-content: space-between; box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      z-index: 10; margin-bottom: clamp(6px, 1.5vw, 14px);
+    }
+    .instruction { font-size: clamp(15px, 2.5vw, 22px); font-weight: 700; color: #283593; display: flex; align-items: center; gap: clamp(6px, 1.5vw, 14px); }
+    .target-box {
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(24px, 4vw, 36px); font-weight: 900;
+      color: white; background: #5c6bc0; padding: 2px clamp(12px, 2.5vw, 26px); border-radius: 14px;
+      box-shadow: 0 4px 0 #3f51b5; animation: pulseTarget 1s infinite alternate;
+    }
+    @keyframes pulseTarget { 0% { transform: scale(1); } 100% { transform: scale(1.06); } }
+    .score-stars { font-size: clamp(18px, 3vw, 26px); color: #ffb300; letter-spacing: 3px; }
+
+    /* ==========================================================================
+       GAME STAGE (RESPONSIVE & ADAPTIVE)
+       ========================================================================= */
+    .game-stage {
+      position: relative; 
+      width: 100%; 
+      max-width: 800px; 
+      max-height: 70vh;
+      aspect-ratio: 16/10;
+      background: linear-gradient(to bottom, #7986cb 0%, #c5cae9 50%, #e8eaf6 100%);
+      border: clamp(4px, 0.8vw, 7px) solid #5c6bc0; border-radius: 24px; overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    /* Snowy Ground Floor Base */
+    .snow-floor {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 22%;
+      background: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 100%);
+      z-index: 3; border-top: 5px solid #eceff1;
+      border-radius: 40% 40% 0 0 / 15px 15px 0 0;
+    }
+
+    /* Animated Falling Snowflakes */
+    .snowflake {
+      position: absolute; background: white; border-radius: 50%; top: -10px;
+      animation: fallDown 5s infinite linear; pointer-events: none; z-index: 2; opacity: 0.85;
+    }
+    @keyframes fallDown {
+      0% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(200px) translateX(15px); }
+      100% { transform: translateY(500px) translateX(-10px); }
+    }
+
+    /* ==========================================================================
+       HIDING SLOTS & SCENERY GRAPHICS (ADAPTIVE ANCHORING)
+       ========================================================================= */
+    .spot-container { position: absolute; z-index: 5; cursor: pointer; }
+    .object-layer { position: absolute; inset: 0; z-index: 7; pointer-events: none; }
+
+    /* 1. ရေခဲအိမ် (Igloo) */
+    .spot-igloo { bottom: 14%; left: 4%; width: clamp(90px, 18vw, 150px); height: clamp(60px, 12vw, 100px); }
+    .igloo-dome { position: absolute; bottom: 0; left: 0; width: 100%; height: 90%; background: #f5f5f5; border: 3px solid #b0bec5; border-radius: 90px 90px 10px 10px; box-shadow: inset -15px -10px 0 #e0e0e0; }
+    .igloo-door { position: absolute; bottom: 0; left: 37%; width: 26%; height: 50%; background: #cfd8dc; border: 3px solid #b0bec5; border-radius: 20px 20px 0 0; }
+    .igloo-lines { position: absolute; inset: 0; background: repeating-linear-gradient(to bottom, transparent, transparent 20px, rgba(176,190,197,0.4) 20px, rgba(176,190,197,0.4) 23px); border-radius: 90px 90px 10px 10px; }
+
+    /* 2. နှင်းလူရုပ်ကြီး (Snowman) */
+    .spot-snowman { bottom: 12%; left: 28%; width: clamp(75px, 15vw, 120px); height: clamp(95px, 19vw, 150px); }
+    .sm-body-bottom { position: absolute; bottom: 0; left: 16%; width: 68%; height: 50%; background: white; border: 3px solid #b0bec5; border-radius: 50%; box-shadow: inset -8px -5px 0 #e0e0e0; }
+    .sm-body-top { position: absolute; bottom: 41%; left: 26%; width: 48%; height: 36%; background: white; border: 3px solid #b0bec5; border-radius: 50%; box-shadow: inset -6px -4px 0 #e0e0e0; z-index: 2; }
+    .sm-scarf { position: absolute; bottom: 39%; left: 28%; width: 44%; height: 8%; background: #e53935; border-radius: 4px; z-index: 3; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .sm-nose { position: absolute; top: 35%; left: 15%; width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 14px solid #ff9800; transform: rotate(-5deg); z-index: 4; }
+    .sm-hat { position: absolute; bottom: 72%; left: 34%; width: 32%; height: 18%; background: #37474f; border-radius: 4px 4px 0 0; z-index: 3; }
+    .sm-hat::after { content: ''; position: absolute; bottom: -3px; left: -20%; width: 140%; height: 4px; background: #37474f; border-radius: 2px; }
+
+    /* 3. ခရစ္စမတ်သစ်ပင် (Pine Tree) */
+    .spot-pinetree { bottom: 16%; left: 49%; width: clamp(85px, 17vw, 140px); height: clamp(105px, 21vw, 170px); }
+    .tree-trunk { position: absolute; bottom: 0; left: 41%; width: 18%; height: 18%; background: #5d4037; border-radius: 4px; }
+    .tree-layer-1 { position: absolute; bottom: 14%; left: 7%; width: 86%; height: 35%; background: #2e7d32; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); box-shadow: inset 0 -8px 0 #1b5e20; }
+    .tree-layer-2 { position: absolute; bottom: 38%; left: 16%; width: 68%; height: 30%; background: #388e3c; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
+    .tree-layer-3 { position: absolute; bottom: 59%; left: 25%; width: 50%; height: 26%; background: #4caf50; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); }
+    .tree-snow { position: absolute; bottom: 14%; left: 7%; width: 86%; height: 7%; background: #eceff1; clip-path: polygon(0 100%, 20% 40%, 40% 80%, 60% 30%, 80% 70%, 100% 100%); opacity: 0.9; }
+
+    /* 4. ရေခဲတောင် (Ice Mountain) */
+    .spot-mountain { bottom: 15%; left: 70%; width: clamp(80px, 16vw, 130px); height: clamp(85px, 17vw, 140px); }
+    .mount-shape { position: absolute; inset: 0; background: linear-gradient(135deg, #e0f7fa 0%, #80deea 100%); clip-path: polygon(50% 0%, 0% 100%, 100% 100%); border-radius: 4px; box-shadow: inset -10px 0 0 #4dd0e1; }
+    .mount-cap { position: absolute; top: 0; left: 25%; width: 50%; height: 32%; background: white; clip-path: polygon(50% 0%, 0% 100%, 25% 75%, 50% 90%, 75% 75%, 100% 100%); }
+
+    /* 5. နှင်းလျှောစီးစွန်း (Sled) */
+    .spot-sled { bottom: 8%; left: 84%; width: clamp(85px, 17vw, 140px); height: clamp(50px, 10vw, 80px); }
+    .sled-runner { position: absolute; bottom: 5%; left: 4%; width: 92%; height: 10%; background: #cfd8dc; border-radius: 4px; }
+    .sled-runner::after { content: ''; position: absolute; top: -175%; right: -3%; width: 10%; height: 250%; border-right: 4px solid #cfd8dc; border-bottom: 4px solid #cfd8dc; border-radius: 0 0 10px 0; transform: rotate(-20deg); }
+    .sled-seat { position: absolute; bottom: 25%; left: 14%; width: 68%; height: 28%; background: #d32f2f; border-radius: 4px; box-shadow: inset 0 -4px 0 #b71c1c; }
+    .sled-post { position: absolute; bottom: 10%; left: 25%; width: 6%; height: 18%; background: #78909c; box-shadow: 32px 0 0 #78909c; }
+
+    /* ==========================================================================
+       KIDS CHARACTER SYSTEM (RESPONSIVE RATIO)
+       ========================================================================= */
+    .kid-character {
+      position: absolute; width: clamp(45px, 9vw, 70px); height: clamp(65px, 13vw, 100px); display: flex; flex-direction: column; align-items: center;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.25); z-index: 4; pointer-events: none;
+    }
+    
+    /* Starting positions hidden underneath elements */
+    .spot-igloo .kid-character { left: 25%; bottom: 15%; }
+    .spot-snowman .kid-character { left: 20%; bottom: 15%; }
+    .spot-pinetree .kid-character { left: 10%; bottom: 20%; }
+    .spot-mountain .kid-character { left: 25%; bottom: 10%; }
+    .spot-sled .kid-character { left: 25%; bottom: -5%; }
+
+    /* Character Dialogue Bubble Popup */
+    .held-letter {
+      position: absolute; top: -42%; left: 50%; transform: translateX(-50%) scale(0);
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(16px, 3.5vw, 26px); font-weight: 900;
+      background: #e8eaf6; color: #1a237e; border: 2.5px solid #5c6bc0;
+      padding: 2px clamp(8px, 1.5vw, 14px); border-radius: 12px; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.12); line-height: 1.2; z-index: 10;
+    }
+    .held-letter::after {
+      content: ''; position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%);
+      border-width: 7px 7px 0; border-style: solid; border-color: #5c6bc0 transparent; display: block; width: 0;
+    }
+
+    /* Head & Winter Woolen Beanie Hat Graphic */
+    .kid-head { width: 60%; aspect-ratio: 1/1; background: #fbe9e7; border-radius: 50%; position: relative; border: 2px solid #37474f; z-index: 5; }
+    .kid-hair { position: absolute; top: -2px; left: -2px; right: -2px; height: 30%; background: #6d4c41; border-radius: 20px 20px 0 0; }
+    .kid-eyes { position: absolute; top: 40%; left: 18%; right: 18%; display: flex; justify-content: space-between; }
+    .kid-eyes::before, .kid-eyes::after { content: ''; width: clamp(4px, 0.8vw, 6px); height: clamp(4px, 0.8vw, 6px); background: #263238; border-radius: 50%; }
+    .kid-smile { position: absolute; bottom: 15%; left: 38%; width: 24%; height: 15%; border-bottom: 2px solid #263238; border-radius: 0 0 5px 5px; }
+    
+    /* Woolen Beanie with Pom-pom */
+    .kid-beanie { position: absolute; top: -32%; left: 10%; width: 72%; height: 42%; background: #ec407a; border-radius: 15px 15px 2px 2px; border: 2px solid #37474f; z-index: 6; }
+    .kid-beanie::after { content: ''; position: absolute; top: -45%; left: 32%; width: 30%; aspect-ratio: 1/1; background: #ffffff; border-radius: 50%; border: 1.5px solid #37474f; }
+
+    /* Thick Cozy Puffy Winter Jacket Body */
+    .kid-body { 
+      width: 52%; height: 42%; background: #ec407a; border-radius: 10px 10px 4px 4px; margin-top: -4%; position: relative; z-index: 4;
+      opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease;
+      border: 2px solid #37474f; border-bottom: none;
+    }
+    .kid-body::before { content: ''; position: absolute; top: 0; left: 6%; width: 88%; height: 20%; background: #ffca28; border-radius: 2px; }
+
+    /* Transform Peeking Paths Calculations */
+    .spot-igloo.peek .kid-character { transform: translateY(-56%); }
+    .spot-snowman.peek .kid-character { transform: translateX(38%) translateY(-25%); }
+    .spot-pinetree.peek .kid-character { transform: translateX(-35%) translateY(-25%); }
+    .spot-mountain.peek .kid-character { transform: translateY(-58%); }
+    .spot-sled.peek .kid-character { transform: translateY(-55%); }
+
+    .spot-container.peek .held-letter { transform: translateX(-50%) scale(1); }
+    .spot-container.peek .kid-body { opacity: 1; transform: translateY(0); }
+
+    /* Success Jump Animations States */
+    .spot-igloo.success .kid-character { animation: iceJumpIG 0.4s infinite alternate; }
+    @keyframes iceJumpIG { 0% { transform: translateY(-56%); } 100% { transform: translateY(-78%); } }
+
+    .spot-snowman.success .kid-character { animation: iceJumpSM 0.4s infinite alternate; }
+    @keyframes iceJumpSM { 0% { transform: translateX(38%) translateY(-25%); } 100% { transform: translateX(38%) translateY(-48%); } }
+
+    .spot-pinetree.success .kid-character { animation: iceJumpPT 0.4s infinite alternate; }
+    @keyframes iceJumpPT { 0% { transform: translateX(-35%) translateY(-25%); } 100% { transform: translateX(-35%) translateY(-48%); } }
+
+    .spot-mountain.success .kid-character { animation: iceJumpMN 0.4s infinite alternate; }
+    @keyframes iceJumpMN { 0% { transform: translateY(-58%); } 100% { transform: translateY(-80px); } }
+
+    .spot-sled.success .kid-character { animation: iceJumpSL 0.4s infinite alternate; }
+    @keyframes iceJumpSL { 0% { transform: translateY(-55%); } 100% { transform: translateY(-75%); } }
+
+    .spot-container.success .kid-body { opacity: 1; transform: translateY(0); }
+
+    /* Wrong Answer Shake System */
+    .spot-igloo.wrong .kid-character { animation: shakeIG 0.4s ease; }
+    @keyframes shakeIG { 0%, 100% { transform: translateY(-56%); } 25% { transform: translateX(-6px) translateY(-56%); } 75% { transform: translateX(6px) translateY(-56px); } }
+
+    .spot-snowman.wrong .kid-character { animation: shakeSM 0.4s ease; }
+    @keyframes shakeSM { 0%, 100% { transform: translateX(38%) translateY(-25%); } 25% { transform: translateX(30%) translateY(-25px); } 75% { transform: translateX(46%) translateY(-25%); } }
+
+    .spot-pinetree.wrong .kid-character { animation: shakePT 0.4s ease; }
+    @keyframes shakePT { 0%, 100% { transform: translateX(-35%) translateY(-25%); } 25% { transform: translateX(-42%) translateY(-25%); } 75% { transform: translateX(-28%) translateY(-25%); } }
+
+    .spot-mountain.wrong .kid-character { animation: shakeMN 0.4s ease; }
+    @keyframes shakeMN { 0%, 100% { transform: translateY(-58%); } 25% { transform: translateX(-6px) translateY(-58%); } 75% { transform: translateX(6px) translateY(-58%); } }
+
+    .spot-sled.wrong .kid-character { animation: shakeSL 0.4s ease; }
+    @keyframes shakeSL { 0%, 100% { transform: translateY(-55%); } 25% { transform: translateX(-6px) translateY(-55%); } 75% { transform: translateX(6px) translateY(-55%); } }
+
+    /* ==========================================================================
+       MOBILE RESPONSIVE OVERRIDES (@media)
+       ========================================================================= */
+    @media (max-width: 768px) {
+      .game-stage { max-height: 60vh; }
+      .spot-container .kid-character { transform: scale(0.85); }
+      .spot-igloo { left: 2%; }
+      .spot-snowman { left: 26%; }
+      .spot-pinetree { left: 47%; }
+      .spot-mountain { left: 68%; }
+      .spot-sled { left: 83%; }
+    }
+
+    /* ==========================================================================
+       INTRO & REWARD SCREENS
+       ========================================================================= */
+    .intro-screen {
+      position: absolute; inset: 0; 
+      background: linear-gradient(to bottom, #e8eaf6 0%, #c5cae9 100%);
+      z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center; transition: opacity 0.4s ease, pointer-events 0.4s;
+    }
+    .intro-screen.hide { opacity: 0; pointer-events: none; }
+    .intro-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(22px, 5vw, 38px); font-weight: 900; color: #1a237e; margin-bottom: 14px; }
+    .intro-badge { font-family: 'Fredoka', 'Noto Sans Myanmar', sans-serif; background: #3f51b5; color: white; padding: 6px 24px; border-radius: 20px; font-weight: 700; margin-bottom: 24px; box-shadow: 0 4px 0 #283593; font-size: clamp(14px, 2.5vw, 18px); }
+    
+    .btn-action {
+      font-family: 'Noto Sans Myanmar', sans-serif; padding: clamp(10px, 2vw, 14px) clamp(24px, 5vw, 48px); font-size: clamp(16px, 3vw, 20px); font-weight: 900;
+      color: white; background: #5c6bc0; border: none; border-radius: 16px; cursor: pointer; box-shadow: 0 6px 0 #3f51b5; z-index: 5;
+    }
+    .btn-action:active { transform: translateY(3px); box-shadow: 0 3px 0 #3f51b5; }
+
+    .reward-backdrop {
+      position: absolute; inset: 0; background: rgba(0,0,0,0.5);
+      z-index: 200; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .reward-backdrop.show { opacity: 1; pointer-events: auto; }
+    .reward-box {
+      background: white; border: 5px solid #ffca28; border-radius: 24px; padding: clamp(20px, 5vw, 35px) clamp(15px, 4vw, 30px);
+      width: 90%; max-width: 420px; text-align: center; transform: scale(0.7); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+    }
+    .reward-backdrop.show .reward-box { transform: scale(1); }
+    .reward-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(20px, 4vw, 28px); font-weight: 900; color: #e64a19; margin-bottom: 10px; }
+    .reward-letter-display { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(45px, 10vw, 62px); font-weight: 900; color: #3f51b5; margin: 12px 0; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAVIGATION BUTTONS (HOME & RESET) -->
+  <div class="absolute top-4 left-4 z-50 flex gap-2" style="position: absolute; top: 16px; left: 16px; z-index: 250; display: flex; gap: 8px;">
+    <button onclick="location.href='index.html?fromGame=true'" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" style="width: 40px; height: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 2px solid #d84315; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 20px;" title="ပင်မစာမျက်နှာ">
+      🏠
+    </button>
+    <button id="btnTopReset" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" style="width: 40px; height: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 2px solid #d84315; display: flex; items-center: center; justify-content: center; cursor: pointer; font-size: 20px;" title="ပြန်စမည်">
+      🔄
+    </button>
+  </div>
+
+  <div class="header-panel">
+    <div class="instruction">
+      <span>သူငယ်ချင်းတို့ဆီက</span>
+      <div class="target-box" id="targetDisplay">ပ</div>
+      <span>ကို ရှာပေးပါဦး။</span>
+    </div>
+    <div class="score-stars" id="starContainer">☆☆☆☆☆</div>
+  </div>
+
+  <div class="game-stage">
+    
+    <div class="snowflake" style="left:8%; width:8px; height:8px; animation-delay:0s; animation-duration:6s;"></div>
+    <div class="snowflake" style="left:25%; width:11px; height:11px; animation-delay:1.5s; animation-duration:5s;"></div>
+    <div class="snowflake" style="left:45%; width:6px; height:6px; animation-delay:0.5s; animation-duration:7s;"></div>
+    <div class="snowflake" style="left:65%; width:10px; height:10px; animation-delay:2.5s; animation-duration:5.5s;"></div>
+    <div class="snowflake" style="left:85%; width:7px; height:7px; animation-delay:3.5s; animation-duration:6.5s;"></div>
+    
+    <div class="snow-floor"></div>
+    
+    <div class="spot-container spot-igloo" onclick="handleSpotClick(0)">
+      <div class="kid-character" id="kid0">
+        <div class="held-letter" id="letter0">-</div>
+        <div class="kid-head"><div class="kid-beanie"></div><div class="kid-hair"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body"></div>
+      </div>
+      <div class="object-layer">
+        <div class="igloo-dome">
+          <div class="igloo-lines"></div>
+        </div>
+        <div class="igloo-door"></div>
+      </div>
+    </div>
+
+    <div class="spot-container spot-snowman" onclick="handleSpotClick(1)">
+      <div class="kid-character" id="kid1">
+        <div class="held-letter" id="letter1">-</div>
+        <div class="kid-head"><div class="kid-beanie" style="background:#00bcd4;"></div><div class="kid-hair" style="background:#2d1a14;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#00bcd4;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="sm-body-bottom"></div>
+        <div class="sm-body-top"></div>
+        <div class="sm-scarf"></div>
+        <div class="sm-nose"></div>
+        <div class="sm-hat"></div>
+      </div>
+    </div>
+
+    <div class="spot-container spot-pinetree" onclick="handleSpotClick(2)">
+      <div class="kid-character" id="kid2">
+        <div class="held-letter" id="letter2">-</div>
+        <div class="kid-head"><div class="kid-beanie" style="background:#ff9800;"></div><div class="kid-hair" style="background:#4e342e;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#ff9800;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="tree-trunk"></div>
+        <div class="tree-layer-1"></div>
+        <div class="tree-layer-2"></div>
+        <div class="tree-layer-3"></div>
+        <div class="tree-snow"></div>
+      </div>
+    </div>
+
+    <div class="spot-container spot-mountain" onclick="handleSpotClick(3)">
+      <div class="kid-character" id="kid3">
+        <div class="held-letter" id="letter3">-</div>
+        <div class="kid-head"><div class="kid-beanie" style="background:#4caf50;"></div><div class="kid-hair" style="background:#ef6c00;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#4caf50;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="mount-shape"></div>
+        <div class="mount-cap"></div>
+      </div>
+    </div>
+
+    <div class="spot-container spot-sled" onclick="handleSpotClick(4)">
+      <div class="kid-character" id="kid4">
+        <div class="held-letter" id="letter4">-</div>
+        <div class="kid-head"><div class="kid-beanie" style="background:#ab47bc;"></div><div class="kid-hair" style="background:#26a69a;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#ab47bc;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="sled-post"></div>
+        <div class="sled-seat"></div>
+        <div class="sled-runner"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="intro-screen" id="welcomePanel">
+    <h1 class="intro-title">အက္ခရာသူငယ်ချင်းတို့ တူတူပုန်းတမ်း</h1>
+    <div class="intro-badge">Lesson 5 : ပ ၊ ဖ ၊ ဗ ၊ ဘ ၊ မ</div>
+    <button class="btn-action" onclick="startGame()">ဂိမ်းစတင်ဆော့မည်</button>
+  </div>
+
+  <div class="reward-backdrop" id="rewardPanel">
+    <div class="reward-box">
+      <h2 class="reward-title">🎉 အောင်မြင်စွာ ရှာဖွေနိုင်ခဲ့ပါပြီ! 🎉</h2>
+      <p style="font-family:'Noto Sans Myanmar'; color:#546e7a;">သူငယ်ချင်းလေးဆီက ရှာတွေ့လိုက်တဲ့ အက္ခရာကတော့ -</p>
+      <div class="reward-letter-display" id="rewardLetterBox">ပ</div>
+      <button class="btn-action" style="background:#ff9800; box-shadow:0 6px 0 #e65100; margin-top: 10px;" onclick="advanceToNextRound()">နောက်ထပ် အက္ခရာအသစ် ရှာမည်</button>
+    </div>
+  </div>
+
+  <script>
+    const lettersPoolList = ['ပ', 'ဖ', 'ဗ', 'ဘ', 'မ'];
+    let assignedPositions = [];
+    let scoreProgress = 0;
+    let currentTargetLetter = '';
+    let isTransitioning = false;
+
+    // BACKGROUND MUSIC (BGM) - ကလေးတွေအတွက် လုံးဝအေးအေးလူလူ နူးညံ့တဲ့ စန္ဒယားတေးသံစဉ် (Soft Lullaby Piano) လင့်ခ်သို့ ပြောင်းလဲထားပါသည်
+    let bgmAudio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3'); 
+    bgmAudio.loop = true;
+    bgmAudio.volume = 0.15; // နောက်ခံအသံ တိုးတိုးလေးနဲ့ အေးချမ်းနေအောင် ထိန်းထားပါသည်
+
+    // EFFECT SOUNDS SYSTEM (Web Audio API)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSoundEffect(type) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === 'click') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.1);
+      } else if (type === 'success') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); 
+        osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); 
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.4);
+      } else if (type === 'wrong') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      }
+    }
+
+    function startGame() {
+      // ဂိမ်းစတင်တာနဲ့ အေးချမ်းတဲ့ သီချင်းသံကို play ပေးခြင်း
+      bgmAudio.play().catch(error => console.log("Audio play blocked by browser:", error));
+      
+      document.getElementById('welcomePanel').classList.add('hide');
+      scoreProgress = 0;
+      setupNewTargetRound();
+    }
+
+    // Connect Reset Button Functionality
+    document.getElementById('btnTopReset').addEventListener('click', () => {
+      playSoundEffect('click');
+      document.getElementById('rewardPanel').classList.remove('show');
+      scoreProgress = 0;
+      setupNewTargetRound();
+    });
+
+    function setupNewTargetRound() {
+      isTransitioning = false;
+      currentTargetLetter = lettersPoolList[scoreProgress];
+      
+      let tempLettersArray = [...lettersPoolList];
+      assignedPositions = [];
+      
+      for(let i = 0; i < 5; i++) {
+        let randomIndex = Math.floor(Math.random() * tempLettersArray.length);
+        assignedPositions.push(tempLettersArray.splice(randomIndex, 1)[0]);
+        
+        document.getElementById(`letter${i}`).textContent = assignedPositions[i];
+        
+        const parentElementNode = document.getElementById(`kid${i}`).parentElement;
+        parentElementNode.classList.remove('peek', 'success', 'wrong');
+      }
+      
+      renderDashboardUI();
+    }
+
+    function renderDashboardUI() {
+      document.getElementById('targetDisplay').textContent = currentTargetLetter;
+      
+      let starMarkup = '';
+      for(let i = 0; i < 5; i++) {
+        starMarkup += (i < scoreProgress) ? '★' : '☆';
+      }
+      document.getElementById('starContainer').textContent = starMarkup;
+    }
+
+    function handleSpotClick(spotIndex) {
+      if(isTransitioning) return;
+      
+      isTransitioning = true;
+      playSoundEffect('click');
+      
+      const clickedSpotContainer = document.getElementById(`kid${spotIndex}`).parentElement;
+      const discoveredLetter = assignedPositions[spotIndex];
+
+      clickedSpotContainer.classList.remove('wrong', 'peek', 'success');
+      void clickedSpotContainer.offsetWidth; 
+      clickedSpotContainer.classList.add('peek');
+
+      setTimeout(() => {
+        if(discoveredLetter === currentTargetLetter) {
+          playSoundEffect('success');
+          clickedSpotContainer.classList.remove('peek');
+          clickedSpotContainer.classList.add('success');
+          
+          document.getElementById('rewardLetterBox').textContent = currentTargetLetter;
+          scoreProgress++;
+          
+          setTimeout(() => {
+            document.getElementById('rewardPanel').classList.add('show');
+          }, 950);
+
+        } else {
+          playSoundEffect('wrong');
+          clickedSpotContainer.classList.add('wrong');
+          setTimeout(() => {
+            clickedSpotContainer.classList.remove('wrong', 'peek');
+            isTransitioning = false;
+          }, 1200);
+        }
+      }, 400);
+    }
+
+    function advanceToNextRound() {
+      playSoundEffect('click');
+      document.getElementById('rewardPanel').classList.remove('show');
+      if(scoreProgress >= 5) {
+        scoreProgress = 0; 
+      }
+      setupNewTargetRound();
+    }
+  </script>
+</body>
+</html>

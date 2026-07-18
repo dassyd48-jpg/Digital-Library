@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>မြန်မာစာအက္ခရာ သင်ခန်းစာ (ပ-မ) - Stage 1</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        .burmese-font { font-family: 'Pyidaungsu', sans-serif; }
+        .title-font { font-family: 'Fredoka One', 'Pyidaungsu', sans-serif; }
+        .magic-forest-bg { background: radial-gradient(circle at center, #0a231c, #051411, #020706); }
+
+        /* 🍄 MUSHROOM STYLE BOARD CONTAINER */
+        .mushroom-board {
+            background-color: #fffbeb; 
+            border: 8px solid #1e293b;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 -12px 20px rgba(217, 119, 6, 0.15);
+            position: relative;
+        }
+
+        /* 🌟 PREMIUM 3D POP-UP BUTTON ANIMATION */
+        .btn-pop-3d { transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .btn-pop-3d:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 2px 0 #0f172a !important; }
+
+        /* ⭐️ GLOWING STAR ANIMATION */
+        .star { color: #4b5563; text-shadow: 0 2px 0 rgba(0,0,0,0.2); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .star.active { color: #fbbf24; transform: scale(1.25) rotate(15deg); text-shadow: 0 0 15px #f59e0b, 0 3px 0 #b45309; }
+
+        @keyframes bounce-slow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        .float-mascot { animation: bounce-slow 2.5s ease-in-out infinite; }
+    </style>
+</head>
+<body class="magic-forest-bg text-white min-h-screen flex flex-col items-center justify-start burmese-font overflow-hidden user-select-none -webkit-user-select-none p-4 pt-8 pb-8">
+    
+    <!-- 🏁 INTRODUCTION SCREEN PANEL -->
+    <main id="lessonIntroPanel" class="fixed inset-0 bg-slate-950/95 backdrop-blur-2xl flex items-center justify-center z-50 p-4">
+        <div class="w-full max-w-md p-8 bg-emerald-950/40 border-2 border-emerald-500/30 rounded-3xl shadow-2xl text-center">
+            <div class="text-5xl mb-3 float-mascot inline-block">✍️🎧🍄</div>
+            <h1 class="title-font text-2xl font-black bg-gradient-to-r from-emerald-400 to-amber-300 bg-clip-text text-transparent mb-1">
+                STAGE 01: အက္ခရာအသံနှင့် အရေး
+            </h1>
+            <p class="text-xs text-emerald-300/90 font-bold mb-4">မြန်မာအက္ခရာ လေ့ကျင့်ခန်း (ပ - မ)</p>
+            
+            <hr class="border-emerald-500/20 mb-4">
+
+            <div class="bg-emerald-900/30 border border-emerald-500/20 rounded-2xl p-5 mb-6 text-left space-y-3 text-sm leading-relaxed text-emerald-100">
+                <p class="font-black text-amber-300 text-center text-base mb-1">💡 ဒီသင်ခန်းစာမှာ ဘာတွေလုပ်ရမလဲ?</p>
+                <p class="indent-6">သားသားမီးမီးတို့ရေ... ဒီအဆင့်မှာတော့ <span class="text-amber-400 font-bold">"ပ ၊ ဖ ၊ ဗ ၊ ဘ ၊ မ"</span> စာလုံးလေးတွေရဲ့ မှန်ကန်တဲ့ <span class="text-amber-400 font-bold">အသံထွက်ကို နားထောင်</span> ကြရမှာဖြစ်ပြီး၊ နောက်တစ်ဆင့်မှာ <span class="text-emerald-400 font-bold">မြားအညွှန်းလေးတွေအတိုင်း လိုက်ဆွဲ</span> ပြီး လေ့ကျင့်သွားကြရမှာပါရှင်။</p>
+                <p class="indent-6 text-xs text-emerald-300/80 italic text-center">ကြယ်လေး (၅) လုံးပြည့်အောင် လေ့ကျင့်ပြီး နောက်စာလုံးကို သွားကြရအောင်နော်!</p>
+            </div>
+
+            <button onclick="startLessonActivity()" class="w-full py-4 px-6 text-lg font-black text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-xl shadow-[0_5px_0_#b45309] active:translate-y(4px) active:shadow-none transition-all cursor-pointer float-mascot">
+                လေ့လာမယ် 🌟
+            </button>
+        </div>
+    </main>
+
+    <!-- 🎮 MAIN GAMEPLAY CONTENT -->
+    <div id="mainLessonContent" class="w-full flex flex-col items-center justify-start gap-4 hidden">
+        
+        <div class="w-full max-w-md flex flex-col items-center mt-2 text-center relative">
+            <button onclick="goBackToMap()" class="absolute left-0 top-0 w-12 h-12 bg-emerald-900/60 hover:bg-emerald-800 border-2 border-white/10 rounded-full flex items-center justify-center text-xl shadow-lg cursor-pointer transition-colors z-30">
+                🏠
+            </button>
+
+            <div id="modeBadge" class="px-5 py-1.5 bg-amber-500 text-slate-950 font-black rounded-full text-xs shadow-[0_3px_0_#b45309] tracking-wide mb-2 uppercase mx-auto w-fit">
+                အဆင့် (၁) - နားထောင်စို့ 🔊
+            </div>
+            
+            <h2 id="instructionTitle" class="text-base sm:text-lg font-black text-emerald-300 drop-shadow mb-2 text-center">
+                စာလုံးလေးကို နှိပ်ပြီး အသံနားထောင်မယ် 🎧
+            </h2>
+
+            <div class="flex gap-2.5 my-1 text-3xl justify-center mb-4" id="starsRow">
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+            </div>
+        </div>
+
+        <!-- 🖌️ MUSHROOM CANVAS LAYER -->
+        <div class="w-full flex justify-center mt-2 mb-4">
+            <div class="mushroom-board w-[320px] h-[320px] rounded-[36px] flex items-center justify-center overflow-hidden">
+                <div id="giantText" class="text-[170px] font-bold text-rose-500 title-font drop-shadow-[0_4px_0_#f1f5f9] select-none pointer-events-none z-10 flex items-center justify-center">
+                    ပ
+                </div>
+                <canvas id="paintCanvas" class="absolute top-0 left-0 rounded-[28px] touch-action-none z-20 cursor-pointer"></canvas>
+            </div>
+        </div>
+
+        <!-- 🕹️ CONTROLS FOOTER PANEL -->
+        <div class="w-full max-w-md flex flex-col items-center gap-3 mb-2">
+            
+            <div class="flex items-center gap-4 h-14 w-full px-6">
+                <button id="clearBtn" onclick="clearCanvas()" class="btn-pop-3d px-5 h-full bg-rose-500 text-white font-black text-sm rounded-2xl border-2 border-slate-900 shadow-[0_4px_0_#0f172a] cursor-pointer">
+                    ဖျက်ပါ 🧼
+                </button>
+                <button id="actionBtn" onclick="handleActionProgress()" disabled class="btn-pop-3d flex-1 h-full bg-gradient-to-r from-emerald-400 to-green-500 disabled:from-gray-500 disabled:to-gray-600 text-slate-950 disabled:text-gray-300 font-black text-sm rounded-2xl border-2 border-slate-900 shadow-[0_4px_0_#0f172a] disabled:shadow-none cursor-pointer">
+                    နောက်တစ်ခု 🔄 +⭐
+                </button>
+            </div>
+
+            <div class="flex justify-between items-center w-full px-12">
+                <button id="prevBtn" onclick="navigateLetter(-1)" class="btn-pop-3d w-14 h-14 bg-white text-slate-950 border-2 border-slate-900 text-xl font-black rounded-full flex items-center justify-center shadow-[0_4px_0_#0f172a] disabled:opacity-30 disabled:shadow-none">
+                    ◀
+                </button>
+                
+                <span id="currentLetterBadge" class="text-xs font-black bg-white/5 border border-white/10 px-5 py-1.5 rounded-full text-emerald-400 uppercase tracking-widest float-mascot">
+                    "ပ" စွန့်စားခန်း 🍄
+                </span>
+
+                <button id="nextBtn" onclick="navigateLetter(1)" disabled class="btn-pop-3d w-14 h-14 bg-white text-slate-950 border-2 border-slate-900 text-xl font-black rounded-full flex items-center justify-center shadow-[0_4px_0_#0f172a] disabled:opacity-30 disabled:shadow-none">
+                    ▶
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 📚 Level 5 Data for (ပ, ဖ, ဗ, ဘ, မ)
+        const alphabetData = [
+            { name: "ပ", traceImg: "pa3.png", audioSource: "pa3.mp3", requiredStrokes: 1 },
+            { name: "ဖ", traceImg: "hpa3.png", audioSource: "hpa3.mp3", requiredStrokes: 1 },
+            { name: "ဗ", traceImg: "ba3.png", audioSource: "ba3.mp3", requiredStrokes: 2 },
+            { name: "ဘ", traceImg: "bha3.png", audioSource: "bha3.mp3", requiredStrokes: 2 },
+            { name: "မ", traceImg: "ma3.png", audioSource: "ma3.mp3", requiredStrokes: 2 }
+        ];
+
+        let currentIndex = 0; let currentMode = "LISTEN"; let currentStars = 0; let strokeCount = 0; let isDrawing = false;
+
+        const canvas = document.getElementById('paintCanvas'); const ctx = canvas.getContext('2d');
+        const giantText = document.getElementById('giantText'); const actionBtn = document.getElementById('actionBtn');
+        const clearBtn = document.getElementById('clearBtn'); const modeBadge = document.getElementById('modeBadge');
+        const instructionTitle = document.getElementById('instructionTitle'); const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn'); const currentLetterBadge = document.getElementById('currentLetterBadge');
+        let letterAudio = new Audio();
+
+        const scale = 2; canvas.width = 320 * scale; canvas.height = 320 * scale;
+        canvas.style.width = "320px"; canvas.style.height = "320px"; ctx.scale(scale, scale);
+        
+        ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.lineWidth = 14; ctx.strokeStyle = '#0f513d';
+
+        // 🚀 Open Main Content when "လေ့လာမယ်" button is pressed
+        function startLessonActivity() {
+            document.getElementById('lessonIntroPanel').classList.add('hidden');
+            document.getElementById('mainLessonContent').classList.remove('hidden');
+            loadAlphabetLevel();
+        }
+
+        function loadAlphabetLevel() {
+            currentStars = 0; strokeCount = 0; updateStarsUI();
+            const data = alphabetData[currentIndex];
+            letterAudio.src = data.audioSource;
+            
+            currentLetterBadge.innerText = `"${data.name}" စွန့်စားခန်း 🍄`;
+            
+            prevBtn.disabled = (currentIndex === 0); nextBtn.disabled = true; 
+            setGameMode("LISTEN");
+        }
+
+        function setGameMode(mode) {
+            currentMode = mode; const data = alphabetData[currentIndex]; clearCanvas(); actionBtn.disabled = true;
+            if (currentMode === "LISTEN") {
+                modeBadge.innerText = "အဆင့် (၁) - နားထောင်စို့ 🔊"; 
+                modeBadge.className = "px-5 py-1.5 bg-amber-500 text-slate-950 font-black rounded-full text-xs shadow-[0_3px_0_#b45309] tracking-wide mb-3 uppercase";
+                instructionTitle.innerText = "စာလုံးလေးကို နှိပ်ပြီး အသံနားထောင်မယ် 🎧";
+                giantText.style.display = "flex"; giantText.innerText = data.name; canvas.style.backgroundImage = "none";
+                clearBtn.style.display = "none"; playVocal();
+            } else {
+                modeBadge.innerText = "အဆင့် (၂) - လိုက်ဆွဲစို့ ✍️"; 
+                modeBadge.className = "px-5 py-1.5 bg-green-500 text-slate-950 font-black rounded-full text-xs shadow-[0_3px_0_#15803d] tracking-wide mb-3 uppercase";
+                instructionTitle.innerText = "မြားအညွှန်းအတိုင်း လမ်းကြောင်းလိုက်ဆွဲပါ 🎨";
+                giantText.style.display = "none"; canvas.style.backgroundImage = `url('${data.traceImg}')`;
+                canvas.style.backgroundSize = "contain"; canvas.style.backgroundPosition = "center";
+                canvas.style.backgroundRepeat = "no-repeat"; clearBtn.style.display = "inline-block";
+            }
+        }
+
+        function playVocal() { letterAudio.play().catch(e => console.log("Audio waiting.")); }
+
+        function handleActionProgress() {
+            if (currentMode === "LISTEN") {
+                currentStars++;
+                if (currentStars < 5) { updateStarsUI(); actionBtn.disabled = true; playVocal(); }
+                else { currentStars = 0; updateStarsUI(); setGameMode("TRACING"); }
+            } else {
+                currentStars++;
+                if (currentStars < 5) { updateStarsUI(); clearCanvas(); }
+                else {
+                    updateStarsUI(); 
+                    if (currentIndex < alphabetData.length - 1) {
+                        nextBtn.disabled = false;
+                        instructionTitle.innerText = "အောင်မြင်ပါပြီ။ နောက်စာလုံးကို သွားပါ 🎉"; 
+                        actionBtn.innerText = "နောက်စာလုံးသို့ ➡️"; actionBtn.disabled = false;
+                        actionBtn.onclick = () => { navigateLetter(1); actionBtn.onclick = handleActionProgress; };
+                    } else {
+                        instructionTitle.innerText = "ဂုဏ်ယူပါတယ်! သင်ခန်းစာ အားလုံးပြီးပါပြီ 🌟"; 
+                        actionBtn.innerText = "မြေပုံသို့ ပြန်မည် 🗺️"; actionBtn.disabled = false;
+                        actionBtn.onclick = () => { window.location.href = 'index.html?fromGame=true&stage=4'; };
+                    }
+                }
+            }
+        }
+
+        function updateStarsUI() {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, idx) => { idx < currentStars ? star.classList.add('active') : star.classList.remove('active'); });
+            if (currentStars < 5) actionBtn.innerText = "နောက်တစ်ကြိမ် ထပ်လုပ်ပါ 🔄 +⭐";
+        }
+
+        function getCanvasCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        function startLine(e) {
+            e.preventDefault();
+            if (currentMode === "LISTEN") { playVocal(); actionBtn.disabled = false; return; }
+            const coords = getCanvasCoords(e); isDrawing = true; strokeCount++; ctx.beginPath(); ctx.moveTo(coords.x, coords.y);
+        }
+
+        function traceLine(e) {
+            e.preventDefault();
+            if (!isDrawing || currentMode === "LISTEN") return;
+            const coords = getCanvasCoords(e); ctx.lineTo(coords.x, coords.y); ctx.stroke();
+        }
+
+        function stopLine() {
+            if (!isDrawing) return; isDrawing = false; ctx.beginPath();
+            if (currentMode === "TRACING" && strokeCount >= alphabetData[currentIndex].requiredStrokes) actionBtn.disabled = false;
+        }
+
+        canvas.addEventListener('mousedown', startLine); canvas.addEventListener('mousemove', traceLine); canvas.addEventListener('mouseup', stopLine);
+        canvas.addEventListener('touchstart', startLine); canvas.addEventListener('touchmove', traceLine); canvas.addEventListener('touchend', stopLine);
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (currentMode === "TRACING") { strokeCount = 0; actionBtn.disabled = true; }
+        }
+
+        function navigateLetter(direction) {
+            currentIndex += direction;
+            if (currentIndex >= 0 && currentIndex < alphabetData.length) loadAlphabetLevel();
+        }
+
+        function goBackToMap() { window.location.href = 'index.html?fromGame=true'; }
+    </script>
+</body>
+</html>
