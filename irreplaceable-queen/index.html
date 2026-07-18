@@ -80,18 +80,39 @@
         .page img { width: 100%; height: 100%; object-fit: fill !important; display: block; pointer-events: none; }
         .page iframe { width: 100% !important; height: 100% !important; border: none !important; display: block; background: #000; position: absolute; top: 0; left: 0; }
 
+        /* Bookmark Button Style */
+        #bookmark-btn {
+            position: fixed;
+            top: env(safe-area-inset-top, 20px);
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            display: none;
+            letter-spacing: 1px;
+        }
+        #bookmark-btn.active {
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728);
+            color: #000;
+            border-color: var(--gold);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
         .watermark { 
             position: absolute; bottom: 20px; width: 100%; text-align: center; 
             font-size: 10px; color: var(--gold); opacity: 0.4; letter-spacing: 4px; pointer-events: none; z-index: 15;
         }
 
-        /* ============================================================
-           NEW — Expanded flip-trigger zone (right 35% of the book)
-           This sits ABOVE the page images so taps/drags anywhere in
-           it trigger a flip, but it is switched OFF (pointer-events:none)
-           whenever a quiz/iframe page is showing, so quiz clicks are
-           never blocked.
-        ============================================================ */
         #flip-zone-right {
             position: absolute;
             z-index: 16;
@@ -101,11 +122,6 @@
         }
         #flip-zone-right.disabled { pointer-events: none; }
 
-        /* ============================================================
-           NEW — Periodic "peel" hint shown on page 1 before any
-           interaction. Purely decorative, pointer-events:none so it
-           never interferes with taps underneath it.
-        ============================================================ */
         .peel-hint {
             position: absolute;
             z-index: 17;
@@ -148,6 +164,9 @@
         </a>
     </div>
 
+    <!-- Save Bookmark Button -->
+    <button id="bookmark-btn" onclick="toggleBookmark()">🔖 SAVE BOOKMARK</button>
+
     <div id="book-container">
         <div id="flipbook-wrapper"><div id="flipbook"></div></div>
         <div class="watermark">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
@@ -156,23 +175,22 @@
     <audio id="sound" src="flip.mp3" preload="auto"></audio>
 
     <script>
-        // စာအုပ်အသစ်အတွက် အချက်အလက်များ
         const myPassword = "D2026@QUEEN"; 
-        const maxPages = 59; // စာမျက်နှာ စုစုပေါင်း
-        const quizPages = [2, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56]; // Quiz ရှိသော စာမျက်နှာများ
+        const maxPages = 59; 
+        const quizPages = [2, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56]; 
         let isQuizLocked = false; 
 
-        // 🛠️ FIX 2: Password တစ်ခါပဲ ထည့်ရအောင် စစ်ဆေးပေးသော Logic
+        // 🛠️ FIX 2: PASSWORD ကို တစ်ခါပဲတောင်းမယ့် Logic
         $(document).ready(function() {
             const isUnlocked = localStorage.getItem("tiq_unlocked");
             if (isUnlocked === "true") {
                 $("#lock, #bg-video").hide();
                 $("#book-container").show().css("opacity", 1);
+                $("#bookmark-btn").show(); // စာအုပ်ပွင့်တာနဲ့ Bookmark ခလုတ်ပြမယ်
                 loadAndInit();
             }
         });
 
-        // 🛠️ FIX 1: စာမျက်နှာ Ratio ကို Mobile/Tablet ကွက်တိဖြစ်အောင် တွက်ချက်ပေးသော Logic
         function getBookSize() {
             let w = window.innerWidth;
             let h = window.innerHeight - 40; 
@@ -187,7 +205,6 @@
             return { w, h };
         }
 
-        // Quiz ဖြေပြီးသွားလျှင် Lock ဖွင့်ပေးရန် Message လက်ခံခြင်း
         window.addEventListener("message", function(event) {
             if (event.data === "quizCompleted") {
                 isQuizLocked = false; 
@@ -197,11 +214,11 @@
 
         function unlock() {
             if(document.getElementById("pass").value === myPassword) {
-                // 🛠️ FIX 2: Password မှန်ကန်လျှင် နောက်တစ်ကြိမ် ထပ်မတောင်းရန် မှတ်သားခြင်း
                 localStorage.setItem("tiq_unlocked", "true");
                 $("#lock").fadeOut(600, () => {
                     $("#bg-video").fadeOut(600);
                     $("#book-container").css("display", "block").animate({opacity: 1}, 1000);
+                    $("#bookmark-btn").fadeIn(600);
                     loadAndInit();
                 });
             } else { 
@@ -209,12 +226,9 @@
             }
         }
 
-        // ============================================================
-        // NEW — state for the expanded flip-zone + peel hint
-        // ============================================================
         let $flipZone = null;
         let $peelHint = null;
-        let hintActive = true;         // becomes false permanently after first interaction / leaving page 1
+        let hintActive = true;         
         let touchStartX = null;
         let touchStartY = null;
         let touchStartTime = 0;
@@ -228,23 +242,19 @@
             for(let i=1; i<=maxPages; i++) {
                 const pageDiv = $('<div class="page"></div>');
                 
-                // Quiz စာမျက်နှာများအတွက် iframe ထည့်ခြင်း
                 if(quizPages.includes(i)) {
                     const fileName = (i === 2) ? "intro_quiz.html" : `page${i}.html`;
                     pageDiv.append(`<iframe src="${fileName}" style="width:100%; height:100%; border:none; overflow:hidden;" scrolling="no"></iframe>`);
                 } 
-                // ပုံမှန်စာမျက်နှာများ (Page.jpg)
                 else if (i < maxPages) {
                     pageDiv.append($('<img />').attr('src', `page${i}.jpg`));
                 } 
-                // နောက်ဆုံးစာမျက်နှာ
                 else {
                     pageDiv.append('<div style="width:100%; height:100%; background:#000; display:flex; align-items:center; justify-content:center; color:#555; font-size:12px;">END OF PREVIEW</div>');
                 }
                 flipbook.append(pageDiv);
             }
 
-            // Turn.js စတင်ခြင်း
             setTimeout(() => {
                 flipbook.turn({
                     width: w, height: h, autoCenter: true, display: 'single', acceleration: true, duration: 400,
@@ -255,14 +265,11 @@
                             if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
                         },
                         turned: function(e, page) {
-                            // 🛠️ FIX 3: ဖတ်နေတဲ့စာမျက်နှာကို LocalStorage ထဲ သိမ်းဆည်းခြင်း
-                            localStorage.setItem("tiq_last_page", page);
-                            
-                            // Quiz စာမျက်နှာဆိုလျှင် နောက်တစ်ရွက်လှန်မရအောင် Lock ချခြင်း
+                            // စာမျက်နှာလှန်လိုက်တိုင်း လက်ရှိစာမျက်နှာရဲ့ Bookmark status ကို စစ်ဆေးမယ်
+                            updateBookmarkButtonStatus(page);
+
                             isQuizLocked = quizPages.includes(page);
 
-                            // NEW — disable the flip overlay on quiz/iframe pages so
-                            // taps/drags reach the iframe underneath, un-disable otherwise.
                             if ($flipZone) {
                                 if (quizPages.includes(page)) {
                                     $flipZone.addClass("disabled");
@@ -271,8 +278,6 @@
                                 }
                             }
 
-                            // NEW — the peel hint is only ever relevant on page 1.
-                            // The moment the reader leaves page 1, kill it for good.
                             if (page !== 1) {
                                 stopPeelHint();
                             }
@@ -280,32 +285,56 @@
                     }
                 });
 
-                // 🛠️ FIX 3: ဖတ်လက်စ စာမျက်နှာကို ပြန်ခေါ်ယူဖွင့်ပေးခြင်း Logic
-                const savedPage = localStorage.getItem("tiq_last_page");
-                if (savedPage) {
-                    flipbook.turn("page", parseInt(savedPage));
+                // 🛠️ FIX 1: BOOKMARK စနစ် (Unsave ဖြစ်နေရင် စာမျက်နှာ ၁ ကို အမြဲပြန်ရောက်စေမည့် Logic)
+                const savedBookmarkPage = localStorage.getItem("tiq_bookmark_page");
+                if (savedBookmarkPage) {
+                    flipbook.turn("page", parseInt(savedBookmarkPage));
                 } else {
                     flipbook.turn("page", 1);
                 }
 
-                // NEW — build the expanded flip zone + peel hint once the book exists
                 initFlipZoneAndHint();
-                if (savedPage && parseInt(savedPage) !== 1) {
-                    stopPeelHint(); // returning reader, not on page 1 — no hint needed
+                const initialPage = flipbook.turn("page");
+                if (initialPage !== 1) {
+                    stopPeelHint();
                 }
             }, 100);
         }
 
-        // ============================================================
-        // NEW — Expanded right-side flip zone (whole right 35% of page)
-        // ============================================================
+        // 🛠️ BOOKMARK TOGGLE FUNCTION (Save / Unsave ပြုလုပ်ခြင်း)
+        function toggleBookmark() {
+            const flipbook = $("#flipbook");
+            const currentPage = flipbook.turn("page");
+            const savedPage = localStorage.getItem("tiq_bookmark_page");
+
+            if (savedPage && parseInt(savedPage) === currentPage) {
+                // UNSAVE: Bookmark ဒေတာကို ဖြုတ်လိုက်ပြီး ခလုတ်ကို ပုံမှန်အတိုင်း ပြန်လုပ်မယ်
+                localStorage.removeItem("tiq_bookmark_page");
+                $("#bookmark-btn").removeClass("active").text("🔖 SAVE BOOKMARK");
+            } else {
+                // SAVE: လက်ရှိစာမျက်နှာကို သိမ်းဆည်းပြီး ခလုတ်ကို ရွှေရောင်လင်းစေမယ်
+                localStorage.setItem("tiq_bookmark_page", currentPage);
+                $("#bookmark-btn").addClass("active").text("✨ BOOKMARKED");
+            }
+        }
+
+        // စာမျက်နှာပြောင်းသွားတိုင်း ခလုတ်အရောင် လင်း/မှိတ် လိုက်လုပ်ပေးမည့် Function
+        function updateBookmarkButtonStatus(page) {
+            const savedPage = localStorage.getItem("tiq_bookmark_page");
+            if (savedPage && parseInt(savedPage) === page) {
+                $("#bookmark-btn").addClass("active").text("✨ BOOKMARKED");
+            } else {
+                $("#bookmark-btn").removeClass("active").text("🔖 SAVE BOOKMARK");
+            }
+        }
+
         function initFlipZoneAndHint() {
             if (!$flipZone) {
                 $flipZone = $('<div id="flip-zone-right"></div>');
                 $("#flipbook-wrapper").append($flipZone);
 
                 $flipZone.on("touchstart mousedown", function(e) {
-                    registerInteraction(); // any touch permanently stops the hint
+                    registerInteraction(); 
                     const p = (e.type === "touchstart") ? e.originalEvent.touches[0] : e;
                     touchStartX = p.clientX;
                     touchStartY = p.clientY;
@@ -319,19 +348,17 @@
                     const dy = p.clientY - touchStartY;
                     touchStartX = null;
 
-                    // Ignore what looks like a vertical scroll gesture
                     if (Math.abs(dy) > Math.abs(dx) * 1.5) return;
 
                     if (dx < -18) {
-                        $("#flipbook").turn("next");       // swipe left -> next
+                        $("#flipbook").turn("next");       
                     } else if (dx > 18) {
-                        $("#flipbook").turn("previous");   // swipe right -> previous
+                        $("#flipbook").turn("previous");   
                     } else {
-                        $("#flipbook").turn("next");       // simple tap -> next
+                        $("#flipbook").turn("next");       
                     }
                 });
 
-                // Prevent double-triggering from a synthetic click after touchend
                 $flipZone.on("click", function(e) { e.preventDefault(); });
             }
 
@@ -341,8 +368,6 @@
             }
 
             positionOverlays();
-
-            // Stop the hint permanently on the very first interaction anywhere
             $(document).one("touchstart mousedown", registerInteraction);
         }
 
@@ -387,7 +412,6 @@
             }
         }
 
-        // Screen Size ပြောင်းလဲလျှင် Flipbook Size လိုက်ညှိရန်
         $(window).resize(function() {
             const { w, h } = getBookSize();
             if ($("#flipbook").turn("is")) {
