@@ -128,7 +128,6 @@
         </div>
     </div>
 </main>
-    </main>
 
     <!-- 🗺️ Main Game Dashboard -->
     <div id="gameDashboard" class="w-full max-w-xl flex flex-col items-center hidden relative z-10 px-4">
@@ -237,33 +236,33 @@
             </div>
 
             <!-- Stage 4 Card -->
-<div class="col-span-11 sm:col-span-9 col-start-2 sm:col-start-4 text-slate-900">
-    <div class="school-card-container">
-        <div class="school-cartoon-roof" style="background: linear-gradient(to bottom, #c084fc 0%, #7c3aed 20%, #4c1d95 100%);"></div>
-        <div class="school-building-body theme-stage4-body">
-            <div class="flex flex-col gap-1.5 justify-center items-center">
-                <div class="window-glass"></div>
-                <div class="window-glass"></div>
-            </div>
-            <div class="flex flex-col items-center justify-center text-center w-full relative z-20">
-                <div class="bg-white border-2 border-slate-900 rounded-md px-3 py-0.5 shadow-sm mb-1.5">
-                    <span class="text-[9px] font-black block">STAGE 04</span>
+            <div class="col-span-11 sm:col-span-9 col-start-2 sm:col-start-4 text-slate-900">
+                <div class="school-card-container">
+                    <div class="school-cartoon-roof" style="background: linear-gradient(to bottom, #c084fc 0%, #7c3aed 20%, #4c1d95 100%);"></div>
+                    <div class="school-building-body theme-stage4-body">
+                        <div class="flex flex-col gap-1.5 justify-center items-center">
+                            <div class="window-glass"></div>
+                            <div class="window-glass"></div>
+                        </div>
+                        <div class="flex flex-col items-center justify-center text-center w-full relative z-20">
+                            <div class="bg-white border-2 border-slate-900 rounded-md px-3 py-0.5 shadow-sm mb-1.5">
+                                <span class="text-[9px] font-black block">STAGE 04</span>
+                            </div>
+                            <h3 class="text-[11px] font-black text-white mb-1.5 leading-tight">တူတူပုန်းတမ်းကျောင်း</h3>
+                            
+                            <!-- ခလုတ်များနေရာ (ကမ်းခြေ၊ ချုံပုတ်၊ စုံထောက် ဂိမ်းအားလုံး စုံလင်စွာ ထည့်သွင်းပြီး) -->
+                            <div class="flex flex-col gap-1 w-full max-w-[120px]">
+                                <a href="🏖️ကမ်းခြေတူတူပုန်းတမ်း.html" class="block bg-purple-950 text-white py-1 rounded border border-slate-900 text-[9px] font-bold text-center shadow-[0_1.5px_0_#0f172a] hover:bg-purple-900 transition-colors">🏖️ ကမ်းခြေ</a>
+                                <a href="ဋ-ဏ(detective).html" class="block bg-purple-950 text-white py-1 rounded border border-slate-900 text-[9px] font-bold text-center shadow-[0_1.5px_0_#0f172a] hover:bg-purple-900 transition-colors">🕵️‍♂️ စုံထောက်အသစ်</a>
+                            </div>
+                        </div>
+                        <div class="flex flex-col justify-between items-center h-full pt-1">
+                            <div class="window-glass"></div>
+                            <div class="arched-door mt-auto"></div>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="text-[11px] font-black text-white mb-1.5 leading-tight">တူတူပုန်းတမ်းကျောင်း</h3>
-                
-                <!-- ခလုတ်များနေရာ (ကမ်းခြေ၊ ချုံပုတ်၊ စုံထောက် ဂိမ်းအားလုံး စုံလင်စွာ ထည့်သွင်းပြီး) -->
-                <div class="flex flex-col gap-1 w-full max-w-[120px]">
-                    <a href="🏖️ကမ်းခြေတူတူပုန်းတမ်း.html" class="block bg-purple-950 text-white py-1 rounded border border-slate-900 text-[9px] font-bold text-center shadow-[0_1.5px_0_#0f172a] hover:bg-purple-900 transition-colors">🏖️ ကမ်းခြေ</a>
-                    <a href="ဋ-ဏ(detective).html" class="block bg-purple-950 text-white py-1 rounded border border-slate-900 text-[9px] font-bold text-center shadow-[0_1.5px_0_#0f172a] hover:bg-purple-900 transition-colors">🕵️‍♂️ စုံထောက်အသစ်</a>
-                </div>
             </div>
-            <div class="flex flex-col justify-between items-center h-full pt-1">
-                <div class="window-glass"></div>
-                <div class="arched-door mt-auto"></div>
-            </div>
-        </div>
-    </div>
-</div>
 
             <!-- Final Boss Stage Card -->
             <div class="col-span-12 mt-4 text-slate-900">
@@ -307,7 +306,8 @@
         </div>
     </div>
 
-    <audio id="mainAudio" src="main-bgm.mp3" loop></audio>
+    <!-- Web Audio Optimization: Added Preload and Crossorigin attributes -->
+    <audio id="mainAudio" src="main-bgm.mp3" loop preload="auto" crossorigin="anonymous"></audio>
 
     <script>
         const mainAudio = document.getElementById('mainAudio');
@@ -382,7 +382,7 @@
         }
 
         function checkGamePassword() {
-            const cleanInput = passInput.value.trim(); // Fixed case-sensitive logic bug
+            const cleanInput = passInput.value.trim(); 
             if (btoa(cleanInput) === secureKey) {
                 errorMsg.classList.add('hidden');
                 passwordArea.classList.add('hidden');
@@ -394,13 +394,24 @@
             }
         }
 
-        passInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') checkGamePassword();
-        });
+        if (passInput) {
+            passInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') checkGamePassword();
+            });
+        }
 
+        // Web Audio Optimization: Force immediate audio context initialization
         function unlockDashboardMap() {
             passwordScreen.classList.add('hidden');
             gameDashboard.classList.remove('hidden');
+            
+            // Audio context wake up trick for smooth playback
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) {
+                const actx = new AudioContext();
+                if (actx.state === 'suspended') actx.resume();
+            }
+
             mainAudio.volume = volumeSlider.value;
             mainAudio.play().catch(e => console.log("Audio play blocked", e));
             
@@ -445,6 +456,13 @@
             if (urlParams.get('fromGame') === 'true' || urlParams.get('showPopup')) {
                 passwordScreen.classList.add('hidden');
                 gameDashboard.classList.remove('hidden');
+                
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) {
+                    const actx = new AudioContext();
+                    if (actx.state === 'suspended') actx.resume();
+                }
+
                 mainAudio.volume = volumeSlider.value;
                 mainAudio.play().catch(e => console.log("Audio play blocked", e));
                 
@@ -565,20 +583,16 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-    // လက်ရှိ ရှိပြီးသား စာသား Animation ကုဒ်များ
-    setupAnimatedText('textLine1');
-    setupAnimatedText('textLine2');
+            setupAnimatedText('textLine1');
+            setupAnimatedText('textLine2');
 
-    // ✨ URL ကနေ stage နံပါတ်ကို ဖတ်မယ်
-    const urlParams = new URLSearchParams(window.location.search);
-    const stage = urlParams.get('stage'); // ဥပမာ- 2, 3, 4 စသဖြင့် ဝင်လာမယ်
+            const urlParams = new URLSearchParams(window.location.search);
+            const stage = urlParams.get('stage'); 
 
-    // တကယ်လို့ URL မှာ stage ပါလာခဲ့ရင် (stage 2 ပဲဖြစ်ဖြစ်၊ 3 ပဲဖြစ်ဖြစ်၊ 4 ပဲဖြစ်ဖြစ်)
-    if (stage) {
-        // 'stage' ရဲ့ နောက်မှာ နံပါတ်လေး တွဲပြီး openLessonPopup('stage2') သို့မဟုတ် ('stage3') ဆိုပြီး dynamic ခေါ်သွားလိမ့်မယ်
-        openLessonPopup(`stage${stage}`); 
-    }
-});
+            if (stage) {
+                openLessonPopup(`stage${stage}`); 
+            }
+        });
     </script>
 
 </body>
