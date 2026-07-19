@@ -176,7 +176,15 @@
 
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        
+        function resizeCanvas() { 
+            canvas.width = window.innerWidth; 
+            canvas.height = window.innerHeight; 
+            // Screen Size ပြောင်းသွားလျှင်လည်း လေထီးသမားကို အလယ်မှာပဲ ဆက်ရှိနေစေရန်
+            if (typeof game !== 'undefined' && game.running) {
+                player.y = canvas.height / 2;
+            }
+        }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
@@ -257,14 +265,12 @@
         setInterval(spawnBackgroundCloud, 1800);
 
         function drawSkyEnvironment() {
-            // ၁။ လှပသော ကောင်းကင်ပြာ နောက်ခံ Gradient
             let skyGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            skyGrad.addColorStop(0, '#0284c7'); // Sky Blue Light
-            skyGrad.addColorStop(1, '#0c4a6e'); // Sky Blue Dark
+            skyGrad.addColorStop(0, '#0284c7');
+            skyGrad.addColorStop(1, '#0c4a6e');
             ctx.fillStyle = skyGrad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // ၂။ သက်တံရောင်စုံလိုင်းများ (Rainbow Trails Background)
             ctx.save();
             ctx.lineWidth = 6;
             ctx.globalAlpha = 0.15;
@@ -281,7 +287,6 @@
             }
             ctx.restore();
 
-            // ၃။ အလှပြ နောက်ခံတိမ်တိုက်ကြီးများ
             ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
             entities.backgroundClouds.forEach(cloud => {
                 ctx.beginPath();
@@ -301,9 +306,8 @@
 
             // ======= ၁။ ရောင်စုံလေထီးကြီး (PARACHUTE canopy) =======
             ctx.save();
-            ctx.translate(0, -65); // လူရဲ့အပေါ်ဘက်မှာ လေထီးရှိမည်
+            ctx.translate(0, -65);
             
-            // လေထီးအဝိုင်းခုံးကြီး (Rainbow Stripes Parachute)
             const chuteColors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6'];
             const slice = Math.PI / chuteColors.length;
             
@@ -315,7 +319,6 @@
                 ctx.fill();
             });
             
-            // လေထီးအောက်ခြေ အဖြူရောင်အနားသတ်လိုင်းခုံးလေးများ
             ctx.fillStyle = '#ffffff';
             ctx.beginPath();
             ctx.arc(0, 0, 38, Math.PI, 0);
@@ -324,47 +327,40 @@
             ctx.fill();
             ctx.restore();
 
-            // ======= ၂။ လေထီးကြိုးများ (PARACHUTE STRINGS) =======
+            // ======= ၂။ လေထီးကြိုးများ =======
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
             ctx.lineWidth = 1.5;
             ctx.beginPath();
-            // ဘယ်ဘက်ကြိုးများ
             ctx.moveTo(-34, -65); ctx.lineTo(-6, -10);
             ctx.moveTo(-18, -65); ctx.lineTo(-4, -10);
-            // ညာဘက်ကြိုးများ
             ctx.moveTo(34, -65);  ctx.lineTo(6, -10);
             ctx.moveTo(18, -65);  ctx.lineTo(4, -10);
             ctx.stroke();
 
-            // ======= ၃။ လေထီးစီးနေသော ကလေးဇာတ်ကောင် (PLAYER BODY) =======
-            // လက်မောင်းနှစ်ဖက် (လေထီးကြိုးကို ဆွဲထားပုံ)
+            // ======= ၃။ ကလေးဇာတ်ကောင် =======
             ctx.strokeStyle = '#fbcfe8'; ctx.lineWidth = 5;
             ctx.beginPath(); ctx.moveTo(-6, -6); ctx.lineTo(-12, -14); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(6, -6); ctx.lineTo(12, -14); ctx.stroke();
 
-            // အကျီၤဝတ်စုံ (Bright Pink Flight Suit)
             ctx.fillStyle = '#ec4899';
             ctx.beginPath();
             ctx.roundRect(-10, -10, 20, 24, 6);
             ctx.fill();
 
-            // ခြေထောက်နှစ်ဖက် (လေထဲမှာ တွဲလောင်းကျနေပုံ)
             ctx.fillStyle = '#1e293b';
             ctx.fillRect(-8, 14, 5, 12 + sway);
             ctx.fillRect(3, 14, 5, 12 - sway);
 
-            // ဦးခေါင်း နှင့် Safety Helmet (Cyan Flight Helmet)
-            ctx.fillStyle = '#fbcfe8'; // အသားရောင်
+            ctx.fillStyle = '#fbcfe8';
             ctx.beginPath(); ctx.arc(0, -18, 7, 0, Math.PI * 2); ctx.fill();
 
-            ctx.fillStyle = '#06b6d4'; // ဦးထုပ်
+            ctx.fillStyle = '#06b6d4';
             ctx.beginPath(); ctx.arc(0, -20, 10, 0, Math.PI * 2); ctx.fill();
-            // ဦးထုပ်မျက်မှန် (Goggles)
             ctx.fillStyle = '#1e293b';
             ctx.fillRect(-6, -22, 12, 4);
 
             ctx.restore();
-            player.tilt *= 0.88; // တိမ်းစောင်းမှုကို ဖြည်းဖြည်းချင်း ပြန်ထိန်းခြင်း
+            player.tilt *= 0.88;
         }
 
         function drawLetterCloud(bubble) {
@@ -375,26 +371,22 @@
             ctx.shadowBlur = 15;
             ctx.shadowColor = isTarget ? 'rgba(253, 224, 71, 0.7)' : 'rgba(255, 255, 255, 0.4)';
 
-            // Target စာလုံးကို တိမ်တိုက်ရွှေဝါရောင်၊ Distractor များကို တိမ်ဖြူလေးများအဖြစ် ဆွဲပါမည်
             ctx.fillStyle = isTarget ? '#facc15' : '#ffffff';
             
             let cx = bubble.x;
             let cy = bubble.y;
             let r = bubble.radius + pulse;
 
-            // တိမ်တိုက်ပုံသဏ္ဍာန် Bubble လေးများဖြစ်အောင် အဝိုင်း ၃ ခုဆင့်ဆွဲခြင်း
             ctx.beginPath();
             ctx.arc(cx, cy, r * 0.9, 0, Math.PI * 2);
             ctx.arc(cx - r * 0.5, cy + r * 0.1, r * 0.7, 0, Math.PI * 2);
             ctx.arc(cx + r * 0.5, cy + r * 0.1, r * 0.7, 0, Math.PI * 2);
             ctx.fill();
             
-            // အနားသတ်လိုင်း
             ctx.strokeStyle = isTarget ? '#eab308' : '#cbd5e1';
             ctx.lineWidth = 3;
             ctx.stroke();
 
-            // မြန်မာအက္ခရာစာလုံး ရေးထည့်ခြင်း
             ctx.fillStyle = '#0f172a';
             ctx.font = `bold 35px Pyidaungsu, "Myanmar3", "Yunghkio", sans-serif`;
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -409,7 +401,7 @@
 
             playSound('levelup');
             player.xp = 0; player.maxXp = Math.round(player.maxXp * 1.4);
-            game.gameSpeed += 0.6; // Level တက်ရင် ပိုမြန်မြန် ဆင်းလာမည်
+            game.gameSpeed += 0.6;
 
             const optionsContainer = document.getElementById('upgrade-options');
             optionsContainer.innerHTML = '';
@@ -438,27 +430,22 @@
             if (!game.running || game.paused) return;
             if (player.hp <= 0) { gameOver(); return; }
 
-            // နောက်ခံတိမ်တိုက်များ ရွေ့လျားမှု (အောက်ကနေ အပေါ်သို့)
             for (let i = entities.backgroundClouds.length - 1; i >= 0; i--) {
                 entities.backgroundClouds[i].y += entities.backgroundClouds[i].speedY * dt;
                 if (entities.backgroundClouds[i].y < -100) entities.backgroundClouds.splice(i, 1);
             }
 
-            // Keyboard Movements
             let moveX = 0;
             if (keys['a'] || keys['arrowleft']) { moveX = -1; player.tilt = -0.14; }
             if (keys['d'] || keys['arrowright']) { moveX = 1; player.tilt = 0.14; }
             if (moveX !== 0) player.x += moveX * 6.8 * dt;
 
-            // Boundaries Margin Limit
             player.x = Math.max(player.width, Math.min(canvas.width - player.width, player.x));
 
-            // စာလုံးတိမ်တိုက်များ ရွေ့လျားမှုနှင့် တိုက်မိမှု စစ်ဆေးခြင်း
             for (let i = entities.letterClouds.length - 1; i >= 0; i--) {
                 const bubble = entities.letterClouds[i];
-                bubble.y += bubble.speedY * dt; // အပေါ်သို့ ပျံတက်သွားခြင်း
+                bubble.y += bubble.speedY * dt;
 
-                // Collision Box
                 const pLeft = player.x - player.width / 2; const pRight = player.x + player.width / 2;
                 const pTop = player.y - player.height / 2; const pBottom = player.y + player.height / 2;
                 const closestX = Math.max(pLeft, Math.min(bubble.x, pRight));
@@ -505,7 +492,8 @@
         function startGame() {
             initAudio();
             player.hp = player.maxHp; player.xp = 0; player.level = 1;
-            player.x = canvas.width / 2; player.y = 150; // လေထီးသည် အပေါ်ဘက်နားမှာ အမြဲရှိနေမည်
+            player.x = canvas.width / 2; 
+            player.y = canvas.height / 2; // Screen ရဲ့ အလယ်တည့်တည့်သို့ ရွှေ့လိုက်ပါပြီ
             game.score = 0; game.correctPops = 0; game.incorrectPops = 0; game.gameSpeed = 3.0;
             entities.letterClouds = []; entities.backgroundClouds = []; isDragging = false;
             
