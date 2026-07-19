@@ -122,6 +122,18 @@
     </div>
 
     <script>
+        // Game Configuration Settings
+        const game = {
+            running: false, paused: false, score: 0, correctPops: 0, incorrectPops: 0,
+            targetLetter: 'ဏ', gameSpeed: 3.0, targetMaxLevel: 5
+        };
+
+        const player = { x: 0, y: 0, width: 50, height: 80, hp: 100, maxHp: 100, xp: 0, maxXp: 100, level: 1, tilt: 0 };
+        const keys = {};
+        let isDragging = false;
+        let lastTargetX = 0;
+        const entities = { letterClouds: [], backgroundClouds: [] };
+
         let audioCtx = null;
         function initAudio() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -180,7 +192,7 @@
         function resizeCanvas() { 
             canvas.width = window.innerWidth; 
             canvas.height = window.innerHeight; 
-            // Screen Size ပြောင်းသွားလျှင်လည်း လေထီးသမားကို အလယ်မှာပဲ ဆက်ရှိနေစေရန်
+            // Screen Size ပြောင်းလဲသွားရင်လည်း လေထီးသမားကို အလယ်မှာပဲ ဆက်ထိန်းထားရန်
             if (typeof game !== 'undefined' && game.running) {
                 player.y = canvas.height / 2;
             }
@@ -193,17 +205,6 @@
             'တ', 'ထ', 'ဒ', 'ဓ', 'န', 'ပ', 'ဖ', 'ဗ', 'ဘ', 'မ',
             'ယ', 'ရ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ', 'ဋ', 'ဌ', 'ဎ'
         ];
-
-        const game = {
-            running: false, paused: false, score: 0, correctPops: 0, incorrectPops: 0,
-            targetLetter: 'ဏ', gameSpeed: 3.0, targetMaxLevel: 5
-        };
-
-        const player = { x: 0, y: 0, width: 50, height: 80, hp: 100, maxHp: 100, xp: 0, maxXp: 100, level: 1, tilt: 0 };
-        const keys = {};
-        let isDragging = false;
-        let lastTargetX = 0;
-        const entities = { letterClouds: [], backgroundClouds: [] };
 
         window.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()] = true; });
         window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
@@ -493,7 +494,7 @@
             initAudio();
             player.hp = player.maxHp; player.xp = 0; player.level = 1;
             player.x = canvas.width / 2; 
-            player.y = canvas.height / 2; // Screen ရဲ့ အလယ်တည့်တည့်သို့ ရွှေ့လိုက်ပါပြီ
+            player.y = canvas.height / 2; // လေထီးသမားကို Screen အလယ်တည့်တည့်မှာ ထားရှိပေးလိုက်ပါပြီ
             game.score = 0; game.correctPops = 0; game.incorrectPops = 0; game.gameSpeed = 3.0;
             entities.letterClouds = []; entities.backgroundClouds = []; isDragging = false;
             
