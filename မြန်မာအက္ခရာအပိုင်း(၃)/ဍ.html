@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dassy's Alphabet Quest - Park Skateboard Ride (ဍ)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght=400;700;900&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght@400;700;900&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body, html {
             margin: 0;
@@ -28,7 +28,7 @@
             font-family: 'Pyidaungsu', 'Myanmar3', 'Yunghkio', sans-serif;
         }
 
-        /* မျက်နှာပြင်အလိုက် အချိုးကျ Responsive ဖြစ်စေရန် ညှိနှိုင်းမှုများ */
+        /* Clamp Function များသုံးပြီး UI ကို Screen အလိုက် အချိုးကျချိန်ညှိခြင်း */
         #hud {
             top: clamp(0.5rem, 2vw, 1.5rem);
             left: clamp(0.5rem, 3vw, 2rem);
@@ -55,7 +55,6 @@
             font-size: clamp(1rem, 2vw, 1.3rem);
         }
 
-        /* Responsive Modal Card Container */
         .modal-card {
             width: clamp(280px, 90vw, 450px);
             padding: clamp(1.5rem, 4vh, 2.5rem);
@@ -63,7 +62,7 @@
             overflow-y: auto;
         }
 
-        /* Mobile Screen Constraints & Scaling */
+        /* Adaptive Mobile Scaling Constraints */
         @media (max-width: 768px) {
             #hud {
                 flex-direction: row;
@@ -71,7 +70,7 @@
                 align-items: center;
             }
             .hud-panel {
-                transform: scale(0.9);
+                transform: scale(0.85);
                 transform-origin: right top;
             }
             #game-title {
@@ -85,7 +84,7 @@
 </head>
 <body class="relative flex items-center justify-center">
 
-    <!-- HUD Layout Interface Area -->
+    <!-- HUD Overlay Area -->
     <div id="hud" class="absolute flex justify-between items-center z-10 pointer-events-none w-[calc(100%-2*clamp(0.5rem,3vw,2rem))]">
         <div class="flex gap-2 pointer-events-auto items-center">
             <button id="back-btn" class="nav-btn bg-gradient-to-b from-indigo-400 to-indigo-600 border-2 border-indigo-200 text-white font-bold rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform">⬅️</button>
@@ -109,7 +108,7 @@
         </div>
     </div>
 
-    <!-- Screen Flow Controls Overlay Layer -->
+    <!-- UI Modal Dialog Overlay -->
     <div id="overlay-screen" class="absolute inset-0 bg-slate-950/85 backdrop-blur-sm z-20 flex flex-col items-center justify-center p-4 text-center transition-opacity duration-300">
         <div class="modal-card bg-slate-900 border-2 border-slate-800 rounded-3xl shadow-2xl relative overflow-hidden">
             <div class="absolute -top-12 -right-12 w-32 h-32 bg-indigo-500/10 rounded-full blur-xl"></div>
@@ -138,12 +137,41 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
+        // Game Configuration Properties Setup
+        const alphabetPool = ['က', 'ခ', 'ဂ', 'င', 'စ', 'ဆ', 'တ', 'ထ', 'ဒ', 'န', 'ပ', 'ဖ', 'မ', 'ယ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ', 'ဋ', 'ဌ', 'ဍ', 'ဎ'];
+        const targetLetter = 'ဍ';
+        const levelTargets = { 1: 5, 2: 10, 3: 15 };
+        const levelSpeeds = { 1: 1.0, 2: 1.35, 3: 1.75 };
+
+        const game = {
+            running: false, currentLevel: 1, correctPops: 0, incorrectPops: 0,
+            speedMultiplier: 1.0, distanceTraveled: 0
+        };
+
+        const player = {
+            x: 150, y: 0, targetY: 0, width: 75, height: 95,
+            lane: 0, // လမ်းကြောင်း ၂ ခုစနစ် (0 နှင့် 1 သာရှိမည်)
+            boardRotation: 0, wheelRotation: 0
+        };
+
+        const entities = { bubbles: [], particles: [], decorations: [] };
+
+        // လမ်းကြောင်း ၂ ခုစနစ်အတွက် Y Position တွက်ချက်ခြင်း
+        function getLaneY(laneIndex) {
+            const laneSpacing = canvas.height * 0.16;
+            const centerY = canvas.height * 0.60;
+            return centerY + (laneIndex - 0.5) * laneSpacing;
+        }
+
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            // Screen Size ပြောင်းလဲသွားရင်လည်း ဇာတ်ကောင် အနေအထားကို လမ်းကြောင်းပေါ် အလိုအလျောက် ချိန်ညှိပေးရန်
-            if (typeof game !== 'undefined' && game.running) {
-                player.y = getLaneY(player.lane);
+            
+            // Layout ပြောင်းလဲသွားချိန်တွင် Player X & Y ကို မျက်နှာပြင်နှင့် ကွက်တိဖြစ်အောင် ပြန်ညှိပေးခြင်း
+            player.x = Math.min(180, canvas.width * 0.22);
+            player.targetY = getLaneY(player.lane);
+            if (!game.running) {
+                player.y = player.targetY;
             }
         }
         window.addEventListener('resize', resizeCanvas);
@@ -239,32 +267,6 @@
             playBassStep();
         }
 
-        const alphabetPool = ['က', 'ခ', 'ဂ', 'င', 'စ', 'ဆ', 'တ', 'ထ', 'ဒ', 'န', 'ပ', 'ဖ', 'မ', 'ယ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ', 'ဋ', 'ဌ', 'ဍ', 'ဎ'];
-        const targetLetter = 'ဍ';
-
-        const levelTargets = { 1: 5, 2: 10, 3: 15 };
-        const levelSpeeds = { 1: 1.0, 2: 1.35, 3: 1.75 };
-
-        const game = {
-            running: false, currentLevel: 1, correctPops: 0, incorrectPops: 0,
-            speedMultiplier: 1.0, distanceTraveled: 0
-        };
-
-        const player = {
-            x: 150, y: 0, targetY: 0, width: 75, height: 95,
-            lane: 0, // လမ်းကြောင်း ၂ ခုစနစ် (0 သို့မဟုတ် 1)
-            boardRotation: 0, wheelRotation: 0
-        };
-
-        const entities = { bubbles: [], particles: [], decorations: [] };
-
-        // လမ်းကြောင်း ၂ ခုစနစ်ကို ပုံရိပ်အချိုးကျ တွက်ချက်ခြင်း
-        function getLaneY(laneIndex) {
-            const laneSpacing = canvas.height * 0.22;
-            const centerY = canvas.height * 0.58;
-            return centerY + (laneIndex - 0.5) * laneSpacing;
-        }
-
         function initScenery() {
             entities.decorations = [];
             for (let i = 0; i < 6; i++) {
@@ -290,12 +292,13 @@
         function spawnLetterBubble() {
             if (!game.running) return;
             
-            const lane = Math.floor(Math.random() * 2); // လမ်းကြောင်း ၂ ကြောင်းသာ ဖြစ်ပေါ်စေမည်
+            const lane = Math.floor(Math.random() * 2); 
             const isTarget = Math.random() < 0.45;
             const text = isTarget ? targetLetter : alphabetPool[Math.floor(Math.random() * alphabetPool.length)];
             
+            // ဖုန်းစခရင်မှာပါ အက္ခရာကို ကြိုတင်မြင်နိုင်ရန် Canvas Width ထက် အနည်းငယ်သာ ပိုပေးထားသည်
             entities.bubbles.push({
-                x: canvas.width + 60,
+                x: canvas.width + 40,
                 y: getLaneY(lane),
                 lane: lane,
                 text: text,
@@ -304,8 +307,8 @@
                 colorHue: Math.random() * 360
             });
 
-            const baseDelay = 1600 / game.speedMultiplier;
-            const variableDelay = baseDelay + Math.random() * 800;
+            const baseDelay = 1700 / game.speedMultiplier;
+            const variableDelay = baseDelay + Math.random() * 700;
             setTimeout(spawnLetterBubble, variableDelay);
         }
 
@@ -327,7 +330,7 @@
         function handleScreenTouch(clientX, clientY) {
             if (!game.running) return;
             
-            // Screen ကို အပေါ်အောက် တစ်ဝက်ခွဲ၍ လမ်းကြောင်းပြောင်းလဲခြင်း
+            // မျက်နှာပြင် အထက်/အောက်ကို တိကျစွာ ခွဲခြား၍ လမ်းကြောင်းပြောင်းခြင်း
             if (clientY < canvas.height / 2) {
                 player.lane = 0;
             } else {
@@ -350,23 +353,22 @@
 
         window.addEventListener('keydown', (e) => {
             if (!game.running) return;
-            if ((e.key === 'ArrowUp' || e.key.toLowerCase() === 'w')) { player.lane = 0; playSFX('click'); }
-            if ((e.key === 'ArrowDown' || e.key.toLowerCase() === 's')) { player.lane = 1; playSFX('click'); }
+            if (e.key === 'ArrowUp' || e.key.toLowerCase() === 'w') { player.lane = 0; playSFX('click'); }
+            if (e.key === 'ArrowDown' || e.key.toLowerCase() === 's') { player.lane = 1; playSFX('click'); }
         });
 
         function updateGame(dt) {
             if (!game.running) return;
 
-            const baseSpeed = 300; // ကလေးငယ်များ ရှင်းရှင်းလင်းလင်းမြင်နိုင်ရန် အမြန်နှုန်းအနည်းငယ်လျှော့ညှိထားသည်
+            const baseSpeed = 280; 
             const currentSpeed = baseSpeed * game.speedMultiplier * dt;
             
             game.distanceTraveled += currentSpeed;
 
+            // Player တည်နေရာ ထိန်းချုပ်မှု ကန့်သတ်ချက်များ
+            player.x = Math.min(180, canvas.width * 0.22);
             player.targetY = getLaneY(player.lane);
             player.y += (player.targetY - player.y) * 12 * dt;
-            
-            // ဖုန်းမျက်နှာပြင်များပေါ်တွင် Player ၏ တည်နေရာကို ကွက်တိဖြစ်စေရန် Adaptive Anchoring
-            player.x = Math.min(180, canvas.width * 0.2); 
 
             entities.decorations.forEach(dec => {
                 dec.x -= currentSpeed * (dec.speedFactor * 0.3);
@@ -384,7 +386,8 @@
                 const dy = b.y - player.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < b.radius + player.width / 2.2) {
+                // ဖမ်းမိခြင်း ဧရိယာ တွက်ချက်မှု
+                if (distance < b.radius + player.width / 1.8) {
                     if (b.isTarget) {
                         game.correctPops++;
                         playSFX('score');
@@ -429,6 +432,7 @@
         }
 
         function render() {
+            // Background Sky Gradient
             const skyGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
             skyGrad.addColorStop(0, '#0f172a');
             skyGrad.addColorStop(0.4, '#1e1b4b');
@@ -465,7 +469,7 @@
                 }
             });
 
-            // လမ်းကြောင်း ၂ ကြောင်းအတွက် လမ်းကြောင်းမျဉ်းဆွဲခြင်း
+            // လမ်းကြောင်း ၂ ကြောင်း သီးသန့် မျဉ်းကြောင်းဆွဲခြင်း
             ctx.strokeStyle = 'rgba(129, 140, 248, 0.2)';
             ctx.lineWidth = 6;
             for (let i = 0; i < 2; i++) {
@@ -485,7 +489,7 @@
                 ctx.setLineDash([]); 
             }
 
-            // အက္ခရာပူဖောင်းများ ဆွဲခြင်း
+            // အက္ခရာ ပူဖောင်းများ ဆွဲခြင်း
             entities.bubbles.forEach(b => {
                 ctx.save();
                 ctx.translate(b.x, b.y);
@@ -520,12 +524,11 @@
                 ctx.restore();
             });
 
-            // Player နှင့် စကိတ်ဘုတ်ဆွဲခြင်း (Mobile ပေါ်တွင် အချိုးကျ Scale ချုံ့နိုင်ရန်)
+            // Player Character (Mobile Screen Size အတွက် အချိုးကျ ကျုံ့ပေးရန် Scale Config)
             ctx.save();
             ctx.translate(player.x, player.y);
 
-            // Screen အရွယ်အစားအလိုက် စကိတ်သမားကို responsive scale ချိန်ညှိခြင်း
-            const responsiveScale = canvas.width < 768 ? 0.85 : 1.0;
+            const responsiveScale = canvas.width < 768 ? 0.82 : 1.0;
             ctx.scale(responsiveScale, responsiveScale);
 
             ctx.fillStyle = '#fbbf24'; 
@@ -622,6 +625,7 @@
             document.getElementById('hud-level').innerText = "1";
 
             initScenery();
+            resizeCanvas(); // Start လုပ်ချိန်တွင် နေရာမှန်အောင် Force update ပြုလုပ်ခြင်း
             
             document.getElementById('overlay-screen').classList.add('opacity-0');
             setTimeout(() => {
