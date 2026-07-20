@@ -53,6 +53,39 @@
         /* Full Stretch Layout System */
         #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; overflow: hidden; }
         
+        /* 🛠️ Bookmark Button Style */
+        #bookmark-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1500;
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        #bookmark-btn.bookmarked {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 15px var(--gold);
+        }
+        @media screen and (max-width: 768px) {
+            #bookmark-btn {
+                top: 15px;
+                right: 15px;
+                padding: 6px 12px;
+                font-size: 10px;
+            }
+        }
+
         #flipbook-wrapper { 
             width: 100%; 
             height: 100%; 
@@ -60,7 +93,7 @@
             flex-direction: column;
             justify-content: center; 
             align-items: center; 
-            padding: 0; /* Full Screen အပြည့်ရစေရန် padding ဖယ်ထုတ်ထားပါသည် */
+            padding: 0;
         }
         #flipbook { width: 100vw; height: 100vh; box-shadow: 0 0 40px rgba(0,0,0,0.8); }
         
@@ -104,6 +137,9 @@
     </div>
 
     <div id="book-container">
+        <!-- 🛠️ Floating Bookmark Button -->
+        <button id="bookmark-btn" onclick="toggleBookmark()">SAVE BOOKMARK</button>
+
         <div id="flipbook-wrapper">
             <div id="flipbook"></div>
             <div class="watermark">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
@@ -126,6 +162,7 @@
         let isQuizLocked = false; 
         const storageKeyPage = "dassy_book_current_page";
         const storageKeyAuth = "dassy_book_authenticated";
+        const storageKeyBookmark = "dassy_book_bookmarked_page";
 
         // DOM Ready ဖြစ်ချိန်မှာ Auto-login စနစ်
         $(document).ready(function() {
@@ -137,12 +174,39 @@
             }
         });
 
-        // 🛠️ မည်သည့်အချိုးအစားမှ ကန့်သတ်မထားသော Full Stretch Size တွက်ချက်စနစ်
+        // Full Stretch Size တွက်ချက်စနစ်
         function getBookSize() {
             return { 
                 width: window.innerWidth, 
                 height: window.innerHeight 
             };
+        }
+
+        /* 🛠️ Bookmark Functions */
+        function toggleBookmark() {
+            const flipbook = $("#flipbook");
+            const currentPage = flipbook.turn("page");
+            const bookmarkedPage = localStorage.getItem(storageKeyBookmark);
+
+            if (bookmarkedPage && parseInt(bookmarkedPage) === currentPage) {
+                localStorage.removeItem(storageKeyBookmark);
+            } else {
+                localStorage.setItem(storageKeyBookmark, currentPage);
+            }
+            updateBookmarkButton(currentPage);
+        }
+
+        function updateBookmarkButton(page) {
+            const btn = $("#bookmark-btn");
+            const bookmarkedPage = localStorage.getItem(storageKeyBookmark);
+
+            if (bookmarkedPage && parseInt(bookmarkedPage) === page) {
+                btn.addClass("bookmarked");
+                btn.text("UNSAVE BOOKMARK");
+            } else {
+                btn.removeClass("bookmarked");
+                btn.text("SAVE BOOKMARK");
+            }
         }
 
         window.addEventListener("message", function(event) {
@@ -177,13 +241,18 @@
 
         function loadAndInit() {
             const flipbook = $("#flipbook");
-            if (flipbook.children().length > 0) return; // Duplicate ကာကွယ်ခြင်း
+            if (flipbook.children().length > 0) return;
 
             const size = getBookSize();
+            
+            // 🛠️ Bookmark ရှိလျှင် ၎င်းမှ စတင်ဖွင့်မည်၊ မရှိလျှင် စာမျက်နှာအဟောင်းမှ သွားမည်
+            const bookmarkedPage = localStorage.getItem(storageKeyBookmark);
             let savedPage = parseInt(localStorage.getItem(storageKeyPage)) || 1;
+            
+            let startPage = bookmarkedPage ? parseInt(bookmarkedPage) : savedPage;
 
-            if(savedPage >= maxPages) {
-                savedPage = 1;
+            if(startPage >= maxPages) {
+                startPage = 1;
                 localStorage.setItem(storageKeyPage, 1);
             }
 
@@ -197,7 +266,6 @@
                     wrapper.append('<div class="iframe-pointer-fix right"></div>');
                     pageDiv.append(wrapper);
                 } else {
-                    // စာမျက်နှာပုံရိပ်များကို Screen အပြည့် Stretch ဖြစ်စေရန် object-fit: fill သုံးထားပါသည်
                     pageDiv.append($('<img style="width:100%; height:100%; object-fit:fill; pointer-events:none;" />').attr('src', `page${i}.jpg`));
                 }
                 flipbook.append(pageDiv);
@@ -210,7 +278,7 @@
                     autoCenter: true, 
                     display: 'single', 
                     acceleration: true,
-                    page: savedPage, 
+                    page: startPage, 
                     when: {
                         start: function(e, pageObj) {
                             if (isQuizLocked) {
@@ -229,13 +297,15 @@
                         },
                         turned: function(e, page) {
                             localStorage.setItem(storageKeyPage, page);
+                            updateBookmarkButton(page); // 🛠️ Page ပြောင်းတိုင်း ခလုတ် အခြေအနေ စစ်ဆေးပေးရန်
                             isQuizLocked = quizPages.includes(page);
                             $(".iframe-wrapper iframe").removeClass("quiz-disabled-swipe");
                         }
                     }
                 });
 
-                isQuizLocked = quizPages.includes(savedPage);
+                updateBookmarkButton(startPage); // စတင်ဖွင့်ချိန် ခလုတ် အခြေအနေပြပေးရန်
+                isQuizLocked = quizPages.includes(startPage);
             }, 100);
         }
 
