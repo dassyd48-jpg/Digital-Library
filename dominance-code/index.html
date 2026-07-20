@@ -133,12 +133,42 @@
             color: #000;
             box-shadow: 0 0 15px var(--gold);
         }
+
+        /* 🛠️ စာမျက်နှာ ၁ သို့ ပြန်သွားရန် ခလုတ် Style */
+        #restart-btn {
+            display: none;
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1500;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 50%, #B38728 100%);
+            color: #1a052e;
+            border: none;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        #restart-btn:active {
+            transform: translateX(-50%) scale(0.95);
+        }
+
         @media screen and (max-width: 768px) {
             #bookmark-btn {
                 top: 15px;
                 right: 15px;
                 padding: 6px 12px;
                 font-size: 10px;
+            }
+            #restart-btn {
+                bottom: 45px;
+                padding: 8px 16px;
+                font-size: 11px;
             }
         }
 
@@ -189,6 +219,9 @@
     <div id="book-container">
         <!-- 🛠️ Floating Bookmark Button -->
         <button id="bookmark-btn" onclick="toggleBookmark()">SAVE BOOKMARK</button>
+
+        <!-- 🛠️ စာမျက်နှာ ၁ သို့ ပြန်သွားရန် ခလုတ် -->
+        <button id="restart-btn" onclick="goToFirstPage()">↺ စာမျက်နှာ ၁ သို့ ပြန်သွားရန်</button>
 
         <div id="flipbook-wrapper">
             <div id="flipbook"></div>
@@ -253,10 +286,6 @@
             $("#lock, #bg-video").fadeOut(500);
             $("#book-container").show().css("opacity", 1);
             loadAndInit(); 
-            
-            setTimeout(() => {
-                $("#flipbook").turn("page", 2);
-            }, 400);
         } else {
             alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။");
         }
@@ -341,10 +370,10 @@
         const bookmarkedPage = localStorage.getItem("dc_bookmarked_page");
 
         if (bookmarkedPage && parseInt(bookmarkedPage) === currentPage) {
-            // Unsave Bookmark (ပြန်ဖျက်ခြင်း)
+            // Unsave Bookmark
             localStorage.removeItem("dc_bookmarked_page");
         } else {
-            // Save Bookmark (သိမ်းဆည်းခြင်း)
+            // Save Bookmark
             localStorage.setItem("dc_bookmarked_page", currentPage);
         }
         updateBookmarkButton(currentPage);
@@ -363,6 +392,11 @@
         }
     }
 
+    /* 🛠️ စာမျက်နှာ ၁ သို့ ပြန်သွားရန် Function */
+    function goToFirstPage() {
+        $("#flipbook").turn("page", 1);
+    }
+
     function loadAndInit() {
         const flipbook = $("#flipbook");
         const { w, h } = getBookSize();
@@ -377,11 +411,20 @@
             flipbook.append(pageDiv);
         }
 
+        // 🛠️ Bookmark စစ်ဆေးခြင်း Logic ပြင်ဆင်ချက်
+        const bookmarkedPage = localStorage.getItem("dc_bookmarked_page");
+        let startPage = 1;
+
+        if (bookmarkedPage) {
+            startPage = parseInt(bookmarkedPage);
+        }
+
         flipbook.turn({
             width: w, height: h, 
             autoCenter: true, display: 'single', 
             pages: totalPages, acceleration: true,
             elevation: 0, gradients: false, duration: 400, 
+            page: startPage,
             when: {
                 turning: function(e, page) {
                     if (isQuizLocked) { e.preventDefault(); return; }
@@ -389,10 +432,14 @@
                 },
                 turned: function(e, page) {
                     handleMusic(page);
-                    localStorage.setItem("dc_last_page", page);
-                    
-                    // 🛠️ စာမျက်နှာလှန်လိုက်တိုင်း Bookmark အခြေအနေကို စစ်ဆေးပြီး ခလုတ်ကို အရောင်/စာသား ပြောင်းပေးရန်
                     updateBookmarkButton(page); 
+
+                    // 🛠️ နောက်ဆုံးစာမျက်နှာ (Page 84) ရောက်လျှင် "စာမျက်နှာ ၁ သို့ ပြန်သွားရန်" ခလုတ်ပြပေးမည်
+                    if (page === totalPages) {
+                        $("#restart-btn").fadeIn(300);
+                    } else {
+                        $("#restart-btn").fadeOut(300);
+                    }
 
                     if (quizPages.includes(page)) {
                         triggerPsychologyTest(page);
@@ -404,18 +451,13 @@
             }
         });
 
-        // 🛠️ Bookmark ရှိရင် ၎င်းဆီသို့ တိုက်ရိုက်သွားမည်။ မရှိပါက နောက်ဆုံးဖတ်ခဲ့သည့် စာမျက်နှာသို့ သွားမည်။
-        const bookmarkedPage = localStorage.getItem("dc_bookmarked_page");
-        const savedPage = localStorage.getItem("dc_last_page");
-        
-        if (bookmarkedPage) {
-            flipbook.turn("page", parseInt(bookmarkedPage));
-        } else if (savedPage) {
-            flipbook.turn("page", parseInt(savedPage));
-        } else {
-            flipbook.turn("page", 1);
+        updateBookmarkButton(startPage);
+
+        // စတင်ချိန်မှာ နောက်ဆုံး စာမျက်နှာ ရောက်နေပါက ခလုတ်ပြပေးမည်
+        if (startPage === totalPages) {
+            $("#restart-btn").show();
         }
-        
+
         setTimeout(() => {
             const { w, h } = getBookSize();
             $("#flipbook").turn("size", w, h);
