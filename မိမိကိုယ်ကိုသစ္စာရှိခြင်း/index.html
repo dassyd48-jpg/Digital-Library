@@ -179,7 +179,7 @@
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            padding-bottom: 35px;
+            padding-bottom: 0px;
         }
         
         /* 🖼️ Image-Based Page Styling */
@@ -323,17 +323,17 @@
     });
 
     function getBookSize() {
-        let w = window.innerWidth;
-        let h = window.innerHeight - 40;
+    let w = window.innerWidth;
+    let h = window.innerHeight; // 
 
-        if (window.innerWidth < 768) {
-            w = window.innerWidth; 
-        } else {
-            const tabletRatio = 0.72;
-            if (w / h > tabletRatio) { w = h * tabletRatio; } else { h = w / tabletRatio; }
-        }
-        return { w, h };
+    if (window.innerWidth < 768) {
+        w = window.innerWidth; 
+    } else {
+        const tabletRatio = 0.72;
+        if (w / h > tabletRatio) { w = h * tabletRatio; } else { h = w / tabletRatio; }
     }
+    return { w, h };
+}
 
     function unlock() {
         if(document.getElementById("pass").value === myPassword) {
