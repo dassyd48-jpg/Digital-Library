@@ -411,10 +411,9 @@
             flipbook.append(pageDiv);
         }
 
-        // 🛠️ Bookmark စစ်ဆေးခြင်း Logic ပြင်ဆင်ချက်
+        // 🛠️ Bookmark ရယူခြင်း
         const bookmarkedPage = localStorage.getItem("dc_bookmarked_page");
         let startPage = 1;
-
         if (bookmarkedPage) {
             startPage = parseInt(bookmarkedPage);
         }
@@ -424,7 +423,6 @@
             autoCenter: true, display: 'single', 
             pages: totalPages, acceleration: true,
             elevation: 0, gradients: false, duration: 400, 
-            page: startPage,
             when: {
                 turning: function(e, page) {
                     if (isQuizLocked) { e.preventDefault(); return; }
@@ -451,9 +449,15 @@
             }
         });
 
+        // 🛠️ Bookmark ထားသည့် Page သို့ တိုက်ရိုက် ရောက်ရှိစေရေးအတွက် သီးသန့် Force jump လုပ်ခြင်း
+        if (startPage > 1) {
+            setTimeout(() => {
+                flipbook.turn("page", startPage);
+            }, 100);
+        }
+
         updateBookmarkButton(startPage);
 
-        // စတင်ချိန်မှာ နောက်ဆုံး စာမျက်နှာ ရောက်နေပါက ခလုတ်ပြပေးမည်
         if (startPage === totalPages) {
             $("#restart-btn").show();
         }
