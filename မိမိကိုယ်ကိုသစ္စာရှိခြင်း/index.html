@@ -191,11 +191,11 @@
         }
 
         #flipbook .page img {
-    width: 100%;
-    height: 100%;
-    object-fit: fill; /* စခရင်အပြည့် ကွက်တိဖြစ်အောင် ဆွဲဆန့်ပေးပါမည် */
-    display: block;
-}
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            display: block;
+        }
         
         /* 🟣 Quiz & Result Pop-up Overlay Styles */
         #quiz-overlay { 
@@ -306,9 +306,9 @@
     <script src="psychologyTests_Part1.js"></script> 
 
     <script>
-    // 🛠️ Total Pages နှင့် Quiz Pages သတ်မှတ်ချက်များ
+    // 🛠️ Total Pages နှင့် Quiz Pages သတ်မှတ်ချက်များ (Page 2 ကို quizPages ထဲမှ ပယ်ဖျက်ထားပါသည်)
     const totalPages = 61; 
-    const quizPages = [2, 11, 16, 21, 26, 31, 36, 42, 48, 55, 60];
+    const quizPages = [11, 16, 21, 26, 31, 36, 42, 48, 55, 60];
     let isQuizLocked = false;
     const myPassword = "99LOYALSOVEREIGN";
 
@@ -323,17 +323,17 @@
     });
 
     function getBookSize() {
-    let w = window.innerWidth;
-    let h = window.innerHeight; // 
+        let w = window.innerWidth;
+        let h = window.innerHeight; 
 
-    if (window.innerWidth < 768) {
-        w = window.innerWidth; 
-    } else {
-        const tabletRatio = 0.72;
-        if (w / h > tabletRatio) { w = h * tabletRatio; } else { h = w / tabletRatio; }
+        if (window.innerWidth < 768) {
+            w = window.innerWidth; 
+        } else {
+            const tabletRatio = 0.72;
+            if (w / h > tabletRatio) { w = h * tabletRatio; } else { h = w / tabletRatio; }
+        }
+        return { w, h };
     }
-    return { w, h };
-}
 
     function unlock() {
         if(document.getElementById("pass").value === myPassword) {
@@ -395,7 +395,7 @@
         $("#test-question").text(sc.q);
         $("#options-container").empty();
         sc.options.forEach(opt => {
-            const btn = $('<div class="quiz-option"></div>').text(opt.t);
+            const btn = $('<div class="quiz-option"></div>').html(opt.t);
             btn.on('click', () => { 
                 if(opt.v) introScores[opt.v]++; 
                 renderIntroScenario(data, index + 1); 
@@ -457,7 +457,7 @@
         for (let i = 1; i <= totalPages; i++) {
             const pageDiv = $('<div />').addClass('page');
             
-            // 🎯 quizPages ထဲပါသော စာမျက်နှာများအတွက် ပုံမဆွဲယူဘဲ Blank Quiz Layout သာ ထားမည်
+            // 🎯 quizPages ထဲပါသော စာမျက်နှာများအတွက် Blank Quiz Layout သာ ထားမည်
             if (quizPages.includes(i)) {
                 pageDiv.html(`
                     <div class="page-content" style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100%; text-align:center;">
@@ -535,11 +535,11 @@
         isQuizLocked = true;
         
         $("#test-title").text(test.title);
-        $("#test-question").text(test.q);
+        $("#test-question").html(test.q); // .text အစား .html သို့ ပြောင်းထားပါသည်
         $("#options-container").empty();
         
         test.options.forEach(opt => {
-            const btn = $('<div class="quiz-option"></div>').text(opt.t);
+            const btn = $('<div class="quiz-option"></div>').html(opt.t); // .text အစား .html သို့ ပြောင်းထားပါသည်
             btn.on('click', () => {
                 $("#test-question").html(`<div style='color:var(--bright-metal); font-weight:bold; margin-bottom:12px;'>Result Analysis:</div><div style='background:rgba(168,85,247,0.12); padding:14px; border-radius:8px; border:1px solid var(--dark-metal); color:#f3e8ff;'>${opt.r}</div>`);
                 $("#options-container").empty().html('<button class="btn-continue" onclick="closeQuiz()">နောက်စာမျက်နှာသို့ သွားရန် ➔</button>');
