@@ -83,6 +83,69 @@
             position: absolute; bottom: 20px; width: 100%; text-align: center; 
             font-size: 10px; color: rgba(212, 175, 55, 0.4); letter-spacing: 3px; pointer-events: none; z-index: 15; 
         }
+
+        /* 🛠️ Bookmark Button Style */
+        #bookmark-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1500;
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        #bookmark-btn.bookmarked {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 15px var(--gold);
+        }
+
+        /* 🛠️ စာမျက်နှာ ၁ သို့ ပြန်သွားရန် ခလုတ် Style */
+        #restart-btn {
+            display: none;
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1500;
+            padding: 10px 20px;
+            background: linear-gradient(145deg, #d4af37, #a67c00);
+            color: #000;
+            border: none;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        #restart-btn:active {
+            transform: translateX(-50%) scale(0.95);
+        }
+
+        @media screen and (max-width: 768px) {
+            #bookmark-btn {
+                top: 15px;
+                right: 15px;
+                padding: 6px 12px;
+                font-size: 10px;
+            }
+            #restart-btn {
+                bottom: 55px;
+                padding: 8px 16px;
+                font-size: 11px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -104,6 +167,12 @@
     </div>
 
     <div id="book-container">
+        <!-- 🛠️ Floating Bookmark Button -->
+        <button id="bookmark-btn" onclick="toggleBookmark()">SAVE BOOKMARK</button>
+
+        <!-- 🛠️ စာမျက်နှာ ၁ သို့ ပြန်သွားရန် ခလုတ် -->
+        <button id="restart-btn" onclick="goToFirstPage()">↺ စာမျက်နှာ ၁ သို့ ပြန်သွားရန်</button>
+
         <div id="flipbook-wrapper"><div id="flipbook"></div></div>
         <div class="watermark">POWERED BY DASSY DIGITAL LIBRARY</div>
     </div>
@@ -114,7 +183,7 @@
         const myPassword = "THE@@MIND99";
         const maxPages = 40; 
         const quizPages = [11, 18, 24, 31, 37]; 
-        const storageKeyPage = "mind_current_page";
+        const storageBookmarkKey = "mind_saved_bookmark";
         const storageKeyAuth = "mind_authenticated";
         
         let isQuizLocked = false;
@@ -164,6 +233,38 @@
             }
         }
 
+        /* 🛠️ Bookmark Functions */
+        function toggleBookmark() {
+            const flipbook = $("#flipbook");
+            const currentPage = flipbook.turn("page");
+            const bookmarkedPage = localStorage.getItem(storageBookmarkKey);
+
+            if (bookmarkedPage && parseInt(bookmarkedPage) === currentPage) {
+                localStorage.removeItem(storageBookmarkKey);
+            } else {
+                localStorage.setItem(storageBookmarkKey, currentPage);
+            }
+            updateBookmarkButton(currentPage);
+        }
+
+        function updateBookmarkButton(page) {
+            const btn = $("#bookmark-btn");
+            const bookmarkedPage = localStorage.getItem(storageBookmarkKey);
+
+            if (bookmarkedPage && parseInt(bookmarkedPage) === page) {
+                btn.addClass("bookmarked");
+                btn.text("UNSAVE BOOKMARK");
+            } else {
+                btn.removeClass("bookmarked");
+                btn.text("SAVE BOOKMARK");
+            }
+        }
+
+        /* 🛠️ စာမျက်နှာ ၁ သို့ ပြန်သွားရန် Function */
+        function goToFirstPage() {
+            $("#flipbook").turn("page", 1);
+        }
+
         function loadAndInit() {
             const flipbook = $("#flipbook");
             if (flipbook.children().length > 0) return;
@@ -185,6 +286,13 @@
                 flipbook.append(pageDiv);
             }
 
+            // 🛠️ Bookmark ရယူခြင်း (မမှတ်ထားပါက Page 1)
+            const savedBookmark = localStorage.getItem(storageBookmarkKey);
+            let startPage = 1;
+            if (savedBookmark) {
+                startPage = parseInt(savedBookmark);
+            }
+
             setTimeout(() => {
                 flipbook.turn({
                     width: w, height: h, autoCenter: true, display: 'single', acceleration: true, duration: 400,
@@ -195,18 +303,34 @@
                             if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
                         },
                         turned: function(e, page) {
-                            localStorage.setItem(storageKeyPage, page);
                             isQuizLocked = quizPages.includes(page);
+                            updateBookmarkButton(page);
+
+                            // 🛠️ နိဂုံးစာမျက်နှာ (Page 40) ရောက်လျှင် ခလုတ်ပြမည်
+                            if (page === maxPages) {
+                                $("#restart-btn").fadeIn(300);
+                            } else {
+                                $("#restart-btn").fadeOut(300);
+                            }
                         }
                     }
                 });
                 
-                const savedPage = localStorage.getItem(storageKeyPage);
-                if (savedPage) {
-                    flipbook.turn("page", parseInt(savedPage));
+                // 🛠️ Jump to Bookmark Page
+                if (startPage > 1) {
+                    setTimeout(() => {
+                        flipbook.turn("page", startPage);
+                    }, 100);
                 } else {
                     flipbook.turn("page", 1);
                 }
+
+                updateBookmarkButton(startPage);
+
+                if (startPage === maxPages) {
+                    $("#restart-btn").show();
+                }
+
             }, 100);
         }
 
