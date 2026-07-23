@@ -30,7 +30,15 @@
         
         .fixed-watermark { position: fixed; bottom: 12px; left: 0; width: 100%; text-align: center; font-size: 9px; color: var(--gold); opacity: 0.5; letter-spacing: 2px; z-index: 99; pointer-events: none; }
 
-        /* 🛠️ Floating Bookmark Button Style */
+        /* 📸 Image တစ်ခုလုံးကို အပေါ်သို့ ဆွဲတင်သည့် Style */
+        .page img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            transform: translateY(-20px); /* အပေါ်သို့ 20px တက်သွားမည် (စိတ်ကြိုက်အတိုးအလျှော့လုပ်နိုင်သည်) */
+        }
+
+        /* 📌 Bookmark Button Style */
         #bookmark-btn {
             position: fixed;
             top: 20px;
@@ -55,7 +63,7 @@
             box-shadow: 0 0 15px var(--gold);
         }
 
-        /* 🛠️ စာမျက်နှာ ၁ သို့ ပြန်သွားရန် ခလုတ် Style */
+        /* ↺ စာမျက်နှာ ၁ သို့ ပြန်သွားရန် ခလုတ် Style */
         #restart-btn {
             display: none;
             position: fixed;
@@ -110,10 +118,10 @@
     </div>
 
     <div id="book-container">
-        <!-- 🛠️ Floating Bookmark Button -->
+        <!-- Floating Bookmark Button -->
         <button id="bookmark-btn" onclick="toggleBookmark()">SAVE BOOKMARK</button>
 
-        <!-- 🛠️ စာမျက်နှာ ၁ သို့ ပြန်သွားရန် ခလုတ် -->
+        <!-- စာမျက်နှာ ၁ သို့ ပြန်သွားရန် ခလုတ် -->
         <button id="restart-btn" onclick="goToFirstPage()">↺ စာမျက်နှာ ၁ သို့ ပြန်သွားရန်</button>
 
         <div id="flipbook-wrapper">
@@ -162,7 +170,7 @@
             }
         }, false);
 
-        /* 🛠️ Bookmark Toggle Function */
+        /* Bookmark Toggle Function */
         function toggleBookmark() {
             const flipbook = $("#flipbook");
             const currentPage = flipbook.turn("page");
@@ -176,7 +184,7 @@
             updateBookmarkButton(currentPage);
         }
 
-        /* 🛠️ Update Bookmark UI Button */
+        /* Update Bookmark UI Button */
         function updateBookmarkButton(page) {
             const btn = $("#bookmark-btn");
             const bookmarkedPage = localStorage.getItem(storageBookmarkKey);
@@ -190,7 +198,7 @@
             }
         }
 
-        /* 🛠️ စာမျက်နှာ ၁ သို့ ပြန်သွားရန် Function */
+        /* စာမျက်နှာ ၁ သို့ ပြန်သွားရန် Function */
         function goToFirstPage() {
             $("#flipbook").turn("page", 1);
         }
@@ -200,7 +208,7 @@
             if (flipbook.children().length > 0) return;
             const size = getBookSize();
 
-            // 🛠️ Bookmark ရှိလျှင် သွားမည်၊ မရှိပါက Page 1 ကစမည်
+            /* Bookmark ရှိလျှင် ထိုစာမျက်နှာသို့ သွားမည်၊ မရှိပါက Page 1 မှ စမည် */
             const savedBookmark = localStorage.getItem(storageBookmarkKey);
             let startPage = 1;
             if (savedBookmark) {
@@ -208,11 +216,11 @@
             }
 
             for(let i=1; i<=totalPages; i++) {
-                const pageDiv = $('<div class="page" style="background:#140204;"></div>');
+                const pageDiv = $('<div class="page" style="background:#140204; overflow:hidden;"></div>');
                 if(quizPages.includes(i)) {
                     pageDiv.append(`<iframe src="page${i}.html" style="width:100%; height:100%; border:none;" scrolling="yes"></iframe>`);
                 } else {
-                 pageDiv.append($('<img style="width:100%; height:calc(100% - 20px); object-fit:fill;" />').attr('src', `page${i}.jpg`));
+                    pageDiv.append($('<img />').attr('src', `page${i}.jpg`));
                 }
                 flipbook.append(pageDiv);
             }
@@ -231,7 +239,7 @@
                             isQuizLocked = quizPages.includes(page);
                             updateBookmarkButton(page);
 
-                            // 🛠️ နိဂုံးစာမျက်နှာ (Page 59) ရောက်လျှင် ခလုတ်ပြမည်
+                            /* နိဂုံးစာမျက်နှာ (Page 59) ရောက်လျှင် ခလုတ်ပြမည် */
                             if (page === totalPages) {
                                 $("#restart-btn").fadeIn(300);
                             } else {
