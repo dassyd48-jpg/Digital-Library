@@ -75,17 +75,25 @@
             right: 15px;
             z-index: 1500;
             padding: 6px 14px;
-            background: rgba(0, 0, 0, 0.75);
-            color: var(--gold, #d4af37);
-            border: 1px solid var(--gold, #d4af37);
+            background: rgba(20, 20, 20, 0.85);
+            color: #888888; /* မမှတ်ရသေးပါက အရောင်မှိန်ပြမည် */
+            border: 1px solid #444444;
             font-size: 11px;
             font-weight: bold;
             border-radius: 20px;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
             backdrop-filter: blur(5px);
             transition: all 0.3s ease;
         }
+        
+        /* ✨ Bookmark မှတ်ထားလျှင် ရွှေရောင်လင်းမည့် Active Style */
+        #bookmark-btn.saved {
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728);
+            color: #000000;
+            border: 1px solid var(--gold, #d4af37);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+        }
+
         #bookmark-btn:active {
             transform: scale(0.92);
         }
@@ -130,7 +138,7 @@
 
     <div id="book-container">
         <!-- 🔖 Bookmark ခလုတ် နှင့် Toast Alert -->
-        <button id="bookmark-btn" onclick="manualSaveBookmark()">🔖 Bookmark မှတ်မည်</button>
+        <button id="bookmark-btn" onclick="toggleBookmark()">🔖 Bookmark</button>
         <div id="bookmark-toast"></div>
 
         <!-- Floating Home Button -->
@@ -173,15 +181,34 @@
             } else { alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။"); }
         }
 
-        // 🔖 Bookmark ခလုတ်နှိပ်သည့်အခါ သီးသန့် အလုပ်လုပ်မည့် Function
-        function manualSaveBookmark() {
+        // 🔖 လက်ရှိ စာမျက်နှာသည် Bookmark ဖြစ်မဖြစ် စစ်ဆေးပေးသည့် Function
+        function updateBookmarkUI(currentPage) {
+            const savedPage = parseInt(localStorage.getItem(storageKeyPage));
+            const btn = $("#bookmark-btn");
+            
+            if (savedPage && savedPage === currentPage) {
+                btn.addClass("saved").html("🔖 Bookmarked");
+            } else {
+                btn.removeClass("saved").html("🔖 Bookmark");
+            }
+        }
+
+        // 🔖 Bookmark Toggle လုပ်ပေးသည့် Function (မှတ်မည် / မှတ်ထားသည်ကို ဖြုတ်မည်)
+        function toggleBookmark() {
             const currentPage = $("#flipbook").turn("page");
-            if (currentPage) {
+            const savedPage = parseInt(localStorage.getItem(storageKeyPage));
+            const toast = $("#bookmark-toast");
+
+            if (savedPage === currentPage) {
+                // Bookmark ဖြုတ်လိုက်သည်
+                localStorage.removeItem(storageKeyPage);
+                updateBookmarkUI(currentPage);
+                toast.text(`Bookmark ကို ဖြုတ်လိုက်ပါပြီ`).stop(true, true).fadeIn(300).delay(1500).fadeOut(300);
+            } else {
+                // Bookmark အသစ်မှတ်သည်
                 localStorage.setItem(storageKeyPage, currentPage);
-                
-                // Toast Message လေးပြပေးရန်
-                const toast = $("#bookmark-toast");
-                toast.text(`စာမျက်နှာ (${currentPage}) ကို Bookmark မှတ်လိုက်ပါပြီ!`).stop(true, true).fadeIn(300).delay(2000).fadeOut(300);
+                updateBookmarkUI(currentPage);
+                toast.text(`စာမျက်နှာ (${currentPage}) ကို Bookmark မှတ်လိုက်ပါပြီ!`).stop(true, true).fadeIn(300).delay(1500).fadeOut(300);
             }
         }
 
@@ -241,6 +268,7 @@
                         },
                         turned: function(e, page) {
                             isQuizLocked = quizPages.includes(page);
+                            updateBookmarkUI(page); // စာမျက်နှာ ရောက်တိုင်း Bookmark အရောင် စစ်ပေးသည်
 
                             if (page !== 55) {
                                 $("#floating-home-btn").hide();
@@ -250,6 +278,7 @@
                         }
                     }
                 });
+                updateBookmarkUI(savedPage); // စစပွင့်ချင်း စာမျက်နှာအတွက် Bookmark UI စစ်ပေးသည်
             }, 100);
         }
 
