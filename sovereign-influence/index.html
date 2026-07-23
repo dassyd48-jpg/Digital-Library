@@ -27,14 +27,13 @@
         
         #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; }
         
-        /* 🛠️ Flipbook ကို Screen အပေါ်ဆုံးထိ ကပ်စေသည့် အပိုင်း */
         #flipbook-wrapper { 
             width: 100%; 
             height: 100%; 
             display: flex; 
             justify-content: center; 
-            align-items: flex-start; /* Center အစား flex-start ပြောင်းထားပါသည် */
-            padding-top: 5px; /* အပေါ်ဆုံး Edge နှင့် ကွက်တိ ဖြစ်စေရန် */
+            align-items: flex-start; 
+            padding-top: 5px;
         }
         
         .fixed-watermark { position: fixed; bottom: 12px; left: 0; width: 100%; text-align: center; font-size: 9px; color: var(--gold); opacity: 0.5; letter-spacing: 2px; z-index: 99; pointer-events: none; }
@@ -71,6 +70,35 @@
             box-shadow: 0 0 15px var(--gold);
         }
 
+        /* ⭐ Floating Review Button Style */
+        #review-trigger-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 15px;
+            z-index: 1500;
+            padding: 8px 14px;
+            background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
+            background-size: 200% 200%;
+            animation: gradientAnimation 3s ease infinite;
+            color: #fff;
+            border: 1px solid var(--gold);
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         /* ↺ စာမျက်နှာ ၁ သို့ ပြန်သွားရန် ခလုတ် Style */
         #restart-btn {
             display: none;
@@ -91,22 +119,101 @@
             letter-spacing: 1px;
             transition: all 0.3s ease;
         }
-        #restart-btn:active {
-            transform: translateX(-50%) scale(0.95);
+
+        /* 💬 Review Modal (Popup Window) Style */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-card {
+            background: #1c0408;
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            max-width: 420px;
+            width: 100%;
+            padding: 25px 20px;
+            color: #fff;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 22px;
+            color: var(--gold);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .modal-title {
+            font-size: 16px;
+            color: var(--gold);
+            font-weight: bold;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        .modal-text {
+            font-size: 12px;
+            color: #e0e0e0;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        .modal-offer {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 3px solid var(--gold);
+            padding: 10px;
+            font-size: 12px;
+            color: var(--gold);
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .modal-step {
+            font-size: 11px;
+            color: #bbb;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+        .modal-btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .modal-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .btn-fb {
+            background: #1877f2;
+            color: #fff;
+        }
+        .btn-msg {
+            background: linear-gradient(45deg, #0084ff, #a832a7);
+            color: #fff;
         }
 
         @media screen and (max-width: 768px) {
-            #bookmark-btn {
-                top: 8px;
-                right: 8px;
-                padding: 5px 10px;
-                font-size: 9px;
-            }
-            #restart-btn {
-                bottom: 35px;
-                padding: 8px 18px;
-                font-size: 11px;
-            }
+            #bookmark-btn { top: 8px; right: 8px; padding: 5px 10px; font-size: 9px; }
+            #review-trigger-btn { bottom: 15px; right: 10px; padding: 6px 12px; font-size: 10px; }
+            #restart-btn { bottom: 35px; padding: 8px 18px; font-size: 11px; }
         }
     </style>
 </head>
@@ -129,6 +236,9 @@
         <!-- Floating Bookmark Button -->
         <button id="bookmark-btn" onclick="toggleBookmark()">SAVE BOOKMARK</button>
 
+        <!-- Floating Review Button -->
+        <button id="review-trigger-btn" onclick="openReviewModal()">⭐ Review ပေးရန် (15% OFF)</button>
+
         <!-- စာမျက်နှာ ၁ သို့ ပြန်သွားရန် ခလုတ် -->
         <button id="restart-btn" onclick="goToFirstPage()">↺ စာမျက်နှာ ၁ သို့ ပြန်သွားရန်</button>
 
@@ -136,6 +246,42 @@
             <div id="flipbook"></div>
         </div>
     </div>
+
+    <!-- 💬 Review & Follow Modal Popup (Links Updated) -->
+<div id="review-modal" class="modal-overlay">
+    <div class="modal-card">
+        <button class="modal-close" onclick="closeReviewModal()">✕</button>
+        <div class="modal-title">သင့်၏ ထင်မြင်ယူဆချက်သည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
+        
+        <div class="modal-text">
+            စာဖတ်သူ၏ Review တစ်ခုနှင့် Follow တစ်ခုသည် နောက်ထပ် စာအုပ်ဖတ်ရှုမည့် လူငယ်များအတွက် များစွာ အကျိုးသက်ရောက်မှုရှိပြီး စာပေမဖတ်ရှုရသေးသူများအတွက်လည်း လမ်းပြအလင်းရောင်နှင့် အားအင်များစွာ ဖြစ်စေပါသည်။
+        </div>
+
+        <div class="modal-offer">
+            🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ် ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
+        </div>
+
+        <div class="modal-step">၁။ Facebook Page ကို <b>Follow ပြုလုပ်၍ Review ရေးသားပါ</b> (ပြီးလျှင် Screenshot ရိုက်ယူပါ)။</div>
+        <div class="modal-step" style="margin-bottom: 15px;">၂။ Screenshot ကို Messenger (သို့မဟုတ်) Telegram သို့ ပေးပို့၍ Discount ရယူပါ။</div>
+
+        <div class="modal-btn-group">
+            <!-- 🛠️ Dassy Digital Library Review Link -->
+            <a href="https://www.facebook.com/DassyDigitalLibrary/reviews" target="_blank" class="modal-btn btn-fb">
+                👍 Follow လုပ်ရန် & Review ရေးရန်
+            </a>
+            
+            <!-- 🛠️ Messenger Direct Link -->
+            <a href="https://m.me/DassyDigitalLibrary" target="_blank" class="modal-btn btn-msg">
+                💬 Messenger သို့ Screenshot ပို့ရန်
+            </a>
+
+            <!-- 🛠️ Telegram Link (Plan B) -->
+            <a href="https://t.me/Dassy_digital_Library" target="_blank" class="modal-btn btn-tg">
+                ✈️ Telegram သို့ Screenshot ပို့ရန် (Plan B)
+            </a>
+        </div>
+    </div>
+</div>
     
     <div id="global-watermark" class="fixed-watermark" style="display:none;">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
     <audio id="sound" src="flip.mp3" preload="auto"></audio>
@@ -169,6 +315,15 @@
                     loadAndInitBook();
                 });
             } else { alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။"); }
+        }
+
+        /* Review Modal Open/Close Logic */
+        function openReviewModal() {
+            $("#review-modal").css("display", "flex").hide().fadeIn(300);
+        }
+
+        function closeReviewModal() {
+            $("#review-modal").fadeOut(300);
         }
 
         window.addEventListener("message", function(event) {
@@ -216,7 +371,6 @@
             if (flipbook.children().length > 0) return;
             const size = getBookSize();
 
-            /* Bookmark ရှိလျှင် ထိုစာမျက်နှာသို့ သွားမည်၊ မရှိပါက Page 1 မှ စမည် */
             const savedBookmark = localStorage.getItem(storageBookmarkKey);
             let startPage = 1;
             if (savedBookmark) {
@@ -247,7 +401,6 @@
                             isQuizLocked = quizPages.includes(page);
                             updateBookmarkButton(page);
 
-                            /* နိဂုံးစာမျက်နှာ (Page 59) ရောက်လျှင် ခလုတ်ပြမည် */
                             if (page === totalPages) {
                                 $("#restart-btn").fadeIn(300);
                             } else {
