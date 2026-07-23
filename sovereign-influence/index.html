@@ -70,28 +70,28 @@
             box-shadow: 0 0 15px var(--gold);
         }
 
-        /* ⭐ Floating Review Button Style */
-        #review-trigger-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 15px;
-            z-index: 1500;
-            padding: 8px 14px;
-            background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
-            background-size: 200% 200%;
-            animation: gradientAnimation 3s ease infinite;
-            color: #fff;
-            border: 1px solid var(--gold);
-            font-size: 11px;
-            font-weight: bold;
-            border-radius: 20px;
-            cursor: pointer;
-            box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        /* ⭐ Floating Review Button Style (အရွယ်အစား ပိုသေးအောင် ပြင်ထားသည်) */
+#review-trigger-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 15px;
+    z-index: 1500;
+    padding: 5px 10px; /* ⬅️ မူလ (8px 14px) အစား လျှော့ထားပါသည် */
+    background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
+    background-size: 200% 200%;
+    animation: gradientAnimation 3s ease infinite;
+    color: #fff;
+    border: 1px solid var(--gold);
+    font-size: 9.5px; /* ⬅️ မူလ (11px) အစား လျှော့ထားပါသည် */
+    font-weight: bold;
+    border-radius: 15px; /* ⬅️ ခလုတ် သေးသွားသည့်အတွက် အနိမ့်အမြင့် မျှအောင် ထိန်းထားသည် */
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
 
         @keyframes gradientAnimation {
             0% { background-position: 0% 50%; }
@@ -212,7 +212,13 @@
 
         @media screen and (max-width: 768px) {
             #bookmark-btn { top: 8px; right: 8px; padding: 5px 10px; font-size: 9px; }
-            #review-trigger-btn { bottom: 15px; right: 10px; padding: 6px 12px; font-size: 10px; }
+            #review-trigger-btn { 
+        bottom: 12px; 
+        right: 8px; 
+        padding: 4px 8px; 
+        font-size: 8.5px; 
+    }
+}
             #restart-btn { bottom: 35px; padding: 8px 18px; font-size: 11px; }
         }
     </style>
@@ -258,7 +264,7 @@
         </div>
 
         <div class="modal-offer">
-            🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ် ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
+            🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ်တစ်ကြိမ် ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
         </div>
 
         <div class="modal-step">၁။ Facebook Page ကို <b>Follow ပြုလုပ်၍ Review ရေးသားပါ</b> (ပြီးလျှင် Screenshot ရိုက်ယူပါ)။</div>
@@ -266,18 +272,18 @@
 
         <div class="modal-btn-group">
             <!-- 🛠️ Dassy Digital Library Review Link -->
-            <a href="https://www.facebook.com/DassyDigitalLibrary/reviews" target="_blank" class="modal-btn btn-fb">
+            <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">
                 👍 Follow လုပ်ရန် & Review ရေးရန်
             </a>
             
             <!-- 🛠️ Messenger Direct Link -->
-            <a href="https://m.me/DassyDigitalLibrary" target="_blank" class="modal-btn btn-msg">
+            <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-msg">
                 💬 Messenger သို့ Screenshot ပို့ရန်
             </a>
 
-            <!-- 🛠️ Telegram Link (Plan B) -->
+            <!-- 🛠️ Telegram Link -->
             <a href="https://t.me/Dassy_digital_Library" target="_blank" class="modal-btn btn-tg">
-                ✈️ Telegram သို့ Screenshot ပို့ရန် (Plan B)
+                ✈️ Telegram သို့ Screenshot ပို့ရန်
             </a>
         </div>
     </div>
