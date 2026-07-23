@@ -99,7 +99,6 @@
             padding-bottom: 35px;
         }
 
-        /* 🛠️ Improved CSS Layout for Page & iFrames to prevent blank/black scaling bugs */
         .page { background: #001a1d; width: 100%; height: 100%; position: relative; overflow: hidden; }
         .page img { width: 100%; height: 100%; object-fit: fill !important; display: block; pointer-events: none; }
         
@@ -121,7 +120,7 @@
             z-index: 15;
         }
 
-        /* 🛠️ Bookmark ခလုတ်စတိုင်လ်များ */
+        /* 🛠️ Bookmark ခလုတ်စတိုင်လ်များ (အပေါ်ဘက်) */
         .bookmark-controls {
             position: fixed;
             top: 15px;
@@ -131,11 +130,11 @@
             justify-content: space-between;
             padding: 0 15px;
             z-index: 100;
-            pointer-events: none; /* စာအုပ်စာမျက်နှာလှန်တာကို မပိတ်ဆို့စေရန် */
+            pointer-events: none;
         }
 
         .bookmark-btn {
-            pointer-events: auto; /* ခလုတ်ကို နှိပ်လို့ရအောင် လုပ်ဆောင်သည် */
+            pointer-events: auto;
             padding: 8px 16px;
             font-size: 13px;
             font-weight: bold;
@@ -148,24 +147,69 @@
             box-shadow: 0 0 10px rgba(78, 217, 230, 0.2);
         }
 
-        /* Bookmark မလုပ်ရသေးခင် စတိုင် */
         #add-bookmark-btn {
             background: rgba(0, 26, 29, 0.85);
             color: #4ed9e6;
         }
 
-        /* Bookmark လုပ်ပြီးသား စတိုင် */
         #add-bookmark-btn.active {
             background: #4ed9e6;
             color: #000;
             box-shadow: 0 0 15px rgba(78, 217, 230, 0.6);
         }
 
-        /* Go to Bookmark ပြန်သွားရန် ခလုတ်စတိုင် */
         #go-bookmark-btn {
             background: rgba(78, 217, 230, 0.15);
             color: #4ed9e6;
-            display: none; /* Bookmark မရှိရင် ဖျောက်ထားမည် */
+            display: none;
+        }
+
+        /* 🛠️ နိဂုံးစာမျက်နှာတွင် ပေါ်လာမည့် ခလုတ်စတိုင်လ်များ */
+        .end-page-controls {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 30;
+            width: 80%;
+            max-width: 280px;
+            text-align: center;
+        }
+
+        .end-btn {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border: 1px solid #4ed9e6;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-home {
+            background: #4ed9e6;
+            color: #000;
+            box-shadow: 0 0 15px rgba(78, 217, 230, 0.4);
+        }
+
+        .btn-home:hover {
+            background: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        .btn-bookmark-end {
+            background: rgba(0, 26, 29, 0.9);
+            color: #4ed9e6;
+        }
+
+        .btn-bookmark-end.active {
+            background: #4ed9e6;
+            color: #000;
         }
     </style>
 </head>
@@ -188,8 +232,8 @@
     </div>
 
     <div id="book-container">
-        <!-- Bookmark ခလုတ်များ ထားရှိရာ နေရာ -->
-        <div class="bookmark-controls">
+        <!-- Bookmark ခလုတ်များ ထားရှိရာ နေရာ (အပေါ်ဘက်) -->
+        <div class="bookmark-controls" id="top-controls">
             <button id="go-bookmark-btn" class="bookmark-btn" onclick="goToBookmark()">📖 မှတ်ထားသော</button>
             <button id="add-bookmark-btn" class="bookmark-btn" onclick="toggleBookmark()">🔖 စာမျက်နှာမှတ်ရန်</button>
         </div>
@@ -249,32 +293,37 @@
             const savedBookmark = localStorage.getItem("tfp_bookmark_page");
 
             if (savedBookmark && parseInt(savedBookmark) === currentPage) {
-                // လက်ရှိစာမျက်နှာကို Bookmark ဖြုတ်လိုက်သည်
                 localStorage.removeItem("tfp_bookmark_page");
-                updateBookmarkButtons(currentPage);
             } else {
-                // လက်ရှိစာမျက်နှာသစ်ကို Bookmark မှတ်သားသည်
                 localStorage.setItem("tfp_bookmark_page", currentPage);
-                updateBookmarkButtons(currentPage);
             }
+            updateBookmarkButtons(currentPage);
         }
 
         // Bookmark ခလုတ်များ၏ ပြသမှုကို update လုပ်ပေးမည့် Logic
         function updateBookmarkButtons(currentPage) {
             const savedBookmark = localStorage.getItem("tfp_bookmark_page");
             
-            // ၁။ Bookmark လုပ်ပြီးသား စာမျက်နှာဖြစ်ပါက ခလုတ်အရောင်ကို active စတိုင်ပြောင်းမည်
+            // ၁။ အပေါ်ဘက် ခလုတ် ပြင်ဆင်ခြင်း
             if (savedBookmark && parseInt(savedBookmark) === currentPage) {
                 $("#add-bookmark-btn").addClass("active").html("📌 Unbookmarked");
+                $("#end-bookmark-btn").addClass("active").html("📌 မှတ်သားမှု ဖြုတ်ရန်");
             } else {
                 $("#add-bookmark-btn").removeClass("active").html("🔖 Bookmarked");
+                $("#end-bookmark-btn").removeClass("active").html("🔖 စာမျက်နှာ မှတ်ရန်");
             }
 
-            // ၂။ သိမ်းထားသော Bookmark ရှိပါက "မှတ်ထားသောစာမျက်နှာဆီသို့" ခလုတ်ကို ဖော်ပြပေးမည်
             if (savedBookmark) {
                 $("#go-bookmark-btn").fadeIn(200);
             } else {
                 $("#go-bookmark-btn").fadeOut(200);
+            }
+
+            // ၂။ နိဂုံးစာမျက်နှာ (Page 61) ရောက်ပါက အပေါ်ခလုတ်ဖျောက်ပြီး အောက်ခြေ ခလုတ်များ ထိန်းချုပ်ခြင်း
+            if (currentPage === maxPages) {
+                $("#top-controls").fadeOut(200);
+            } else {
+                $("#top-controls").fadeIn(200);
             }
         }
 
@@ -282,9 +331,15 @@
         function goToBookmark() {
             const savedBookmark = localStorage.getItem("tfp_bookmark_page");
             if (savedBookmark) {
-                isQuizLocked = false; // Page သွားနိုင်ရန် ခေတ္တ unlock လုပ်ပေးသည်
+                isQuizLocked = false; 
                 $("#flipbook").turn("page", parseInt(savedBookmark));
             }
+        }
+
+        // 🏠 စာမျက်နှာ (၁) သို့ ပြန်သွားရန် Function
+        function goToFirstPage() {
+            isQuizLocked = false;
+            $("#flipbook").turn("page", 1);
         }
 
         function loadAndInit() {
@@ -298,12 +353,23 @@
                 const pageDiv = $('<div class="page"></div>');
                 
                 if(quizPages.includes(i)) {
-                    // 🛠️ Static Path Rendering Logic: ကက်ရှ်လွဲချော်မှုမရှိစေရန် src သို့ တိုက်ရိုက်လမ်းကြောင်းပေးထားသည်
                     pageDiv.append(`<iframe src="page${i}.html" style="width:100%; height:100%; border:none;"></iframe>`);
                 } else {
                     const img = $('<img />').attr('src', `page${i}.jpg`);
                     pageDiv.append(img);
                 }
+
+                // 🛠️ အဆုံး စာမျက်နှာ (Page 61 / နိဂုံး) တွင် ခလုတ်များ သီးသန့်ထည့်သွင်းခြင်း
+                if (i === maxPages) {
+                    const endControls = $(`
+                        <div class="end-page-controls">
+                            <button id="end-bookmark-btn" class="end-btn btn-bookmark-end" onclick="toggleBookmark()">🔖 စာမျက်နှာ မှတ်ရန်</button>
+                            <button class="end-btn btn-home" onclick="goToFirstPage()">🏠 စာမျက်နှာ (၁) သို့</button>
+                        </div>
+                    `);
+                    pageDiv.append(endControls);
+                }
+
                 flipbook.append(pageDiv);
             }
 
@@ -319,10 +385,9 @@
                         turned: function(e, page) {
                             localStorage.setItem("tfp_last_page", page); 
                             
-                            // လက်ရှိစာမျက်နှာက Quiz ဖြစ်ခဲ့လျှင် Next ကို Lock ချမည်
                             isQuizLocked = quizPages.includes(page);
 
-                            // စာမျက်နှာရောက်တိုင်း Bookmark ခလုတ်တွေရဲ့ အခြေအနေကို update လုပ်ပေးရန်
+                            // စာမျက်နှာရောက်တိုင်း Bookmark ခလုတ်များ အခြေအနေ ပြောင်းလဲရန်
                             updateBookmarkButtons(page);
                         }
                     }
@@ -332,12 +397,10 @@
                 const initialPage = savedPage ? parseInt(savedPage) : 1;
                 flipbook.turn("page", initialPage);
 
-                // စာအုပ် စဖွင့်ဖွင့်ချင်း Bookmark ခလုတ်များ အခြေအနေ ပြရန်
                 updateBookmarkButtons(initialPage);
             }, 100);
         }
 
-        // Quiz HTML ဆီမှ Quiz အောင်မြင်ပြီးကြောင်း Message လာလျှင် စာမျက်နှာလှန်ပေးရန်
         window.addEventListener("message", (e) => {
             if(e.data === "quizCompleted") {
                 isQuizLocked = false;
@@ -350,5 +413,99 @@
             $("#flipbook").turn("size", w, h);
         });
     </script>
+    <!-- ========================================== -->
+<!-- 🔻 Review System Code Block Start (Dassy) 🔻 -->
+<!-- ========================================== -->
+
+<!-- 1. CSS Style (Review Button & Modal Style) -->
+<style>
+    /* ⭐ Floating Review Button Style */
+    #review-trigger-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 15px;
+        z-index: 1500;
+        padding: 5px 10px;
+        background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
+        background-size: 200% 200%;
+        animation: gradientAnimation 3s ease infinite;
+        color: #fff;
+        border: 1px solid var(--gold, #d4af37);
+        font-size: 9.5px;
+        font-weight: bold;
+        border-radius: 15px;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    @keyframes gradientAnimation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* 💬 Modal Popup Style */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+    .modal-card { background: #1c0408; border: 1px solid var(--gold, #d4af37); border-radius: 12px; max-width: 420px; width: 100%; padding: 25px 20px; color: #fff; text-align: center; position: relative; box-shadow: 0 0 25px rgba(212, 175, 55, 0.3); }
+    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 22px; color: var(--gold, #d4af37); cursor: pointer; background: none; border: none; }
+    .modal-title { font-size: 16px; color: var(--gold, #d4af37); font-weight: bold; margin-bottom: 12px; line-height: 1.4; }
+    .modal-text { font-size: 12px; color: #e0e0e0; line-height: 1.7; margin-bottom: 15px; text-align: justify; }
+    .modal-offer { background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--gold, #d4af37); padding: 10px; font-size: 12px; color: var(--gold, #d4af37); font-weight: bold; margin-bottom: 20px; text-align: center; }
+    .modal-step { font-size: 11px; color: #bbb; margin-bottom: 8px; text-align: left; }
+    .modal-btn-group { display: flex; flex-direction: column; gap: 10px; }
+    .modal-btn { display: block; width: 100%; padding: 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; text-align: center; transition: all 0.3s ease; }
+    .btn-fb { background: #1877f2; color: #fff; }
+    .btn-msg { background: linear-gradient(45deg, #0084ff, #a832a7); color: #fff; }
+    .btn-tg { background: #0088cc; color: #fff; }
+
+    @media screen and (max-width: 768px) {
+        #review-trigger-btn { bottom: 12px; right: 8px; padding: 4px 8px; font-size: 8.5px; }
+    }
+</style>
+
+<!-- 2. HTML Elements (Button & Popup Modal) -->
+<button id="review-trigger-btn" onclick="openReviewModal()">⭐ Review ပေးရန် (15% OFF)</button>
+
+<div id="review-modal" class="modal-overlay">
+    <div class="modal-card">
+        <button class="modal-close" onclick="closeReviewModal()">✕</button>
+        <div class="modal-title”>သင့်၏ စာအုပ်အပေါ်အမြင်နှင့် တန်ဖိုးရှိသော မျှဝေမှုများသည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
+        
+        <div class="modal-text">
+            စာဖတ်သူ၏ Review တစ်ခုနှင့် Follow တစ်ခုသည် နောက်ထပ် စာအုပ်ဖတ်ရှုမည့် လူငယ်များအတွက် များစွာ အကျိုးသက်ရောက်မှုရှိပြီး စာပေ မဖတ်ရှုရသေးသူများအတွက်လည်း လမ်းပြအလင်းရောင်နှင့် အားအင်များစွာ ဖြစ်စေပါသည်။
+        </div>
+
+        <div class="modal-offer">
+            🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ်တစ်ကြိမ် ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
+        </div>
+
+        <div class="modal-step">၁။ Facebook Page ကို <b>Follow ပြုလုပ်၍ Review ရေးသားပါ</b> (ပြီးလျှင် Screenshot ရိုက်ယူပါ)။</div>
+        <div class="modal-step" style="margin-bottom: 15px;">၂။ Screenshot ကို Messenger (သို့မဟုတ်) Telegram သို့ ပေးပို့၍ Discount ရယူပါ။</div>
+
+        <div class="modal-btn-group">
+             <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">👍 Follow လုပ်ရန် & Review ရေးရန်</a>
+            <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-msg">💬 Messenger သို့ Screenshot ပို့ရန်</a>
+            <a href="https://t.me/YOUR_TELEGRAM_USERNAME" target="_blank" class="modal-btn btn-tg">✈️ Telegram သို့ Screenshot ပို့ရန် (Plan B)</a>
+        </div>
+    </div>
+</div>
+
+<!-- 3. JavaScript Logic -->
+<script>
+    function openReviewModal() {
+        $("#review-modal").css("display", "flex").hide().fadeIn(300);
+    }
+    function closeReviewModal() {
+        $("#review-modal").fadeOut(300);
+    }
+</script>
+
+<!-- ========================================== -->
+<!-- 🔺 Review System Code Block End 🔺 -->
+<!-- ========================================== -->
 </body>
 </html>
