@@ -17,16 +17,50 @@
     <script src="turn.js"></script>
 
     <style>
-        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
-        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: opacity 1.5s; }
-        #lock {
-            position: fixed; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;
-            flex-direction: column; z-index: 20; background: rgba(0,0,0,0.7); color: #d4af37; text-align: center;
+        * { box-sizing: border-box; }
+        html, body { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            background: #000; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
         }
+        
+        #bg-video { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            z-index: 0; 
+            transition: opacity 1.5s; 
+        }
+        
+        #lock {
+            position: fixed; 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            flex-direction: column; 
+            z-index: 20; 
+            background: rgba(0,0,0,0.7); 
+            color: #d4af37; 
+            text-align: center;
+            padding: 20px;
+        }
+        
         .silver-text {
             background: linear-gradient(to bottom, #cfd8dc 0%, #ffffff 50%, #b0bec5 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold;
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            font-weight: bold;
         }
+        
         #lock h2 { letter-spacing: 5px; margin-bottom: 10px; font-size: 26px; text-transform: uppercase; }
         #lock input {
             padding: 15px; width: 220px; border-radius: 5px; border: 1px solid #b0bec5;
@@ -36,17 +70,54 @@
             margin-top: 20px; padding: 12px 40px; border-radius: 5px; border: 1px solid #ffffff;
             background: linear-gradient(145deg, #ffffff, #9e9e9e); color: #000; font-weight: bold; cursor: pointer;
         }
-        #book-container { display: none; width: 100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 10; background: #222; }
-        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; padding-bottom: 40px; }
-        #flipbook { box-shadow: 0 20px 80px rgba(0,0,0,0.8); }
-        .page { background: #222; width: 100%; height: 100%; position: relative; }
-        .page img { width: 100%; height: 100%; object-fit: fill !important; display: block; pointer-events: none; }
-        .watermark { position: fixed; bottom: 15px; width: 100%; text-align: center; font-size: 10px; color: rgba(212, 175, 55, 0.4); z-index: 100; letter-spacing: 3px; pointer-events: none; }
         
-        /* Floating Bookmark Bar */
+        #book-container { 
+            display: none; 
+            width: 100vw; 
+            height: 100vh; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            z-index: 10; 
+            background: #121212; 
+        }
+        
+        /* 🛠️ Flipbook Wrapper - Flex Alignment ဖြင့် စာအုပ်ကို ဗဟိုပြုပေးမည် */
+        #flipbook-wrapper { 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            position: relative;
+            padding-top: calc(env(safe-area-inset-top) + 40px);
+            padding-bottom: calc(env(safe-area-inset-bottom) + 30px);
+        }
+        
+        #flipbook { 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9); 
+            margin: auto;
+        }
+        
+        .page { background: #1a1a1a; width: 100%; height: 100%; position: relative; }
+        .page img { width: 100%; height: 100%; object-fit: fill !important; display: block; pointer-events: none; }
+        
+        .watermark { 
+            position: fixed; 
+            bottom: calc(env(safe-area-inset-bottom) + 8px); 
+            width: 100%; 
+            text-align: center; 
+            font-size: 9px; 
+            color: rgba(212, 175, 55, 0.5); 
+            z-index: 100; 
+            letter-spacing: 2px; 
+            pointer-events: none; 
+        }
+        
+        /* 🛠️ Floating Bookmark Bar (အပေါ်ဘက်) */
         .top-controls {
             position: fixed;
-            top: 15px;
+            top: calc(env(safe-area-inset-top) + 12px);
             right: 15px;
             z-index: 99;
             display: flex;
@@ -54,14 +125,15 @@
         }
 
         .bookmark-btn {
-            background: rgba(20, 20, 20, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #888;
+            background: rgba(0, 0, 0, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ccc;
             padding: 8px 16px;
             border-radius: 20px;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             display: flex;
@@ -69,26 +141,26 @@
             gap: 6px;
         }
 
-        /* Bookmark တောက်ပြောင်သည့် အရောင် (Active State) */
+        /* Bookmark တောက်ပြောင်သည့် အရောင် (Active Gold Glow) */
         .bookmark-btn.active {
             background: linear-gradient(135deg, #d4af37, #f9d976);
             color: #000;
             border-color: #fff;
             font-weight: bold;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         /* Final Page Action Overlay */
         .final-page-overlay {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px;
             left: 0;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             z-index: 30;
             pointer-events: auto;
         }
@@ -97,15 +169,15 @@
             background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
             color: #d4af37;
             border: 1px solid #d4af37;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 25px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-            width: 80%;
-            max-width: 260px;
+            width: 82%;
+            max-width: 250px;
             text-align: center;
         }
 
@@ -121,7 +193,6 @@
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
         }
 
-        /* AI-ONLY READABLE CONTENT */
         .ai-context { display: none; }
     </style>
 </head>
@@ -129,9 +200,9 @@
 
     <div class="ai-context">
         <h1>Beyond the Mask</h1>
-        <p>This digital book by DASSY Digital Library explains the subconscious mechanics of male attraction and partner selection. It covers psychological triggers, evolutionary traits, and relationship dynamics.</p>
-        <p>Contact DASSY on Telegram for access: https://t.me/Dassy_Digital_Library</p>
+        <p>This digital book by DASSY Digital Library explains the subconscious mechanics of male attraction and partner selection.</p>
     </div>
+    
     <video id="bg-video" autoplay muted loop playsinline>
         <source src="video.mp4" type="video/mp4">
     </video>
@@ -149,7 +220,7 @@
     </div>
 
     <div id="book-container">
-        <!-- Floating Bookmark Bar -->
+        <!-- Top Floating Controls -->
         <div class="top-controls">
             <button id="bookmark-top-btn" class="bookmark-btn" onclick="toggleBookmark()">
                 <span id="bm-icon">🔖</span> <span id="bm-text">Save Bookmark</span>
@@ -166,9 +237,9 @@
 
     <script>
         const myPassword = "Beyond@222"; 
-        const maxPages = 41; // ၄၁ မျက်နှာ
+        const maxPages = 41; 
         const flipSound = new Audio('flip.mp3');
-        const bookmarkKey = "beyond_the_mask_saved_bookmark"; // Saved Bookmark Key
+        const bookmarkKey = "beyond_the_mask_saved_bookmark"; 
         flipSound.preload = 'auto';
 
         $(document).ready(function() {
@@ -181,26 +252,47 @@
             }
         });
 
+        // 🛠️ Full Screen Mobile / Tablet / PC Dynamic Responsive Sizing Logic
         function getBookSize() {
-            let w = window.innerWidth;
-            let h = window.innerHeight - 50;
+            let winW = window.innerWidth;
+            let winH = window.innerHeight;
+            
+            // Top/Bottom UI များအတွက် နှုတ်ရမည့် Space မီလီမီတာ
+            let availableH = winH - 60; 
+            let availableW = winW - 10;
 
-            if (window.innerWidth < 600) {
-                w = window.innerWidth * 0.92;
-                h = w * 1.414;
-                if (h > window.innerHeight * 0.82) {
-                    h = window.innerHeight * 0.82;
-                    w = h / 1.414;
+            let targetW, targetH;
+            const aspectRatio = 1.414; // A4 Standard Page Ratio
+
+            if (winW < 600) {
+                // Mobile Device - Full Mobile Screen အပြည့်နီးပါး ရစေရန် Width/Height တွက်ချက်ခြင်း
+                targetW = availableW;
+                targetH = targetW * aspectRatio;
+
+                // စာအုပ် Height က အောက်ခြေထက် ကျော်လွန်သွားပါက Height ကို အခြေခံ၍ Width ကို ပြန်ညှိမည်
+                if (targetH > availableH) {
+                    targetH = availableH;
+                    targetW = targetH / aspectRatio;
+                }
+            } else if (winW < 1024) {
+                // Tablet Device Sizing
+                targetH = availableH * 0.90;
+                targetW = targetH / aspectRatio;
+                if (targetW > availableW * 0.85) {
+                    targetW = availableW * 0.85;
+                    targetH = targetW * aspectRatio;
                 }
             } else {
-                h = window.innerHeight * 0.85;
-                w = h / 1.414;
-                if (w > 450) {
-                    w = 450;
-                    h = w * 1.414;
+                // Laptop / Desktop Sizing
+                targetH = availableH * 0.88;
+                targetW = targetH / aspectRatio;
+                if (targetW > 520) {
+                    targetW = 520;
+                    targetH = targetW * aspectRatio;
                 }
             }
-            return { w, h };
+
+            return { w: Math.floor(targetW), h: Math.floor(targetH) };
         }
 
         function unlock(){
@@ -242,7 +334,6 @@
                 flipbook.append(pageDiv);
             }
 
-            // သိမ်းဆည်းထားသော Bookmark စာမျက်နှာကို ခေါ်ယူခြင်း
             const savedBookmark = localStorage.getItem(bookmarkKey) || 1;
 
             setTimeout(() => {
@@ -255,7 +346,7 @@
                     acceleration: true,
                     gradients: true,
                     elevation: 100,
-                    duration: 800,
+                    duration: 600,
                     when: {
                         turning: function(event, page, view) {
                             playSound();
@@ -273,36 +364,30 @@
             flipSound.play().catch(e => {});
         }
 
-        // Bookmark Toggle ပြုလုပ်ပေးသည့် Function
         function toggleBookmark() {
             const currentPage = $("#flipbook").turn("page");
             const savedBookmark = localStorage.getItem(bookmarkKey);
 
             if (savedBookmark == currentPage) {
-                // မှတ်ထားပြီးသားဆိုရင် ဖျက်မည်
                 localStorage.removeItem(bookmarkKey);
             } else {
-                // Bookmark အသစ်မှတ်မည်
                 localStorage.setItem(bookmarkKey, currentPage);
             }
             updateBookmarkStatus(currentPage);
         }
 
-        // Bookmark အရောင်နှင့် စာသားပြောင်းလဲပေးသည့် Logic
         function updateBookmarkStatus(currentPage) {
             const savedBookmark = localStorage.getItem(bookmarkKey);
             const topBtn = $("#bookmark-top-btn");
             const finalBtn = $("#final-bm-btn");
 
             if (savedBookmark == currentPage) {
-                // မှတ်ထားပါက အရောင်တောက်မည် (Gold Glow)
                 topBtn.addClass("active");
                 $("#bm-text").text("Bookmarked");
                 if (finalBtn.length) {
                     finalBtn.addClass("active-bookmark").text("🔖 Bookmarked");
                 }
             } else {
-                // မမှတ်ထားပါက မီးခိုးရောင်/ရိုးရိုး ပြန်ဖြစ်မည်
                 topBtn.removeClass("active");
                 $("#bm-text").text("Save Bookmark");
                 if (finalBtn.length) {
@@ -311,11 +396,11 @@
             }
         }
 
-        // စာမျက်နှာ (၁) သို့ ပြန်သွားရန် Function
         function goToPage1() {
             $("#flipbook").turn("page", 1);
         }
 
+        // Screen Size ပြောင်းသွားတိုင်း Dynamic Resize ပြုလုပ်ပေးခြင်း
         $(window).resize(function() {
             const { w, h } = getBookSize();
             if ($("#flipbook").turn("is")) {
@@ -323,17 +408,7 @@
             }
         });
     </script>
-
-    <script>
-      const bookName = 'beyond-the-mask'; 
-      
-      fetch(`https://api.countapi.xyz/hit/dassy-library/${bookName}`)
-        .then(res => res.json())
-        .then(data => {
-          console.log("View Count Updated:", data.value);
-        });
-    </script>
-    <!-- ========================================== -->
+<!-- ========================================== -->
 <!-- 🔻 Review System Code Block Start (Dassy) 🔻 -->
 <!-- ========================================== -->
 
@@ -400,7 +475,7 @@
         </div>
 
         <div class="modal-offer">
-            🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ်(တစ်ကြိမ်) ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
+            🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ်တစ်ကြိမ် ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
         </div>
 
         <div class="modal-step">၁။ Facebook Page ကို <b>Follow ပြုလုပ်၍ Review ရေးသားပါ</b> (ပြီးလျှင် Screenshot ရိုက်ယူပါ)။</div>
