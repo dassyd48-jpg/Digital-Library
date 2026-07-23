@@ -516,5 +516,99 @@
         $("#flipbook").turn("size", w, h);
     });
 </script>
+    <!-- ========================================== -->
+<!-- 🔻 Review System Code Block Start (Dassy) 🔻 -->
+<!-- ========================================== -->
+
+<!-- 1. CSS Style (Review Button & Modal Style) -->
+<style>
+    /* ⭐ Floating Review Button Style */
+    #review-trigger-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 15px;
+        z-index: 1500;
+        padding: 5px 10px;
+        background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
+        background-size: 200% 200%;
+        animation: gradientAnimation 3s ease infinite;
+        color: #fff;
+        border: 1px solid var(--gold, #d4af37);
+        font-size: 9.5px;
+        font-weight: bold;
+        border-radius: 15px;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    @keyframes gradientAnimation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* 💬 Modal Popup Style */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+    .modal-card { background: #1c0408; border: 1px solid var(--gold, #d4af37); border-radius: 12px; max-width: 420px; width: 100%; padding: 25px 20px; color: #fff; text-align: center; position: relative; box-shadow: 0 0 25px rgba(212, 175, 55, 0.3); }
+    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 22px; color: var(--gold, #d4af37); cursor: pointer; background: none; border: none; }
+    .modal-title { font-size: 16px; color: var(--gold, #d4af37); font-weight: bold; margin-bottom: 12px; line-height: 1.4; }
+    .modal-text { font-size: 12px; color: #e0e0e0; line-height: 1.7; margin-bottom: 15px; text-align: justify; }
+    .modal-offer { background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--gold, #d4af37); padding: 10px; font-size: 12px; color: var(--gold, #d4af37); font-weight: bold; margin-bottom: 20px; text-align: center; }
+    .modal-step { font-size: 11px; color: #bbb; margin-bottom: 8px; text-align: left; }
+    .modal-btn-group { display: flex; flex-direction: column; gap: 10px; }
+    .modal-btn { display: block; width: 100%; padding: 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; text-align: center; transition: all 0.3s ease; }
+    .btn-fb { background: #1877f2; color: #fff; }
+    .btn-msg { background: linear-gradient(45deg, #0084ff, #a832a7); color: #fff; }
+    .btn-tg { background: #0088cc; color: #fff; }
+
+    @media screen and (max-width: 768px) {
+        #review-trigger-btn { bottom: 12px; right: 8px; padding: 4px 8px; font-size: 8.5px; }
+    }
+</style>
+
+<!-- 2. HTML Elements (Button & Popup Modal) -->
+<button id="review-trigger-btn" onclick="openReviewModal()">⭐ Review ပေးရန် (15% OFF)</button>
+
+<div id="review-modal" class="modal-overlay">
+    <div class="modal-card">
+        <button class="modal-close" onclick="closeReviewModal()">✕</button>
+        <div class="modal-title">သင့်၏ ထင်မြင်ယူဆချက်သည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
+        
+        <div class="modal-text">
+            စာဖတ်သူ၏ Review တစ်ခုနှင့် Follow တစ်ခုသည် နောက်ထပ် စာအုပ်ဖတ်ရှုမည့် လူငယ်များအတွက် များစွာ အကျိုးသက်ရောက်မှုရှိပြီး စာပေ မဖတ်ရှုရသေးသူများအတွက်လည်း လမ်းပြအလင်းရောင်နှင့် အားအင်များစွာ ဖြစ်စေပါသည်။
+        </div>
+
+        <div class="modal-offer">
+            🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ် ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
+        </div>
+
+        <div class="modal-step">၁။ Facebook Page ကို <b>Follow ပြုလုပ်၍ Review ရေးသားပါ</b> (ပြီးလျှင် Screenshot ရိုက်ယူပါ)။</div>
+        <div class="modal-step" style="margin-bottom: 15px;">၂။ Screenshot ကို Messenger (သို့မဟုတ်) Telegram သို့ ပေးပို့၍ Discount ရယူပါ။</div>
+
+        <div class="modal-btn-group">
+             <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">👍 Follow လုပ်ရန် & Review ရေးရန်</a>
+            <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-msg">💬 Messenger သို့ Screenshot ပို့ရန်</a>
+            <a href="https://t.me/YOUR_TELEGRAM_USERNAME" target="_blank" class="modal-btn btn-tg">✈️ Telegram သို့ Screenshot ပို့ရန် (Plan B)</a>
+        </div>
+    </div>
+</div>
+
+<!-- 3. JavaScript Logic -->
+<script>
+    function openReviewModal() {
+        $("#review-modal").css("display", "flex").hide().fadeIn(300);
+    }
+    function closeReviewModal() {
+        $("#review-modal").fadeOut(300);
+    }
+</script>
+
+<!-- ========================================== -->
+<!-- 🔺 Review System Code Block End 🔺 -->
+<!-- ========================================== -->
 </body>
 </html>
