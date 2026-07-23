@@ -583,10 +583,10 @@
     /* ⭐ Floating Review Button Style */
     #review-trigger-btn {
         position: fixed;
-        bottom: 20px;
+        bottom: 60px; /* 🛠️ ဒီနေရာမှာ 20px မှ 60px သို့ တိုးမြှင့်ထားပါသည် (အပေါ်သို့ တက်သွားမည်) */
         right: 15px;
         z-index: 1500;
-        padding: 5px 10px;
+        padding: 6px 12px;
         background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
         background-size: 200% 200%;
         animation: gradientAnimation 3s ease infinite;
@@ -623,8 +623,14 @@
     .btn-msg { background: linear-gradient(45deg, #0084ff, #a832a7); color: #fff; }
     .btn-tg { background: #0088cc; color: #fff; }
 
+    /* 🛠️ Mobile Phone Media Query ထဲမှာလည်း အပေါ်သို့ မြှင့်ပေးထားပါသည် */
     @media screen and (max-width: 768px) {
-        #review-trigger-btn { bottom: 12px; right: 8px; padding: 4px 8px; font-size: 8.5px; }
+        #review-trigger-btn { 
+            bottom: 50px; /* ဖုန်းမှာ bottom: 12px မှ 50px သို့ ပြင်ဆင်ထားသည် */
+            right: 12px; 
+            padding: 5px 10px; 
+            font-size: 9px; 
+        }
     }
 </style>
 
@@ -634,21 +640,21 @@
 <div id="review-modal" class="modal-overlay">
     <div class="modal-card">
         <button class="modal-close" onclick="closeReviewModal()">✕</button>
-        <div class="modal-title”>သင့်၏ စာအုပ်အပေါ်အမြင်နှင့် တန်ဖိုးရှိသော မျှဝေမှုများသည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
+        <div class="modal-title">သင့်၏ စာအုပ်အပေါ်အမြင်နှင့် တန်ဖိုးရှိသော မျှဝေမှုများသည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
         
         <div class="modal-text">
             စာဖတ်သူ၏ Review တစ်ခုနှင့် Follow တစ်ခုသည် နောက်ထပ် စာအုပ်ဖတ်ရှုမည့် လူငယ်များအတွက် များစွာ အကျိုးသက်ရောက်မှုရှိပြီး စာပေ မဖတ်ရှုရသေးသူများအတွက်လည်း လမ်းပြအလင်းရောင်နှင့် အားအင်များစွာ ဖြစ်စေပါသည်။
         </div>
 
         <div class="modal-offer">
-            🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ်(တစ်ကြိမ်) ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
+            🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ်တစ်ကြိမ် ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
         </div>
 
         <div class="modal-step">၁။ Facebook Page ကို <b>Follow ပြုလုပ်၍ Review ရေးသားပါ</b> (ပြီးလျှင် Screenshot ရိုက်ယူပါ)။</div>
         <div class="modal-step" style="margin-bottom: 15px;">၂။ Screenshot ကို Messenger (သို့မဟုတ်) Telegram သို့ ပေးပို့၍ Discount ရယူပါ။</div>
 
         <div class="modal-btn-group">
-             <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">👍 Follow လုပ်ရန် & Review ရေးရန်</a>
+            <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">👍 Follow လုပ်ရန် & Review ရေးရန်</a>
             <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-msg">💬 Messenger သို့ Screenshot ပို့ရန်</a>
             <a href="https://t.me/YOUR_TELEGRAM_USERNAME" target="_blank" class="modal-btn btn-tg">✈️ Telegram သို့ Screenshot ပို့ရန် (Plan B)</a>
         </div>
