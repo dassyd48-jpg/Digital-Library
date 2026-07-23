@@ -82,7 +82,7 @@
             background: #121212; 
         }
         
-        /* 🛠️ Flipbook Wrapper - Flex Alignment ဖြင့် စာအုပ်ကို ဗဟိုပြုပေးမည် */
+        /* 🛠️ Flipbook Wrapper - အပေါ်ဘက် Spacing ကို လျှော့ချထားပါသည် */
         #flipbook-wrapper { 
             width: 100%; 
             height: 100%; 
@@ -90,8 +90,8 @@
             justify-content: center; 
             align-items: center; 
             position: relative;
-            padding-top: calc(env(safe-area-inset-top) + 40px);
-            padding-bottom: calc(env(safe-area-inset-bottom) + 30px);
+            padding-top: calc(env(safe-area-inset-top) + 10px);
+            padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
         }
         
         #flipbook { 
@@ -104,11 +104,11 @@
         
         .watermark { 
             position: fixed; 
-            bottom: calc(env(safe-area-inset-bottom) + 8px); 
+            bottom: calc(env(safe-area-inset-bottom) + 4px); 
             width: 100%; 
             text-align: center; 
-            font-size: 9px; 
-            color: rgba(212, 175, 55, 0.5); 
+            font-size: 8px; 
+            color: rgba(212, 175, 55, 0.4); 
             z-index: 100; 
             letter-spacing: 2px; 
             pointer-events: none; 
@@ -117,31 +117,30 @@
         /* 🛠️ Floating Bookmark Bar (အပေါ်ဘက်) */
         .top-controls {
             position: fixed;
-            top: calc(env(safe-area-inset-top) + 12px);
-            right: 15px;
+            top: calc(env(safe-area-inset-top) + 8px);
+            right: 12px;
             z-index: 99;
             display: flex;
             gap: 10px;
         }
 
         .bookmark-btn {
-            background: rgba(0, 0, 0, 0.65);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: #ccc;
-            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
 
-        /* Bookmark တောက်ပြောင်သည့် အရောင် (Active Gold Glow) */
         .bookmark-btn.active {
             background: linear-gradient(135deg, #d4af37, #f9d976);
             color: #000;
@@ -181,13 +180,7 @@
             text-align: center;
         }
 
-        .action-btn:hover {
-            background: linear-gradient(135deg, #d4af37, #f9d976);
-            color: #000;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
-        }
-
-        .action-btn.active-bookmark {
+        .action-btn:hover, .action-btn.active-bookmark {
             background: linear-gradient(135deg, #d4af37, #f9d976);
             color: #000;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
@@ -252,47 +245,44 @@
             }
         });
 
-        // 🛠️ Full Screen Mobile / Tablet / PC Dynamic Responsive Sizing Logic
+        // 🛠️ Full Screen Sizing - အပေါ်/အောက် Maximize ဖြစ်အောင် ညှိထားပါသည်
         function getBookSize() {
             let winW = window.innerWidth;
             let winH = window.innerHeight;
             
-            // Top/Bottom UI များအတွက် နှုတ်ရမည့် Space မီလီမီတာ
-            let availableH = winH - 60; 
-            let availableW = winW - 10;
-
-            let targetW, targetH;
-            const aspectRatio = 1.414; // A4 Standard Page Ratio
+            const aspectRatio = 1.414; // Standard Book Ratio
 
             if (winW < 600) {
-                // Mobile Device - Full Mobile Screen အပြည့်နီးပါး ရစေရန် Width/Height တွက်ချက်ခြင်း
-                targetW = availableW;
-                targetH = targetW * aspectRatio;
+                // Mobile Screen
+                let targetH = winH - 25; // အပေါ်/အောက် Gap ကို အနည်းဆုံးအထိ လျှော့ချထားသည်
+                let targetW = targetH / aspectRatio;
 
-                // စာအုပ် Height က အောက်ခြေထက် ကျော်လွန်သွားပါက Height ကို အခြေခံ၍ Width ကို ပြန်ညှိမည်
-                if (targetH > availableH) {
-                    targetH = availableH;
-                    targetW = targetH / aspectRatio;
+                // Screen ထက် ကျော်ပါက Width ကို အကျယ်ဆုံး ဆွဲဆန့်မည်
+                if (targetW > winW - 8) {
+                    targetW = winW - 8;
+                    targetH = targetW * aspectRatio;
                 }
+
+                return { w: Math.floor(targetW), h: Math.floor(targetH) };
             } else if (winW < 1024) {
-                // Tablet Device Sizing
-                targetH = availableH * 0.90;
-                targetW = targetH / aspectRatio;
-                if (targetW > availableW * 0.85) {
-                    targetW = availableW * 0.85;
+                // Tablet
+                let targetH = winH - 40;
+                let targetW = targetH / aspectRatio;
+                if (targetW > winW * 0.85) {
+                    targetW = winW * 0.85;
                     targetH = targetW * aspectRatio;
                 }
+                return { w: Math.floor(targetW), h: Math.floor(targetH) };
             } else {
-                // Laptop / Desktop Sizing
-                targetH = availableH * 0.88;
-                targetW = targetH / aspectRatio;
-                if (targetW > 520) {
-                    targetW = 520;
+                // Laptop / Desktop
+                let targetH = winH - 60;
+                let targetW = targetH / aspectRatio;
+                if (targetW > 540) {
+                    targetW = 540;
                     targetH = targetW * aspectRatio;
                 }
+                return { w: Math.floor(targetW), h: Math.floor(targetH) };
             }
-
-            return { w: Math.floor(targetW), h: Math.floor(targetH) };
         }
 
         function unlock(){
@@ -320,7 +310,6 @@
                 const img = $('<img loading="lazy" />').attr('src', `page${i}.jpg`);
                 pageDiv.append(img);
 
-                // နိဂုံးစာမျက်နှာ (Page 41) တွင် ခလုတ်များထည့်သွင်းခြင်း
                 if (i === maxPages) {
                     const finalOverlay = $(`
                         <div class="final-page-overlay">
@@ -400,7 +389,6 @@
             $("#flipbook").turn("page", 1);
         }
 
-        // Screen Size ပြောင်းသွားတိုင်း Dynamic Resize ပြုလုပ်ပေးခြင်း
         $(window).resize(function() {
             const { w, h } = getBookSize();
             if ($("#flipbook").turn("is")) {
@@ -408,7 +396,7 @@
             }
         });
     </script>
-<!-- ========================================== -->
+    <!-- ========================================== -->
 <!-- 🔻 Review System Code Block Start (Dassy) 🔻 -->
 <!-- ========================================== -->
 
