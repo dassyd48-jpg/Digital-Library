@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script>
+    // စာလုံးအသေးနဲ့ ဝင်လာသမျှကို စာလုံးအကြီး URL သို့ အလိုအလျောက် ပြောင်းပေးမည်
+    var currentUrl = window.location.href;
+    var correctUrl = currentUrl.replace('/digital-library/', '/Digital-Library/');
+    if (currentUrl !== correctUrl) {
+      window.location.replace(correctUrl);
+    }
+  </script>
+</head>
+<body>
+</body>
+</html>
