@@ -83,13 +83,19 @@
         }
         
         #flipbook-wrapper { 
-            width: 100%; 
-            height: 100%; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; /* 🛠️ အလယ်ဗဟိုမှာ ရှိစေရန် */
-            padding: 0; /* 🛠️ အပို Padding များကို ဖယ်ရှားထားသည် */
-        }
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
+    justify-content: flex-start; /* 👈 justify-content ကို flex-start အဖြစ် ပြောင်းလဲလိုက်ပါတယ် */
+    padding: 0; /* 🛠️ အပို Padding များကို ဖယ်ရှားထားသည် */
+    padding-top: calc(env(safe-area-inset-top) + 8px); /* 👈 Padding top ကို ချိန်ညှိပေးထားပါတယ် */
+}
+
+@media screen and (max-width: 600px) { /* 👈 screen < 600px အတွက် padding-top ကို ချိန်ညှိပေးပါတယ် */
+    #flipbook-wrapper { 
+        padding-top: calc(env(safe-area-inset-top) + (var(--h) / var(--w) * var(--w)));
+    }
+}
         
         #flipbook { 
             box-shadow: 0 10px 40px rgba(0,0,0,0.9); 
