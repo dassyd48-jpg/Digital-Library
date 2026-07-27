@@ -13,7 +13,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #115e59; /* Deep Pond Teal/Green Base */
+            background-color: #115e59;
             font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
             user-select: none;
             -webkit-user-select: none;
@@ -28,10 +28,9 @@
             font-family: 'Pyidaungsu', 'Myanmar3', 'Yunghkio', sans-serif;
         }
 
-        /* Responsive UI Scaling with clamp() */
         #hud {
             top: clamp(1rem, 2vh, 1.5rem);
-            left: clamp(7rem, 15vw, 9rem); /* Prevent overlapping with top-left buttons */
+            left: clamp(7rem, 15vw, 9rem);
             right: clamp(1rem, 2vw, 1.5rem);
             max-width: clamp(280px, 45vw, 450px);
         }
@@ -41,19 +40,7 @@
             right: clamp(1rem, 2vw, 1.5rem);
         }
 
-        /* Adaptive Anchoring for Modal Windows */
-        .adaptive-panel {
-            width: clamp(280px, 90vw, 420px);
-            padding: clamp(1.5rem, 4vw, 2.5rem);
-            border-radius: clamp(1.5rem, 5vw, 3rem);
-        }
-
-        /* Mobile Scale Optimization */
         @media (max-width: 768px) {
-            .mobile-scale {
-                transform: scale(0.85);
-                transform-origin: top left;
-            }
             #hud {
                 left: 6.5rem;
                 top: 0.75rem;
@@ -63,15 +50,12 @@
                 bottom: 1rem;
                 right: 1rem;
             }
-            .adaptive-panel {
-                transform: scale(0.9);
-            }
         }
     </style>
 </head>
 <body class="relative">
 
-    <!-- TOP NAVIGATION BUTTONS (HOME & RESET) -->
+    <!-- TOP NAVIGATION BUTTONS -->
     <div class="absolute top-4 left-4 z-50 flex gap-2 pointer-events-auto">
       <button onclick="location.href='index.html?fromGame=true'" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-emerald-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပင်မစာမျက်နှာ">
         🏠
@@ -81,14 +65,14 @@
       </button>
     </div>
 
-    <!-- HUD (HEADS-UP DISPLAY) -->
+    <!-- HUD -->
     <div id="hud" class="absolute pointer-events-none z-30 flex flex-col space-y-2">
         <div class="flex items-center space-x-3 bg-teal-950/90 backdrop-blur-md p-3 rounded-2xl border border-emerald-500/20 shadow-lg">
             <span class="text-[10px] sm:text-xs font-black text-emerald-400 tracking-wider uppercase burmese-font">တိုးတက်မှု</span>
             <div class="flex-1 bg-black/40 h-3 sm:h-4 rounded-full overflow-hidden p-0.5 border border-white/5">
                 <div id="xp-bar" class="bg-gradient-to-r from-emerald-400 via-green-400 to-teal-400 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
             </div>
-            <span id="level-display" class="bg-emerald-600 text-white text-[9px] sm:text-[10px] font-black px-2 sm:px-3 py-1 rounded-full uppercase tracking-widest burmese-font">လှိုင်း ၁</span>
+            <span id="level-display" class="bg-emerald-600 text-white text-[9px] sm:text-[10px] font-black px-2 sm:px-3 py-1 rounded-full uppercase tracking-widest burmese-font">Level 1</span>
         </div>
         
         <div class="flex items-center space-x-3">
@@ -109,32 +93,17 @@
         <span id="hp-display" class="text-emerald-400 font-black tracking-wider text-xs sm:text-sm">100 / 100</span>
     </div>
 
-    <!-- UPGRADE MODAL -->
-    <div id="upgrade-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-[100] flex items-center justify-center p-6 transition-all duration-300">
-        <div class="bg-[#115e59] border-2 border-emerald-500/20 adaptive-panel text-center shadow-[0_0_100px_rgba(16,185,129,0.15)] scale-95 transition-transform">
-            <div class="relative mb-6">
-                <div class="text-3xl sm:text-4xl">🐸✨🌸</div>
-            </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-emerald-400 tracking-wider mb-2 uppercase burmese-font">ဖားလေး အစွမ်းမြှင့်ရန်!</h2>
-            <p class="text-emerald-200 text-[10px] sm:text-xs tracking-widest mb-6 uppercase burmese-font">ဖားလေးအတွက် အစွမ်းတစ်ခုရွေးချယ်ပါ</p>
-            
-            <div id="upgrade-options" class="space-y-3 sm:space-y-4">
-                <!-- Upgrades dynamic render -->
-            </div>
-        </div>
-    </div>
-
     <canvas id="gameCanvas"></canvas>
 
-    <!-- INTRO & GAME OVER OVERLAY SCREEN -->
+    <!-- INTRO / GAME OVER / VICTORY OVERLAY SCREEN -->
     <div id="overlay-screen" class="absolute inset-0 bg-teal-950/95 backdrop-blur-md z-[90] flex flex-col items-center justify-center text-center p-6">
-        <h1 class="text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-green-400 to-teal-300 tracking-widest mb-2 uppercase drop-shadow-[0_0_30px_rgba(16,185,129,0.3)] burmese-font">ကြာကန်စွန့်စားခန်း</h1>
-        <p class="text-emerald-400 text-[9px] sm:text-[10px] uppercase font-black tracking-[0.3em] mb-12 burmese-font">"ဖ"အက္ခရာ ပစ်ဂိမ်း</p>
+        <h1 id="screen-title" class="text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-green-400 to-teal-300 tracking-widest mb-2 uppercase drop-shadow-[0_0_30px_rgba(16,185,129,0.3)] burmese-font">ကြာကန်စွန့်စားခန်း</h1>
+        <p id="screen-subtitle" class="text-emerald-400 text-[10px] sm:text-xs uppercase font-black tracking-[0.2em] mb-8 burmese-font">"ဖ" အက္ခရာ ပစ်ဂိမ်း (Level 1 မှ 3 အထိ)</p>
         
         <div id="game-stats" class="hidden bg-white/5 border border-white/5 rounded-3xl p-5 mb-8 max-w-xs w-full text-left space-y-3 font-sans">
-            <div class="flex justify-between"><span class="text-emerald-200 burmese-font">"ဖ" ကြာပန်း စုဆောင်းမိမှု</span><span id="stat-coins" class="text-white font-bold">0</span></div>
-            <div class="flex justify-between"><span class="text-emerald-200 burmese-font">မှားယွင်းမှု ရှောင်ရှားနိုင်မှု</span><span id="stat-kills" class="text-white font-bold">0</span></div>
-            <div class="flex justify-between"><span class="text-emerald-200 burmese-font">ရောက်ရှိသည့် လှိုင်းအဆင့်</span><span id="stat-level" class="text-emerald-400 font-bold">လှိုင်း ၁</span></div>
+            <div class="flex justify-between"><span class="text-emerald-200 burmese-font">"ဖ" စုဆောင်းမိမှု</span><span id="stat-coins" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-emerald-200 burmese-font">မှားယွင်းမှု အရေအတွက်</span><span id="stat-kills" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-emerald-200 burmese-font">ရောက်ရှိခဲ့သည့် Level</span><span id="stat-level" class="text-emerald-400 font-bold">Level 1</span></div>
         </div>
 
         <button id="start-btn" class="px-12 py-5 sm:px-16 sm:py-6 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs sm:text-sm uppercase tracking-[0.2em] rounded-full transition-all shadow-[0_20px_50px_rgba(16,185,129,0.3)] border-b-4 border-emerald-800 active:scale-95 pointer-events-auto burmese-font">စတင်ခုန်ကူးမည်</button>
@@ -218,12 +187,21 @@
             'ယ', 'ရ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ', 'ဏ', 'ဎ'
         ];
 
+        // Level Config: Target "ဖ" Count Requirements
+        const levelConfig = {
+            1: { targetCount: 5, speedMultiplier: 1.0 },
+            2: { targetCount: 10, speedMultiplier: 1.3 },
+            3: { targetCount: 15, speedMultiplier: 1.6 }
+        };
+
         const game = {
             running: false,
             paused: false,
             score: 0,
             correctPops: 0,
             incorrectPops: 0,
+            level: 1,
+            levelPops: 0,
             targetLetter: 'ဖ',
             camera: { x: 0, y: 0 }
         };
@@ -231,19 +209,13 @@
         const player = {
             x: 0,
             y: 0,
-            vx: 0,
-            vy: 0,
             angle: 0,
             radius: 20,
             hp: 100,
             maxHp: 100,
-            xp: 0,
-            maxXp: 100,
-            level: 1,
             speed: 5.0, 
             baseSpeed: 5.0,
-            range: 240,         
-            damage: 50,
+            range: 260,         
             shootCooldown: 0.20, 
             lastShotTime: 0
         };
@@ -254,8 +226,8 @@
             letterBubbles: [], 
             collectibles: [],  
             scenery: [],
-            particles: [], // For blossoming effects
-            fireflies: []  // For ambient night pond lights
+            particles: [], 
+            fireflies: []  
         };
 
         function initScenery() {
@@ -264,7 +236,6 @@
             entities.particles = [];
             const mapRadius = 1600;
 
-            // 1. Large Lotus Pads (ကြာရွက်ကြီးများ)
             for (let i = 0; i < 35; i++) {
                 entities.scenery.push({
                     type: 'lotuspad',
@@ -275,7 +246,6 @@
                 });
             }
 
-            // 2. Water Ripples (ရေလှိုင်းဂယက်လေးများ)
             for (let i = 0; i < 30; i++) {
                 entities.scenery.push({
                     type: 'ripple',
@@ -286,7 +256,6 @@
                 });
             }
 
-            // 3. Ambient Fireflies (ပိုးစုန်းကြူးများ)
             for (let i = 0; i < 25; i++) {
                 entities.fireflies.push({
                     x: (Math.random() - 0.5) * mapRadius * 2,
@@ -315,11 +284,6 @@
                     decay: 0.02 + Math.random() * 0.02
                 });
             }
-        }
-
-        function changeTargetLetter() {
-            game.targetLetter = 'ဖ'; // Target always remains "ဖ"
-            document.getElementById('target-letter-display').innerText = game.targetLetter;
         }
 
         function drawLotusPad(ctx, x, y, radius, angle) {
@@ -538,7 +502,7 @@
             if (!game.running || game.paused) return;
 
             const angle = Math.random() * Math.PI * 2;
-            const dist = 350 + Math.random() * 200;
+            const dist = 120 + Math.random() * 100;
             const x = player.x + Math.cos(angle) * dist;
             const y = player.y + Math.sin(angle) * dist;
 
@@ -549,60 +513,40 @@
                 chosenLetter = filtered[Math.floor(Math.random() * filtered.length)];
             }
 
+            const currentSpeedMultiplier = levelConfig[game.level] ? levelConfig[game.level].speedMultiplier : 1;
+
             entities.letterBubbles.push({
                 x,
                 y,
                 letter: chosenLetter,
                 scale: 1.0 + Math.random() * 0.2,
-                speed: 0.4 + Math.random() * 0.6, 
+                speed: (0.3 + Math.random() * 0.4) * currentSpeedMultiplier, 
                 angleOffset: Math.random() * Math.PI * 2,
-                hp: 1,
                 spawnTime: Date.now() 
             });
         }
 
         setInterval(spawnLetterBubble, 950);
 
-        const UPGRADE_POOL = [
-            { id: 'dmg', name: "ရေပူဖောင်း ဖိအားမြှင့်စနစ်", desc: '+၂၅% ဖားရေပူဖောင်း ပစ်ခတ်မှုအားပြင်းခြင်း', stat: 'damage', factor: 1.25 },
-            { id: 'rng', name: 'ကြာကန် ရေဒါအာရုံခံစနစ်', desc: '+၁၅% ရေအောက်ရေဒါ ပိုမိုကျယ်ပြန့်လာခြင်း', stat: 'range', factor: 1.15 },
-            { id: 'spd', name: 'မြန်နှုန်းမြင့် ဖားခြေထောက်', desc: '+၁၅% ဖားလေး ရေကူးနှုန်းပိုမြန်လာခြင်း', stat: 'baseSpeed', factor: 1.15 },
-            { id: 'rate', name: 'အဆုတ်စွမ်းရည်မြှင့်တင်ခြင်း', desc: '-၁၅% ကျည်ပြန်ဖြည့်ချိန် ပိုမိုမြန်ဆန်ခြင်း', stat: 'shootCooldown', factor: 0.85 }
-        ];
+        function registerTargetHit() {
+            game.correctPops++;
+            game.levelPops++;
+            game.score += 15;
 
-        function triggerLevelUp() {
-            playSound('levelup');
-            player.level++;
-            player.xp = 0;
-            player.maxXp = Math.round(player.maxXp * 1.5);
-            
-            const optionsContainer = document.getElementById('upgrade-options');
-            optionsContainer.innerHTML = '';
-            
-            const shuffled = [...UPGRADE_POOL].sort(() => 0.5 - Math.random()).slice(0, 3);
-            shuffled.forEach(upg => {
-                const btn = document.createElement('button');
-                btn.className = "w-full p-4 bg-[#134e4a] border border-emerald-500/20 hover:border-emerald-400 rounded-2xl flex items-center justify-between text-left transition-all active:scale-95 pointer-events-auto";
-                btn.innerHTML = `
-                    <div class="burmese-font">
-                        <h4 class="text-white font-black text-xs sm:text-sm tracking-wide uppercase">${upg.name}</h4>
-                        <p class="text-emerald-200 text-[9px] sm:text-[10px] mt-1 uppercase tracking-wider">${upg.desc}</p>
-                    </div>
-                    <span class="text-lg">🌿</span>
-                `;
-                btn.onclick = () => applyUpgrade(upg);
-                optionsContainer.appendChild(btn);
-            });
+            const targetMax = levelConfig[game.level].targetCount;
 
-            document.getElementById('upgrade-modal').classList.remove('hidden');
-            game.paused = true;
-        }
-
-        function applyUpgrade(upg) {
-            player[upg.stat] *= upg.factor;
-            if(upg.stat === 'baseSpeed') player.speed = player.baseSpeed;
-            document.getElementById('upgrade-modal').classList.add('hidden');
-            game.paused = false;
+            if (game.levelPops >= targetMax) {
+                if (game.level < 3) {
+                    game.level++;
+                    game.levelPops = 0;
+                    playSound('levelup');
+                } else {
+                    victory();
+                    return;
+                }
+            } else {
+                playSound('hit');
+            }
         }
 
         let lastTime = performance.now();
@@ -610,13 +554,11 @@
         function updateGame(dt) {
             if (!game.running || game.paused) return;
 
-            // Player HP check -> Game Over
             if (player.hp <= 0) {
                 gameOver();
                 return;
             }
 
-            // Check if Frog is sitting on a Lily Pad (Speed Boost)
             let onLilyPad = false;
             for (let i = 0; i < entities.scenery.length; i++) {
                 const item = entities.scenery[i];
@@ -631,12 +573,7 @@
                 }
             }
 
-            // Apply 50% Speed Boost on Lily Pad
-            if (onLilyPad) {
-                player.speed = player.baseSpeed * 1.5;
-            } else {
-                player.speed = player.baseSpeed;
-            }
+            player.speed = onLilyPad ? player.baseSpeed * 1.5 : player.baseSpeed;
 
             let moveX = 0;
             let moveY = 0;
@@ -665,25 +602,19 @@
             game.camera.x += (player.x - window.innerWidth / 2 - game.camera.x) * 0.1 * dt;
             game.camera.y += (player.y - window.innerHeight / 2 - game.camera.y) * 0.1 * dt;
 
-            // Update Particles
             for (let i = entities.particles.length - 1; i >= 0; i--) {
                 const p = entities.particles[i];
                 p.x += p.vx * dt;
                 p.y += p.vy * dt;
                 p.alpha -= p.decay * dt;
-                if (p.alpha <= 0) {
-                    entities.particles.splice(i, 1);
-                }
+                if (p.alpha <= 0) entities.particles.splice(i, 1);
             }
 
-            // Update Fireflies
             entities.fireflies.forEach(ff => {
                 ff.pulse += 0.03 * dt;
                 ff.x += Math.cos(ff.angle) * ff.speed * dt;
                 ff.y += Math.sin(ff.angle) * ff.speed * dt;
-                if (Math.random() < 0.01) {
-                    ff.angle = Math.random() * Math.PI * 2;
-                }
+                if (Math.random() < 0.01) ff.angle = Math.random() * Math.PI * 2;
             });
 
             for (let i = entities.projectiles.length - 1; i >= 0; i--) {
@@ -712,21 +643,8 @@
                         createBlossomParticles(bubble.x, bubble.y, isTarget);
 
                         if (isTarget) {
-                            playSound('hit');
                             entities.letterBubbles.splice(j, 1);
-                            
-                            game.correctPops++;
-                            game.score += 15;
-                            player.xp += 25; 
-                            if (player.xp >= player.maxXp) triggerLevelUp();
-
-                            entities.collectibles.push({
-                                x: bubble.x,
-                                y: bubble.y,
-                                value: 25
-                            });
-
-                            changeTargetLetter(); 
+                            registerTargetHit();
                         } else {
                             playSound('fail');
                             game.incorrectPops++;
@@ -750,8 +668,8 @@
                 }
 
                 const driftTime = Date.now() * 0.001 + bubble.angleOffset;
-                bubble.x += Math.sin(driftTime) * 0.8 * dt;
-                bubble.y += Math.cos(driftTime * 0.5) * 0.6 * dt;
+                bubble.x += Math.sin(driftTime) * bubble.speed * dt;
+                bubble.y += Math.cos(driftTime * 0.5) * bubble.speed * dt;
 
                 const dx = player.x - bubble.x;
                 const dy = player.y - bubble.y;
@@ -762,13 +680,8 @@
                     createBlossomParticles(bubble.x, bubble.y, isTarget);
 
                     if (isTarget) {
-                        playSound('coin');
-                        game.correctPops++;
-                        game.score += 25;
-                        player.xp += 30;
-                        if (player.xp >= player.maxXp) triggerLevelUp();
                         entities.letterBubbles.splice(idx, 1);
-                        changeTargetLetter();
+                        registerTargetHit();
                     } else {
                         playSound('fail');
                         entities.letterBubbles.splice(idx, 1);
@@ -781,27 +694,10 @@
                 }
             }
 
-            for (let i = entities.collectibles.length - 1; i >= 0; i--) {
-                const item = entities.collectibles[i];
-                const dx = player.x - item.x;
-                const dy = player.y - item.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist < player.range) {
-                    item.x += (dx / dist) * 7.5 * dt;
-                    item.y += (dy / dist) * 7.5 * dt;
-                }
-
-                if (dist < player.radius + 10) {
-                    playSound('coin');
-                    player.xp += item.value;
-                    if (player.xp >= player.maxXp) triggerLevelUp();
-                    entities.collectibles.splice(i, 1);
-                }
-            }
-
-            document.getElementById('xp-bar').style.width = `${(player.xp / player.maxXp) * 100}%`;
-            document.getElementById('level-display').innerText = `လှိုင်း ${player.level}`;
+            // Update Level HUD Progress Bar
+            const targetMax = levelConfig[game.level].targetCount;
+            document.getElementById('xp-bar').style.width = `${(game.levelPops / targetMax) * 100}%`;
+            document.getElementById('level-display').innerText = `Level ${game.level}`;
             document.getElementById('cash-display').innerText = game.score;
             document.getElementById('hp-display').innerText = `${Math.max(0, Math.round(player.hp))} / ${player.maxHp}`;
         }
@@ -823,13 +719,6 @@
                 if (item.type === 'lotuspad') drawLotusPad(ctx, item.x, item.y, item.radius, item.angle);
             });
 
-            entities.collectibles.forEach(item => {
-                ctx.fillStyle = '#a7f3d0'; 
-                ctx.beginPath();
-                ctx.arc(item.x, item.y, 5, 0, Math.PI * 2);
-                ctx.fill();
-            });
-
             entities.projectiles.forEach(proj => {
                 ctx.save();
                 ctx.fillStyle = 'rgba(52, 211, 153, 0.5)'; 
@@ -846,7 +735,6 @@
 
             drawPlayer(ctx, player.x, player.y);
 
-            // Draw Blossom Particles
             entities.particles.forEach(p => {
                 ctx.save();
                 ctx.globalAlpha = p.alpha;
@@ -857,7 +745,6 @@
                 ctx.restore();
             });
 
-            // Draw Fireflies
             entities.fireflies.forEach(ff => {
                 ctx.save();
                 const currentAlpha = 0.3 + Math.abs(Math.sin(ff.pulse)) * 0.7;
@@ -885,20 +772,19 @@
 
         function startGame() {
             player.hp = player.maxHp;
-            player.xp = 0;
-            player.level = 1;
             player.x = 0;
             player.y = 0;
             player.angle = 0;
             game.score = 0;
             game.correctPops = 0;
             game.incorrectPops = 0;
+            game.level = 1;
+            game.levelPops = 0;
             entities.letterBubbles = [];
             entities.projectiles = [];
             entities.collectibles = [];
             
             initScenery();
-            changeTargetLetter();
             
             document.getElementById('overlay-screen').classList.add('hidden');
             game.running = true;
@@ -906,11 +792,26 @@
 
         function gameOver() {
             game.running = false;
+            document.getElementById('screen-title').innerText = "ဂိမ်းပြီးဆုံးပါပြီ";
+            document.getElementById('screen-subtitle').innerText = "ထပ်မံကြိုးစားကြည့်ပါဦး!";
             document.getElementById('stat-coins').innerText = game.correctPops;
             document.getElementById('stat-kills').innerText = game.incorrectPops;
-            document.getElementById('stat-level').innerText = `လှိုင်း ${player.level}`;
+            document.getElementById('stat-level').innerText = `Level ${game.level}`;
             document.getElementById('game-stats').classList.remove('hidden');
             document.getElementById('start-btn').innerText = "ပြန်လည်ကစားမည်";
+            document.getElementById('overlay-screen').classList.remove('hidden');
+        }
+
+        function victory() {
+            game.running = false;
+            playSound('levelup');
+            document.getElementById('screen-title').innerText = "ဂုဏ်ယူပါတယ်! 🎉";
+            document.getElementById('screen-subtitle').innerText = "ကြာကန်စွန့်စားခန်း အောင်မြင်သွားပါပြီ!";
+            document.getElementById('stat-coins').innerText = game.correctPops;
+            document.getElementById('stat-kills').innerText = game.incorrectPops;
+            document.getElementById('stat-level').innerText = `Level 3 (Completed)`;
+            document.getElementById('game-stats').classList.remove('hidden');
+            document.getElementById('start-btn').innerText = "ထပ်မံဆော့ကစားမည်";
             document.getElementById('overlay-screen').classList.remove('hidden');
         }
 
