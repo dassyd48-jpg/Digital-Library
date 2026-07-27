@@ -540,7 +540,8 @@
             if (!game.running || game.paused) return;
 
             const angle = Math.random() * Math.PI * 2;
-            const dist = 350 + Math.random() * 200;
+            // Spawn closer to player (Distance adjusted from 350-550 to 120-220)
+            const dist = 120 + Math.random() * 100;
             const x = player.x + Math.cos(angle) * dist;
             const y = player.y + Math.sin(angle) * dist;
 
@@ -724,7 +725,7 @@
                     } else {
                         playSound('fail');
                         entities.letterBubbles.splice(idx, 1);
-                        player.hp = Math.max(0, player.hp - 10); // Decremented smoothly and safely
+                        player.hp = Math.max(0, player.hp - 10);
                     }
                 }
 
