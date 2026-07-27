@@ -50,10 +50,6 @@
 
         /* Mobile Scale Optimization */
         @media (max-width: 768px) {
-            .mobile-scale {
-                transform: scale(0.85);
-                transform-origin: top left;
-            }
             #hud {
                 left: 6.5rem;
                 top: 0.75rem;
@@ -276,7 +272,6 @@
             entities.shields = [];
             const mapRadius = 1600;
 
-            // 1. Hydrothermal Thermal Vents
             for (let i = 0; i < 20; i++) {
                 entities.scenery.push({
                     type: 'vent',
@@ -287,7 +282,6 @@
                 });
             }
 
-            // 2. Basalt Rocks
             for (let i = 0; i < 30; i++) {
                 entities.scenery.push({
                     type: 'basalt',
@@ -301,7 +295,7 @@
         function spawnShieldItem() {
             if (!game.running || game.paused) return;
             const angle = Math.random() * Math.PI * 2;
-            const dist = 300 + Math.random() * 150;
+            const dist = 200 + Math.random() * 150; // တိုတောင်းသော အကွာအဝေး
             entities.shields.push({
                 x: player.x + Math.cos(angle) * dist,
                 y: player.y + Math.sin(angle) * dist,
@@ -311,6 +305,7 @@
         }
         setInterval(spawnShieldItem, 12000); 
 
+        // ပစ်မှတ်အက္ခရာကို "ဗ" ဟုသာ ပုံသေထားရှိခြင်း
         function changeTargetLetter() {
             game.targetLetter = 'ဗ';
             document.getElementById('target-letter-display').innerText = game.targetLetter;
@@ -320,7 +315,6 @@
             ctx.save();
             ctx.translate(x, y);
             
-            // Draw vent body
             ctx.fillStyle = '#1e293b';
             ctx.strokeStyle = '#334155';
             ctx.lineWidth = 3;
@@ -334,13 +328,11 @@
             ctx.fill();
             ctx.stroke();
 
-            // Glowing volcanic core tip
             ctx.fillStyle = '#f97316';
             ctx.beginPath();
             ctx.ellipse(0, -height, baseWidth / 4, 4, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            // Geyser bubble stream rising
             const time = Date.now() * 0.003;
             ctx.fillStyle = 'rgba(56, 189, 248, 0.4)'; 
             for (let i = 0; i < 4; i++) {
@@ -378,26 +370,22 @@
             ctx.translate(x, y);
             ctx.rotate(player.angle);
 
-            // Shadow
             ctx.fillStyle = 'rgba(2, 44, 78, 0.4)';
             ctx.beginPath();
             ctx.ellipse(0, 6, 22, 32, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            // Whale Side Flippers
             ctx.fillStyle = '#0284c7';
             ctx.beginPath();
             ctx.ellipse(-22, -2, 6, 14, Math.PI / 4, 0, Math.PI * 2);
             ctx.ellipse(22, -2, 6, 14, -Math.PI / 4, 0, Math.PI * 2);
             ctx.fill();
 
-            // Massive Whale Main Body
             ctx.fillStyle = '#0369a1'; 
             ctx.beginPath();
             ctx.ellipse(0, 0, 18, 28, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            // Whale Belly Grooves
             ctx.strokeStyle = '#38bdf8';
             ctx.lineWidth = 1.5;
             for (let i = -2; i <= 2; i++) {
@@ -407,7 +395,6 @@
                 ctx.stroke();
             }
 
-            // Mighty Tail Fin
             ctx.fillStyle = '#0284c7';
             ctx.beginPath();
             ctx.moveTo(0, 26);
@@ -417,7 +404,6 @@
             ctx.quadraticCurveTo(16, 42, 0, 26);
             ctx.fill();
 
-            // Whale Eyes
             ctx.fillStyle = '#ffffff';
             ctx.beginPath();
             ctx.arc(-15, -12, 2.5, 0, Math.PI * 2);
@@ -429,15 +415,8 @@
             ctx.arc(15, -12, 1.2, 0, Math.PI * 2);
             ctx.fill();
 
-            // Blowhole decoration effect
-            ctx.fillStyle = '#38bdf8';
-            ctx.beginPath();
-            ctx.ellipse(0, -16, 2, 3, 0, 0, Math.PI * 2);
-            ctx.fill();
-
             ctx.restore();
 
-            // Draw Active Shield Aura
             if (player.shieldActive) {
                 ctx.save();
                 ctx.strokeStyle = '#22d3ee';
@@ -450,7 +429,6 @@
                 ctx.restore();
             }
 
-            // High-sonar radar ring
             ctx.strokeStyle = 'rgba(34, 211, 238, 0.2)';
             ctx.lineWidth = 2;
             ctx.setLineDash([6, 6]);
@@ -473,13 +451,11 @@
             let coreColor = isTarget ? '#06b6d4' : '#ef4444'; 
             let glowColor = isTarget ? 'rgba(6, 182, 212, 0.3)' : 'rgba(239, 68, 68, 0.2)';
 
-            // Ambient Aura Glow
             ctx.fillStyle = glowColor;
             ctx.beginPath();
             ctx.arc(0, 0, 26 * scale, 0, Math.PI * 2);
             ctx.fill();
 
-            // Outer Spiky shell
             ctx.fillStyle = coreColor;
             ctx.beginPath();
             for(let i = 0; i < 5; i++) {
@@ -490,7 +466,6 @@
             ctx.closePath();
             ctx.fill();
 
-            // Shiny center core
             ctx.fillStyle = '#ffffff';
             ctx.beginPath();
             ctx.arc(0, 0, 11 * scale, 0, Math.PI * 2);
@@ -498,7 +473,6 @@
 
             ctx.restore();
 
-            // Burmese Font Text Configuration
             ctx.save();
             ctx.translate(x, y + floating);
             ctx.fillStyle = isTarget ? '#0369a1' : '#991b1b';
@@ -548,38 +522,29 @@
             player.lastShotTime = now;
         }
 
+        // ပစ်မှတ်များ ဝေလငါးကြီး၏ အနီးနားတွင် ပေါ်လာစေရန် ပြင်ဆင်ချက်
         function spawnLetterBubble() {
             if (!game.running || game.paused) return;
 
-            // ပြင်ဆင်ချက် - ပစ်မှတ်များ ထွက်ပေါ်လာမည့်အကွာအဝေးကို ပိုမိုနီးကပ်သော (220 to 320 pixels) သို့ လျှော့ချလိုက်သည်
             const angle = Math.random() * Math.PI * 2;
-            const dist = 220 + Math.random() * 100;
+            // ၁၂၀px မှ ၂၅၀px အတွင်းသာ (နီးနီးနားနား) ပေါ်စေမည်
+            const dist = 120 + Math.random() * 130; 
             const x = player.x + Math.cos(angle) * dist;
             const y = player.y + Math.sin(angle) * dist;
 
-            const isTargetSpawn = Math.random() < 0.45;
+            const isTargetSpawn = Math.random() < 0.5; // "ဗ" ထွက်ရန် ၅၀% နှုန်း
             let chosenLetter = game.targetLetter; 
             if (!isTargetSpawn) {
-                const filtered = burmeseAlphabets.filter(char => char !== game.targetLetter);
+                const filtered = burmeseAlphabets.filter(char => char !== 'ဗ');
                 chosenLetter = filtered[Math.floor(Math.random() * filtered.length)];
             }
-
-            // ပြင်ဆင်ချက် - ပစ်မှတ်များ ပေါ်လာပြီးနောက် ကစားသမားဆီသို့ တည့်တည့်ဦးတည် ရွေ့လျားလာစေရန် Velocity (vx, vy) ကို တွက်ချက်သည်
-            const toPlayerX = player.x - x;
-            const toPlayerY = player.y - y;
-            const toPlayerDist = Math.sqrt(toPlayerX * toPlayerX + toPlayerY * toPlayerY);
-            
-            const moveSpeed = 0.6 + Math.random() * 0.5;
-            const vx = (toPlayerX / toPlayerDist) * moveSpeed;
-            const vy = (toPlayerY / toPlayerDist) * moveSpeed;
 
             entities.letterBubbles.push({
                 x,
                 y,
-                vx,
-                vy,
                 letter: chosenLetter,
                 scale: 1.0 + Math.random() * 0.25,
+                speed: 0.3 + Math.random() * 0.5, 
                 angleOffset: Math.random() * Math.PI * 2,
                 hp: 1,
                 spawnTime: Date.now() 
@@ -769,10 +734,9 @@
                     continue;
                 }
 
-                // ပြင်ဆင်ချက် - ပစ်မှတ်များကို ကစားသမားဆီသို့ ရွေ့လျားစေပြီး လှိုင်းတွန့်ပုံစံ ဘေးတိုက်ရွေ့လျားမှုအနည်းငယ် ပေါင်းစပ်ထားသည်
                 const driftTime = Date.now() * 0.001 + bubble.angleOffset;
-                bubble.x += (bubble.vx + Math.sin(driftTime) * 0.2) * dt;
-                bubble.y += (bubble.vy + Math.cos(driftTime * 0.5) * 0.2) * dt;
+                bubble.x += Math.sin(driftTime) * 0.7 * dt;
+                bubble.y += Math.cos(driftTime * 0.5) * 0.5 * dt;
 
                 const dx = player.x - bubble.x;
                 const dy = player.y - bubble.y;
@@ -832,21 +796,17 @@
             ctx.save();
             ctx.translate(-game.camera.x, -game.camera.y);
 
-            // Abyssal Background Floor
             ctx.fillStyle = '#02182b'; 
             ctx.fillRect(player.x - 2000, player.y - 2000, 4000, 4000);
 
-            // Render Volcanic Hydrothermal Vents
             entities.scenery.forEach(item => {
                 if (item.type === 'vent') drawVent(ctx, item.x, item.y, item.baseWidth, item.height);
             });
 
-            // Render Basalt Rocks
             entities.scenery.forEach(item => {
                 if (item.type === 'basalt') drawBasalt(ctx, item.x, item.y, item.radius);
             });
 
-            // Render Glow Shields
             entities.shields.forEach(s => {
                 ctx.save();
                 const radiusGlow = s.radius + Math.sin(s.pulse) * 4;
@@ -868,7 +828,6 @@
                 ctx.restore();
             });
 
-            // Render Glowing Bioluminescent Crystals
             entities.collectibles.forEach(item => {
                 ctx.fillStyle = '#22d3ee'; 
                 ctx.beginPath();
@@ -876,7 +835,6 @@
                 ctx.fill();
             });
 
-            // Render Sonar Wave Jets
             entities.projectiles.forEach(proj => {
                 ctx.save();
                 ctx.strokeStyle = '#22d3ee';
@@ -887,10 +845,8 @@
                 ctx.restore();
             });
 
-            // Render Deep Sea Crystals with Letters
             entities.letterBubbles.forEach(bubble => drawDeepSeaShell(ctx, bubble));
 
-            // Render Player
             drawPlayer(ctx, player.x, player.y);
 
             ctx.restore();
