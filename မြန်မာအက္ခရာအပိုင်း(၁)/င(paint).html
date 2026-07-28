@@ -16,7 +16,8 @@
         html, body {
             width: 100vw;
             height: 100vh;
-            overflow: hidden; /* Scroll လုံးဝ မလာစေရန် */
+            height: 100dvh; /* Mobile Safari / Dynamic Viewport Fix */
+            overflow: hidden;
             position: relative;
             background-color: #022c22;
             font-family: 'Fredoka One', 'Pyidaungsu', sans-serif;
@@ -31,8 +32,10 @@
             flex-direction: column;
             width: 100vw;
             height: 100vh;
-            padding: 12px;
-            gap: 10px;
+            height: 100dvh;
+            padding: 10px 14px;
+            padding-bottom: env(safe-area-inset-bottom, 12px); /* iPhone Home Indicator safe area */
+            gap: 8px;
             justify-content: space-between;
             align-items: center;
         }
@@ -40,8 +43,8 @@
         /* Top HUD Bar */
         .hud-bar {
             width: 100%;
-            max-width: 800px;
-            height: 48px;
+            max-width: 500px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -54,27 +57,27 @@
             flex-shrink: 0;
         }
 
-        /* Main Workspace (Whiteboard Canvas Area) */
+        /* Main Workspace (Canvas Area Throttled Height) */
         .workspace-area {
             flex: 1;
             width: 100%;
-            max-width: 800px;
+            max-width: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 0; /* Important for flex-shrink working with Canvas */
+            min-height: 0; 
+            padding: 4px 0;
         }
 
         .whiteboard-frame {
-            width: 100%;
             height: 100%;
-            max-height: 100%;
-            aspect-ratio: 1 / 1; /* Square Area for Drawing */
+            max-height: 52vh; /* Canvas အကွက်ကို မမြင့်သွားအောင် အမြင့်ကန့်သတ်လိုက်ပါသည် */
+            aspect-ratio: 1 / 1;
             background: #064e3b;
-            border: 6px solid #059669;
-            border-radius: 24px;
-            padding: 8px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 5px solid #059669;
+            border-radius: 20px;
+            padding: 6px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -84,7 +87,7 @@
             width: 100%;
             height: 100%;
             background: #ffffff;
-            border-radius: 16px;
+            border-radius: 14px;
             overflow: hidden;
             position: relative;
         }
@@ -95,64 +98,68 @@
             display: block;
         }
 
-        /* Bottom Control Panel */
+        /* Bottom Control Panel (Raised up properly) */
         .control-panel {
             width: 100%;
-            max-width: 800px;
-            height: auto;
-            background: rgba(6, 78, 59, 0.9);
+            max-width: 500px;
+            background: rgba(6, 78, 59, 0.95);
             border: 2px solid #059669;
-            border-radius: 20px;
-            padding: 10px 14px;
+            border-radius: 18px;
+            padding: 8px 12px;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            gap: 8px;
             flex-shrink: 0;
             z-index: 20;
+            margin-bottom: 2px;
         }
 
         .color-palette {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             flex: 1;
+            max-width: 60%;
         }
 
         .color-btn {
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            border: 3px solid #ffffff;
+            border: 2.5px solid #ffffff;
             cursor: pointer;
             transition: transform 0.1s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 3px 5px rgba(0,0,0,0.3);
         }
 
         .color-btn.active {
-            transform: scale(1.18);
+            transform: scale(1.15);
             border-color: #f59e0b;
         }
 
         .action-btns {
             display: flex;
-            gap: 8px;
-            align-items: center;
+            flex-direction: column;
+            gap: 6px;
+            align-items: stretch;
         }
 
         .btn-ui {
-            padding: 8px 14px;
-            border-radius: 12px;
+            padding: 6px 10px;
+            border-radius: 10px;
             font-weight: bold;
             color: white;
-            font-size: 13px;
+            font-size: 11px;
             cursor: pointer;
             border: none;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+            box-shadow: 0 3px 0 rgba(0,0,0,0.25);
             transition: transform 0.1s;
+            text-align: center;
+            white-space: nowrap;
         }
         .btn-ui:active { transform: translateY(2px); box-shadow: none; }
         
@@ -168,13 +175,13 @@
         <!-- HUD HEADER -->
         <div class="hud-bar">
             <div class="flex items-center space-x-2">
-                <span class="text-xl">🎨</span>
-                <span class="text-amber-400 font-bold text-sm tracking-wide">င - ကို ဆေးရောင်ခြယ်ပါ</span>
+                <span class="text-lg">🎨</span>
+                <span class="text-amber-400 font-bold text-xs sm:text-sm tracking-wide">င - ကို ဆေးရောင်ခြယ်ပါ</span>
             </div>
             <button onclick="returnToMain()" class="btn-ui btn-exit">🚪 ထွက်မည်</button>
         </div>
 
-        <!-- MAIN CANVAS WORKSPACE (No-Scroll Viewport) -->
+        <!-- MAIN CANVAS WORKSPACE -->
         <div class="workspace-area">
             <div class="whiteboard-frame">
                 <div class="canvas-container" id="canvasWrapper">
@@ -186,9 +193,7 @@
         <!-- BOTTOM COLOR PALETTE & CONTROLS -->
         <div class="control-panel">
             <!-- Palette Colors -->
-            <div class="color-palette" id="colorPalette">
-                <!-- Color items injected by JS -->
-            </div>
+            <div class="color-palette" id="colorPalette"></div>
 
             <!-- Action Buttons -->
             <div class="action-btns">
@@ -213,27 +218,24 @@
             '#8b5cf6', '#ec4899', '#ffffff', '#000000'
         ];
 
-        // Canvas ရဲ့ Size ကို Screen ဘောင်ထဲ အံဝင်ခွင်ကျဖြစ်အောင် Auto Fit လုပ်ပေးသည့် Function
         function fitCanvas() {
             canvas.width = wrapper.clientWidth;
             canvas.height = wrapper.clientHeight;
             drawOutline();
         }
 
-        // "င" အက္ခရာ လမ်းကြောင်း အစက်လေးများ ဆွဲပေးခြင်း
         function drawOutline() {
             ctx.save();
             ctx.font = `900 ${canvas.height * 0.65}px Pyidaungsu, sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.strokeStyle = '#cbd5e1';
-            ctx.lineWidth = 6;
-            ctx.setLineDash([12, 10]);
-            ctx.strokeText('င', canvas.width / 2, canvas.height / 2 + 10);
+            ctx.lineWidth = 5;
+            ctx.setLineDash([10, 8]);
+            ctx.strokeText('င', canvas.width / 2, canvas.height / 2 + 6);
             ctx.restore();
         }
 
-        // Draw Logic (Touch & Mouse)
         function getCoords(e) {
             const rect = canvas.getBoundingClientRect();
             const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -258,7 +260,7 @@
             if (!isDrawing) return;
             const pos = getCoords(e);
 
-            ctx.lineWidth = isEraser ? 36 : 18;
+            ctx.lineWidth = isEraser ? 30 : 16;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             
@@ -275,7 +277,6 @@
             ctx.moveTo(pos.x, pos.y);
         }
 
-        // Event Listeners
         canvas.addEventListener('mousedown', startPaint);
         canvas.addEventListener('mousemove', paint);
         window.addEventListener('mouseup', stopPaint);
@@ -284,7 +285,6 @@
         canvas.addEventListener('touchmove', (e) => { e.preventDefault(); paint(e); }, { passive: false });
         window.addEventListener('touchend', stopPaint);
 
-        // Render Color Palette
         const paletteContainer = document.getElementById('colorPalette');
         colors.forEach((color, idx) => {
             const btn = document.createElement('div');
@@ -300,14 +300,12 @@
             paletteContainer.appendChild(btn);
         });
 
-        // Eraser Control
         document.getElementById('eraserBtn').onclick = function() {
             isEraser = true;
             document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('ring-2', 'ring-amber-400');
         };
 
-        // Reset Canvas
         document.getElementById('resetBtn').onclick = function() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawOutline();
