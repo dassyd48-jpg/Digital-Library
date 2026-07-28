@@ -30,10 +30,20 @@
         .game-btn-3d:active {
             transform: translateY(4px);
         }
-        /* Splash Screen Graphic */
+        
+        /* ==========================================================================
+           SPLASH SCREEN & VIDEO CONTAINER SYSTEM (FIXED FOR AUTOPLAY)
+           ========================================================================= */
+        .video-bg-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9998; overflow: hidden;
+        }
+        .video-bg-container video {
+            width: 100%; height: 100%; object-fit: cover;
+        }
         .splash-screen {
             position: fixed; inset: 0; 
-            background: radial-gradient(circle, #2e1065 0%, #090514 100%); 
+            background: transparent; 
             z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 20px; text-align: center; transition: opacity 0.5s ease, pointer-events 0.5s;
         }
@@ -56,29 +66,20 @@
 </head>
 <body class="text-white min-h-screen flex flex-col items-center p-4 md:p-8 relative overflow-x-hidden">
 
+    <!-- SPLASH SCREEN (NO PASSWORD) -->
     <div class="splash-screen" id="splashScreen">
         <div class="bg-indigo-950/90 border-[4px] border-amber-400 backdrop-blur-2xl p-8 md:p-12 rounded-[36px] shadow-[0_0_25px_rgba(251,191,36,0.3)] max-w-md w-full mb-6 relative overflow-hidden">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-400/10 rounded-full blur-2xl"></div>
             
-            <div class="text-6xl mb-4 floating-icon">🔑</div>
+            <div class="text-6xl mb-4 floating-icon">🌟</div>
             <h1 class="text-xl md:text-2xl font-black text-amber-400 mb-2 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] leading-tight">
                 "မြန်မာအက္ခရာ ရှာပုံတော်"
             </h1>
             <p class="text-purple-200 font-bold text-sm mb-6">အပိုင်း (၂) - စွန့်စားခန်းအသစ်များ ကမ္ဘာ</p>
 
-            <div id="passwordArea" class="space-y-4">
-                <p class="text-xs text-amber-300/90 font-bold">ဂိမ်းကမ္ဘာထဲဝင်ဖို့ "မှော်ဝင်သော့စာလုံး" ထည့်ပေးပါဦးနော် ✨</p>
-                <input type="password" id="passInput" placeholder="Password ရိုက်ထည့်ပါ..." 
-                    class="w-full px-4 py-3 rounded-xl bg-purple-950/80 border-2 border-purple-500/50 text-white text-center font-bold focus:outline-none focus:border-amber-400 transition-all shadow-inner text-base">
-                <p id="errorMsg" class="text-xs text-red-400 font-bold hidden">❌ သော့စာလုံး မှားနေပါတယ်၊ ပြန်ကြိုးစားကြည့်ပါ!</p>
-                <button onclick="checkGamePassword()" class="game-btn-3d font-black py-3.5 px-6 text-lg text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-xl shadow-[0_4px_0_#b45309] active:shadow-[0_1px_0_#b45309] text-center w-full block">
-                    သော့ဖွင့်ပြီး ဝင်မည် 🚀
-                </button>
-            </div>
-
-            <div id="splashActionArea" class="hidden">
-                <button onclick="unmuteIntroVideo()" class="game-btn-3d font-black py-4 px-8 text-xl text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-2xl shadow-[0_6px_0_#b45309] hover:shadow-[0_6px_0_#d97706] active:shadow-[0_2px_0_#b45309] text-center w-full block">
-                    🔊 အသံဖွင့်ပြီး စတင်မည်
+            <div id="splashActionArea">
+                <button onclick="unmuteIntroVideo()" class="game-btn-3d font-black py-4 px-8 text-xl text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-2xl shadow-[0_6px_0_#b45309] hover:shadow-[0_6px_0_#d97706] active:shadow-[0_2px_0_#b45309] text-center w-full block animate-pulse">
+                    🔊 Intro အသံဖွင့်ပြီး ကြည့်မည်
                 </button>
             </div>
         </div>
@@ -87,12 +88,14 @@
         </div>
     </div>
 
-    <div class="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none" id="videoBgWrapper">
-        <video id="bgVideo" autoplay muted loop playsinline class="w-full h-full object-cover opacity-30">
+    <!-- VIDEO BACKGROUND CONTAINER -->
+    <div class="video-bg-container" id="videoBgWrapper">
+        <video id="bgVideo" autoplay muted loop playsinline>
             <source src="main-bg.mp4" type="video/mp4" />
         </video>
     </div>
 
+    <!-- AUDIO CONTROLS -->
     <div class="audio-controls">
         <button id="muteBtn" onclick="toggleMuteState()" class="text-xl focus:outline-none active:scale-90 transition-transform">🔊</button>
         <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5" oninput="updateVolumeLevel(this.value)" class="w-20 h-2 bg-purple-950 rounded-lg appearance-none cursor-pointer accent-amber-400" />
@@ -133,7 +136,7 @@
             <div class="max-w-xl">
                 <a href="level2.html" class="game-btn-3d block bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 border-b-[6px] border-blue-800 p-5 rounded-2xl text-left shadow-lg">
                     <span class="text-xl font-black text-white flex items-center gap-2">✍️ (စ မှ ည) စာရေးသားခြင်းကမ္ဘာ</span>
-                    <p class="text-xs text-cyan-100 mt-1 font-medium">စ၊ ဆ၊ ဇ၊ ဈ၊ ည အက္ခရာများ၏ အသံထွက်များကို นားထောင်ပြီး လက်ရေးလှလှလေး စတင်ရေးဆွဲကြမယ်။</p>
+                    <p class="text-xs text-cyan-100 mt-1 font-medium">စ၊ ဆ၊ ဇ၊ ဈ၊ ည အက္ခရာများ၏ အသံထွက်များကို နားထောင်ပြီး လက်ရေးလှလှလေး စတင်ရေးဆွဲကြမယ်။</p>
                 </a>
             </div>
         </section>
@@ -277,36 +280,8 @@
         const muteStateToggleButton = document.getElementById('muteBtn');
         const audioVolumeSliderControl = document.getElementById('volumeSlider');
         const splashActionArea = document.getElementById('splashActionArea');
-        const passwordArea = document.getElementById('passwordArea');
-        const passInput = document.getElementById('passInput');
-        const errorMsg = document.getElementById('errorMsg');
 
-        // လုံခြုံစိတ်ချရပြီး Browser တိုင်းမှာ ၁၀၀% အလုပ်လုပ်မယ့် Password စစ်ဆေးသည့် စနစ်
-        function checkGamePassword() {
-            // ရိုက်လိုက်တဲ့စာလုံးကို အရှေ့အနောက် Space ဖြတ်ပြီး စာလုံးအသေး ပြောင်းပါမယ်
-            const cleanInput = passInput.value.trim().toLowerCase();
-            
-            // "dassy123" ကို btoa() နဲ့ ကုဒ်ဝှက်ထားတဲ့စာသားဖြစ်ပါတယ် (View Source ကြည့်ရင်လည်း dassy123 လို့ တန်းမမြင်ရပါဘူး)
-            const secureKey = "ZGFzc3kxMjM="; 
-
-            if (btoa(cleanInput) === secureKey) {
-                errorMsg.classList.add('hidden');
-                passwordArea.classList.add('hidden');
-                splashActionArea.classList.remove('hidden');
-            } else {
-                errorMsg.classList.remove('hidden');
-                passInput.value = "";
-                passInput.focus();
-            }
-        }
-
-        // Enter ခလုတ်နှိပ်ရင်လည်း သော့ပွင့်အောင်လုပ်ခြင်း
-        passInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                checkGamePassword();
-            }
-        });
-
+        // ဂိမ်းထဲမှ ပြန်လာပါက Splash Screen / Video ရှောင်ကွင်းပြီး Main BGM တန်းဖွင့်ပေးခြင်း
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('fromGame') === 'true') {
@@ -318,6 +293,7 @@
             }
         });
 
+        // Intro Video အသံဖွင့်ပေးခြင်း
         function unmuteIntroVideo() {
             backgroundVideoElement.muted = false;
             backgroundVideoElement.play();
@@ -329,6 +305,7 @@
             `;
         }
 
+        // စွန့်စားခန်းစတင်သည့်အခါ Video ရပ်ပြီး Audio စတင်ပေးခြင်း
         function initializeEcosystem() {
             document.getElementById('splashScreen').classList.add('hide');
             
@@ -345,6 +322,7 @@
             });
         }
 
+        // BGM အသံ အတိုးအလျှော့ ပြုလုပ်ခြင်း
         function updateVolumeLevel(targetVolume) {
             mainAudioMusicElement.volume = targetVolume;
             if (targetVolume == 0) {
@@ -356,6 +334,7 @@
             }
         }
 
+        // Mute / Unmute ပြုလုပ်ခြင်း
         function toggleMuteState() {
             if (mainAudioMusicElement.muted) {
                 mainAudioMusicElement.muted = false;
