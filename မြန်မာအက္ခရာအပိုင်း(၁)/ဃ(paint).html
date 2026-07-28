@@ -270,7 +270,7 @@
 <body>
 
   <div class="nav-buttons-container">
-    <button class="btn-action-back" id="btnNavigationBack">← Back</button>
+    <button class="btn-action-back" id="btnNavigationBack" onclick="window.history.back()">← Back</button>
     <button class="btn-action-home" onclick="window.location.href='index.html?fromGame=true'">🏠 Home</button>
   </div>
 
@@ -350,7 +350,6 @@
     let isPainting = false;
     let currentColor = '#f59e0b';
     let currentType = 'star'; 
-    let currentPattern = '';
     let isEraser = false;
     let brushSize = 32;
     let lastX = 0, lastY = 0;
@@ -359,190 +358,181 @@
     const winApplauseAudio = document.getElementById('applauseSoundEffect');
 
     const brushes = [
-      { id: 'star-brush', type: 'star', color: '#f59e0b' }, 
+      { id: 'star-brush', type: 'star', color: '#f59e0b', label: '⭐' }, 
       { id: 'orange', type: 'solid', color: '#f97316' },
       { id: 'brown', type: 'solid', color: '#b45309' },
       { id: 'yellow', type: 'solid', color: '#fde047' },
       { id: 'red', type: 'solid', color: '#ef4444' },
       { id: 'green', type: 'solid', color: '#22c55e' },
       { id: 'blue', type: 'solid', color: '#3b82f6' },
-      { id: 'rainbow', type: 'rainbow', color: 'linear-gradient(45deg, #ff3366, #ff9933, #ffff33, #33cc66, #3399ff, #9933ff)' },
-      { id: 'pat-dots', type: 'pattern', color: '#ea580c', pattern: 'dots' },
-      { id: 'pat-stripes', type: 'pattern', color: '#ca8a04', pattern: 'stripes' }
+      { id: 'purple', type: 'solid', color: '#a855f7' }
     ];
 
-    function getPattern(type, color, pName) {
-      if (type === 'solid' || type === 'star') return color;
-      if (type === 'rainbow') {
-        const grad = ctx.createLinearGradient(60, 60, 490, 490);
-        grad.addColorStop(0, '#ff3366');
-        grad.addColorStop(0.2, '#ff9933');
-        grad.addColorStop(0.4, '#ffff33');
-        grad.addColorStop(0.6, '#33cc66');
-        grad.addColorStop(0.8, '#3399ff');
-        grad.addColorStop(1, '#9933ff');
-        return grad;
+    // Initialize brushes UI
+    const brushGrid = document.getElementById('brushGrid');
+    brushes.forEach((b, idx) => {
+      const btn = document.createElement('div');
+      btn.className = `brush ${idx === 0 ? 'selected' : ''}`;
+      btn.dataset.id = b.id;
+      
+      const swatch = document.createElement('div');
+      swatch.className = 'swatch';
+      swatch.style.backgroundColor = b.color;
+      if (b.label) {
+        swatch.style.display = 'flex';
+        swatch.style.alignItems = 'center';
+        swatch.style.justifyContent = 'center';
+        swatch.style.fontSize = '18px';
+        swatch.innerHTML = b.label;
       }
-      const pCanvas = document.createElement('canvas');
-      pCanvas.width = 20; pCanvas.height = 20;
-      const pCtx = pCanvas.getContext('2d');
-      pCtx.fillStyle = color; pCtx.fillRect(0,0,20,20);
-      if (pName === 'dots') {
-        pCtx.fillStyle = '#ffffff'; pCtx.beginPath(); pCtx.arc(10,10,3,0,Math.PI*2); pCtx.fill();
-      } else if (pName === 'stripes') {
-        pCtx.strokeStyle = '#ffffff'; pCtx.lineWidth = 3; pCtx.beginPath(); pCtx.moveTo(0,0); pCtx.lineTo(20,20); pCtx.stroke();
-      }
-      return ctx.createPattern(pCanvas, 'repeat');
-    }
+      btn.appendChild(swatch);
 
-    function startDrawing(e) {
-      isPainting = true;
-      const rect = canvas.getBoundingClientRect();
-      lastX = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
-      lastY = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
-    }
-    
-    function stopDrawing() { isPainting = false; ctx.beginPath(); }
-
-    function draw(e) {
-      if (!isPainting) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
-      const y = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
-
-      ctx.lineWidth = brushSize;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-
-      if (isEraser) {
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.lineWidth = 48;
-      } else {
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.strokeStyle = getPattern(currentType, currentColor, currentPattern);
-      }
-
-      ctx.beginPath();
-      ctx.moveTo(lastX, lastY);
-      ctx.lineTo(x, y);
-      ctx.stroke();
-
-      if (!isEraser && Math.random() < 0.45) {
-        ctx.save();
-        ctx.globalCompositeOperation = 'source-over';
-        if (currentType === 'star') {
-          ctx.fillStyle = '#fef08a';
-          ctx.font = '20px serif';
-          ctx.fillText('⭐', x + (Math.random() * 30 - 15), y + (Math.random() * 30 - 15));
-        } else {
-          ctx.fillStyle = '#ffffff';
-          ctx.beginPath();
-          ctx.arc(x + (Math.random() * 26 - 13), y + (Math.random() * 26 - 13), Math.random() * 3 + 1.5, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        ctx.restore();
-      }
-
-      lastX = x; lastY = y;
-    }
-
-    function adjustGameVolume(volValue) {
-      bgMusicAudio.volume = volValue;
-      winApplauseAudio.volume = volValue;
-      const iconIndicator = document.getElementById('volIndicatorIcon');
-      if (volValue == 0) {
-        iconIndicator.textContent = '🔇';
-      } else if (volValue < 0.4) {
-        iconIndicator.textContent = '🔈';
-      } else {
-        iconIndicator.textContent = '🔊';
-      }
-    }
-
-    function initUI() {
-      bgMusicAudio.volume = 0.3;
-      bgMusicAudio.play().catch(e => console.log("Audio engine waiting user gesture."));
-
-      document.getElementById('btnStart').onclick = () => {
-        document.getElementById('introScreen').classList.add('hide');
-        document.getElementById('gameContainer').classList.add('show');
-        bgMusicAudio.play().catch(err => console.log(err));
-      };
-
-      document.getElementById('btnNavigationBack').onclick = () => {
-        document.getElementById('gameContainer').classList.remove('show');
-        document.getElementById('introScreen').classList.remove('hide');
-      };
-
-      const grid = document.getElementById('brushGrid');
-      brushes.forEach((b, i) => {
-        const div = document.createElement('div');
-        div.className = 'brush' + (i === 0 ? ' selected' : '');
-        
-        if(b.type === 'star') {
-          div.innerHTML = `<div class="swatch" style="background:${b.color}; display:flex; align-items:center; justify-content:center; font-size:16px;">⭐</div>`;
-        } else {
-          div.innerHTML = `<div class="swatch" style="background:${b.color}"></div>`;
-        }
-        
-        if(b.pattern === 'dots') div.firstChild.style.backgroundImage = 'radial-gradient(circle, #fff 20%, transparent 20%)';
-        if(b.pattern === 'stripes') div.firstChild.style.backgroundImage = 'linear-gradient(45deg, #fff 25%, transparent 25%)';
-        
-        div.onclick = () => {
-          isEraser = false;
-          currentColor = b.color; currentType = b.type; currentPattern = b.pattern || '';
-          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
-          document.getElementById('eraser').classList.remove('selected');
-          div.classList.add('selected');
-        };
-        grid.appendChild(div);
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+        document.getElementById('eraser').classList.remove('selected');
+        btn.classList.add('selected');
+        isEraser = false;
+        currentColor = b.color;
+        currentType = b.type;
       });
 
-      document.getElementById('eraser').onclick = () => {
-        isEraser = true;
-        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
-        document.getElementById('eraser').classList.add('selected');
-      };
+      brushGrid.appendChild(btn);
+    });
 
-      document.getElementById('btnReset').onclick = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      };
+    // Eraser Selection
+    document.getElementById('eraser').addEventListener('click', () => {
+      document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+      document.getElementById('eraser').classList.add('selected');
+      isEraser = true;
+    });
 
-      document.getElementById('btnNext').onclick = () => {
-        bgMusicAudio.pause();
-        winApplauseAudio.currentTime = 0;
-        winApplauseAudio.play().catch(err => console.log(err));
+    // Draw Letter "ဃ" Outline Template
+    function drawLetterTemplate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.font = '800 320px "Noto Sans Myanmar"';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 12;
+      ctx.strokeText('ဃ', canvas.width / 2, canvas.height / 2 + 10);
+      
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillText('ဃ', canvas.width / 2, canvas.height / 2 + 10);
+      ctx.restore();
+    }
 
-        const host = document.getElementById('confetti');
-        const items = ['⭐', '🌄', '✨', '🎉', '🎈', '☀️', '⛰️'];
-        for (let i = 0; i < 55; i++) {
-          const el = document.createElement('div');
-          el.className = 'star';
-          el.textContent = items[Math.floor(Math.random() * items.length)];
-          el.style.left = '50%'; el.style.top = '50%';
-          const angle = Math.random() * Math.PI * 2;
-          const dist = 120 + Math.random() * 320;
-          el.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
-          el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
-          host.appendChild(el);
-          setTimeout(() => el.remove(), 1500);
-        }
+    drawLetterTemplate();
 
-        document.getElementById('congratsWindowBox').classList.add('show');
+    // Volume Adjuster
+    function adjustGameVolume(val) {
+      if (bgMusicAudio) bgMusicAudio.volume = val;
+      if (winApplauseAudio) winApplauseAudio.volume = val;
+      const icon = document.getElementById('volIndicatorIcon');
+      if (val == 0) icon.textContent = '🔇';
+      else if (val < 0.5) icon.textContent = '🔉';
+      else icon.textContent = '🔊';
+    }
+
+    // Start Screen Button Action
+    document.getElementById('btnStart').addEventListener('click', () => {
+      document.getElementById('introScreen').classList.add('hide');
+      document.getElementById('gameContainer').classList.add('show');
+      if (bgMusicAudio) {
+        bgMusicAudio.volume = 0.3;
+        bgMusicAudio.play().catch(() => {});
+      }
+    });
+
+    // Canvas Mouse & Touch Drawing Handlers
+    function getCanvasCoords(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: (clientX - rect.left) * (canvas.width / rect.width),
+        y: (clientY - rect.top) * (canvas.height / rect.height)
       };
     }
 
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
-    canvas.addEventListener('touchend', stopDrawing);
-    canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
+    function startPaint(e) {
+      isPainting = true;
+      const coords = getCanvasCoords(e);
+      lastX = coords.x;
+      lastY = coords.y;
+      paint(e);
+    }
 
-    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>ဃ</text></svg>\")";
-    canvas.style.backgroundSize = "100% 100%";
+    function stopPaint() {
+      isPainting = false;
+      ctx.beginPath();
+    }
 
-    initUI();
+    function paint(e) {
+      if (!isPainting) return;
+      e.preventDefault();
+      const coords = getCanvasCoords(e);
+
+      ctx.save();
+      if (isEraser) {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(coords.x, coords.y, brushSize / 2, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (currentType === 'star') {
+        ctx.font = '24px sans-serif';
+        ctx.fillText('⭐', coords.x - 12, coords.y + 8);
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = brushSize;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(coords.x, coords.y);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      lastX = coords.x;
+      lastY = coords.y;
+    }
+
+    canvas.addEventListener('mousedown', startPaint);
+    canvas.addEventListener('mousemove', paint);
+    canvas.addEventListener('mouseup', stopPaint);
+    canvas.addEventListener('mouseleave', stopPaint);
+
+    canvas.addEventListener('touchstart', startPaint, { passive: false });
+    canvas.addEventListener('touchmove', paint, { passive: false });
+    canvas.addEventListener('touchend', stopPaint);
+
+    // Reset Canvas
+    document.getElementById('btnReset').addEventListener('click', drawLetterTemplate);
+
+    // Complete / Celebrate Button
+    document.getElementById('btnNext').addEventListener('click', () => {
+      document.getElementById('congratsWindowBox').classList.add('show');
+      if (winApplauseAudio) winApplauseAudio.play().catch(() => {});
+      triggerConfetti();
+    });
+
+    // Confetti Animation
+    function triggerConfetti() {
+      const container = document.getElementById('confetti');
+      container.innerHTML = '';
+      for (let i = 0; i < 40; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.textContent = ['⭐', '✨', '🎈', '🎉', '🌸'][Math.floor(Math.random() * 5)];
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.top = Math.random() * 50 + 'vh';
+        star.style.setProperty('--dx', (Math.random() * 300 - 150) + 'px');
+        star.style.setProperty('--dy', (Math.random() * 400 + 100) + 'px');
+        container.appendChild(star);
+      }
+    }
   </script>
 </body>
 </html>
