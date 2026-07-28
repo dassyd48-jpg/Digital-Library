@@ -181,12 +181,12 @@
     /* 🛠️ FIXED MAIN RESET/NEXT BUTTONS LAYOUT */
     .btn { 
       font-family: 'Noto Sans Myanmar', sans-serif; 
-      min-height: 62px; /* စာလုံးနှစ်ကြောင်းစာ လုံလောက်တဲ့ အမြင့် */
-      height: auto;     /* စာသားအလိုက် အလိုအလျောက် ပုံမှန်အတိုင်း ဆန့်ထွက်စေရန် */
-      padding: 8px 4px; /* အတွင်းအကွာအဝေးကို သေသပ်အောင်ထိန်းညှိ */
+      min-height: 62px;
+      height: auto;
+      padding: 8px 4px;
       border-radius: 14px; border: none; color: white; font-weight: 700; font-size: 12px; cursor: pointer; 
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      line-height: 1.4;  /* စာကြောင်းနှစ်ကြောင်းကြား အကွာအဝေးကို မြန်မာစာလုံး ပုံစံအတိုင်း ကွက်တိဖြစ်စေရန် */
+      line-height: 1.4;
     }
     .btn-reset { background: #0284c7; box-shadow: 0 4px 0 #0369a1; }
     .btn-next { background: #ea580c; box-shadow: 0 4px 0 #c2410c; }
@@ -226,7 +226,7 @@
     <div class="congrats-card">
       <div style="font-size: 55px; margin-bottom: 10px;">🎉✨⭐</div>
       <div class="congrats-title">Congratulations!</div>
-      <div class="congrats-text">သားသားမီးမီးတို့ရေ... အက္ခရာ "ဂ" သက်တန့်ခုံးလေးကို အောင်မြင်စွာနဲ့ ဆေးရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ ကွယ်။ တော်လိုက်တာ။ 🌟</div>
+      <div class="congrats-text">သားသားမီးမီးတို့ရေ... အက္ခရာ "ဂ" သက်တန့်ခုံးလေးကို အောင်မြင်စွာနဲ့ ဆေးရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ ကွယ်။ တော်လိုက်တာ။ 🌟</div>
       <button class="btn-modal-done" onclick="window.location.href='index.html?fromGame=true'">ပြီးပြီ</button>
     </div>
   </div>
@@ -256,9 +256,9 @@
   <div class="intro-screen" id="introScreen">
     <div class="intro-emojis">⛰️🎨✨🌈🎈</div>
     <div class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</div>
-    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဂ" သက်တန့်ခုံးလေးကို အရောင်ခြယ်ကြစို့</div>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဂ" သက်တန့်ခုံးလေးကို အရောင်ခြယ်ကြစို့</div>
     <div class="intro-desc">
-      ကလေးတို့ရေ... မိုးကောင်းကင်ကြီးထဲမှာ လှပတဲ့ သက်တန့်ခုံးကြီးက ပျောက်ကွယ်နေတယ်နော်။ အဲဒီသက်တံခုံးကြီးက မြန်မာအက္ခရာ "ဂ" လေးနဲ့ တူတူပဲ။ ကဲ... စုတ်တံလေးတွေကို ကိုင်ပြီး "ဂ" လမ်းကြောင်းအတိုင်း ရောင်စုံဆေးလေးတွေ ခြယ်သပြီး သက်တန့်ကြီးကို ပြန်ဖော်ထုတ်ကြရအောင်။
+      ကလေးတို့ရေ... မိုးကောင်းကင်ကြီးထဲမှာ လှပတဲ့ သက်တန့်ခုံးကြီးက ပျောက်ကွယ်နေတယ်နော်။ အဲဒီသက်တံခုံးကြီးက မြန်မာအက္ခရာ "ဂ" လေးနဲ့ တူတူပဲ။ ကဲ... စုတ်တံလေးတွေကို ကိုင်ပြီး "ဂ" လမ်းကြောင်းအတိုင်း ရောင်စုံဆေးလေးတွေ ခြယ်သပြီး သက်တန့်ကြီးကို ပြန်ဖော်ထုတ်ကြရအောင်။
     </div>
     <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
   </div>
@@ -340,20 +340,28 @@
       return ctx.createPattern(pCanvas, 'repeat');
     }
 
+    function getCoordinates(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: (clientX - rect.left) * (canvas.width / rect.width),
+        y: (clientY - rect.top) * (canvas.height / rect.height)
+      };
+    }
+
     function startDrawing(e) {
       isPainting = true;
-      const rect = canvas.getBoundingClientRect();
-      lastX = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
-      lastY = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+      const coords = getCoordinates(e);
+      lastX = coords.x;
+      lastY = coords.y;
     }
     
     function stopDrawing() { isPainting = false; ctx.beginPath(); }
 
     function draw(e) {
       if (!isPainting) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
-      const y = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+      const coords = getCoordinates(e);
 
       ctx.lineWidth = brushSize;
       ctx.lineCap = 'round';
@@ -369,7 +377,7 @@
 
       ctx.beginPath();
       ctx.moveTo(lastX, lastY);
-      ctx.lineTo(x, y);
+      ctx.lineTo(coords.x, coords.y);
       ctx.stroke();
 
       if (!isEraser && Math.random() < 0.4) {
@@ -377,12 +385,13 @@
         ctx.globalCompositeOperation = 'source-over';
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.arc(x + (Math.random() * 26 - 13), y + (Math.random() * 26 - 13), Math.random() * 3 + 1.5, 0, Math.PI * 2);
+        ctx.arc(coords.x + (Math.random() * 26 - 13), coords.y + (Math.random() * 26 - 13), Math.random() * 3 + 1.5, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
       }
 
-      lastX = x; lastY = y;
+      lastX = coords.x; 
+      lastY = coords.y;
     }
 
     function adjustGameVolume(volValue) {
@@ -400,15 +409,15 @@
 
     function initUI() {
       bgMusicAudio.volume = 0.3;
-      bgMusicAudio.play().catch(e => console.log("Audio waiting engine interaction."));
 
       document.getElementById('btnStart').onclick = () => {
         document.getElementById('introScreen').classList.add('hide');
         document.getElementById('gameContainer').classList.add('show');
-        bgMusicAudio.play().catch(err => console.log(err));
+        bgMusicAudio.play().catch(err => console.log("Audio waiting for user interaction:", err));
       };
 
       document.getElementById('btnNavigationBack').onclick = () => {
+        bgMusicAudio.pause();
         document.getElementById('gameContainer').classList.remove('show');
         document.getElementById('introScreen').classList.remove('hide');
       };
@@ -465,14 +474,20 @@
       };
     }
 
+    /* Mouse Listener */
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
-    canvas.addEventListener('touchend', stopDrawing);
-    canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('mouseleave', stopDrawing);
 
-    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='53%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>ဂ</text></svg>\")";
+    /* Touch Listener */
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); }, { passive: false });
+
+    /* Trace Pattern SVG Background Setup */
+    const svgBackground = `<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550' viewBox='0 0 550 550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='380' text-anchor='middle' dominant-baseline='central' fill='%23f8fafc' stroke='%2394a3b8' stroke-width='5' stroke-dasharray='12,10'>ဂ</text></svg>`;
+    canvas.style.backgroundImage = `url("data:image/svg+xml;utf8,${encodeURIComponent(svgBackground)}")`;
     canvas.style.backgroundSize = "100% 100%";
 
     initUI();
