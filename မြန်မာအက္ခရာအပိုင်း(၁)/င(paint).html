@@ -393,245 +393,260 @@
     const clapping = document.getElementById('clapping');
     const volumeSlider = document.getElementById('volumeSlider');
     const volumeIcon = document.getElementById('volumeIcon');
+    const introScreen = document.getElementById('introScreen');
+    const gameContainer = document.getElementById('gameContainer');
+    const congratsWindowBox = document.getElementById('congratsWindowBox');
+    const btnStart = document.getElementById('btnStart');
+    const btnReset = document.getElementById('btnReset');
+    const btnNext = document.getElementById('btnNext');
+    const btnPopupDone = document.getElementById('btnPopupDone');
+    const btnBack = document.getElementById('btnBack');
+    const btnHome = document.getElementById('btnHome');
+    const eraserEl = document.getElementById('eraser');
+    const brushGrid = document.getElementById('brushGrid');
+
     let isPainting = false;
     let currentColor = '#db2777';
-    let currentType = 'sprinkle'; 
+    let currentType = 'solid'; 
     let currentPattern = '';
     let isEraser = false;
     let brushSize = 32;
-    let lastX = 0, lastY = 0;
+    let lastX = 0;
+    let lastY = 0;
 
-    // Audio Init Volume
-    bgm.volume = 0.3;
-
+    // Brush Options Configuration
     const brushes = [
-      { id: 'sprinkle-brush', type: 'sprinkle', color: '#db2777' }, 
-      { id: 'pink', type: 'solid', color: '#f43f5e' },
-      { id: 'purple', type: 'solid', color: '#a855f7' },
-      { id: 'skyblue', type: 'solid', color: '#38bdf8' },
-      { id: 'yellow', type: 'solid', color: '#facc15' },
-      { id: 'green', type: 'solid', color: '#4ade80' },
-      { id: 'cream', type: 'solid', color: '#ffedd5' },
-      { id: 'rainbow', type: 'rainbow', color: 'linear-gradient(45deg, #ff3366, #ff9933, #ffff33, #33cc66, #3399ff, #9933ff)' },
-      { id: 'pat-dots', type: 'pattern', color: '#f43f5e', pattern: 'dots' },
-      { id: 'pat-stripes', type: 'pattern', color: '#be123c', pattern: 'stripes' }
+      { color: '#db2777', type: 'solid', label: 'Pink' },
+      { color: '#38bdf8', type: 'solid', label: 'Sky' },
+      { color: '#f59e0b', type: 'solid', label: 'Orange' },
+      { color: '#10b981', type: 'solid', label: 'Green' },
+      { color: '#8b5cf6', type: 'solid', label: 'Purple' },
+      { color: '#ec4899', type: 'candy', label: 'Candy' },
+      { color: '#f43f5e', type: 'sprinkle', label: 'Sprinkles' },
+      { color: '#eab308', type: 'star', label: 'Stars' }
     ];
 
-    function getPattern(type, color, pName) {
-      if (type === 'solid' || type === 'sprinkle') return color;
-      if (type === 'rainbow') {
-        const grad = ctx.createLinearGradient(60, 60, 490, 490);
-        grad.addColorStop(0, '#ff3366');
-        grad.addColorStop(0.2, '#ff9933');
-        grad.addColorStop(0.4, '#ffff33');
-        grad.addColorStop(0.6, '#33cc66');
-        grad.addColorStop(0.8, '#3399ff');
-        grad.addColorStop(1, '#9933ff');
-        return grad;
-      }
-      const pCanvas = document.createElement('canvas');
-      pCanvas.width = 20; pCanvas.height = 20;
-      const pCtx = pCanvas.getContext('2d');
-      pCtx.fillStyle = color; pCtx.fillRect(0,0,20,20);
-      if (pName === 'dots') {
-        pCtx.fillStyle = '#ffffff'; pCtx.beginPath();
-        pCtx.arc(10,10,3,0,Math.PI*2); pCtx.fill();
-      } else if (pName === 'stripes') {
-        pCtx.strokeStyle = '#ffffff';
-        pCtx.lineWidth = 4; pCtx.beginPath(); pCtx.moveTo(0,20); pCtx.lineTo(20,0); pCtx.stroke();
-      }
-      return ctx.createPattern(pCanvas, 'repeat');
+    // Initialize Canvas Outline
+    function drawLetterOutline() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.font = '800 340px "Noto Sans Myanmar", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      
+      // Draw Letter Shadow
+      ctx.fillStyle = '#fce7f3';
+      ctx.fillText('င', canvas.width / 2 + 5, canvas.height / 2 + 5);
+
+      // Draw Letter Outline
+      ctx.strokeStyle = '#be123c';
+      ctx.lineWidth = 14;
+      ctx.lineJoin = 'round';
+      ctx.strokeText('င', canvas.width / 2, canvas.height / 2);
+      ctx.restore();
+    }
+
+    // Populate Brush UI
+    function initBrushes() {
+      brushGrid.innerHTML = '';
+      brushes.forEach((b, idx) => {
+        const btn = document.createElement('div');
+        btn.className = `brush ${idx === 0 ? 'selected' : ''}`;
+        
+        const swatch = document.createElement('div');
+        swatch.className = 'swatch';
+        swatch.style.background = b.color;
+        
+        if (b.type === 'candy') {
+          swatch.style.backgroundImage = 'radial-gradient(#ffffff 20%, transparent 20%)';
+          swatch.style.backgroundSize = '8px 8px';
+        } else if (b.type === 'sprinkle') {
+          swatch.innerHTML = '<span style="font-size:10px;display:block;text-align:center;">🍬</span>';
+        } else if (b.type === 'star') {
+          swatch.innerHTML = '<span style="font-size:10px;display:block;text-align:center;">✨</span>';
+        }
+
+        btn.appendChild(swatch);
+        btn.addEventListener('click', () => selectBrush(b, btn));
+        brushGrid.appendChild(btn);
+      });
+    }
+
+    function selectBrush(b, element) {
+      document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+      eraserEl.classList.remove('selected');
+      element.classList.add('selected');
+      
+      isEraser = false;
+      currentColor = b.color;
+      currentType = b.type;
+    }
+
+    eraserEl.addEventListener('click', () => {
+      document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+      eraserEl.classList.add('selected');
+      isEraser = true;
+    });
+
+    // Canvas Pointer Events
+    function getCanvasCoordinates(e) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: (clientX - rect.left) * scaleX,
+        y: (clientY - rect.top) * scaleY
+      };
     }
 
     function startDrawing(e) {
       isPainting = true;
-      const rect = canvas.getBoundingClientRect();
-      lastX = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
-      lastY = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+      const pos = getCanvasCoordinates(e);
+      lastX = pos.x;
+      lastY = pos.y;
+      draw(e);
     }
-    
-    function stopDrawing() { isPainting = false; ctx.beginPath(); }
+
+    function stopDrawing() {
+      isPainting = false;
+      ctx.beginPath();
+    }
 
     function draw(e) {
       if (!isPainting) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = ((e.clientX || e.touches[0].clientX) - rect.left) * (canvas.width / rect.width);
-      const y = ((e.clientY || e.touches[0].clientY) - rect.top) * (canvas.height / rect.height);
+      e.preventDefault();
+      
+      const pos = getCanvasCoordinates(e);
 
-      ctx.lineWidth = brushSize;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-
+      ctx.save();
       if (isEraser) {
         ctx.globalCompositeOperation = 'destination-out';
-        ctx.lineWidth = 48;
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, brushSize, 0, Math.PI * 2);
+        ctx.fill();
       } else {
         ctx.globalCompositeOperation = 'source-over';
-        ctx.strokeStyle = getPattern(currentType, currentColor, currentPattern);
-      }
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
 
-      ctx.beginPath();
-      ctx.moveTo(lastX, lastY);
-      ctx.lineTo(x, y);
-      ctx.stroke();
-
-      if (!isEraser && Math.random() < 0.5) {
-        ctx.save();
-        ctx.globalCompositeOperation = 'source-over';
-        if (currentType === 'sprinkle') {
-          const colors = ['#f43f5e', '#38bdf8', '#facc15', '#4ade80', '#a855f7', '#ffffff'];
-          ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
-          ctx.translate(x + (Math.random() * 32 - 16), y + (Math.random() * 32 - 16));
-          ctx.rotate(Math.random() * Math.PI);
-          ctx.fillRect(-2, -6, 4, 12);
-        } else {
-          ctx.fillStyle = '#ffffff';
+        if (currentType === 'solid') {
+          ctx.strokeStyle = currentColor;
+          ctx.lineWidth = brushSize;
           ctx.beginPath();
-          ctx.arc(x + (Math.random() * 26 - 13), y + (Math.random() * 26 - 13), Math.random() * 3 + 1.5, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.moveTo(lastX, lastY);
+          ctx.lineTo(pos.x, pos.y);
+          ctx.stroke();
+        } else if (currentType === 'candy') {
+          ctx.strokeStyle = currentColor;
+          ctx.lineWidth = brushSize;
+          ctx.setLineDash([12, 12]);
+          ctx.beginPath();
+          ctx.moveTo(lastX, lastY);
+          ctx.lineTo(pos.x, pos.y);
+          ctx.stroke();
+        } else if (currentType === 'sprinkle') {
+          ctx.font = '20px serif';
+          ctx.fillText('🍬', pos.x, pos.y);
+        } else if (currentType === 'star') {
+          ctx.font = '20px serif';
+          ctx.fillText('✨', pos.x, pos.y);
         }
-        ctx.restore();
       }
+      ctx.restore();
 
-      lastX = x;
-      lastY = y;
+      lastX = pos.x;
+      lastY = pos.y;
     }
 
-    function initUI() {
-      // Start Game Event
-      document.getElementById('btnStart').onclick = () => {
-        document.getElementById('introScreen').classList.add('hide');
-        document.getElementById('gameContainer').classList.add('show');
-        bgm.play().catch(err => console.log("Audio play deferred"));
-      };
-
-      // ← Back Button Logic: Intro Screen ဆီကို ပြန်ခေါ်သွားမည်
-      document.getElementById('btnBack').onclick = () => {
-        document.getElementById('gameContainer').classList.remove('show');
-        document.getElementById('introScreen').classList.remove('hide');
-      };
-
-      // 🏠 Home Button Logic
-      document.getElementById('btnHome').onclick = () => {
-        window.location.href = 'index.html?fromGame=true';
-      };
-
-      // Volume Slider Controller
-      volumeSlider.oninput = (e) => {
-        const vol = e.target.value;
-        bgm.volume = vol;
-        clapping.volume = vol;
-        if(vol == 0) {
-          volumeIcon.textContent = '🔇';
-        } else if(vol < 0.5) {
-          volumeIcon.textContent = '🔉';
-        } else {
-          volumeIcon.textContent = '🔊';
-        }
-      };
-
-      // Volume Mute/Unmute Toggle Shortcut
-      volumeIcon.onclick = () => {
-        if(bgm.volume > 0) {
-          volumeSlider.value = 0;
-          bgm.volume = 0;
-          clapping.volume = 0;
-          volumeIcon.textContent = '🔇';
-        } else {
-          volumeSlider.value = 0.3;
-          bgm.volume = 0.3;
-          clapping.volume = 0.3;
-          volumeIcon.textContent = '🔉';
-        }
-      };
-
-      // Brushes Setup
-      const grid = document.getElementById('brushGrid');
-      brushes.forEach((b, i) => {
-        const div = document.createElement('div');
-        div.className = 'brush' + (i === 0 ? ' selected' : '');
-        
-        if(b.type === 'sprinkle') {
-          div.innerHTML = `<div class="swatch" style="background:${b.color}; display:flex; align-items:center; justify-content:center; font-size:16px;">🧁</div>`;
-        } else {
-          div.innerHTML = `<div class="swatch" style="background:${b.color}"></div>`;
-        }
-        
-        if(b.pattern === 'dots') div.firstChild.style.backgroundImage = 'radial-gradient(circle, #fff 25%, transparent 26%)';
-        if(b.pattern === 'stripes') {
-          div.firstChild.style.backgroundImage = 'linear-gradient(135deg, rgba(255,255,255,0.4) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.4) 75%, transparent 75%, transparent)';
-          div.firstChild.style.backgroundSize = '12px 12px';
-        }
-        
-        div.onclick = () => {
-          isEraser = false;
-          currentColor = b.color;
-          currentType = b.type; currentPattern = b.pattern || '';
-          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
-          document.getElementById('eraser').classList.remove('selected');
-          div.classList.add('selected');
-        };
-        grid.appendChild(div);
-      });
-
-      // Eraser Setup
-      document.getElementById('eraser').onclick = () => {
-        isEraser = true;
-        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
-        document.getElementById('eraser').classList.add('selected');
-      };
-
-      // Reset Canvas
-      document.getElementById('btnReset').onclick = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      };
-
-      // ✓ ပြီးပြီ Button Event (BGM ရပ်၊ Confetti ကြွေ၊ လက်ခုပ်သံထွက်၊ Popup ပွင့်)
-      document.getElementById('btnNext').onclick = () => {
-        // BGM ခေတ္တရပ်ခြင်း
-        bgm.pause();
-        // Clapping Sound Play
-        clapping.currentTime = 0;
-        clapping.play().catch(err => console.log("Audio play deferred"));
-        // Confetti Particle System
-        const host = document.getElementById('confetti');
-        const items = ['🍬', '🍭', '✨', '🎉', '🎈', '🧁', '🍩'];
-        for (let i = 0; i < 55; i++) {
-          const el = document.createElement('div');
-          el.className = 'star';
-          el.textContent = items[Math.floor(Math.random() * items.length)];
-          el.style.left = '50%'; el.style.top = '50%';
-          const angle = Math.random() * Math.PI * 2;
-          const dist = 120 + Math.random() * 320;
-          el.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
-          el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
-          host.appendChild(el);
-          setTimeout(() => el.remove(), 1500);
-        }
-
-        // Display Congratulations Popup Modal Box
-        document.getElementById('congratsWindowBox').classList.add('show');
-      };
-
-      // Popup အတွင်းရှိ "ပြီးပြီ" ခလုတ်ကိုနှိပ်မှ index.html (Main Page) သို့ ပို့ဆောင်မည်
-      document.getElementById('btnPopupDone').onclick = () => {
-        window.location.href = 'index.html?fromGame=true';
-      };
-    }
-
-    // Canvas Mouse/Touch Listeners
     canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('touchstart', (e) => { startDrawing(e.touches[0]); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseleave', stopDrawing);
+
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('touchmove', draw);
     canvas.addEventListener('touchend', stopDrawing);
-    canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); }, { passive: false });
 
-    // SVG Guide Letter Background
-    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>င</text></svg>\")";
-    canvas.style.backgroundSize = "100% 100%";
+    // Audio Controls
+    volumeSlider.addEventListener('input', (e) => {
+      const vol = e.target.value;
+      bgm.volume = vol;
+      clapping.volume = vol;
+      volumeIcon.textContent = vol == 0 ? '🔇' : '🔊';
+    });
 
-    initUI();
+    volumeIcon.addEventListener('click', () => {
+      if (bgm.volume > 0) {
+        bgm.volume = 0;
+        volumeSlider.value = 0;
+        volumeIcon.textContent = '🔇';
+      } else {
+        bgm.volume = 0.3;
+        volumeSlider.value = 0.3;
+        volumeIcon.textContent = '🔊';
+      }
+    });
+
+    // Confetti Effect
+    function triggerConfetti() {
+      const confettiContainer = document.getElementById('confetti');
+      confettiContainer.innerHTML = '';
+      const items = ['🍬', '🍭', '✨', '⭐', '🧁'];
+      
+      for (let i = 0; i < 40; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.textContent = items[Math.floor(Math.random() * items.length)];
+        star.style.left = '50vw';
+        star.style.top = '50vh';
+        
+        const dx = (Math.random() - 0.5) * 800 + 'px';
+        const dy = (Math.random() - 0.5) * 800 + 'px';
+        star.style.setProperty('--dx', dx);
+        star.style.setProperty('--dy', dy);
+        
+        confettiContainer.appendChild(star);
+      }
+    }
+
+    // Button Actions
+    btnStart.addEventListener('click', () => {
+      introScreen.classList.add('hide');
+      gameContainer.classList.add('show');
+      bgm.volume = volumeSlider.value;
+      bgm.play().catch(() => {});
+    });
+
+    btnReset.addEventListener('click', () => {
+      drawLetterOutline();
+    });
+
+    btnNext.addEventListener('click', () => {
+      congratsWindowBox.classList.add('show');
+      clapping.currentTime = 0;
+      clapping.play().catch(() => {});
+      triggerConfetti();
+    });
+
+    btnPopupDone.addEventListener('click', () => {
+      congratsWindowBox.classList.remove('show');
+    });
+
+    btnBack.addEventListener('click', () => {
+      gameContainer.classList.remove('show');
+      introScreen.classList.remove('hide');
+    });
+
+    btnHome.addEventListener('click', () => {
+      gameContainer.classList.remove('show');
+      introScreen.classList.remove('hide');
+    });
+
+    // Initialize Game
+    drawLetterOutline();
+    initBrushes();
   </script>
 </body>
 </html>
