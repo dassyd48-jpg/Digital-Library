@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Paint & Play the Burmese Letter ဟ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif; user-select: none; -webkit-user-select: none; }
+    
+    body {
+      background: linear-gradient(to bottom, #090a14 0%, #101428 40%, #1a2246 70%, #252f5f 100%);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      height: 100dvh;
+    }
+
+    /* ==========================================================================
+       TOP NAVIGATION BUTTONS
+       ========================================================================= */
+    .top-nav {
+      position: absolute;
+      top: clamp(10px, 2vh, 20px);
+      left: clamp(10px, 2vw, 20px);
+      z-index: 90;
+      display: flex;
+      gap: 8px;
+      pointer-events: auto;
+    }
+    .top-nav-btn {
+      padding: clamp(6px, 1.2vh, 10px) clamp(10px, 1.8vw, 16px);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(20, 184, 166, 0.4);
+      border-radius: 12px;
+      color: white;
+      font-size: clamp(12px, 2vw, 14px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    .top-nav-btn.back-btn { border-color: rgba(245, 158, 11, 0.4); }
+    .top-nav-btn:active { transform: scale(0.95); }
+    .btn-label { display: inline; }
+    @media (max-width: 480px) { .btn-label { display: none; } }
+
+    /* ==========================================================================
+       BACKGROUND & PLANTS (မူရင်း သဘာဝ ဝန်းကျင်များ)
+       ========================================================================= */
+    .star-twinkle { position: absolute; width: 3px; height: 3px; background: white; border-radius: 50%; box-shadow: 0 0 10px #fff; animation: blink 3s infinite ease-in-out; }
+    .star1 { top: 15%; left: 10%; animation-delay: 0s; }
+    .star2 { top: 40%; left: 6%; animation-delay: 1.2s; width: 4px; height: 4px; }
+    .star3 { top: 55%; left: 18%; animation-delay: 1.8s; }
+    .star4 { top: 12%; left: 50%; animation-delay: 2.3s; }
+    @keyframes blink { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
+
+    .giant-moon {
+      position: absolute; top: clamp(-60px, -5vh, -30px); right: clamp(-60px, -5vw, -30px);
+      width: clamp(180px, 30vw, 320px); height: clamp(180px, 30vw, 320px);
+      background: radial-gradient(circle, #fffdf0 0%, #fffca8 65%, #fcd65b 100%);
+      border-radius: 50%; box-shadow: 0 0 50px rgba(255, 252, 168, 0.35); z-index: 1;
+    }
+
+    .meadow-slope {
+      position: absolute; bottom: 0; left: -5%; width: 110%; height: 26vh;
+      background: linear-gradient(to bottom, #52b788 0%, #2d6a4f 45%, #1b4332 100%);
+      border-radius: 50% 50% 0 0 / 25px 25px 0 0; z-index: 3; box-shadow: inset 0 12px 0 #74c69d;
+    }
+    
+    .plants-container {
+      position: absolute; bottom: 0; left: 0; width: 100%; height: 28vh;
+      z-index: 4; pointer-events: none; display: flex; justify-content: space-between; padding: 0 2%;
+    }
+    .bush-plant {
+      position: absolute; bottom: 10px; font-size: clamp(35px, 7vw, 65px);
+      filter: drop-shadow(0 5px 5px rgba(0,0,0,0.4)); animation: gentleSway 4s infinite ease-in-out;
+    }
+    .bush-left { left: 3%; animation-delay: 0s; }
+    .bush-right { right: 3%; animation-delay: 1.5s; }
+    .bush-center-left { left: 22%; font-size: clamp(25px, 5vw, 45px); animation-delay: 0.8s; }
+    .bush-center-right { right: 22%; font-size: clamp(25px, 5vw, 45px); animation-delay: 2.1s; }
+
+    @keyframes gentleSway {
+      0%, 100% { transform: rotate(0deg) translateY(0); }
+      50% { transform: rotate(3deg) translateY(-3px); }
+    }
+
+    /* ==========================================================================
+       INTRO SCREEN
+       ========================================================================= */
+    .intro-screen {
+      position: absolute; inset: 0; 
+      background: linear-gradient(rgba(9, 10, 20, 0.94), rgba(20, 25, 50, 0.97));
+      z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: clamp(15px, 3vw, 30px); text-align: center; transition: opacity 0.5s ease-out, pointer-events 0.5s;
+    }
+    .intro-screen.hide { opacity: 0; pointer-events: none; }
+    .intro-emojis { font-size: clamp(30px, 6vw, 45px); margin-bottom: 10px; }
+    .intro-main-title { font-size: clamp(24px, 5vw, 40px); font-weight: 800; color: #ccff33; margin-bottom: 10px; }
+    .intro-badge { background-color: #ff70a6; border-radius: 50px; padding: 6px 24px; font-size: clamp(14px, 3vw, 18px); color: white; margin-bottom: 15px; font-weight: bold; }
+    .intro-description { font-size: clamp(13px, 2.5vw, 16px); color: #cbd5e1; max-width: 550px; line-height: 1.6; margin-bottom: 25px; }
+    .btn-start { padding: clamp(10px, 2vh, 14px) clamp(30px, 6vw, 50px); font-size: clamp(16px, 3vw, 22px); font-weight: 800; color: white; background: #2d6a4f; border: none; border-radius: 20px; cursor: pointer; box-shadow: 0 6px 0 #1b4332; }
+    .btn-start:active { transform: translateY(3px); box-shadow: 0 3px 0 #1b4332; }
+
+    /* ==========================================================================
+       PAINTING GAME CONTAINER & STAGE
+       ========================================================================= */
+    .game-container {
+      position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center;
+      width: 100%; max-width: 680px; padding: clamp(10px, 2vw, 20px);
+      margin-top: clamp(20px, 4vh, 0px);
+    }
+    .game-container.hide { display: none !important; }
+
+    .heading-box {
+      background-color: #101428; border: 2px solid #1a2246; border-radius: 14px;
+      padding: clamp(6px, 1.2vh, 10px) clamp(16px, 3vw, 24px); margin-bottom: clamp(10px, 2vh, 16px);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .heading-text { font-size: clamp(14px, 3vw, 18px); font-weight: 700; color: #ffffff; }
+    .heading-glyph { color: #090a14; font-size: clamp(16px, 3.5vw, 22px); font-weight: 800; background: #ccff33; padding: 2px 10px; border-radius: 8px; }
+
+    .stage { display: flex; gap: 14px; align-items: center; justify-content: center; width: 100%; }
+
+    .whiteboard-frame {
+      position: relative; padding: 8px; border-radius: 20px; background-color: #090a14;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 15px rgba(204, 255, 51, 0.2);
+      border: 3px solid #ccff33; flex: 1; max-width: 380px;
+    }
+    .canvas-container { border-radius: 14px; background: #ffffff; overflow: hidden; position: relative; aspect-ratio: 1/1; width: 100%; }
+    canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; cursor: crosshair; touch-action: none; }
+
+    /* TOOL PANEL (DESKTOP / DEFAULT) */
+    .panel {
+      width: clamp(90px, 18vw, 110px); background-color: #090a14; border-radius: 20px; border: 3px solid #ccff33;
+      padding: 12px 8px; display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .panel-title { font-size: 9px; font-weight: 700; color: #ccff33; letter-spacing: 1px; }
+    
+    .eraser {
+      width: 100%; min-width: 36px; height: 38px; border-radius: 10px; background: #1e293b;
+      display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; border: 2px solid #334155;
+    }
+    .eraser.selected { border-color: #ccff33; background: #090a14; box-shadow: 0 0 8px #ccff33; }
+    
+    .brush-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; justify-items: center;
+    }
+    
+    .brush {
+      width: 100%; max-width: 42px; min-width: 32px; aspect-ratio: 1/1; border-radius: 50%;
+      cursor: pointer; position: relative; background: #1e293b; border: 2px solid #334155;
+      transition: transform 0.15s ease;
+    }
+    .brush.selected { border-color: #ccff33; transform: scale(1.15); box-shadow: 0 0 10px #ccff33; }
+    .swatch { position: absolute; inset: 2px; border-radius: 50%; }
+
+    .action-container { display: flex; flex-direction: column; gap: 6px; width: 100%; margin-top: auto; }
+    .btn { width: 100%; height: 38px; border-radius: 10px; border: none; color: white; font-weight: 700; font-size: 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .btn-reset { background-color: #ef4444; }
+    .btn-next { background-color: #2d6a4f; }
+
+    /* ==========================================================================
+       RESPONSIVE CSS FOR MOBILE/SMALL SCREENS
+       ========================================================================= */
+    @media (max-width: 768px) {
+      .stage { flex-direction: column; gap: 12px; }
+      .whiteboard-frame { width: 100%; max-width: 300px; }
+      
+      .panel {
+        width: 100%; max-width: 340px; flex-direction: row; justify-content: space-between;
+        padding: 8px 12px; gap: 8px;
+      }
+      .panel-title { display: none; }
+      
+      .eraser { width: 42px; height: 42px; flex-shrink: 0; }
+      
+      .brush-grid {
+        display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;
+        gap: 6px; width: auto; flex: 1;
+      }
+      .brush {
+        width: 32px; height: 32px; min-width: 32px; flex-shrink: 0;
+      }
+      
+      .action-container { flex-direction: row; width: auto; gap: 6px; flex-shrink: 0; }
+      .btn { width: 50px; height: 42px; font-size: 9px; }
+    }
+
+    /* ==========================================================================
+       STAGE 1: FIREFLY LETTER MATCH MINI-GAME
+       ========================================================================= */
+    .minigame-container {
+      position: absolute; inset: 0; z-index: 20; display: none; flex-direction: column; align-items: center; justify-content: flex-start;
+      padding-top: clamp(60px, 10vh, 90px); pointer-events: none;
+    }
+    .minigame-container.active { display: flex; pointer-events: auto; }
+
+    .minigame-header {
+      background: rgba(16, 20, 40, 0.9); border: 2px solid #ccff33; border-radius: 16px;
+      padding: 10px 20px; text-align: center; box-shadow: 0 0 20px rgba(204,255,51,0.3); z-index: 30;
+      margin-bottom: 10px;
+    }
+    .minigame-title { color: #ccff33; font-size: clamp(16px, 3.5vw, 22px); font-weight: 800; margin-bottom: 4px; }
+    .minigame-subtitle { color: #ffffff; font-size: clamp(12px, 2.5vw, 15px); }
+    .target-badge { color: #ffeb3b; font-weight: 800; font-size: 1.2em; }
+
+    .score-board {
+      background: #ff70a6; color: white; padding: 4px 16px; border-radius: 20px; font-weight: 800;
+      font-size: clamp(12px, 2.5vw, 16px); margin-top: 6px; display: inline-block;
+    }
+
+    .catch-firefly {
+      position: absolute; width: clamp(55px, 12vw, 75px); height: clamp(55px, 12vw, 75px);
+      border-radius: 50%; background: radial-gradient(circle, #ffffff 0%, #ccff33 60%, rgba(112, 224, 0, 0.4) 100%);
+      box-shadow: 0 0 15px #ccff33, 0 0 30px #70e000; display: flex; align-items: center; justify-content: center;
+      font-size: clamp(22px, 5vw, 32px); font-weight: 800; color: #090a14; cursor: pointer;
+      animation: smoothFloat 5s infinite ease-in-out; z-index: 25; touch-action: manipulation;
+      transition: transform 0.2s ease;
+    }
+
+    @keyframes smoothFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(20px, -30px) scale(1.05); }
+      50% { transform: translate(-15px, 20px) scale(0.95); }
+      75% { transform: translate(25px, 15px) scale(1.02); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    /* ==========================================================================
+       REWARD MODAL SYSTEM
+       ========================================================================= */
+    .reward-backdrop {
+      position: absolute; inset: 0; background: rgba(0, 0, 0, 0.85);
+      z-index: 200; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+    }
+    .reward-backdrop.show { opacity: 1; pointer-events: auto; }
+    
+    .reward-box {
+      background: linear-gradient(135deg, #101428 0%, #090a14 100%);
+      border: 3px solid #ccff33; border-radius: 24px; padding: clamp(20px, 5vw, 35px);
+      width: 85%; max-width: 380px; text-align: center; box-shadow: 0 0 30px rgba(204,255,51,0.3);
+      transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .reward-backdrop.show .reward-box { transform: scale(1); }
+    .reward-stars { font-size: clamp(35px, 8vw, 45px); margin-bottom: 10px; }
+    .reward-title { font-size: clamp(20px, 4vw, 26px); font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .reward-desc { font-size: clamp(13px, 2.5vw, 15px); color: #cbd5e1; margin-bottom: 20px; line-height: 1.5; }
+    .btn-claim { 
+      padding: 10px 30px; font-size: clamp(15px, 3vw, 18px); font-weight: 800; color: #090a14; 
+      background: #ccff33; border: none; border-radius: 14px; cursor: pointer; 
+      box-shadow: 0 4px 0 #70e000; width: 100%; display: block; text-decoration: none; 
+    }
+    .btn-claim:active { transform: translateY(2px); box-shadow: 0 2px 0 #70e000; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAVIGATION BUTTONS -->
+  <div class="top-nav">
+    <a href="index.html?fromGame=true" class="top-nav-btn">
+      <span>🏠</span> <span class="btn-label">ပင်မမြေပုံ</span>
+    </a>
+    <a href="index.html?fromGame=true&showPopup=stage2" class="top-nav-btn back-btn">
+      <span>↩️</span> <span class="btn-label">နောက်သို့</span>
+    </a>
+  </div>
+
+  <!-- BACKGROUND ELEMENTS -->
+  <div class="star-twinkle star1"></div>
+  <div class="star-twinkle star2"></div>
+  <div class="star-twinkle star3"></div>
+  <div class="star-twinkle star4"></div>
+  <div class="giant-moon"></div>
+  
+  <!-- MEADOW & PLANTS LAYER -->
+  <div class="meadow-slope"></div>
+  <div class="plants-container">
+    <div class="bush-plant bush-left">🌿</div>
+    <div class="bush-plant bush-center-left">🌱</div>
+    <div class="bush-plant bush-center-right">🌸</div>
+    <div class="bush-plant bush-right">🌺</div>
+  </div>
+
+  <!-- INTRO SCREEN -->
+  <div class="intro-screen" id="welcomeIntro">
+    <div class="intro-emojis">🪰 🌿 ✨ 🎨</div>
+    <h1 class="intro-main-title">မီးပိုးအိမ်လေးများနှင့် မှော်ချုံပုတ်</h1>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဟ" ကို ရေးဆွဲကြစို့</div>
+    <p class="intro-description">
+      ကလေးတို့ရေ... ညမှောင်မှောင်လေးထဲမှာ တဖျတ်ဖျတ် လင်းနေတဲ့ မီးပိုးစုန်းပြူးလေးတွေနဲ့အတူ "ဟ" လေးကို ရေးဆွဲပြီး မီးပိုးဖမ်းတမ်းကစားကြမယ်နော်။
+    </p>
+    <button class="btn-start" onclick="startGame()">စတင်ကစားမည်</button>
+  </div>
+
+  <!-- PAINTING WORKSPACE -->
+  <div class="game-container" id="paintingWorkspace">
+    <div class="heading-box">
+      <span class="heading-text">Paint the letter</span>
+      <span class="heading-glyph">ဟ</span>
+      <span class="heading-text">!</span>
+    </div>
+
+    <div class="stage">
+      <div class="whiteboard-frame">
+        <div class="canvas-container">
+          <canvas id="paintCanvas"></canvas>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <div class="panel-title">MAGIC INK</div>
+        <div class="eraser" id="eraser" title="Eraser">🧼</div>
+        <div class="brush-grid" id="brushGrid"></div>
+        
+        <div class="action-container">
+          <button class="btn btn-reset" id="btnReset">↻<br>ပြန်စမယ်</button>
+          <button class="btn btn-next" id="btnNext">✨<br>ရှေ့သို့</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- STAGE 1: MINI-GAME CONTAINER -->
+  <div class="minigame-container" id="miniGameStage1">
+    <div class="minigame-header">
+      <div class="minigame-title">Stage 1: မီးပိုးစုန်းပြူး အက္ခရာ ရှာဖွေခြင်း 🪰</div>
+      <div class="minigame-subtitle">ဝမ်းဗိုက်တွင် <span class="target-badge">"ဟ"</span> ပါသော မီးပိုးစုန်းပြူးကို ရှာပြီး ဖမ်းပါ</div>
+      <div class="score-board" id="scoreDisplay">ဖမ်းမိသော အရေအတွက်: 0 / 5</div>
+    </div>
+    <div id="fireflyArea" style="width:100%; height:100%; position:relative;"></div>
+  </div>
+
+  <!-- REWARD POPUP -->
+  <div class="reward-backdrop" id="rewardPopup">
+    <div class="reward-box">
+      <div class="reward-stars">⭐ 🏆 ⭐</div>
+      <h2 class="reward-title" id="rewardTitle">တကယ့်ကို ထူးချွန်တယ်!</h2>
+      <p class="reward-desc" id="rewardDesc">တောက်ပတဲ့ "ဟ" အက္ခရာလေးကို ရေးဆွဲပြီးပြီမို့ မီးပိုးစုန်းပြူး ဖမ်းတမ်းဂိမ်း စတင်ကြရအောင်။</p>
+      <button class="btn-claim" id="btnClaim" onclick="transitionToStage1()">စတင်မည် 🎮</button>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================================================
+    // PAINTING ENGINE LOGIC
+    // ==========================================================================
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    let isPainting = false;
+    let currentColor = '#ccff33';
+    let isEraser = false;
+    let brushSize = 24;
+    let points = [];
+    const colors = ['#ccff33', '#ff70a6', '#4cc9f0', '#ffeb3b', '#a855f7', '#ff5722'];
+
+    function startGame() { 
+      document.getElementById('welcomeIntro').classList.add('hide'); 
+      resizeCanvas();
+    }
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+
+    function getXY(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    function startDrawing(e) {
+      isPainting = true;
+      points = [];
+      const pos = getXY(e);
+      points.push(pos);
+      ctx.lineWidth = brushSize;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      
+      if (isEraser) {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.lineWidth = 36;
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = currentColor;
+      }
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, ctx.lineWidth / 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function draw(e) {
+      if (!isPainting) return;
+      const pos = getXY(e);
+      points.push(pos);
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      let i;
+      for (i = 1; i < points.length - 2; i++) {
+        const xc = (points[i].x + points[i + 1].x) / 2;
+        const yc = (points[i].y + points[i + 1].y) / 2;
+        ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
+      }
+      if (points.length > 2) {
+        ctx.quadraticCurveTo(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
+      }
+      ctx.stroke();
+    }
+
+    function stopDrawing() { isPainting = false; points = []; }
+
+    function initGameUI() {
+      const grid = document.getElementById('brushGrid');
+      colors.forEach((color, i) => {
+        const div = document.createElement('div');
+        div.className = 'brush' + (i === 0 ? ' selected' : '');
+        div.innerHTML = `<div class="swatch" style="background:${color}"></div>`;
+        div.onclick = () => {
+          isEraser = false; currentColor = color;
+          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+          document.getElementById('eraser').classList.remove('selected');
+          div.classList.add('selected');
+        };
+        grid.appendChild(div);
+      });
+
+      document.getElementById('eraser').onclick = () => {
+        isEraser = true;
+        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+        document.getElementById('eraser').classList.add('selected');
+      };
+
+      document.getElementById('btnReset').onclick = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById('btnNext').onclick = () => document.getElementById('rewardPopup').classList.add('show');
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    window.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); }, { passive: false });
+    window.addEventListener('touchend', stopDrawing);
+
+    // Letter "ဟ" Background Path
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 100 100'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='60' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%2394a3b8' stroke-width='1.2' stroke-dasharray='3,2'>ဟ</text></svg>\")";
+    canvas.style.backgroundSize = "contain";
+    canvas.style.backgroundPosition = "center";
+    canvas.style.backgroundRepeat = "no-repeat";
+
+    initGameUI();
+
+    // ==========================================================================
+    // STAGE 1 MINI-GAME LOGIC (LETTER MATCH)
+    // ==========================================================================
+    let caughtCount = 0;
+    const targetLetter = "ဟ";
+    const dummyLetters = ["က", "ခ", "ဂ", "င", "စ", "ဆ", "ဇ"];
+
+    function transitionToStage1() {
+      document.getElementById('rewardPopup').classList.remove('show');
+      document.getElementById('paintingWorkspace').classList.add('hide');
+      document.getElementById('miniGameStage1').classList.add('active');
+      spawnFireflies();
+    }
+
+    function spawnFireflies() {
+      const area = document.getElementById('fireflyArea');
+      area.innerHTML = '';
+      
+      const activeLetters = [targetLetter];
+      while(activeLetters.length < 4) {
+        let rand = dummyLetters[Math.floor(Math.random() * dummyLetters.length)];
+        if(!activeLetters.includes(rand)) activeLetters.push(rand);
+      }
+      
+      activeLetters.sort(() => Math.random() - 0.5);
+
+      activeLetters.forEach((char) => {
+        const fly = document.createElement('div');
+        fly.className = 'catch-firefly';
+        fly.innerText = char;
+        
+        const topPos = Math.floor(Math.random() * 45) + 20; 
+        const leftPos = Math.floor(Math.random() * 70) + 10; 
+        fly.style.top = topPos + '%';
+        fly.style.left = leftPos + '%';
+        fly.style.animationDelay = (Math.random() * 2) + 's';
+
+        fly.onclick = (e) => {
+          e.stopPropagation();
+          if (char === targetLetter) {
+            caughtCount++;
+            document.getElementById('scoreDisplay').innerText = `ဖမ်းမိသော အရေအတွက်: ${caughtCount} / 5`;
+            fly.style.transform = 'scale(1.5)';
+            fly.style.opacity = '0';
+            setTimeout(() => {
+              if (caughtCount >= 5) {
+                completeStage1();
+              } else {
+                spawnFireflies();
+              }
+            }, 300);
+          } else {
+            fly.style.background = '#ef4444';
+            setTimeout(() => { fly.style.background = ''; }, 400);
+          }
+        };
+
+        area.appendChild(fly);
+      });
+    }
+
+    function completeStage1() {
+      document.getElementById('miniGameStage1').classList.remove('active');
+      document.getElementById('rewardTitle').innerText = "အောင်မြင်ပါပြီ! 🌟";
+      document.getElementById('rewardDesc').innerText = "ဝမ်းဗိုက်ထဲမှာ 'ဟ' ပါတဲ့ မီးပိုးစုန်းပြူး (၅) ကောင်လုံးကို တိကျစွာ ဖမ်းယူနိုင်ခဲ့ပါပြီ။";
+      
+      // 🚩 ပြောင်းလဲပြင်ဆင်ထားသော နေရာ: <button> element ဖြစ်၍ onclick handler တွင် JavaScript ဖြင့် တိုက်ရိုက် လမ်းကြောင်းညွှန်းပေးထားပါသည်
+      const claimBtn = document.getElementById('btnClaim');
+      claimBtn.innerText = "ပြီးပါပြီ 🚩";
+      claimBtn.onclick = function() {
+        window.location.href = "index.html?fromGame=true&showPopup=stage2";
+      };
+      
+      document.getElementById('rewardPopup').classList.add('show');
+    }
+  </script>
+</body>
+</html>

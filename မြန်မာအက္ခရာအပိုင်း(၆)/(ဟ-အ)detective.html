@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Find and Paint 'ဟ, ဠ, အ' - Dassy Digital Library</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght=400;700;900&display=swap');
+
+        :root {
+            --sky-top: #4facfe;
+            --sky-bottom: #00f2fe;
+            --festival-red: #ff4757;
+            --festival-gold: #ffa502;
+            --target-yellow: #f1c40f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body, html {
+            width: 100%; height: 100%; overflow: hidden;
+            font-family: "Noto Sans Myanmar", "Pyidaungsu", system-ui, sans-serif;
+            user-select: none; -webkit-user-select: none; touch-action: manipulation;
+        }
+
+        body {
+            background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 100%);
+            position: relative;
+        }
+
+        /* Top Navigation Overlay */
+        .top-nav {
+            position: absolute; top: clamp(10px, 2vh, 20px); left: clamp(10px, 2vw, 20px);
+            z-index: 50; display: flex; gap: 8px;
+        }
+        .nav-btn {
+            background: white; border: 2px solid #b33939; border-radius: 12px;
+            padding: 6px 12px; font-weight: 900; color: #b33939; font-size: clamp(0.8rem, 2vw, 1rem);
+            cursor: pointer; box-shadow: 0 4px 0 #b33939; display: flex; align-items: center; justify-content: center;
+            text-decoration: none; transition: transform 0.1s;
+        }
+        .nav-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #b33939; }
+
+        /* Sky Decor Elements (Adaptive Anchored) */
+        .sky-decor { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+        
+        .cloud { position: absolute; background: rgba(255, 255, 255, 0.85); border-radius: 50px; animation: floatCloud linear infinite; }
+        .cloud::before, .cloud::after { content: ''; position: absolute; background: rgba(255, 255, 255, 0.85); border-radius: 50%; }
+        .c1 { width: 100px; height: 35px; top: 12%; left: -120px; animation-duration: 25s; }
+        .c1::before { width: 40px; height: 40px; top: -15px; left: 15px; }
+        .c1::after { width: 50px; height: 50px; top: -20px; left: 40px; }
+
+        .festival-floor { position: absolute; bottom: 0; left: 0; width: 100%; height: clamp(40px, 8vh, 60px); background: linear-gradient(to right, #2ecc71, #27ae60); }
+        .circus-tent {
+            position: absolute; bottom: clamp(38px, 7.8vh, 58px); left: clamp(10px, 5vw, 40px);
+            width: clamp(60px, 15vw, 90px); height: clamp(35px, 8vh, 50px);
+            background: linear-gradient(to top, var(--festival-red) 70%, var(--festival-gold) 100%);
+            border-radius: 8px 8px 0 0; opacity: 0.8;
+        }
+
+        .main-balloon {
+            position: absolute; top: clamp(10px, 3vh, 30px); right: clamp(10px, 4vw, 40px);
+            width: clamp(60px, 12vw, 85px); height: clamp(80px, 16vh, 110px); z-index: 1;
+            display: flex; flex-direction: column; align-items: center;
+            animation: balloonBob 4s ease-in-out infinite;
+        }
+        .balloon-envelope {
+            width: 100%; height: 75%;
+            background: linear-gradient(45deg, #ff4757 25%, #ffa502 25%, #ffa502 50%, #2ed573 50%, #2ed573 75%, #1e90ff 75%);
+            background-size: 20px 20px; border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .balloon-eyes { display: flex; gap: 10px; margin-top: 4px; }
+        .balloon-eye { width: 6px; height: 6px; background: #fff; border-radius: 50%; border: 2px solid #000; }
+        .balloon-mouth-css { width: 16px; height: 8px; border-bottom: 3px solid #000; border-radius: 0 0 10px 10px; margin-top: 2px; }
+        .balloon-ropes { width: 30px; height: 10px; border-left: 2px solid #747d8c; border-right: 2px solid #747d8c; }
+        .balloon-basket { width: 22px; height: 15px; background: linear-gradient(to bottom, #f39c12, #d35400); border-radius: 3px; }
+
+        /* Intro Screen */
+        #intro-screen {
+            position: fixed; inset: 0; background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 100%);
+            z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
+        }
+        .intro-card {
+            background: rgba(255, 255, 255, 0.95); padding: clamp(20px, 5vh, 40px) clamp(15px, 4vw, 30px);
+            border-radius: 25px; border: 5px solid var(--sky-top); text-align: center; max-width: 420px; width: 90%;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        .intro-title { color: #1e3799; font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 900; margin-bottom: 10px; }
+        .intro-subtitle { color: #4b5563; font-size: clamp(0.95rem, 3vw, 1.1rem); font-weight: 700; margin-bottom: 25px; line-height: 1.5; }
+        .btn-start {
+            background: #6ee46b; color: #0a3d10; border: 3px solid #2a9d3a; border-radius: 20px;
+            padding: 12px 35px; font-size: clamp(1.1rem, 3.5vw, 1.3rem); font-weight: 900; cursor: pointer;
+            box-shadow: 0 6px 0 #2a9d3a; width: 100%; transition: transform 0.1s;
+        }
+
+        /* Main Container Responsive Layout */
+        .container {
+            position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; width: 100vw; z-index: 10; padding: clamp(10px, 2vh, 20px); display: none;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.92); border: 3px solid var(--sky-top); border-radius: 18px;
+            padding: 8px clamp(15px, 4vw, 25px); text-align: center; box-shadow: 0 4px 0 #1e3799; margin-bottom: 12px;
+        }
+        h1 { color: #1e3799; font-size: clamp(1.1rem, 3.5vw, 1.5rem); font-weight: 900; }
+        .guide-text { color: #ff4757; font-weight: 800; font-size: clamp(0.85rem, 2.5vw, 1rem); }
+
+        .score-board {
+            background: white; padding: 6px 16px; border-radius: 12px; border: 2px solid var(--sky-top);
+            color: #1e3799; font-weight: 800; font-size: clamp(0.85rem, 2.5vw, 1rem); margin-bottom: 12px;
+        }
+
+        /* Grid System Adaptive Scaling */
+        .painting-canvas {
+            background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(4px);
+            padding: clamp(10px, 2vh, 20px); border-radius: 22px; border: 4px solid var(--sky-top);
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(6px, 1.5vw, 12px);
+            max-width: 95vw; max-height: 50vh;
+        }
+
+        .segment {
+            width: clamp(50px, 14vw, 75px); height: clamp(50px, 14vw, 75px);
+            background: white; border: 3px solid #eee; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: clamp(24px, 6vw, 38px); cursor: pointer; color: #2f3542; font-weight: 900;
+            box-shadow: 0 3px 0 #ddd; transition: all 0.15s;
+        }
+        .segment.painted { border-color: rgba(255,255,255,0.5); color: white; }
+        .segment.wrong { animation: shake 0.4s ease; background: #ffebee; border-color: #ef9a9a; }
+
+        .palette {
+            margin-top: 15px; background: white; padding: 8px 18px; border-radius: 30px;
+            border: 2px solid var(--sky-top); display: flex; gap: 10px;
+        }
+        .color-circle {
+            width: clamp(32px, 8vw, 42px); height: clamp(32px, 8vw, 42px); border-radius: 50%; cursor: pointer;
+            border: 3px solid transparent; transition: transform 0.2s;
+        }
+        .color-circle.selected { border-color: #1e3799; transform: scale(1.15); }
+
+        .controls { margin-top: 15px; display: flex; gap: 10px; }
+        .btn {
+            background: var(--target-yellow); color: #4a2c00; border: 3px solid #cc8a00; border-radius: 14px;
+            padding: 8px 20px; font-size: clamp(0.9rem, 2.5vw, 1.05rem); font-weight: 900; cursor: pointer; box-shadow: 0 4px 0 #cc8a00;
+        }
+        .btn-next { background: #6ee46b; border-color: #2a9d3a; color: #0a3d10; box-shadow: 0 4px 0 #2a9d3a; }
+
+        /* Custom Modal Styling */
+        .reward-modal {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px); z-index: 300;
+            display: none; align-items: center; justify-content: center; padding: 20px;
+        }
+        .reward-modal.show { display: flex; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        .reward-card {
+            background: white; padding: clamp(25px, 5vh, 35px) clamp(20px, 4vw, 30px);
+            border-radius: 25px; border: 5px solid var(--target-yellow);
+            text-align: center; max-width: 380px; width: 90%;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+        .reward-emoji { font-size: 3rem; margin-bottom: 10px; }
+        .reward-title { color: #1e3799; font-size: clamp(1.4rem, 4vw, 1.8rem); font-weight: 900; margin-bottom: 8px; }
+        .reward-msg { color: #4b5563; font-size: clamp(0.95rem, 3vw, 1.1rem); font-weight: 700; margin-bottom: 20px; }
+
+        @keyframes floatCloud { 0% { transform: translateX(0); } 100% { transform: translateX(110vw); } }
+        @keyframes balloonBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+        @keyframes popIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <!-- TOP NAVIGATION BUTTONS -->
+    <div class="top-nav">
+        <a href="index.html?fromGame=true" class="nav-btn" title="ပင်မစာမျက်နှာ">🏠 ပင်မ</a>
+        <button class="nav-btn" onclick="goToWelcomeScreen()" title="နောက်သို့">↩️ back</button>
+        <button class="nav-btn" id="bgmBtn" onclick="toggleBGM()">🎵 BGM: ON</button>
+    </div>
+
+    <!-- INTRO OVERLAY SCREEN -->
+    <div id="intro-screen">
+        <div class="intro-card">
+            <h1 class="intro-title">မင်္ဂလာပါရှင်</h1>
+            <p class="intro-subtitle">အက္ခရာ (ဟ၊ ဠ၊ အ) လေးတွေကို ရှာဖွေပြီး ဆော့ကစားရအောင်နော် 🎨</p>
+            <button class="btn-start" onclick="startGame()">ဂိမ်းစဆော့မယ် 🚀</button>
+        </div>
+    </div>
+
+    <!-- BACKGROUND DECORATION -->
+    <div class="sky-decor" aria-hidden="true">
+        <div class="cloud c1"></div>
+        <div class="festival-floor"></div>
+        <div class="circus-tent"></div>
+        <div class="main-balloon">
+            <div class="balloon-envelope">
+                <div class="balloon-eyes"><div class="balloon-eye"></div><div class="balloon-eye"></div></div>
+                <div class="balloon-mouth-css"></div>
+            </div>
+            <div class="balloon-ropes"></div>
+            <div class="balloon-basket"></div>
+        </div>
+    </div>
+
+    <!-- MAIN GAME CONTAINER -->
+    <div class="container" id="main-game-container">
+        <header>
+            <h1>Level <span id="lvl-txt">1</span> : "<span id="target-letter-display">ဟ</span>" ကို ရှာရအောင်</h1>
+            <p class="guide-text">"<span id="target-letter-sub">ဟ</span>" အက္ခရာကိုပဲ ရွေးပြီး အရောင်ခြယ်ပါ</p>
+        </header>
+
+        <div class="score-board">ရှာတွေ့သည့် အရေအတွက်: <span id="found-count">0</span> / <span id="total-target">0</span></div>
+
+        <div class="painting-canvas" id="canvas"></div>
+
+        <div class="palette" id="palette">
+            <div class="color-circle selected" style="background: #ff4757;" data-color="#ff4757"></div>
+            <div class="color-circle" style="background: #ffa502;" data-color="#ffa502"></div>
+            <div class="color-circle" style="background: #2ed573;" data-color="#2ed573"></div>
+            <div class="color-circle" style="background: #1e90ff;" data-color="#1e90ff"></div>
+            <div class="color-circle" style="background: #9b59b6;" data-color="#9b59b6"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="initGame()">ပြန်စမည်</button>
+            <button class="btn btn-next" id="next-btn" style="display: none;" onclick="nextLevel()">နောက်တစ်ဆင့် သွားမည် ➔</button>
+        </div>
+    </div>
+
+    <!-- CUSTOM REWARD MODAL POP-UP -->
+    <div id="rewardModal" class="reward-modal">
+        <div class="reward-card">
+            <div class="reward-emoji">🎉</div>
+            <h2 class="reward-title">ဂုဏ်ယူပါတယ်!</h2>
+            <p class="reward-msg">Level 3 အထိ အောင်မြင်စွာ ပြီးမြောက်သွားပါပြီ။</p>
+            <button class="btn btn-next" style="width: 100%;" onclick="goHome()">ပင်မမြေပုံသို့ သွားမည် 🚀</button>
+        </div>
+    </div>
+
+    <script>
+        const targetSequence = ['ဟ', 'ဠ', 'အ'];
+        const dummyLetters = ['က', 'ခ', 'ဂ', 'ဃ', 'င', 'စ', 'ဆ', 'ဇ', 'ဈ', 'ည', 'ဋ'];
+        
+        let currentLevel = 1; // Level 1 to 3
+        let targetIndex = 0;   // 0: ဟ, 1: ဠ, 2: အ
+        let foundCount = 0;
+        let totalTarget = 0;
+        let selectedColor = '#ff4757';
+
+        const levelTargets = { 1: 3, 2: 6, 3: 9 };
+
+        const canvas = document.getElementById('canvas');
+        const foundDisplay = document.getElementById('found-count');
+        const totalDisplay = document.getElementById('total-target');
+        const targetDisplay = document.getElementById('target-letter-display');
+        const targetSubDisplay = document.getElementById('target-letter-sub');
+        const lvlDisplay = document.getElementById('lvl-txt');
+        const nextBtn = document.getElementById('next-btn');
+
+        // BGM Web Audio API Setup
+        let audioCtx = null;
+        let bgmInterval = null;
+        let bgmIsPlaying = false;
+
+        function startBGM() {
+            if (bgmIsPlaying) return;
+            bgmIsPlaying = true;
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63]; // C4, E4, G4, C5 Melody
+            let noteIdx = 0;
+
+            bgmInterval = setInterval(() => {
+                if (!bgmIsPlaying) return;
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(notes[noteIdx], audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+                noteIdx = (noteIdx + 1) % notes.length;
+            }, 500);
+            document.getElementById('bgmBtn').innerText = '🎵 BGM: ON';
+        }
+
+        function stopBGM() {
+            bgmIsPlaying = false;
+            if (bgmInterval) clearInterval(bgmInterval);
+            document.getElementById('bgmBtn').innerText = '🔇 BGM: OFF';
+        }
+
+        function toggleBGM() {
+            bgmIsPlaying ? stopBGM() : startBGM();
+        }
+
+        function startGame() {
+            document.getElementById('intro-screen').style.display = 'none';
+            document.getElementById('main-game-container').style.display = 'flex';
+            startBGM();
+            currentLevel = 1;
+            targetIndex = 0;
+            initGame();
+        }
+
+        function goToWelcomeScreen() {
+            stopBGM();
+            document.getElementById('rewardModal').classList.remove('show');
+            document.getElementById('intro-screen').style.display = 'flex';
+            document.getElementById('main-game-container').style.display = 'none';
+        }
+
+        document.querySelectorAll('.color-circle').forEach(circle => {
+            circle.onclick = () => {
+                document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+                circle.classList.add('selected');
+                selectedColor = circle.dataset.color;
+            };
+        });
+
+        function initGame() {
+            canvas.innerHTML = '';
+            foundCount = 0;
+            foundDisplay.innerText = '0';
+            nextBtn.style.display = 'none';
+
+            const currentTarget = targetSequence[targetIndex];
+            targetDisplay.innerText = currentTarget;
+            targetSubDisplay.innerText = currentTarget;
+            lvlDisplay.innerText = currentLevel;
+
+            totalTarget = levelTargets[currentLevel];
+            totalDisplay.innerText = totalTarget;
+
+            // Generate items inside grid
+            let items = Array(totalTarget).fill(currentTarget);
+            while (items.length < 12) {
+                let randomDummy = dummyLetters[Math.floor(Math.random() * dummyLetters.length)];
+                if (randomDummy !== currentTarget) items.push(randomDummy);
+            }
+            items.sort(() => Math.random() - 0.5);
+
+            items.forEach(letter => {
+                const seg = document.createElement('div');
+                seg.className = 'segment';
+                seg.innerText = letter;
+                seg.onclick = () => handlePaint(seg, letter, currentTarget);
+                canvas.appendChild(seg);
+            });
+        }
+
+        function handlePaint(seg, letter, currentTarget) {
+            if (seg.classList.contains('painted')) return;
+
+            if (letter === currentTarget) {
+                seg.style.background = selectedColor;
+                seg.classList.add('painted');
+                foundCount++;
+                foundDisplay.innerText = foundCount;
+
+                if (foundCount === totalTarget) {
+                    nextBtn.style.display = 'block';
+                }
+            } else {
+                seg.classList.add('wrong');
+                setTimeout(() => seg.classList.remove('wrong'), 400);
+            }
+        }
+
+        function nextLevel() {
+            if (currentLevel < 3) {
+                currentLevel++;
+                targetIndex = (targetIndex + 1) % targetSequence.length; // ဟ -> ဠ -> အ
+                initGame();
+            } else {
+                // Game Screen ပေါ်မှာတင် Custom Modal ဖော်ပြမည်
+                document.getElementById('rewardModal').classList.add('show');
+            }
+        }
+
+        function goHome() {
+            window.location.href = 'index.html?fromGame=true';
+        }
+    </script>
+</body>
+</html>

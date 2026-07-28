@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>"အ" အက္ခရာလေ့လာခြင်း</title>
+    <!-- Tailwind CSS for sleek UI overlay -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght@400;700;900&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #030712; /* Deep Outer Space Black */
+            font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .burmese-font {
+            font-family: 'Pyidaungsu', 'Myanmar3', 'Yunghkio', sans-serif;
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Top Bar Container with HUD & Navigation Buttons -->
+    <div class="absolute top-4 left-4 right-4 z-30 pointer-events-none flex flex-wrap items-start justify-between gap-2">
+        
+        <!-- Left Section: HUD / Learning Progress & Score Top Overlay -->
+        <div id="hud" class="pointer-events-none flex flex-col space-y-2 max-w-md">
+            <!-- Learning Progress Bar -->
+            <div class="flex items-center space-x-3 bg-fuchsia-950/80 backdrop-blur-md p-3 rounded-2xl border border-fuchsia-500/20 shadow-lg">
+                <span class="text-xs font-black text-fuchsia-400 tracking-wider uppercase">Cosmos Progress</span>
+                <div class="flex-1 bg-black/40 h-4 rounded-full overflow-hidden p-0.5 border border-white/5">
+                    <div id="xp-bar" class="bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-400 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <span id="level-display" class="bg-fuchsia-900 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Level 1</span>
+            </div>
+            
+            <!-- Score Counter & Active Target Letter Display -->
+            <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-2 bg-purple-950/80 backdrop-blur-md px-4 py-2 rounded-2xl border border-purple-500/20 shadow-lg">
+                    <span class="text-xl">🌌</span>
+                    <span id="cash-display" class="text-white font-black tracking-widest text-sm">0</span>
+                </div>
+                <!-- Dynamic Educational Goal Frame -->
+                <div class="flex items-center space-x-2 bg-gradient-to-r from-cyan-500/20 to-fuchsia-500/20 backdrop-blur-md px-4 py-2 rounded-2xl border border-cyan-400/40 shadow-lg animate-pulse">
+                    <span class="text-xs font-black text-cyan-400 uppercase tracking-wider">Target:</span>
+                    <span id="target-letter-display" class="burmese-font text-2xl font-bold text-cyan-200">အ (0/10)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Section: Navigation Links & Health Indicator -->
+        <div class="flex flex-col items-end space-y-2 pointer-events-auto">
+            <div class="flex space-x-2 pointer-events-auto">
+                <a href="index.html?fromGame=true" class="px-3 py-2 bg-purple-950/90 hover:bg-purple-900 border border-fuchsia-500/30 rounded-xl text-xs text-white flex items-center space-x-1 shadow-md transition-all active:scale-95 cursor-pointer">
+                    <span>🏠</span> <span class="hidden sm:inline">ပင်မမြေပုံ</span>
+                </a>
+                <a href="index.html?fromGame=true&showPopup=stage3" class="px-3 py-2 bg-purple-950/90 hover:bg-purple-900 border border-cyan-400/30 rounded-xl text-xs text-white flex items-center space-x-1 shadow-md transition-all active:scale-95 cursor-pointer">
+                    <span>↩️</span> <span class="hidden sm:inline">နောက်သို့</span>
+                </a>
+            </div>
+
+            <div class="flex items-center space-x-2 bg-purple-950/80 backdrop-blur-md px-4 py-2 rounded-2xl border border-purple-500/20 shadow-lg">
+                <span class="text-lg">🛡️</span>
+                <span id="hp-display" class="text-cyan-400 font-black tracking-wider text-sm">100 / 100</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Level Complete / Next Level Modal -->
+    <div id="level-complete-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-[100] flex items-center justify-center p-6 transition-all duration-300">
+        <div class="bg-[#0e0720] border-2 border-fuchsia-500/30 rounded-[2.5rem] p-8 max-w-md w-full text-center shadow-2xl flex flex-col items-center">
+            <div class="text-5xl mb-4">🚀👾🎉</div>
+            <h2 id="modal-title" class="burmese-font text-2xl font-bold text-fuchsia-400 mb-2">Level 1 ပြီးမြောက်ပါပြီ!</h2>
+            <p id="modal-desc" class="burmese-font text-purple-200 text-sm mb-6">နောက်တစ်ဆင့်သို့ တက်လှမ်းရန် အဆင်သင့်ဖြစ်ပါပြီ။</p>
+            
+            <button id="next-level-btn" class="burmese-font px-10 py-3.5 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold text-lg rounded-full transition-all shadow-lg border-b-4 border-fuchsia-800 active:scale-95 pointer-events-auto">
+                နောက်ထပ် level သို့သွားမယ်
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Game Canvas -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Start / GameOver Screens -->
+    <div id="overlay-screen" class="absolute inset-0 bg-gray-950/95 backdrop-blur-md z-[90] flex flex-col items-center justify-center text-center p-8">
+        <h1 class="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-fuchsia-500 tracking-widest mb-2 uppercase drop-shadow-[0_0_30px_rgba(192,38,211,0.3)]">"အ" အက္ခရာလေ့လာခြင်း</h1>
+        
+        <div id="game-stats" class="hidden bg-white/5 border border-white/5 rounded-3xl p-6 mb-10 max-w-xs w-full text-left space-y-3 font-sans">
+            <div class="flex justify-between"><span class="text-purple-300">Target "အ" Asteroids Shattered</span><span id="stat-coins" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-purple-300">Wrong Orbs Avoided</span><span id="stat-kills" class="text-white font-bold">0</span></div>
+            <div class="flex justify-between"><span class="text-purple-300">Galactic Orbit Tier</span><span id="stat-level" class="text-cyan-400 font-bold">Level 1</span></div>
+        </div>
+
+        <button id="start-btn" class="px-16 py-6 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500 text-white font-black text-xs uppercase tracking-[0.3em] rounded-full transition-all shadow-[0_20px_50px_rgba(192,38,211,0.3)] border-b-4 border-purple-800 active:scale-95 pointer-events-auto">စတင်မယ်</button>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'shoot') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(300, now + 0.12);
+                gainNode.gain.setValueAtTime(0.03, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+                osc.start(now);
+                osc.stop(now + 0.12);
+            } else if (type === 'hit') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(200, now);
+                osc.frequency.exponentialRampToValueAtTime(50, now + 0.15);
+                gainNode.gain.setValueAtTime(0.07, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                osc.start(now);
+                osc.stop(now + 0.15);
+            } else if (type === 'coin') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(900, now);
+                osc.frequency.setValueAtTime(1400, now + 0.06);
+                gainNode.gain.setValueAtTime(0.03, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+                osc.start(now);
+                osc.stop(now + 0.18);
+            } else if (type === 'fail') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(120, now);
+                osc.frequency.linearRampToValueAtTime(60, now + 0.3);
+                gainNode.gain.setValueAtTime(0.08, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'levelup') {
+                const freqs = [500, 700, 900, 1100, 1500];
+                freqs.forEach((f, i) => {
+                    const oscSeq = audioCtx.createOscillator();
+                    const gainSeq = audioCtx.createGain();
+                    oscSeq.connect(gainSeq);
+                    gainSeq.connect(audioCtx.destination);
+                    oscSeq.type = 'sine';
+                    oscSeq.frequency.setValueAtTime(f, now + i * 0.04);
+                    gainSeq.gain.setValueAtTime(0.03, now + i * 0.04);
+                    gainSeq.gain.exponentialRampToValueAtTime(0.01, now + i * 0.04 + 0.1);
+                    oscSeq.start(now + i * 0.04);
+                    oscSeq.stop(now + i * 0.04 + 0.1);
+                });
+            }
+        }
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const burmeseAlphabets = [
+            'က', 'ခ', 'ဂ', 'ဃ', 'င', 'စ', 'ဆ', 'ဇ', 'ဈ', 'ည',
+            'တ', 'ဌ', 'ထ', 'ဒ', 'ဓ', 'န', 'ပ', 'ဖ', 'ဗ', 'ဘ', 'မ',
+            'ယ', 'ရ', 'လ', 'ဝ', 'သ', 'ဟ', 'ဠ', 'အ', 'ဏ', 'ဎ'
+        ];
+
+        const LEVEL_TARGETS = {
+            1: 10,
+            2: 15,
+            3: 20
+        };
+
+        const game = {
+            running: false,
+            paused: false,
+            score: 0,
+            correctPops: 0,
+            incorrectPops: 0,
+            targetLetter: 'အ',
+            levelHits: 0,
+            currentLevel: 1,
+            maxLevel: 3,
+            camera: { x: 0, y: 0 }
+        };
+
+        const player = {
+            x: 0,
+            y: 0,
+            vx: 0,
+            vy: 0,
+            angle: 0,
+            radius: 20, 
+            hp: 100,
+            maxHp: 100,
+            speed: 6.2, 
+            range: 320,         
+            shootCooldown: 0.15, 
+            lastShotTime: 0
+        };
+
+        const keys = {};
+        const entities = {
+            projectiles: [],
+            letterBubbles: [], 
+            collectibles: [],  
+            scenery: []        
+        };
+
+        function initScenery() {
+            entities.scenery = [];
+            const mapRadius = 1600;
+
+            for (let i = 0; i < 20; i++) {
+                entities.scenery.push({
+                    type: 'nebula',
+                    x: (Math.random() - 0.5) * mapRadius * 2,
+                    y: (Math.random() - 0.5) * mapRadius * 2,
+                    radius: 60 + Math.random() * 60,
+                    color: Math.random() > 0.5 ? 'rgba(147, 51, 234, 0.15)' : 'rgba(6, 182, 212, 0.12)' 
+                });
+            }
+
+            for (let i = 0; i < 60; i++) {
+                entities.scenery.push({
+                    type: 'star',
+                    x: (Math.random() - 0.5) * mapRadius * 2,
+                    y: (Math.random() - 0.5) * mapRadius * 2,
+                    radius: 1 + Math.random() * 2
+                });
+            }
+        }
+
+        function updateHUD() {
+            const targetNeeded = LEVEL_TARGETS[game.currentLevel];
+            document.getElementById('target-letter-display').innerText = `အ (${game.levelHits}/${targetNeeded})`;
+            document.getElementById('level-display').innerText = `Level ${game.currentLevel}`;
+            document.getElementById('cash-display').innerText = game.score;
+            document.getElementById('hp-display').innerText = `${Math.max(0, Math.round(player.hp))} / ${player.maxHp}`;
+            
+            const progressPct = Math.min(100, (game.levelHits / targetNeeded) * 100);
+            document.getElementById('xp-bar').style.width = `${progressPct}%`;
+        }
+
+        function checkLevelProgress() {
+            const targetNeeded = LEVEL_TARGETS[game.currentLevel];
+            
+            if (game.levelHits >= targetNeeded) {
+                playSound('levelup');
+                game.paused = true;
+
+                const modal = document.getElementById('level-complete-modal');
+                const title = document.getElementById('modal-title');
+                const desc = document.getElementById('modal-desc');
+                const nextBtn = document.getElementById('next-level-btn');
+
+                if (game.currentLevel < game.maxLevel) {
+                    title.innerText = `Level ${game.currentLevel} ပြီးမြောက်ပါပြီ!`;
+                    desc.innerText = `နောက်တစ်ဆင့် (Level ${game.currentLevel + 1}) သို့ တက်လှမ်းရန် အဆင်သင့်ဖြစ်ပါပြီ။`;
+                    nextBtn.innerText = "နောက်ထပ် level သို့သွားမယ်";
+                    nextBtn.onclick = () => {
+                        game.currentLevel++;
+                        game.levelHits = 0;
+                        modal.classList.add('hidden');
+                        game.paused = false;
+                        updateHUD();
+                    };
+                } else {
+                    title.innerText = "🎉 ဂုဏ်ပြုပါသည်!";
+                    desc.innerText = "Level 3 စလုံးကို အောင်မြင်စွာ ပြီးဆုံးသွားပါပြီ။";
+                    nextBtn.innerText = "ပြီးပြီ";
+                    nextBtn.onclick = () => {
+                        window.location.href = "index.html?fromGame=true&showPopup=stage3";
+                    };
+                }
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function drawNebula(ctx, x, y, radius, color) {
+            ctx.save();
+            const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
+            grad.addColorStop(0, color);
+            grad.addColorStop(1, 'transparent');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawStar(ctx, x, y, radius) {
+            ctx.save();
+            const twinkle = Math.sin(Date.now() * 0.006 + x) * 1.5;
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(x, y, radius + twinkle > 0.5 ? radius + twinkle : 0.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawPlayer(ctx, x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(player.angle);
+
+            const engineFlame = Math.random() * 8 + 10;
+            const gradFlame = ctx.createLinearGradient(0, 12, 0, 12 + engineFlame);
+            gradFlame.addColorStop(0, '#22d3ee');
+            gradFlame.addColorStop(1, 'transparent');
+            ctx.fillStyle = gradFlame;
+            ctx.beginPath();
+            ctx.moveTo(-6, 12);
+            ctx.lineTo(0, 12 + engineFlame);
+            ctx.lineTo(6, 12);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#6b21a8';
+            ctx.beginPath();
+            ctx.moveTo(0, -18);
+            ctx.lineTo(-24, 14);
+            ctx.lineTo(-8, 6);
+            ctx.lineTo(8, 6);
+            ctx.lineTo(24, 14);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.strokeStyle = '#22d3ee';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = '#a855f7';
+            ctx.beginPath();
+            ctx.arc(0, -2, 6, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+
+            ctx.strokeStyle = 'rgba(34, 211, 238, 0.15)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([8, 8]);
+            ctx.beginPath();
+            ctx.arc(x, y, player.range, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function drawSpaceAsteroid(ctx, orb) {
+            const { x, y, letter, scale } = orb;
+            const isTarget = letter === game.targetLetter;
+
+            ctx.save();
+            ctx.translate(x, y);
+
+            const rotation = (Date.now() * 0.001 + orb.angleOffset) * 0.3;
+            ctx.rotate(rotation);
+
+            let coreColor = isTarget ? '#a21caf' : '#374151';
+            let auraGlow = isTarget ? 'rgba(232, 121, 249, 0.3)' : 'rgba(255, 255, 255, 0.05)';
+
+            ctx.fillStyle = auraGlow;
+            ctx.beginPath();
+            ctx.arc(0, 0, 25 * scale, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = coreColor;
+            ctx.beginPath();
+            const nodes = 7;
+            for (let i = 0; i < nodes; i++) {
+                const angle = (i / nodes) * Math.PI * 2;
+                const offset = (0.88 + Math.sin(i * 3.5) * 0.1) * 18 * scale;
+                const nx = Math.cos(angle) * offset;
+                const ny = Math.sin(angle) * offset;
+                if (i === 0) ctx.moveTo(nx, ny);
+                else ctx.lineTo(nx, ny);
+            }
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(0, 0, 10 * scale, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.fillStyle = isTarget ? '#701a75' : '#111827';
+            ctx.font = `bold ${21 * scale}px Pyidaungsu, "Myanmar3", "Yunghkio", sans-serif`;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.fillText(letter, 0, 0);
+            ctx.restore();
+        }
+
+        window.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()] = true; });
+        window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (!game.running || game.paused) return;
+            fireManualProjectile(e.clientX, e.clientY);
+        });
+
+        canvas.addEventListener('touchstart', (e) => {
+            if (!game.running || game.paused) return;
+            const touch = e.touches[0];
+            fireManualProjectile(touch.clientX, touch.clientY);
+        }, { passive: true });
+
+        function fireManualProjectile(screenX, screenY) {
+            const now = Date.now() / 1000;
+            if (now - player.lastShotTime < player.shootCooldown) return;
+
+            const worldX = screenX + game.camera.x;
+            const worldY = screenY + game.camera.y;
+
+            const dx = worldX - player.x;
+            const dy = worldY - player.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist === 0) return;
+
+            playSound('shoot');
+            entities.projectiles.push({
+                x: player.x,
+                y: player.y,
+                vx: (dx / dist) * 17.0, 
+                vy: (dy / dist) * 17.0,
+                radius: 4
+            });
+
+            player.lastShotTime = now;
+        }
+
+        function spawnLetterBubble() {
+            if (!game.running || game.paused) return;
+
+            const angle = Math.random() * Math.PI * 2;
+            // ပစ်မှတ်များကို အနီးအနားတွင် ပေါ်လာစေရန် ပြင်ဆင်ထားသည် (120 မှ 250 pixels)
+            const dist = 120 + Math.random() * 130;
+            const x = player.x + Math.cos(angle) * dist;
+            const y = player.y + Math.sin(angle) * dist;
+
+            const isTargetSpawn = Math.random() < 0.45;
+            let chosenLetter = game.targetLetter; 
+            if (!isTargetSpawn) {
+                const filtered = burmeseAlphabets.filter(char => char !== game.targetLetter);
+                chosenLetter = filtered[Math.floor(Math.random() * filtered.length)];
+            }
+
+            entities.letterBubbles.push({
+                x,
+                y,
+                letter: chosenLetter,
+                scale: 1.0 + Math.random() * 0.25,
+                speed: 0.6 + Math.random() * 0.6, 
+                angleOffset: Math.random() * Math.PI * 2,
+                hp: 1,
+                spawnTime: Date.now() 
+            });
+        }
+
+        setInterval(spawnLetterBubble, 840);
+
+        let lastTime = performance.now();
+
+        function updateGame(dt) {
+            if (!game.running || game.paused) return;
+
+            let moveX = 0;
+            let moveY = 0;
+
+            if (keys['w'] || keys['arrowup']) moveY = -1;
+            if (keys['s'] || keys['arrowdown']) moveY = 1;
+            if (keys['a'] || keys['arrowleft']) moveX = -1;
+            if (keys['d'] || keys['arrowright']) moveX = 1;
+
+            if (moveX !== 0 && moveY !== 0) {
+                moveX *= 0.7071;
+                moveY *= 0.7071;
+            }
+
+            player.x += moveX * player.speed * dt;
+            player.y += moveY * player.speed * dt;
+
+            if (moveX !== 0 || moveY !== 0) {
+                player.angle = Math.atan2(moveY, moveX) + Math.PI/2;
+            }
+
+            const mapLimit = 1500;
+            player.x = Math.max(-mapLimit, Math.min(mapLimit, player.x));
+            player.y = Math.max(-mapLimit, Math.min(mapLimit, player.y));
+
+            game.camera.x += (player.x - window.innerWidth / 2 - game.camera.x) * 0.1 * dt;
+            game.camera.y += (player.y - window.innerHeight / 2 - game.camera.y) * 0.1 * dt;
+
+            for (let i = entities.projectiles.length - 1; i >= 0; i--) {
+                const proj = entities.projectiles[i];
+                proj.x += proj.vx * dt;
+                proj.y += proj.vy * dt;
+
+                const flightDistance = Math.sqrt((proj.x - player.x) ** 2 + (proj.y - player.y) ** 2);
+                if (flightDistance > player.range + 200) {
+                    entities.projectiles.splice(i, 1);
+                    continue;
+                }
+
+                let projectileHit = false;
+
+                for (let j = entities.letterBubbles.length - 1; j >= 0; j--) {
+                    const bubble = entities.letterBubbles[j];
+                    const dx = bubble.x - proj.x;
+                    const dy = bubble.y - proj.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < (19 * bubble.scale) + proj.radius) {
+                        projectileHit = true;
+                        
+                        if (bubble.letter === game.targetLetter) {
+                            playSound('hit');
+                            entities.letterBubbles.splice(j, 1);
+                            
+                            game.correctPops++;
+                            game.levelHits++;
+                            game.score += 15;
+
+                            entities.collectibles.push({
+                                x: bubble.x,
+                                y: bubble.y,
+                                value: 25
+                            });
+
+                            checkLevelProgress();
+                        } else {
+                            playSound('fail');
+                            game.incorrectPops++;
+                            entities.letterBubbles.splice(j, 1);
+                            player.hp = Math.max(0, player.hp - 5);
+                            if (player.hp <= 0) gameOver();
+                        }
+                        break; 
+                    }
+                }
+
+                if (projectileHit) {
+                    entities.projectiles.splice(i, 1);
+                }
+            }
+
+            for (let idx = entities.letterBubbles.length - 1; idx >= 0; idx--) {
+                const bubble = entities.letterBubbles[idx];
+
+                if (bubble.letter !== game.targetLetter && (Date.now() - bubble.spawnTime > 5000)) {
+                    entities.letterBubbles.splice(idx, 1);
+                    continue;
+                }
+
+                const driftTime = Date.now() * 0.001 + bubble.angleOffset;
+                bubble.x += Math.sin(driftTime * 1.1) * 0.65 * dt;
+                bubble.y += Math.cos(driftTime * 0.5) * 0.65 * dt;
+
+                const dx = player.x - bubble.x;
+                const dy = player.y - bubble.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < player.radius + 15) {
+                    if (bubble.letter === game.targetLetter) {
+                        playSound('coin');
+                        game.correctPops++;
+                        game.levelHits++;
+                        game.score += 25;
+                        entities.letterBubbles.splice(idx, 1);
+                        checkLevelProgress();
+                    } else {
+                        playSound('fail');
+                        entities.letterBubbles.splice(idx, 1);
+                        player.hp = Math.max(0, player.hp - 10);
+                        if (player.hp <= 0) gameOver();
+                    }
+                }
+
+                if (Math.abs(bubble.y - player.y) > 600 || Math.abs(bubble.x - player.x) > 800) {
+                    entities.letterBubbles.splice(idx, 1);
+                }
+            }
+
+            for (let i = entities.collectibles.length - 1; i >= 0; i--) {
+                const item = entities.collectibles[i];
+                const dx = player.x - item.x;
+                const dy = player.y - item.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < player.range) {
+                    item.x += (dx / dist) * 8.2 * dt;
+                    item.y += (dy / dist) * 8.2 * dt;
+                }
+
+                if (dist < player.radius + 10) {
+                    playSound('coin');
+                    entities.collectibles.splice(i, 1);
+                }
+            }
+
+            updateHUD();
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save();
+            ctx.translate(-game.camera.x, -game.camera.y);
+
+            ctx.fillStyle = '#020617'; 
+            ctx.fillRect(player.x - 2000, player.y - 2000, 4000, 4000);
+
+            entities.scenery.forEach(item => {
+                if (item.type === 'nebula') drawNebula(ctx, item.x, item.y, item.radius, item.color);
+            });
+
+            entities.scenery.forEach(item => {
+                if (item.type === 'star') drawStar(ctx, item.x, item.y, item.radius);
+            });
+
+            entities.collectibles.forEach(item => {
+                ctx.save();
+                ctx.fillStyle = '#e2e8f0'; 
+                ctx.shadowColor = '#22d3ee';
+                ctx.shadowBlur = 12;
+                ctx.beginPath();
+                ctx.translate(item.x, item.y);
+                ctx.rotate(Date.now() * 0.004);
+                for (let i = 0; i < 4; i++) {
+                    ctx.rotate(Math.PI / 2);
+                    ctx.fillRect(-2, -6, 4, 12);
+                }
+                ctx.restore();
+            });
+
+            entities.projectiles.forEach(proj => {
+                ctx.save();
+                ctx.strokeStyle = '#f472b6';
+                ctx.shadowColor = '#ec4899';
+                ctx.shadowBlur = 12;
+                ctx.lineWidth = 4;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                const travelAngle = Math.atan2(proj.vy, proj.vx);
+                ctx.moveTo(proj.x - Math.cos(travelAngle) * 10, proj.y - Math.sin(travelAngle) * 10);
+                ctx.lineTo(proj.x, proj.y);
+                ctx.stroke();
+                ctx.restore();
+            });
+
+            entities.letterBubbles.forEach(bubble => drawSpaceAsteroid(ctx, bubble));
+
+            drawPlayer(ctx, player.x, player.y);
+
+            ctx.restore();
+        }
+
+        function gameLoop(now) {
+            let dt = (now - lastTime) / 16.666;
+            lastTime = now;
+            if (dt > 4) dt = 4; 
+
+            updateGame(dt);
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            player.hp = player.maxHp;
+            player.x = 0;
+            player.y = 0;
+            player.angle = 0;
+            game.score = 0;
+            game.correctPops = 0;
+            game.incorrectPops = 0;
+            game.levelHits = 0;
+            game.currentLevel = 1;
+            game.paused = false;
+            entities.letterBubbles = [];
+            entities.projectiles = [];
+            entities.collectibles = [];
+            
+            initScenery();
+            updateHUD();
+            
+            document.getElementById('overlay-screen').classList.add('hidden');
+            document.getElementById('game-stats').classList.add('hidden');
+            document.getElementById('level-complete-modal').classList.add('hidden');
+            game.running = true;
+        }
+
+        function gameOver() {
+            game.running = false;
+            document.getElementById('stat-coins').innerText = game.correctPops;
+            document.getElementById('stat-kills').innerText = game.incorrectPops;
+            document.getElementById('stat-level').innerText = `Level ${game.currentLevel}`;
+            document.getElementById('game-stats').classList.remove('hidden');
+            document.getElementById('start-btn').innerText = "Warp Leap Again";
+            document.getElementById('overlay-screen').classList.remove('hidden');
+        }
+
+        document.getElementById('start-btn').onclick = startGame;
+
+        window.onload = function() {
+            requestAnimationFrame(gameLoop);
+        };
+    </script>
+</body>
+</html>
