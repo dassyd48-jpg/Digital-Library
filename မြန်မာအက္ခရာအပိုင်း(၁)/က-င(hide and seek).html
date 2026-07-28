@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Burmese Alphabet Hide & Seek - Perfect Fixed Positions</title>
+  <title>အက္ခရာ ရှာဖွေခြင်း</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Noto+Sans+Myanmar:wght@700;900&display=swap" rel="stylesheet" />
@@ -23,20 +23,26 @@
     }
 
     /* ==========================================================================
-       HEADER PANEL & INSTRUCTIONS
+       HEADER PANEL & INSTRUCTIONS (Border Removed, Clean Alignment)
        ========================================================================= */
     .header-panel {
       width: 100%;
-      max-width: 800px; background: white; border: 4px solid #4caf50;
-      border-radius: 20px; padding: 10px 20px; display: flex; align-items: center;
+      max-width: 800px;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
       justify-content: space-between;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.06);
-      z-index: 10; margin-bottom: 12px; gap: 15px;
+      z-index: 10;
+      margin-bottom: 12px;
+      gap: 15px;
     }
-    .instruction { font-size: 20px; font-weight: 700; color: #2e7d32; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .instruction { font-size: 20px; font-weight: 700; color: #2e7d32; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .target-box {
-      font-family: 'Noto Sans Myanmar', sans-serif; font-size: 34px; font-weight: 900;
-      color: white; background: #ff5722; padding: 2px 24px; border-radius: 14px;
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: 32px; font-weight: 900;
+      color: white; background: #ff5722; padding: 2px 20px; border-radius: 14px;
       box-shadow: 0 4px 0 #e64a19; animation: pulseTarget 1s infinite alternate;
     }
     @keyframes pulseTarget { 0% { transform: scale(1); } 100% { transform: scale(1.06); } }
@@ -65,7 +71,7 @@
       border: 1px solid rgba(76, 175, 80, 0.3);
     }
     .audio-controls button {
-      background: none; border: none; font-size: 16px; cursor: pointer; focus: outline-none;
+      background: none; border: none; font-size: 16px; cursor: pointer;
     }
     .audio-controls input[type="range"] {
       width: 60px; height: 5px; cursor: pointer; accent-color: #4caf50;
@@ -370,7 +376,7 @@
 
   <div class="intro-screen" id="welcomePanel">
     <h1 class="intro-title">အက္ခရာသူငယ်ချင်းတို့ တူတူပုန်းတမ်း</h1>
-    <div class="intro-badge">Lesson 1 : က ၊ ခ ၊ ဂ ၊ ဃ ၊ င</div>
+    <div class="intro-badge">က ၊ ခ ၊ ဂ ၊ ဃ ၊ င</div>
     <button class="btn-action" onclick="startGame()">စတင်မည်</button>
   </div>
 
@@ -420,12 +426,10 @@
       }
     }
 
-    // Home ခလုတ်ကို နှိပ်လျှင် ပင်မစာမျက်နှာသို့ သွားမည်
     function goHome() {
       window.location.href = 'index.html?fromGame=true';
     }
 
-    // Back ခလုတ်ကို နှိပ်လျှင် Welcome Panel သို့ ပြန်သွားမည်
     function goBack() {
       document.getElementById('rewardPanel').classList.remove('show');
       for(let i = 0; i < 5; i++) {
@@ -437,8 +441,6 @@
 
     function startGame() {
       document.getElementById('welcomePanel').classList.add('hide');
-      
-      // စတင်မည် နှိပ်လိုက်တာနဲ့ သီချင်းကို Play ပါမယ်
       audioMusic.volume = volumeSlider.value;
       audioMusic.play().catch(e => console.log("Audio play gesture bypass:", e));
 
@@ -518,7 +520,6 @@
     function advanceToNextRound() {
       document.getElementById('rewardPanel').classList.remove('show');
       if(scoreProgress >= 5) {
-        // ဂိမ်းပြီးဆုံးသွားချိန်တွင် ပင်မစာမျက်နှာသို့ သွားမည်
         window.location.href = 'index.html?fromGame=true';
       } else {
         setupNewTargetRound();
