@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>"ဂ"ကိုအရောင်ခြယ်ပါ</title>
+  <title>Paint the Burmese Letter ဂ - Animated Forest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
@@ -13,7 +13,7 @@
     html, body { 
       height: 100%; 
       width: 100%; 
-      overflow: hidden; /* Page မလှုပ်အောင် ငြိမ်ထားမည် */
+      overflow: hidden;
     }
     
     body {
@@ -27,7 +27,6 @@
       position: relative;
     }
 
-    /* BACKGROUND CARTOON ANIMATIONS */
     .clouds {
       position: absolute; top: 2%; left: 0; width: 100%; height: 100px; pointer-events: none; z-index: 1;
     }
@@ -45,7 +44,6 @@
       100% { left: 100vw; }
     }
 
-    /* MAIN INTERFACE LAYOUT */
     .intro-screen {
       position: fixed; inset: 0; background-color: #0f172a; z-index: 1000;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -62,7 +60,6 @@
       box-shadow: 0 5px 0 #ea580c;
     }
 
-    /* 📱 SCREEN FIT GAME CONTAINER */
     .game-container { 
       position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; 
       width: 100%; max-width: 500px; height: 100vh; padding: 8px 12px;
@@ -71,7 +68,6 @@
     }
     .game-container.show { opacity: 1; }
 
-    /* TOP HEADER BAR */
     .top-bar {
       width: 100%; display: flex; justify-content: space-between; align-items: center; z-index: 100;
     }
@@ -95,7 +91,6 @@
     }
     h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #f97316; }
     
-    /* STAGE & CANVAS SIZE ADJUSTMENT */
     .stage { 
       display: flex; flex-direction: column; gap: 8px; width: 100%; align-items: center; 
       flex: 1; justify-content: center; min-height: 0;
@@ -114,7 +109,6 @@
     }
     canvas { display: block; width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
     
-    /* BOTTOM TOOLS PANEL */
     .panel {
       width: 100%; background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%); border-radius: 16px;
       padding: 8px; display: flex; flex-direction: column; gap: 6px;
@@ -146,7 +140,6 @@
     .btn-reset { background: #0284c7; box-shadow: 0 3px 0 #0369a1; }
     .btn-next { background: #ea580c; box-shadow: 0 3px 0 #c2410c; }
     
-    /* CONGRATS POPUP */
     .congrats-modal-overlay {
       position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
       backdrop-filter: blur(4px); z-index: 2000; display: flex; align-items: center; justify-content: center;
@@ -407,10 +400,12 @@
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); }, { passive: false });
 
-    /* 🎨 CLEAR TRANSPARENT DASHED OUTLINE FOR "ဂ" (အမည်းရောင်မဖြစ်တော့ပါ) */
-    const svgBackground = `<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='340' text-anchor='middle' dominant-baseline='central' fill='none' stroke='%23cbd5e1' stroke-width='8' stroke-dasharray='12,12'>ဂ</text></svg>`;
-    canvas.style.backgroundImage = `url("data:image/svg+xml;utf8,${encodeURIComponent(svgBackground)}")`;
+    /* 🎨 CLEAR & VISIBLE DASHED OUTLINE FOR "ဂ" */
+    const svgBackground = `<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='340' text-anchor='middle' dominant-baseline='central' fill='none' stroke='%2394a3b8' stroke-width='10' stroke-dasharray='16 12'>ဂ</text></svg>`;
+    canvas.style.backgroundImage = `url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgBackground)}")`;
     canvas.style.backgroundSize = "100% 100%";
+    canvas.style.backgroundPosition = "center";
+    canvas.style.backgroundRepeat = "no-repeat";
 
     initUI();
   </script>
