@@ -14,22 +14,6 @@
             font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
             background: radial-gradient(circle, #0f172a 0%, #020617 100%);
         }
-<!DOCTYPE html>
-<html lang="my">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>မြန်မာအက္ခရာ (တ-န) - မှော်ဝင်မှိုအိမ် စွန့်စားခန်းမြေပုံ</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght=400;700;900&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
-            background: radial-gradient(circle, #0f172a 0%, #020617 100%);
-        }
 
         /* ==========================================================================
            SPLASH SCREEN & VIDEO CONTAINER SYSTEM (FIXED FOR ALL DEVICES)
@@ -45,10 +29,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #020617; /* ဗီဒီယိုဘေးဘောင်များတွင် အမည်းရောင်မပေါ်ဘဲ သပ္ပါယ်စေရန် */
+            background-color: #020617;
         }
 
-        /* 📱 ဘယ် Device မှာကြည့်ကြည့် ဗီဒီယိုတစ်ခုလုံး မပျက်ဘဲ အပြည့်ပေါ်စေရန် object-fit: contain သုံးထားပါသည် */
+        /* 📱 Mobile/Desktop ဘယ်မှာကြည့်ကြည့် ဗီဒီယို မပျက်ဘဲ အပြည့်ပေါ်စေရန် */
         .video-bg-container video {
             width: 100%; 
             height: 100%; 
@@ -86,6 +70,79 @@
             gap: 8px; 
             z-index: 100;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* ========================================================================= */
+        /* 🏃‍♂️ DASSY "LITTLE BRAINS" ANIMATED LOGO SYSTEM                           */
+        /* ========================================================================= */
+        .dassy-logo-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 0;
+            margin-top: 15px;
+            position: relative;
+            z-index: 10;
+            user-select: none;
+        }
+
+        .dassy-logo-line {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            font-family: 'Fredoka One', sans-serif;
+        }
+
+        .dassy-space {
+            width: 10px;
+        }
+
+        .animated-char {
+            display: inline-block;
+            font-weight: 900;
+            cursor: pointer;
+            opacity: 0;
+            animation: 
+                walkInLetters 2s cubic-bezier(0.25, 1, 0.5, 1) forwards,
+                continuousJiggle 0.6s ease-in-out infinite alternate;
+        }
+
+        .line-top .animated-char {
+            font-size: 0.85rem;
+            color: #a7f3d0; 
+            text-shadow: 0 2px 0 #064e3b;
+            letter-spacing: 1px;
+        }
+
+        .line-bottom .animated-char {
+            font-size: 1.25rem;
+            color: #fbbf24; 
+            text-shadow: 0 3px 0 #b45309, 0 6px 12px rgba(0,0,0,0.4);
+            letter-spacing: 1.5px;
+        }
+
+        @keyframes walkInLetters {
+            0% {
+                opacity: 0;
+                transform: translateX(var(--x-start, -100px)) translateY(0) scale(0.4) rotate(-30deg);
+            }
+            25% { opacity: 1; transform: translateX(calc(var(--x-start, -100px) * 0.75)) translateY(-12px) scale(1.1) rotate(20deg); }
+            50% { transform: translateX(calc(var(--x-start, -100px) * 0.5)) translateY(0) scale(0.9) rotate(-15deg); }
+            75% { transform: translateX(calc(var(--x-start, -100px) * 0.25)) translateY(-10px) scale(1.05) rotate(10deg); }
+            100% {
+                opacity: 1;
+                transform: translateX(0) translateY(0) scale(1) rotate(0deg);
+            }
+        }
+
+        @keyframes continuousJiggle {
+            0% { transform: translateY(0) scale(1) rotate(-2deg); }
+            50% { transform: translateY(-3px) scale(1.03) rotate(2.5deg); }
+            100% { transform: translateY(0) scale(0.98) rotate(-1deg); }
         }
 
         /* 🍄 CARTOON MAGIC MUSHROOM HOUSE STRUCTURE */
@@ -201,7 +258,7 @@
 
     <!-- 🌟 SPLASH INTRO SCREEN WITH VIDEO BACKGROUND -->
     <div class="splash-screen" id="splashScreen">
-        <div class="bg-slate-800/90 border-[3px] border-emerald-500 backdrop-blur-xl p-6 md:p-10 rounded-[28px] shadow-2xl max-w-sm md:max-w-md w-full mb-4">
+        <div class="bg-slate-800/90 border-[3px] border-emerald-500 backdrop-blur-xl p-6 md:p-10 rounded-[28px] shadow-2xl max-w-sm md:max-w-md w-full mb-2">
             <div class="text-4xl md:text-5xl mb-2 float-mascot inline-block">🍄✨</div>
             <h1 class="text-2xl md:text-3xl font-black text-emerald-400 mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
                 "သားသားမီးမီးတို့ရဲ့ အက္ခရာရှာပုံတော်"
@@ -214,12 +271,15 @@
                 </button>
             </div>
         </div>
-        <div class="text-[14px] md:text-[18px] font-bold text-white/80 tracking-wider uppercase drop-shadow-[0_2px_2px_rgba(0,0,0,0.9)]">
-            DESIGNED BY DASSY. DIGITAL ACADEMY
+
+        <!-- 🏃‍♂️ DASSY "LITTLE BRAINS" ANIMATED LOGO COMPONENT -->
+        <div class="dassy-logo-wrapper">
+            <div class="dassy-logo-line line-top" id="textLine1">IMAGINED FOR</div>
+            <div class="dassy-logo-line line-bottom" id="textLine2">LITTLE BRAINS BY DASSY</div>
         </div>
     </div>
 
-    <!-- 🎥 VIDEO BACKGROUND CONTAINER (FULL DISPLAY FIX) -->
+    <!-- 🎥 VIDEO BACKGROUND CONTAINER -->
     <div class="video-bg-container" id="videoBgWrapper">
         <video id="bgVideo" autoplay muted loop playsinline>
             <source src="main-bg.mp4" type="video/mp4" />
@@ -407,8 +467,49 @@
             }
         };
 
+        // DASSY ANIMATED LOGO SCRIPT
+        function setupAnimatedText(elementId) {
+            const targetElement = document.getElementById(elementId);
+            if (!targetElement) return;
+            const rawText = targetElement.innerText;
+            targetElement.innerHTML = '';
+
+            let delayCounter = 0;
+
+            [...rawText].forEach((char) => {
+                if (char === ' ') {
+                    const spaceSpan = document.createElement('div');
+                    spaceSpan.className = 'dassy-space';
+                    targetElement.appendChild(spaceSpan);
+                } else {
+                    const charSpan = document.createElement('span');
+                    charSpan.className = 'animated-char';
+                    charSpan.innerText = char;
+
+                    const startingX = -120 - (delayCounter * 12); 
+                    const animationDelay = delayCounter * 0.06; 
+
+                    charSpan.style.setProperty('--x-start', `${startingX}px`);
+                    charSpan.style.animationDelay = `${animationDelay}s, ${animationDelay + 1.8}s`;
+
+                    targetElement.appendChild(charSpan);
+                    delayCounter++;
+                }
+            });
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
+            // Setup Logo Animations
+            setupAnimatedText('textLine1');
+            setupAnimatedText('textLine2');
+
             const urlParams = new URLSearchParams(window.location.search);
+            const stage = urlParams.get('stage');
+
+            if (stage) {
+                openLessonPopup(`stage${stage}`);
+            }
+
             if (urlParams.get('fromGame') === 'true') {
                 document.getElementById('splashScreen').style.display = 'none';
                 if (videoBgWrapper) videoBgWrapper.style.display = 'none';
