@@ -3,124 +3,150 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Paint the Burmese Letter ဂ - Animated Forest</title>
+  <title>"ဂ"ကိုအရောင်ခြယ်ပါ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; width: 100%; overflow-x: hidden; }
+    
+    html, body { 
+      height: 100%; 
+      width: 100%; 
+      overflow: hidden; /* Page မလှုပ်အောင် ငြိမ်ထားမည် */
+    }
     
     body {
       font-family: 'Fredoka', system-ui, sans-serif;
       background: linear-gradient(to bottom, #7dd3fc 0%, #bae6fd 40%, #fef08a 70%, #a3e635 70%, #4ade80 100%);
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       color: #0c4a6e;
       position: relative;
     }
 
-    /* ==========================================================================
-       BACKGROUND CARTOON ANIMATIONS
-       ========================================================================== */
+    /* BACKGROUND CARTOON ANIMATIONS */
     .clouds {
-      position: absolute;
-      top: 5%; left: 0; width: 100%; height: 150px; pointer-events: none; z-index: 1;
+      position: absolute; top: 2%; left: 0; width: 100%; height: 100px; pointer-events: none; z-index: 1;
     }
     .cloud {
       position: absolute; background: #ffffff; border-radius: 100px; opacity: 0.85;
       box-shadow: inset -10px -10px 0 rgba(0,0,0,0.05);
     }
     .cloud::before, .cloud::after { content: ''; position: absolute; background: #ffffff; border-radius: 50%; }
-    .cloud.c1 { width: 120px; height: 40px; top: 10%; left: -150px; animation: floatCloud 35s linear infinite; }
-    .cloud.c1::before { width: 50px; height: 50px; top: -25px; left: 15px; }
-    .cloud.c1::after { width: 70px; height: 70px; top: -40px; left: 45px; }
-    .cloud.c2 { width: 160px; height: 50px; top: 40%; left: -200px; animation: floatCloud 25s linear infinite 5s; }
-    .cloud.c2::before { width: 70px; height: 70px; top: -35px; left: 20px; }
-    .cloud.c2::after { width: 90px; height: 90px; top: -50px; left: 60px; }
+    .cloud.c1 { width: 100px; height: 35px; top: 10%; left: -150px; animation: floatCloud 35s linear infinite; }
+    .cloud.c1::before { width: 40px; height: 40px; top: -20px; left: 10px; }
+    .cloud.c1::after { width: 55px; height: 55px; top: -30px; left: 35px; }
 
     @keyframes floatCloud {
       0% { left: -200px; }
       100% { left: 100vw; }
     }
 
-    .cartoon-trees {
-      position: absolute; bottom: 15%; width: 100%; height: 300px; pointer-events: none; z-index: 1;
-    }
-    .tree-left, .tree-right { position: absolute; bottom: 0; width: 250px; height: 320px; }
-    .tree-left { left: -50px; }
-    .tree-right { right: -50px; transform: scaleX(-1); }
-    .trunk {
-      position: absolute; bottom: -40px; left: 100px; width: 50px; height: 180px; background: #b45309; border-radius: 20px; box-shadow: inset -12px 0 0 #78350f;
-    }
-    .foliage {
-      position: absolute; top: 20px; left: 30px; width: 180px; height: 180px; background: #22c55e; border-radius: 50%; box-shadow: inset -20px -20px 0 #16a34a, 0 10px 20px rgba(0,0,0,0.1);
-    }
-    .foliage::before { content: ''; position: absolute; top: -30px; left: 40px; width: 120px; height: 120px; background: #4ade80; border-radius: 50%; box-shadow: inset -10px -10px 0 #22c55e; }
-    .foliage::after { content: ''; position: absolute; bottom: 10px; right: -20px; width: 100px; height: 100px; background: #15803d; border-radius: 50%; }
-
-    .bush-left, .bush-right {
-      position: absolute; bottom: -10px; width: 200px; height: 100px; background: #16a34a; border-radius: 80px 80px 0 0; z-index: 4; pointer-events: none; box-shadow: inset 0 15px 0 #4ade80;
-    }
-    .bush-left { left: 20px; }
-    .bush-right { right: 20px; }
-
-    /* ==========================================================================
-       MAIN INTERFACE & CONTROLS
-       ========================================================================== */
+    /* MAIN INTERFACE LAYOUT */
     .intro-screen {
       position: fixed; inset: 0; background-color: #0f172a; z-index: 1000;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 20px; text-align: center; color: #ffffff; transition: opacity 0.5s ease, transform 0.5s ease;
+      padding: 20px; text-align: center; color: #ffffff; transition: opacity 0.5s ease;
     }
-    .intro-screen.hide { opacity: 0; pointer-events: none; transform: scale(1.05); }
-    .intro-emojis { font-size: clamp(32px, 5vw, 48px); margin-bottom: 15px; letter-spacing: 8px; }
-    .intro-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(28px, 4.5vw, 46px); font-weight: 800; margin-bottom: 10px; color: #38bdf8; }
-    .intro-badge { font-family: 'Noto Sans Myanmar', sans-serif; background-color: #0284c7; padding: 6px 18px; border-radius: 20px; font-size: clamp(13px, 2vw, 16px); font-weight: 700; margin-bottom: 25px; display: inline-block; }
-    .intro-desc { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(14px, 2.2vw, 18px); max-width: 600px; line-height: 1.8; color: #bae6fd; margin-bottom: 40px; }
+    .intro-screen.hide { opacity: 0; pointer-events: none; }
+    .intro-emojis { font-size: clamp(32px, 5vw, 48px); margin-bottom: 15px; }
+    .intro-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(24px, 4.5vw, 40px); font-weight: 800; margin-bottom: 10px; color: #38bdf8; }
+    .intro-badge { font-family: 'Noto Sans Myanmar', sans-serif; background-color: #0284c7; padding: 6px 18px; border-radius: 20px; font-size: 14px; font-weight: 700; margin-bottom: 20px; display: inline-block; }
+    .intro-desc { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 15px; max-width: 500px; line-height: 1.6; color: #bae6fd; margin-bottom: 30px; }
     
     .btn-start {
-      font-family: 'Noto Sans Myanmar', sans-serif; background-color: #f97316; color: white; border: none; padding: 14px 45px; font-size: clamp(18px, 2.5vw, 22px); font-weight: 700; border-radius: 30px; cursor: pointer;
-      box-shadow: 0 6px 0 #ea580c, 0 10px 20px rgba(0,0,0,0.3); transition: transform 0.1s ease, box-shadow 0.1s ease;
+      font-family: 'Noto Sans Myanmar', sans-serif; background-color: #f97316; color: white; border: none; padding: 12px 40px; font-size: 18px; font-weight: 700; border-radius: 30px; cursor: pointer;
+      box-shadow: 0 5px 0 #ea580c;
     }
-    .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #ea580c, 0 4px 10px rgba(0,0,0,0.3); }
 
+    /* 📱 SCREEN FIT GAME CONTAINER */
     .game-container { 
       position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; 
-      width: 100%; max-width: 1000px; padding: 10px; opacity: 0; transform: scale(0.95); 
-      transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; 
+      width: 100%; max-width: 500px; height: 100vh; padding: 8px 12px;
+      justify-content: space-between;
+      opacity: 0; transition: opacity 0.4s ease;
     }
-    .game-container.show { opacity: 1; transform: scale(1); }
+    .game-container.show { opacity: 1; }
 
-    /* 🚪 NAVIGATION PANEL FRAME */
+    /* TOP HEADER BAR */
     .top-bar {
-      width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; z-index: 100;
+      width: 100%; display: flex; justify-content: space-between; align-items: center; z-index: 100;
     }
-    .nav-buttons-container { display: flex; gap: 8px; }
-    .btn-action-back {
-      font-family: 'Noto Sans Myanmar', sans-serif; font-weight: 800; font-size: 13px;
-      color: #ffffff; background: linear-gradient(180deg, #f43f5e 0%, #be123c 100%);
-      padding: 8px 16px; border-radius: 14px; border: none; cursor: pointer;
-      box-shadow: 0 4px 0 #9f1239; transition: transform 0.1s; display: flex; align-items: center; gap: 4px;
+    .nav-buttons-container { display: flex; gap: 6px; }
+    .btn-action-back, .btn-action-home {
+      font-family: 'Noto Sans Myanmar', sans-serif; font-weight: 800; font-size: 12px;
+      color: #ffffff; padding: 6px 12px; border-radius: 12px; border: none; cursor: pointer;
     }
-    .btn-action-home {
-      font-family: 'Noto Sans Myanmar', sans-serif; font-weight: 800; font-size: 13px;
-      color: #ffffff; background: linear-gradient(180deg, #e11d48 0%, #9f1239 100%);
-      padding: 8px 16px; border-radius: 14px; border: none; cursor: pointer;
-      box-shadow: 0 4px 0 #4c0519; transition: transform 0.1s; display: flex; align-items: center; gap: 4px;
-    }
+    .btn-action-back { background: linear-gradient(180deg, #f43f5e 0%, #be123c 100%); box-shadow: 0 3px 0 #9f1239; }
+    .btn-action-home { background: linear-gradient(180deg, #e11d48 0%, #9f1239 100%); box-shadow: 0 3px 0 #4c0519; }
 
-    /* 🔊 AUDIO CONTROLLER TOOL */
     .audio-slider-panel {
-      background: rgba(2, 132, 199, 0.85); border: 2px solid #bae6fd; padding: 4px 10px; border-radius: 18px;
-      display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); color: #ffffff;
+      background: rgba(2, 132, 199, 0.85); border: 2px solid #bae6fd; padding: 3px 8px; border-radius: 16px;
+      display: flex; align-items: center; gap: 5px; color: #ffffff;
     }
-    .vol-range-input { width: 70px; height: 6px; background: #e2e8f0; border-radius: 8px; appearance: none; cursor: pointer; accent-color: #f97316; }
+    .vol-range-input { width: 60px; height: 5px; appearance: none; accent-color: #f97316; border-radius: 5px; }
 
-    /* 🏆 WINNER CONGRATS MODAL OVERLAY */
+    h1 { 
+      font-size: 18px; font-weight: 700; color: #ffffff; 
+      background: rgba(2, 132, 199, 0.85); padding: 4px 16px; border-radius: 16px; text-align: center; margin: 2px 0;
+    }
+    h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #f97316; }
+    
+    /* STAGE & CANVAS SIZE ADJUSTMENT */
+    .stage { 
+      display: flex; flex-direction: column; gap: 8px; width: 100%; align-items: center; 
+      flex: 1; justify-content: center; min-height: 0;
+    }
+    
+    .wood-frame {
+      position: relative; padding: 8px; border-radius: 18px;
+      background: linear-gradient(180deg, #ca8a04 0%, #a16207 50%, #854d0e 100%);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2), inset 0 0 0 3px #fef08a;
+      width: 100%; display: flex; justify-content: center; align-items: center;
+    }
+    
+    .canvas-container { 
+      background: #ffffff; border-radius: 10px; overflow: hidden; position: relative; 
+      width: 100%; max-width: 380px; aspect-ratio: 1 / 1; max-height: 42vh;
+    }
+    canvas { display: block; width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
+    
+    /* BOTTOM TOOLS PANEL */
+    .panel {
+      width: 100%; background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%); border-radius: 16px;
+      padding: 8px; display: flex; flex-direction: column; gap: 6px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1), inset 0 0 0 2px #e0f2fe;
+    }
+    .panel-title { font-size: 11px; font-weight: 700; text-align: center; color: #0369a1; letter-spacing: 1px; }
+    .eraser {
+      height: 36px; border-radius: 10px; background: white;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      cursor: pointer; box-shadow: 0 2px 0 #bae6fd; font-weight: 700; font-size: 12px; border: 1.5px solid #e0f2fe;
+    }
+    .eraser.selected { background: #bae6fd; border-color: #0284c7; }
+    
+    .brush-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+    .brush {
+      height: 38px; border-radius: 8px; cursor: pointer; position: relative;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #e2e8f0;
+    }
+    .brush.selected { transform: scale(1.05); box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #f97316; }
+    .swatch { position: absolute; inset: 2px; border-radius: 6px; }
+    
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; }
+    
+    .btn { 
+      font-family: 'Noto Sans Myanmar', sans-serif; 
+      height: 40px; padding: 2px; border-radius: 10px; border: none; color: white; font-weight: 700; font-size: 12px; cursor: pointer; 
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+    }
+    .btn-reset { background: #0284c7; box-shadow: 0 3px 0 #0369a1; }
+    .btn-next { background: #ea580c; box-shadow: 0 3px 0 #c2410c; }
+    
+    /* CONGRATS POPUP */
     .congrats-modal-overlay {
       position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
       backdrop-filter: blur(4px); z-index: 2000; display: flex; align-items: center; justify-content: center;
@@ -128,86 +154,19 @@
     }
     .congrats-modal-overlay.show { opacity: 1; pointer-events: auto; }
     .congrats-card {
-      background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
-      border: 4px solid #0284c7; border-radius: 32px; padding: 30px 20px; text-align: center; max-width: 400px; width: 100%;
-      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); transform: scale(0.8);
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: #ffffff; border: 4px solid #0284c7; border-radius: 24px; padding: 25px 15px; text-align: center; max-width: 360px; width: 100%;
     }
-    .congrats-modal-overlay.show .congrats-card { transform: scale(1); }
-    .congrats-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 28px; font-weight: 800; color: #0284c7; margin-bottom: 10px; }
-    .congrats-text { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 15px; font-weight: 600; color: #0c4a6e; margin-bottom: 24px; line-height: 1.6; }
+    .congrats-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 24px; font-weight: 800; color: #0284c7; margin-bottom: 8px; }
+    .congrats-text { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 14px; color: #0c4a6e; margin-bottom: 20px; line-height: 1.5; }
     .btn-modal-done {
-      font-family: 'Noto Sans Myanmar', sans-serif; background-color: #2ed573; color: white; border: none; padding: 12px 40px; font-size: 18px; font-weight: 700; border-radius: 24px; cursor: pointer; box-shadow: 0 5px 0 #21a95a;
+      font-family: 'Noto Sans Myanmar', sans-serif; background-color: #2ed573; color: white; border: none; padding: 10px 30px; font-size: 16px; font-weight: 700; border-radius: 20px; cursor: pointer; box-shadow: 0 4px 0 #21a95a;
     }
 
-    h1 { font-size: clamp(20px, 4vw, 26px); font-weight: 700; margin-bottom: 10px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.3); background: rgba(2, 132, 199, 0.85); padding: 6px 20px; border-radius: 20px; text-align: center; }
-    h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #f97316; font-size: 1.2em; text-shadow: none; }
-    
-    /* 📐 MAIN STAGE LAYOUT FIX */
-    .stage { 
-      display: flex; gap: 15px; width: 100%; justify-content: center; align-items: center; 
-    }
-    
-    .wood-frame {
-      position: relative; padding: 12px; border-radius: 20px;
-      background: linear-gradient(180deg, #ca8a04 0%, #a16207 50%, #854d0e 100%);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.25), inset 0 0 0 4px #fef08a;
-      flex-shrink: 0;
-    }
-    .canvas-container { 
-      background: #ffffff; border-radius: 12px; overflow: hidden; position: relative; box-shadow: inset 0 4px 10px rgba(0,0,0,0.1); 
-      width: 480px; height: 480px;
-    }
-    canvas { display: block; width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
-    
-    .panel {
-      width: 160px; background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%); border-radius: 20px;
-      padding: 12px; display: flex; flex-direction: column; gap: 10px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.15), inset 0 0 0 3px #e0f2fe;
-    }
-    .panel-title { font-size: 12px; font-weight: 700; text-align: center; color: #0369a1; letter-spacing: 1px; }
-    .eraser {
-      height: 50px; border-radius: 14px; background: white;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      cursor: pointer; box-shadow: 0 3px 0 #bae6fd; font-weight: 700; font-size: 13px; user-select: none; border: 2px solid #e0f2fe;
-    }
-    .eraser.selected { background: #bae6fd; border-color: #0284c7; box-shadow: inset 0 0 0 2px #0284c7; }
-    
-    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-    .brush {
-      aspect-ratio: 1/1; border-radius: 12px; cursor: pointer; position: relative;
-      box-shadow: 0 3px 0 rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #e2e8f0;
-    }
-    .brush.selected { transform: scale(1.05); box-shadow: 0 0 0 3px #fff, 0 0 0 4px #f97316; }
-    .swatch { position: absolute; inset: 3px; border-radius: 8px; }
-    
-    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 5px; }
-    
-    .btn { 
-      font-family: 'Noto Sans Myanmar', sans-serif; 
-      min-height: 52px; padding: 4px; border-radius: 12px; border: none; color: white; font-weight: 700; font-size: 11px; cursor: pointer; 
-      display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.3;
-    }
-    .btn-reset { background: #0284c7; box-shadow: 0 3px 0 #0369a1; }
-    .btn-next { background: #ea580c; box-shadow: 0 3px 0 #c2410c; }
-    
     #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
-    .star { position: absolute; font-size: 28px; animation: fall 1.5s ease-out forwards; }
+    .star { position: absolute; font-size: 24px; animation: fall 1.5s ease-out forwards; }
     @keyframes fall {
-      0% { transform: translate(0,0) rotate(0deg) scale(0.5); opacity: 1; }
-      100% { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(1.4); opacity: 0; }
-    }
-
-    /* 📱 MOBILE RESPONSIVE FIX (Crucial Fix for Mobile Screens) */
-    @media (max-width: 768px) {
-      body { justify-content: flex-start; padding: 10px; overflow-y: auto; }
-      .stage { flex-direction: column; width: 100%; max-width: 480px; }
-      .wood-frame { width: 100%; padding: 8px; }
-      .canvas-container { width: 100%; height: auto; aspect-ratio: 1 / 1; }
-      .panel { width: 100%; }
-      .brush-grid { grid-template-columns: repeat(5, 1fr); }
-      .eraser { height: 45px; }
-      .cartoon-trees, .bush-left, .bush-right { display: none; }
+      0% { transform: translate(0,0) scale(0.5); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) scale(1.3); opacity: 0; }
     }
   </style>
 </head>
@@ -229,23 +188,20 @@
     <h1>အရောင်ခြယ်ပါ <span class="glyph">ဂ</span> !</h1>
 
     <div class="stage">
-      <!-- 🎨 Canvas Box First -->
       <div class="wood-frame">
         <div class="canvas-container">
-          <canvas id="paintCanvas" width="550" height="550"></canvas>
+          <canvas id="paintCanvas" width="500" height="500"></canvas>
         </div>
       </div>
 
-      <!-- 🖌️ Tools Controls Panel Below Canvas in Mobile -->
       <aside class="panel">
-        <div class="panel-title">BRUSHES</div>
         <div class="eraser" id="eraser">
-          <span style="font-size:20px">🧽</span><div>Eraser</div>
+          <span style="font-size:16px">🧽</span><div>Eraser (ဖျက်ဆေး)</div>
         </div>
         <div class="brush-grid" id="brushGrid"></div>
         <div class="actions">
-          <button class="btn btn-reset" id="btnReset">↻<br>အသစ်ပြန်စ</button>
-          <button class="btn btn-next" id="btnNext">✓<br>ပြီးပြီ</button>
+          <button class="btn btn-reset" id="btnReset">↻ အသစ်ပြန်စ</button>
+          <button class="btn btn-next" id="btnNext">✓ ပြီးပြီ</button>
         </div>
       </aside>
     </div>
@@ -253,9 +209,9 @@
 
   <div class="congrats-modal-overlay" id="congratsWindowBox">
     <div class="congrats-card">
-      <div style="font-size: 50px; margin-bottom: 10px;">🎉✨⭐</div>
+      <div style="font-size: 45px; margin-bottom: 5px;">🎉✨⭐</div>
       <div class="congrats-title">Congratulations!</div>
-      <div class="congrats-text">သားသားမီးမီးတို့ရေ... အက္ခရာ "ဂ" သက်တန့်ခုံးလေးကို အောင်မြင်စွာနဲ့ ဆေးရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ ကွယ်။ တော်လိုက်တာ။ 🌟</div>
+      <div class="congrats-text">သားသားမီးမီးတို့ရေ... အက္ခရာ "ဂ" လေးကို အောင်မြင်စွာနဲ့ ဆေးရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ။ 🌟</div>
       <button class="btn-modal-done" onclick="window.location.href='index.html?fromGame=true'">ပြီးပြီ</button>
     </div>
   </div>
@@ -263,53 +219,34 @@
   <div class="intro-screen" id="introScreen">
     <div class="intro-emojis">⛰️🎨✨🌈🎈</div>
     <div class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</div>
-    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဂ" သက်တန့်ခုံးလေးကို အရောင်ခြယ်ကြစို့</div>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဂ" လေးကို အရောင်ခြယ်ကြစို့</div>
     <div class="intro-desc">
-      ကလေးတို့ရေ... မိုးကောင်းကင်ကြီးထဲမှာ လှပတဲ့ သက်တန့်ခုံးကြီးက ပျောက်ကွယ်နေတယ်နော်။ အဲဒီသက်တံခုံးကြီးက မြန်မာအက္ခရာ "ဂ" လေးနဲ့ တူတူပဲ။ ကဲ... စုတ်တံလေးတွေကို ကိုင်ပြီး "ဂ" လမ်းကြောင်းအတိုင်း ရောင်စုံဆေးလေးတွေ ခြယ်သပြီး သက်တန့်ကြီးကို ပြန်ဖော်ထုတ်ကြရအောင်။
+      ကလေးတို့ရေ... မြန်မာအက္ခရာ "ဂ" လေးရဲ့ လမ်းကြောင်းအတိုင်း ရောင်စုံစုတ်တံလေးတွေနဲ့ စိတ်ကြိုက် အရောင်ခြယ်သကြရအောင်။
     </div>
     <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
   </div>
 
   <audio id="paintBgmAudio" src="main-bgm.mp3" loop></audio>
   <audio id="applauseSoundEffect" src="clapping.mp3"></audio>
-
-  <div class="clouds">
-    <div class="cloud c1"></div>
-    <div class="cloud c2"></div>
-  </div>
-  
-  <div class="cartoon-trees">
-    <div class="tree-left">
-      <div class="trunk"></div>
-      <div class="foliage"></div>
-    </div>
-    <div class="tree-right">
-      <div class="trunk"></div>
-      <div class="foliage"></div>
-    </div>
-  </div>
-
-  <div class="bush-left"></div>
-  <div class="bush-right"></div>
-
+  <div class="clouds"><div class="cloud c1"></div></div>
   <div id="confetti"></div>
 
   <script>
     const canvas = document.getElementById('paintCanvas');
     const ctx = canvas.getContext('2d');
     let isPainting = false;
-    let currentColor = '#e74c3c';
+    let currentColor = '#ff3366';
     let currentType = 'rainbow'; 
     let currentPattern = '';
     let isEraser = false;
-    let brushSize = 32;
+    let brushSize = 28;
     let lastX = 0, lastY = 0;
 
     const bgMusicAudio = document.getElementById('paintBgmAudio');
     const winApplauseAudio = document.getElementById('applauseSoundEffect');
 
     const brushes = [
-      { id: 'rainbow', type: 'rainbow', color: 'linear-gradient(45deg, #ff3366, #ff9933, #ffff33, #33cc66, #3399ff, #9933ff)' },
+      { id: 'rainbow', type: 'rainbow', color: 'linear-gradient(45deg, #ff3366, #ff9933, #ffff33, #33cc66, #3399ff)' },
       { id: 'red', type: 'solid', color: '#ff4757' },
       { id: 'orange', type: 'solid', color: '#ffa502' },
       { id: 'yellow', type: 'solid', color: '#eccc68' },
@@ -324,23 +261,22 @@
     function getPattern(type, color, pName) {
       if (type === 'solid') return color;
       if (type === 'rainbow') {
-        const grad = ctx.createLinearGradient(80, 80, 480, 480);
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
         grad.addColorStop(0, '#ff3366');
-        grad.addColorStop(0.2, '#ff9933');
-        grad.addColorStop(0.4, '#ffff33');
-        grad.addColorStop(0.6, '#33cc66');
-        grad.addColorStop(0.8, '#3399ff');
-        grad.addColorStop(1, '#9933ff');
+        grad.addColorStop(0.25, '#ff9933');
+        grad.addColorStop(0.5, '#ffff33');
+        grad.addColorStop(0.75, '#33cc66');
+        grad.addColorStop(1, '#3399ff');
         return grad;
       }
       const pCanvas = document.createElement('canvas');
-      pCanvas.width = 20; pCanvas.height = 20;
+      pCanvas.width = 16; pCanvas.height = 16;
       const pCtx = pCanvas.getContext('2d');
-      pCtx.fillStyle = color; pCtx.fillRect(0,0,20,20);
+      pCtx.fillStyle = color; pCtx.fillRect(0,0,16,16);
       if (pName === 'dots') {
-        pCtx.fillStyle = '#ffffff'; pCtx.beginPath(); pCtx.arc(10,10,3,0,Math.PI*2); pCtx.fill();
+        pCtx.fillStyle = '#ffffff'; pCtx.beginPath(); pCtx.arc(8,8,2.5,0,Math.PI*2); pCtx.fill();
       } else if (pName === 'stripes') {
-        pCtx.strokeStyle = '#ffffff'; pCtx.lineWidth = 3; pCtx.beginPath(); pCtx.moveTo(0,0); pCtx.lineTo(20,20); pCtx.stroke();
+        pCtx.strokeStyle = '#ffffff'; pCtx.lineWidth = 2.5; pCtx.beginPath(); pCtx.moveTo(0,0); pCtx.lineTo(16,16); pCtx.stroke();
       }
       return ctx.createPattern(pCanvas, 'repeat');
     }
@@ -374,7 +310,7 @@
 
       if (isEraser) {
         ctx.globalCompositeOperation = 'destination-out';
-        ctx.lineWidth = 48;
+        ctx.lineWidth = 40;
       } else {
         ctx.globalCompositeOperation = 'source-over';
         ctx.strokeStyle = getPattern(currentType, currentColor, currentPattern);
@@ -385,16 +321,6 @@
       ctx.lineTo(coords.x, coords.y);
       ctx.stroke();
 
-      if (!isEraser && Math.random() < 0.4) {
-        ctx.save();
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.arc(coords.x + (Math.random() * 26 - 13), coords.y + (Math.random() * 26 - 13), Math.random() * 3 + 1.5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
-
       lastX = coords.x; 
       lastY = coords.y;
     }
@@ -402,14 +328,6 @@
     function adjustGameVolume(volValue) {
       bgMusicAudio.volume = volValue;
       winApplauseAudio.volume = volValue;
-      const iconIndicator = document.getElementById('volIndicatorIcon');
-      if (volValue == 0) {
-        iconIndicator.textContent = '🔇';
-      } else if (volValue < 0.4) {
-        iconIndicator.textContent = '🔈';
-      } else {
-        iconIndicator.textContent = '🔊';
-      }
     }
 
     function initUI() {
@@ -418,7 +336,7 @@
       document.getElementById('btnStart').onclick = () => {
         document.getElementById('introScreen').classList.add('hide');
         document.getElementById('gameContainer').classList.add('show');
-        bgMusicAudio.play().catch(err => console.log("Audio waiting for user interaction:", err));
+        bgMusicAudio.play().catch(err => console.log("Audio play error:", err));
       };
 
       document.getElementById('btnNavigationBack').onclick = () => {
@@ -461,14 +379,14 @@
         winApplauseAudio.play().catch(err => console.log(err));
 
         const host = document.getElementById('confetti');
-        const stars = ['⭐', '✨', '🎉', '🌈', '🎈', '☀️'];
-        for (let i = 0; i < 55; i++) {
+        const stars = ['⭐', '✨', '🎉', '🎈'];
+        for (let i = 0; i < 40; i++) {
           const el = document.createElement('div');
           el.className = 'star';
           el.textContent = stars[Math.floor(Math.random() * stars.length)];
           el.style.left = '50%'; el.style.top = '50%';
           const angle = Math.random() * Math.PI * 2;
-          const dist = 120 + Math.random() * 320;
+          const dist = 100 + Math.random() * 250;
           el.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
           el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
           host.appendChild(el);
@@ -489,8 +407,8 @@
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); }, { passive: false });
 
-    /* Trace Background Pattern Fix */
-    const svgBackground = `<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550' viewBox='0 0 550 550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='380' text-anchor='middle' dominant-baseline='central' fill='%23f8fafc' stroke='%2394a3b8' stroke-width='5' stroke-dasharray='12,10'>ဂ</text></svg>`;
+    /* 🎨 CLEAR TRANSPARENT DASHED OUTLINE FOR "ဂ" (အမည်းရောင်မဖြစ်တော့ပါ) */
+    const svgBackground = `<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='340' text-anchor='middle' dominant-baseline='central' fill='none' stroke='%23cbd5e1' stroke-width='8' stroke-dasharray='12,12'>ဂ</text></svg>`;
     canvas.style.backgroundImage = `url("data:image/svg+xml;utf8,${encodeURIComponent(svgBackground)}")`;
     canvas.style.backgroundSize = "100% 100%";
 
