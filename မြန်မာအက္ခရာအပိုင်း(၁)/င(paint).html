@@ -1,652 +1,346 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="my">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Paint the Burmese Letter Ng - Magical Candy Land</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>"င" ကို အရောင်ခြယ်ပါ</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Pyidaungsu:wght@400;700;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
     
-    /* ကလေးများအကြိုက် သကြားလုံးကမ္ဘာ ပန်းရောင်နှင့်အပြာရောင်စပ် ကာတွန်းနောက်ခံ */
-    body {
-      font-family: 'Fredoka', system-ui, sans-serif;
-      background: linear-gradient(to bottom, #fbcfe8 0%, #fae8ff 40%, #fdf2e9 60%, #fda4af 60%, #f43f5e 100%);
-      min-height: 100vh;
+    html, body { 
+      height: 100%; 
+      width: 100%; 
+      overflow: hidden; 
+      position: relative; 
+      background-color: #fbcfe8; 
+      user-select: none; 
+      -webkit-user-select: none;
+      font-family: 'Fredoka', 'Pyidaungsu', system-ui, sans-serif;
+    }
+
+    #app-root {
+      width: 100vw;
+      height: 100vh;
       display: flex;
       flex-direction: column;
+      padding: 10px;
+      gap: 8px;
+    }
+
+    /* TOP HEADER & CONTROLS */
+    .top-bar {
+      display: flex;
       align-items: center;
-      justify-content: center;
-      color: #9d174d;
-      overflow: hidden;
-      position: relative;
-    }
-
-    /* ==========================================================================
-       CANDY LAND LIVE ANIMATIONS (အသက်ဝင်သော သကြားလုံးကမ္ဘာ အထူးပြုလုပ်ချက်များ)
-       ========================================================================== */
-    .candy-rain {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 2;
-    }
-    .falling-candy {
-      position: absolute;
-      font-size: 24px;
-      top: -30px;
-      animation: candyDrop 8s linear infinite;
-    }
-    .falling-candy.c1 { left: 10%; animation-duration: 6s; animation-delay: 0s; }
-    .falling-candy.c2 { left: 35%; animation-duration: 9s; animation-delay: 2s; font-size: 30px; }
-    .falling-candy.c3 { left: 65%; animation-duration: 7s; animation-delay: 4s; }
-    .falling-candy.c4 { left: 85%; animation-duration: 10s; animation-delay: 1s; font-size: 28px; }
-
-    @keyframes candyDrop {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.9; }
-      90% { opacity: 0.9; }
-      100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
-    }
-
-    .candy-clouds {
-      position: absolute;
-      top: 5%;
-      width: 100%;
-      height: 150px;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .sweet-cloud {
-      position: absolute;
-      background: #f472b6;
-      border-radius: 50%;
-      filter: blur(2px);
-      opacity: 0.85;
-      box-shadow: 30px 10px 0 10px #f472b6, -30px 15px 0 5px #f472b6, 60px 20px 0 -5px #f472b6;
-      animation: cloudWave 6s ease-in-out infinite alternate;
-    }
-    .sweet-cloud.left { width: 90px; height: 70px; left: 8%; top: 20%; }
-    .sweet-cloud.right { width: 100px; height: 80px; right: 10%; top: 30%; background: #38bdf8; box-shadow: 30px 10px 0 10px #38bdf8, -30px 15px 0 5px #38bdf8, 60px 20px 0 -5px #38bdf8; animation-duration: 8s; }
-
-    @keyframes cloudWave {
-      0% { transform: scale(1) translate(0, 0) rotate(0deg); }
-      100% { transform: scale(1.08) translate(15px, -10px) rotate(3deg); }
-    }
-
-    .candy-hills {
-      position: absolute;
-      bottom: -15px;
-      width: 100%;
-      height: 140px;
-      background: #be123c;
-      z-index: 3;
-      border-radius: 50% 50% 0 0 / 30px 30px 0 0;
-      box-shadow: inset 0 14px 0 #fda4af;
-      pointer-events: none;
-    }
-    .lollipop-decor {
-      position: absolute;
-      bottom: 30px;
-      width: 100%;
-      display: flex;
       justify-content: space-between;
-      padding: 0 50px;
-      z-index: 4;
-      pointer-events: none;
-    }
-    .lollipop {
-      font-size: 45px;
-      animation: lollipopSway 4s ease-in-out infinite alternate;
-      transform-origin: bottom center;
-    }
-    .lollipop:nth-child(2) { animation-delay: 1.5s; font-size: 50px; }
-    @keyframes lollipopSway {
-      0% { transform: rotate(-6deg) scale(0.95); }
-      100% { transform: rotate(8deg) scale(1.05); }
+      height: 45px;
+      flex-shrink: 0;
     }
 
-    /* ==========================================================================
-       GAME UI INTERFACE (အသုံးချစနစ်များ)
-       ========================================================================== */
-    .intro-screen {
-      position: fixed;
-      inset: 0; background-color: #0f172a; z-index: 1000;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 20px; text-align: center; color: #ffffff;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-    .intro-screen.hide { opacity: 0; pointer-events: none; transform: scale(1.05); }
-    .intro-emojis { font-size: clamp(32px, 5vw, 48px); margin-bottom: 15px; letter-spacing: 8px; }
-    .intro-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(28px, 4.5vw, 46px); font-weight: 800; margin-bottom: 10px; color: #f472b6; }
-    .intro-badge { font-family: 'Noto Sans Myanmar', sans-serif; background-color: #be123c; padding: 6px 18px; border-radius: 20px; font-size: clamp(13px, 2vw, 16px); font-weight: 700; margin-bottom: 25px; display: inline-block; }
-    .intro-desc { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(14px, 2.2vw, 18px); max-width: 600px; line-height: 1.8; color: #fce7f3; margin-bottom: 40px; }
-    
-    .btn-start {
-      font-family: 'Noto Sans Myanmar', sans-serif;
-      background-color: #f43f5e; color: white; border: none; padding: 14px 45px; font-size: clamp(18px, 2.5vw, 22px); font-weight: 700; border-radius: 30px; cursor: pointer;
-      box-shadow: 0 6px 0 #9f174d; transition: transform 0.1s ease, box-shadow 0.1s ease;
-    }
-    .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #9f174d; }
-
-    .game-container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 15px; opacity: 0; transform: scale(0.95); transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; pointer-events: none; }
-    .game-container.show { opacity: 1; transform: scale(1); pointer-events: auto; }
-
-    /* Top Control Bar (Navigation & Volume Slider) */
-    .top-control-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      max-width: 950px;
-      margin-bottom: 15px;
-    }
-    .top-nav {
-      display: flex;
-      gap: 12px;
-    }
     .btn-nav {
-      background: rgba(190, 18, 60, 0.9);
+      background: #be123c;
       color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 15px;
+      padding: 6px 16px;
+      border-radius: 14px;
       font-weight: 700;
-      border-radius: 15px;
-      cursor: pointer;
-      box-shadow: 0 4px 0 #9f174d;
+      font-size: 14px;
+      box-shadow: 0 4px 0 #881337;
+    }
+
+    .sound-control {
+      background: #be123c;
+      padding: 4px 12px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: transform 0.1s, box-shadow 0.1s;
-      font-family: 'Fredoka', 'Noto Sans Myanmar', sans-serif;
-    }
-    .btn-nav:active {
-      transform: translateY(2px);
-      box-shadow: 0 2px 0 #9f174d;
+      box-shadow: 0 4px 0 #881337;
     }
 
-    /* Sound Control UI */
-    .sound-control {
-      background: rgba(190, 18, 60, 0.85);
-      padding: 6px 18px;
+    /* MAIN CONTAINER: 1 Screen No-Scroll Layout */
+    .main-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: calc(100vh - 65px);
+    }
+
+    .title-banner {
+      background: #be123c;
+      color: white;
+      text-align: center;
+      padding: 6px;
+      border-radius: 16px;
+      font-size: 18px;
+      font-weight: 900;
+      flex-shrink: 0;
+      box-shadow: 0 4px 0 #881337;
+    }
+
+    /* PAINTING CANVAS FRAME */
+    .canvas-frame {
+      flex: 1;
+      background: #fff;
       border-radius: 20px;
+      border: 4px solid #f43f5e;
+      position: relative;
+      overflow: hidden;
       display: flex;
       align-items: center;
-      gap: 10px;
-      color: white;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .volume-icon { font-size: 18px; cursor: pointer; }
-    .volume-slider {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 85px;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 5px;
-      outline: none;
-      cursor: pointer;
-    }
-    .volume-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #fef08a;
-      cursor: pointer;
+      justify-content: center;
     }
 
-    h1 { font-size: 26px; font-weight: 700; margin-bottom: 15px; color: #ffffff; text-shadow: 0 3px 6px rgba(0,0,0,0.15); background: rgba(190, 18, 60, 0.85); padding: 8px 25px; border-radius: 20px; }
-    h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #fef08a; font-size: 1.3em; }
-    
-    .stage { display: flex; gap: 20px; width: 100%; max-width: 950px; justify-content: center; }
-    
-    .wood-frame {
-      position: relative; padding: 18px;
-      border-radius: 24px;
-      background: linear-gradient(180deg, #db2777 0%, #9d174d 100%);
-      box-shadow: 0 16px 32px rgba(0,0,0,0.2), inset 0 0 0 5px #fce7f3;
-    }
-    .canvas-container { background: #ffffff; border-radius: 14px; overflow: hidden; position: relative; box-shadow: inset 0 4px 10px rgba(0,0,0,0.08); }
-    canvas { display: block; cursor: crosshair; touch-action: none; }
-    
-    /* Controls Panel */
-    .panel {
-      width: 150px;
-      background: linear-gradient(180deg, #ffffff 0%, #fdf2f8 100%); border-radius: 24px;
-      padding: 15px; display: flex; flex-direction: column; gap: 12px;
-      box-shadow: 0 12px 24px rgba(0,0,0,0.12), inset 0 0 0 3px #fbcfe8;
-    }
-    .panel-title { font-size: 14px; font-weight: 700; text-align: center; color: #db2777; letter-spacing: 1px; }
-    .eraser {
-      height: 65px;
-      border-radius: 16px; background: white;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      cursor: pointer; box-shadow: 0 4px 0 #fbcfe8;
-      font-weight: 700; font-size: 13px; user-select: none; border: 2px solid #fbcfe8;
-    }
-    .eraser.selected { background: #fbcfe8; border-color: #db2777; box-shadow: inset 0 0 0 2px #db2777; }
-    
-    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .brush {
-      aspect-ratio: 1/1; border-radius: 14px;
-      cursor: pointer; position: relative;
-      box-shadow: 0 3px 0 rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #e2e8f0;
-    }
-    .brush.selected { transform: scale(1.05); box-shadow: 0 0 0 3px #fff, 0 0 0 5px #db2777; }
-    .swatch { position: absolute; inset: 4px; border-radius: 10px; }
-    
-    /* Actions Button Layout ပြင်ဆင်ချက် */
-    .actions { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
-    .btn { 
-      min-height: 62px;
-      height: auto; border-radius: 14px; border: none; color: white; 
-      font-weight: 700; font-size: 14px; cursor: pointer; display: flex; flex-direction: column; 
-      align-items: center; justify-content: center; font-family: 'Noto Sans Myanmar', sans-serif;
-      padding: 8px 4px; line-height: 1.4;
-    }
-    .btn-reset { background: #f472b6; box-shadow: 0 4px 0 #db2777; }
-    .btn-next { background: #e11d48; box-shadow: 0 4px 0 #be123c; font-size: 15px; }
-    
-    #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
-    .star { position: absolute; font-size: 28px; animation: fall 1.5s ease-out forwards; }
-    @keyframes fall {
-      0% { transform: translate(0,0) rotate(0deg) scale(0.5); opacity: 1; }
-      100% { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(1.4); opacity: 0; }
-    }
-
-    /* ==========================================================================
-       MAGAZINE-STYLE CONGRATS WINDOW BOX POPUP (မဂ္ဂဇင်းဆန်ဆန် ပေါ့အပ်)
-       ========================================================================== */
-    .congrats-window {
-      position: fixed;
-      inset: 0; background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(4px); z-index: 2000;
-      display: flex; align-items: center; justify-content: center; padding: 20px;
-      opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
-    }
-    .congrats-window.show { opacity: 1; pointer-events: auto; }
-    .congrats-box {
-      background: linear-gradient(135deg, #ffffff 0%, #fff1f2 100%);
+    canvas {
       width: 100%;
-      max-width: 440px; border-radius: 32px; padding: 35px 25px;
-      text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3), inset 0 0 0 6px #fbcfe8;
-      transform: scale(0.85); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      height: 100%;
+      display: block;
+      touch-action: none;
     }
-    .congrats-window.show .congrats-box { transform: scale(1); }
-    .congrats-badge { font-size: 55px; margin-bottom: 15px; animation: popBadge 0.6s ease infinite alternate; display: inline-block; }
-    @keyframes popBadge { 0% { transform: scale(0.9) rotate(-5deg); } 100% { transform: scale(1.1) rotate(5deg); } }
-    
-    .congrats-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 28px; font-weight: 800; color: #be123c; margin-bottom: 12px; }
-    .congrats-text { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 16px; color: #4c0519; line-height: 1.6; margin-bottom: 25px; }
-    
-    .btn-popup-done {
-      font-family: 'Noto Sans Myanmar', sans-serif;
-      background: #e11d48; color: white; border: none;
-      padding: 12px 35px; font-size: 18px; font-weight: 700; border-radius: 25px; cursor: pointer;
-      box-shadow: 0 5px 0 #9f174d; transition: transform 0.1s, box-shadow 0.1s; width: 100%;
-    }
-    .btn-popup-done:active { transform: translateY(3px); box-shadow: 0 2px 0 #9f174d; }
 
-    @media (max-width: 760px) {
-      body { overflow-y: auto; justify-content: flex-start; padding-top: 20px; }
-      .top-control-bar { max-width: 400px; flex-direction: column; gap: 12px; align-items: flex-start; }
-      .top-nav { width: 100%; justify-content: space-between; }
-      .sound-control { align-self: flex-end; }
-      .stage { flex-direction: column-reverse; align-items: center; }
-      .panel { width: 100%; max-width: 400px; }
-      .brush-grid { grid-template-columns: repeat(5, 1fr); }
-      .candy-rain, .candy-clouds, .candy-hills, .lollipop-decor { display: none; }
+    /* BOTTOM PALETTE & CONTROL PANEL */
+    .control-panel {
+      background: #ffffff;
+      border: 3px solid #f43f5e;
+      border-radius: 20px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    .panel-label {
+      text-align: center;
+      color: #be123c;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      justify-items: center;
+    }
+
+    .color-swatch, .eraser-btn {
+      width: 100%;
+      aspect-ratio: 1/1;
+      max-width: 42px;
+      max-height: 42px;
+      border-radius: 10px;
+      border: 2px solid #e2e8f0;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.1s;
+    }
+
+    .color-swatch.active, .eraser-btn.active {
+      border: 3px solid #be123c;
+      transform: scale(1.08);
+      box-shadow: 0 0 8px rgba(190, 18, 60, 0.4);
+    }
+
+    .eraser-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .eraser-btn {
+      width: 100%;
+      max-width: 120px;
+      height: 36px;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #be123c;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .btn-action {
+      width: 100%;
+      padding: 8px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 13px;
+      color: white;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn-reset { background: #f43f5e; box-shadow: 0 3px 0 #be123c; }
+    .btn-done { background: #e11d48; box-shadow: 0 3px 0 #9f1239; }
+    .btn-action:active { transform: translateY(2px); box-shadow: none; }
+
+    /* Desktop View Adaptability */
+    @media (min-width: 768px) {
+      .main-container { flex-direction: row; }
+      .control-panel { width: 320px; height: 100%; }
+      .color-grid { grid-template-columns: repeat(4, 1fr); }
     }
   </style>
 </head>
 <body>
 
-  <audio id="bgm" src="main-bgm.mp3" loop></audio>
-  <audio id="clapping" src="clapping.mp3"></audio>
-
-  <div class="candy-rain">
-    <div class="falling-candy c1">🍬</div>
-    <div class="falling-candy c2">🍭</div>
-    <div class="falling-candy c3">🍫</div>
-    <div class="falling-candy c4">🍩</div>
-  </div>
-
-  <div class="candy-clouds">
-    <div class="sweet-cloud left"></div>
-    <div class="sweet-cloud right"></div>
-  </div>
-  
-  <div class="candy-hills"></div>
-  
-  <div class="lollipop-decor">
-    <div class="lollipop">🍭</div>
-    <div class="lollipop">🧁</div>
-  </div>
-
-  <div class="intro-screen" id="introScreen">
-    <div class="intro-emojis">🍬🍭🧁🍩✨</div>
-    <div class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</div>
-    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "င" သကြားလုံးမုန့်ကမ္ဘာ</div>
-    <div class="intro-desc">
-      ကလေးတို့ရေ... ချိုမြိန်ပြီး အရသာရှိတဲ့ သကြားလုံးမုန့်ကမ္ဘာကြီးထဲကို ရောက်လာပြန်ပြီနော်။ ကောင်းကင်ယံက ဂွမ်းသကြားလုံးတိမ်တိုက်လေးတွေနဲ့အတူ မြန်မာအက္ခရာ ပဉ္စမမြောက်လုံး "င" လေးကို အသစ်စက်စက် သက်တံဖြန်းသကြားစုတ်တံလေး သုံးပြီး စိတ်ကြိုက်ဆေးခြယ်ကြရအောင်။
-    </div>
-    <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
-  </div>
-
-  <div class="game-container" id="gameContainer">
-    <div class="top-control-bar">
-      <nav class="top-nav">
-        <button class="btn-nav" id="btnBack">← Back</button>
-        <button class="btn-nav" id="btnHome">🏠 Home</button>
-      </nav>
-
+  <div id="app-root">
+    
+    <!-- TOP NAVIGATION -->
+    <div class="top-bar">
+      <button class="btn-nav" onclick="location.href='index.html'">← Back</button>
       <div class="sound-control">
-        <span class="volume-icon" id="volumeIcon">🔊</span>
-        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.1" value="0.3">
+        <span>🔊</span>
+        <input type="range" min="0" max="100" value="80" class="w-16 h-1 accent-yellow-300" />
       </div>
+      <button class="btn-nav" onclick="location.href='index.html'">🏠 Home</button>
     </div>
 
-    <h1>အရောင်ခြယ်ပါ <span class="glyph">"င"</span> !</h1>
-
-    <div class="stage">
-      <div class="wood-frame">
-        <div class="canvas-container">
-          <canvas id="paintCanvas" width="550" height="550"></canvas>
+    <!-- MAIN VIEW (SINGLE SCREEN) -->
+    <div class="main-container">
+      
+      <!-- TITLE & CANVAS -->
+      <div class="flex-1 flex flex-col gap-2 h-full">
+        <div class="title-banner">
+          အရောင်ခြယ်ပါ "<span style="color: #facc15;">C</span>" !
+        </div>
+        
+        <div class="canvas-frame">
+          <canvas id="paintCanvas"></canvas>
         </div>
       </div>
 
-      <aside class="panel">
-        <div class="panel-title">BRUSHES</div>
-        <div class="eraser" id="eraser">
-          <span style="font-size:24px">🧽</span><div>Eraser</div>
+      <!-- BOTTOM / SIDE CONTROL PANEL -->
+      <div class="control-panel">
+        <div class="panel-label">BRUSHES</div>
+        
+        <div class="eraser-container">
+          <div id="eraserBtn" class="eraser-btn">
+            <span>🧽</span> Eraser
+          </div>
         </div>
-        <div class="brush-grid" id="brushGrid"></div>
-        <div class="actions">
-          <button class="btn btn-reset" id="btnReset">↻<br>အသစ်ပြန်စ</button>
-          <button class="btn btn-next" id="btnNext">✓ ပြီးပြီ</button>
+
+        <div id="colorGrid" class="color-grid"></div>
+
+        <div class="action-buttons">
+          <button id="btnReset" class="btn-action btn-reset">↺ အသစ်ပြန်စ</button>
+          <button id="btnDone" class="btn-action btn-done">✓ ပြီးပြီ</button>
         </div>
-      </aside>
-    </div>
-  </div>
+      </div>
 
-  <div class="congrats-window" id="congratsWindowBox">
-    <div class="congrats-box">
-      <div class="congrats-badge">🍬🏆🍭</div>
-      <div class="congrats-title">ဝိုး... အရမ်းတော်တာပဲ!</div>
-      <div class="congrats-text">သကြားလုံးမုန့်ကမ္ဘာရဲ့ "င" အက္ခရာလေးကို ကလေးတို့ စိတ်ကြိုက်ဆေးရောင်ခြယ်လို့ ပြီးသွားပြီ။</div>
-      <button class="btn-popup-done" id="btnPopupDone">ပြီးပြီ</button>
     </div>
-  </div>
 
-  <div id="confetti"></div>
+  </div>
 
   <script>
     const canvas = document.getElementById('paintCanvas');
     const ctx = canvas.getContext('2d');
-    const bgm = document.getElementById('bgm');
-    const clapping = document.getElementById('clapping');
-    const volumeSlider = document.getElementById('volumeSlider');
-    const volumeIcon = document.getElementById('volumeIcon');
-    const introScreen = document.getElementById('introScreen');
-    const gameContainer = document.getElementById('gameContainer');
-    const congratsWindowBox = document.getElementById('congratsWindowBox');
-    const btnStart = document.getElementById('btnStart');
-    const btnReset = document.getElementById('btnReset');
-    const btnNext = document.getElementById('btnNext');
-    const btnPopupDone = document.getElementById('btnPopupDone');
-    const btnBack = document.getElementById('btnBack');
-    const btnHome = document.getElementById('btnHome');
-    const eraserEl = document.getElementById('eraser');
-    const brushGrid = document.getElementById('brushGrid');
-
-    let isPainting = false;
-    let currentColor = '#db2777';
-    let currentType = 'solid'; 
-    let currentPattern = '';
+    let painting = false;
+    let currentColor = '#e11d48';
     let isEraser = false;
-    let brushSize = 32;
-    let lastX = 0;
-    let lastY = 0;
 
-    // Brush Options Configuration
-    const brushes = [
-      { color: '#db2777', type: 'solid', label: 'Pink' },
-      { color: '#38bdf8', type: 'solid', label: 'Sky' },
-      { color: '#f59e0b', type: 'solid', label: 'Orange' },
-      { color: '#10b981', type: 'solid', label: 'Green' },
-      { color: '#8b5cf6', type: 'solid', label: 'Purple' },
-      { color: '#ec4899', type: 'candy', label: 'Candy' },
-      { color: '#f43f5e', type: 'sprinkle', label: 'Sprinkles' },
-      { color: '#eab308', type: 'star', label: 'Stars' }
+    const colors = [
+      '#e11d48', '#38bdf8', '#f59e0b', '#10b981', '#a855f7',
+      '#ec4899', '#f43f5e', '#eab308'
     ];
 
-    // Initialize Canvas Outline
-    function drawLetterOutline() {
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      drawTraceLetter();
+    }
+
+    function drawTraceLetter() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.save();
-      ctx.font = '800 340px "Noto Sans Myanmar", sans-serif';
+      const fontSize = Math.min(canvas.width, canvas.height) * 0.65;
+      ctx.font = `900 ${fontSize}px Fredoka, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       
-      // Draw Letter Shadow
-      ctx.fillStyle = '#fce7f3';
-      ctx.fillText('င', canvas.width / 2 + 5, canvas.height / 2 + 5);
-
-      // Draw Letter Outline
-      ctx.strokeStyle = '#be123c';
+      ctx.strokeStyle = '#fda4af';
       ctx.lineWidth = 14;
-      ctx.lineJoin = 'round';
-      ctx.strokeText('င', canvas.width / 2, canvas.height / 2);
-      ctx.restore();
-    }
-
-    // Populate Brush UI
-    function initBrushes() {
-      brushGrid.innerHTML = '';
-      brushes.forEach((b, idx) => {
-        const btn = document.createElement('div');
-        btn.className = `brush ${idx === 0 ? 'selected' : ''}`;
-        
-        const swatch = document.createElement('div');
-        swatch.className = 'swatch';
-        swatch.style.background = b.color;
-        
-        if (b.type === 'candy') {
-          swatch.style.backgroundImage = 'radial-gradient(#ffffff 20%, transparent 20%)';
-          swatch.style.backgroundSize = '8px 8px';
-        } else if (b.type === 'sprinkle') {
-          swatch.innerHTML = '<span style="font-size:10px;display:block;text-align:center;">🍬</span>';
-        } else if (b.type === 'star') {
-          swatch.innerHTML = '<span style="font-size:10px;display:block;text-align:center;">✨</span>';
-        }
-
-        btn.appendChild(swatch);
-        btn.addEventListener('click', () => selectBrush(b, btn));
-        brushGrid.appendChild(btn);
-      });
-    }
-
-    function selectBrush(b, element) {
-      document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
-      eraserEl.classList.remove('selected');
-      element.classList.add('selected');
+      ctx.strokeText('C', canvas.width / 2, canvas.height / 2);
       
-      isEraser = false;
-      currentColor = b.color;
-      currentType = b.type;
+      ctx.fillStyle = '#fff1f2';
+      ctx.fillText('C', canvas.width / 2, canvas.height / 2);
     }
 
-    eraserEl.addEventListener('click', () => {
-      document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
-      eraserEl.classList.add('selected');
-      isEraser = true;
-    });
+    window.addEventListener('resize', resizeCanvas);
+    setTimeout(resizeCanvas, 50);
 
-    // Canvas Pointer Events
-    function getCanvasCoordinates(e) {
+    function getPos(e) {
       const rect = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
       const clientX = e.touches ? e.touches[0].clientX : e.clientX;
       const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      return {
-        x: (clientX - rect.left) * scaleX,
-        y: (clientY - rect.top) * scaleY
-      };
+      return { x: clientX - rect.left, y: clientY - rect.top };
     }
 
-    function startDrawing(e) {
-      isPainting = true;
-      const pos = getCanvasCoordinates(e);
-      lastX = pos.x;
-      lastY = pos.y;
-      draw(e);
-    }
-
-    function stopDrawing() {
-      isPainting = false;
-      ctx.beginPath();
-    }
-
+    function startDrawing(e) { painting = true; draw(e); }
+    function stopDrawing() { painting = false; ctx.beginPath(); }
+    
     function draw(e) {
-      if (!isPainting) return;
-      e.preventDefault();
-      
-      const pos = getCanvasCoordinates(e);
+      if (!painting) return;
+      const pos = getPos(e);
+      ctx.lineWidth = isEraser ? 30 : 16;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = isEraser ? '#ffffff' : currentColor;
+      ctx.globalCompositeOperation = isEraser ? 'destination-out' : 'source-over';
 
-      ctx.save();
-      if (isEraser) {
-        ctx.globalCompositeOperation = 'destination-out';
-        ctx.beginPath();
-        ctx.arc(pos.x, pos.y, brushSize, 0, Math.PI * 2);
-        ctx.fill();
-      } else {
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-
-        if (currentType === 'solid') {
-          ctx.strokeStyle = currentColor;
-          ctx.lineWidth = brushSize;
-          ctx.beginPath();
-          ctx.moveTo(lastX, lastY);
-          ctx.lineTo(pos.x, pos.y);
-          ctx.stroke();
-        } else if (currentType === 'candy') {
-          ctx.strokeStyle = currentColor;
-          ctx.lineWidth = brushSize;
-          ctx.setLineDash([12, 12]);
-          ctx.beginPath();
-          ctx.moveTo(lastX, lastY);
-          ctx.lineTo(pos.x, pos.y);
-          ctx.stroke();
-        } else if (currentType === 'sprinkle') {
-          ctx.font = '20px serif';
-          ctx.fillText('🍬', pos.x, pos.y);
-        } else if (currentType === 'star') {
-          ctx.font = '20px serif';
-          ctx.fillText('✨', pos.x, pos.y);
-        }
-      }
-      ctx.restore();
-
-      lastX = pos.x;
-      lastY = pos.y;
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
     }
 
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('mouseleave', stopDrawing);
+    window.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e); });
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
 
-    canvas.addEventListener('touchstart', startDrawing);
-    canvas.addEventListener('touchmove', draw);
-    canvas.addEventListener('touchend', stopDrawing);
-
-    // Audio Controls
-    volumeSlider.addEventListener('input', (e) => {
-      const vol = e.target.value;
-      bgm.volume = vol;
-      clapping.volume = vol;
-      volumeIcon.textContent = vol == 0 ? '🔇' : '🔊';
+    // UI Palette Generation
+    const grid = document.getElementById('colorGrid');
+    colors.forEach((col, index) => {
+      const el = document.createElement('div');
+      el.className = 'color-swatch' + (index === 0 ? ' active' : '');
+      el.style.backgroundColor = col;
+      el.onclick = () => {
+        isEraser = false;
+        currentColor = col;
+        document.querySelectorAll('.color-swatch, .eraser-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+      };
+      grid.appendChild(el);
     });
 
-    volumeIcon.addEventListener('click', () => {
-      if (bgm.volume > 0) {
-        bgm.volume = 0;
-        volumeSlider.value = 0;
-        volumeIcon.textContent = '🔇';
-      } else {
-        bgm.volume = 0.3;
-        volumeSlider.value = 0.3;
-        volumeIcon.textContent = '🔊';
-      }
-    });
+    document.getElementById('eraserBtn').onclick = () => {
+      isEraser = true;
+      document.querySelectorAll('.color-swatch, .eraser-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('eraserBtn').classList.add('active');
+    };
 
-    // Confetti Effect
-    function triggerConfetti() {
-      const confettiContainer = document.getElementById('confetti');
-      confettiContainer.innerHTML = '';
-      const items = ['🍬', '🍭', '✨', '⭐', '🧁'];
-      
-      for (let i = 0; i < 40; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.textContent = items[Math.floor(Math.random() * items.length)];
-        star.style.left = '50vw';
-        star.style.top = '50vh';
-        
-        const dx = (Math.random() - 0.5) * 800 + 'px';
-        const dy = (Math.random() - 0.5) * 800 + 'px';
-        star.style.setProperty('--dx', dx);
-        star.style.setProperty('--dy', dy);
-        
-        confettiContainer.appendChild(star);
-      }
-    }
-
-    // Button Actions
-    btnStart.addEventListener('click', () => {
-      introScreen.classList.add('hide');
-      gameContainer.classList.add('show');
-      bgm.volume = volumeSlider.value;
-      bgm.play().catch(() => {});
-    });
-
-    btnReset.addEventListener('click', () => {
-      drawLetterOutline();
-    });
-
-    btnNext.addEventListener('click', () => {
-      congratsWindowBox.classList.add('show');
-      clapping.currentTime = 0;
-      clapping.play().catch(() => {});
-      triggerConfetti();
-    });
-
-    btnPopupDone.addEventListener('click', () => {
-      congratsWindowBox.classList.remove('show');
-    });
-
-    btnBack.addEventListener('click', () => {
-      gameContainer.classList.remove('show');
-      introScreen.classList.remove('hide');
-    });
-
-    btnHome.addEventListener('click', () => {
-      gameContainer.classList.remove('show');
-      introScreen.classList.remove('hide');
-    });
-
-    // Initialize Game
-    drawLetterOutline();
-    initBrushes();
+    document.getElementById('btnReset').onclick = drawTraceLetter;
+    document.getElementById('btnDone').onclick = () => alert('အရမ်းတော်တယ်!');
   </script>
 </body>
 </html>
