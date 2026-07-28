@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>"ခ"ကို အရောင်ခြယ်ပါ</title>
+  <title>"ခ"ကိုအရောင်ခြယ်ပါ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
@@ -164,7 +164,7 @@
       aspect-ratio: 1 / 1;
       background-position: center;
       background-repeat: no-repeat;
-      background-size: contain;
+      background-size: 100% 100%;
     }
 
     /* Tool Panel & Controls */
@@ -357,7 +357,7 @@
     </div>
   </div>
 
-  <h1>အရောင်ခြယ်ပါ <span class="glyph">[ ခ ]</span></h1>
+  <h1>အရောင်ခြယ်ပါ <span class="glyph">ခ</span> !</h1>
 
   <!-- Main Game Stage -->
   <div class="stage">
@@ -397,9 +397,9 @@
   <div class="intro-screen" id="introScreen">
     <div class="intro-emojis">🐸🌊🎨✨🌈</div>
     <div class="intro-title">ဆေးရောင်ခြယ် ရေကန်ကမ္ဘာ</div>
-    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဂ" ကို အရောင်ခြယ်ကြစို့</div>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ခ" ကို အရောင်ခြယ်ကြစို့</div>
     <div class="intro-desc">
-      ကလေးတို့ရေ... မြန်မာအက္ခရာ "ဂ" လေးကို စိတ်ကြိုက်ဆေးခြယ်ကြမယ်။ လှပတဲ့ အရောင်စုံစုတ်တံလေးတွေ သုံးပြီး ဉာဏ်ရည်ဉာဏ်သွေး ထက်မြက်အောင် ခြယ်သကြည့်ရအောင်။
+      ကလေးတို့ရေ... မှော်ဆန်တဲ့ ဖားပြုပ်ကလေးတွေ ခုန်ပေါက်ကစားနေတဲ့ ရေကန်ဘေးမှာ မြန်မာအက္ခရာ ဒုတိယမြောက်လုံး "ခ" လေးကို စိတ်ကြိုက်ဆေးခြယ်ကြမယ်။ လှပတဲ့ အရောင်စုံစုတ်တံလေးတွေ သုံးပြီး ဉာဏ်ရည်ဉာဏ်သွေး ထက်မြက်အောင် ခြယ်သကြည့်ရအောင်။
     </div>
     <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
   </div>
@@ -409,7 +409,7 @@
     <div class="congrats-card">
       <div style="font-size: 45px; margin-bottom: 8px;">🎉✨⭐</div>
       <div class="congrats-title">Congratulations!</div>
-      <div class="congrats-text">သားသားမီးမီးတို့ရေ... အက္ခရာ "ဂ" လေးကို သေသပ်လှပစွာနဲ့ အရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ တော်လိုက်တာ ကွယ်။ 🌟</div>
+      <div class="congrats-text">သားသားမီးမီးတို့ရေ... အက္ခရာ "ခ" လေးကို သေသပ်လှပစွာနဲ့ အရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ တော်လိုက်တာ ကွယ်။ 🌟</div>
       <button class="btn-modal-done" onclick="window.location.href='index.html?fromGame=true'">ပြီးပြီ</button>
     </div>
   </div>
@@ -432,13 +432,9 @@
     const bgMusicAudio = document.getElementById('paintBgmAudio');
     const winApplauseAudio = document.getElementById('applauseSoundEffect');
 
-    /* Encoded SVG dashed outline background for Burmese Letter [ ဂ ] */
-    const burmeseGaSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="550" height="550" viewBox="0 0 550 550">
-      <text x="50%" y="65%" font-family="'Noto Sans Myanmar', sans-serif" font-size="340" font-weight="800" text-anchor="middle" dominant-baseline="middle" fill="none" stroke="#94a3b8" stroke-width="10" stroke-dasharray="14 10" stroke-linejoin="round" stroke-linecap="round">ဂ</text>
-    </svg>`;
-
-    const svgDataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(burmeseGaSVG)}`;
-    canvas.style.backgroundImage = `url("${svgDataUrl}")`;
+    /* Encoded SVG dashed outline background for Burmese Letter [ ခ ] */
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>ခ</text></svg>\")";
+    canvas.style.backgroundSize = "100% 100%";
 
     /* Brush Palette Configurations */
     const brushes = [
