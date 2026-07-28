@@ -7,22 +7,72 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght=400;700;900&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
 
     <style>
-        .burmese-font {
-            font-family: 'Pyidaungsu', sans-serif;
-        }
-        .title-font {
-            font-family: 'Fredoka One', 'Pyidaungsu', sans-serif;
-        }
-        .game-map-container {
-            background: radial-gradient(circle at center, #0a231c, #051411, #020706);
+        body {
+            font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
+            background: radial-gradient(circle, #0f172a 0%, #020617 100%);
         }
 
-        /* ========================================================================= */
+        /* ==========================================================================
+           SPLASH SCREEN & VIDEO CONTAINER SYSTEM (FIXED FOR ALL DEVICES)
+           ========================================================================= */
+        .video-bg-container {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh;
+            z-index: 9998; 
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #020617; /* ဗီဒီယိုဘေးဘောင်များတွင် အမည်းရောင်မပေါ်ဘဲ သပ္ပါယ်စေရန် */
+        }
+
+        /* 📱 ဘယ် Device မှာကြည့်ကြည့် ဗီဒီယိုတစ်ခုလုံး မပျက်ဘဲ အပြည့်ပေါ်စေရန် object-fit: contain သုံးထားပါသည် */
+        .video-bg-container video {
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+        }
+
+        .splash-screen {
+            position: fixed; 
+            inset: 0; 
+            background: transparent; 
+            z-index: 9999; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            padding: 20px; 
+            text-align: center; 
+            transition: opacity 0.5s ease, pointer-events 0.5s;
+        }
+        .splash-screen.hide { 
+            opacity: 0; 
+            pointer-events: none; 
+        }
+        .audio-controls {
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(8px); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 14px; 
+            border-radius: 30px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
         /* 🍄 CARTOON MAGIC MUSHROOM HOUSE STRUCTURE */
-        /* ========================================================================= */
         .mushroom-container {
             position: relative;
             width: 100%;
@@ -39,7 +89,7 @@
             transform: scale(1.05) translateY(-8px);
         }
 
-        /* 🔴 MUSHROOM CAP (ခေါင်းမိုးလုံးလုံးနှင့် အစက်လေးများ) */
+        /* 🔴 MUSHROOM CAP */
         .mushroom-cap {
             width: 100%;
             height: 110px;
@@ -51,7 +101,6 @@
             overflow: hidden;
         }
 
-        /* White Dots on Mushroom Cap */
         .mushroom-cap::before, .mushroom-cap::after, .mushroom-dot-3, .mushroom-dot-4 {
             content: '';
             position: absolute;
@@ -64,7 +113,7 @@
         .mushroom-dot-3 { width: 22px; height: 20px; bottom: 25px; left: 50%; transform: translateX(-50%); }
         .mushroom-dot-4 { width: 20px; height: 18px; bottom: 30px; right: 25px; }
 
-        /* 🍦 MUSHROOM STEM (မှိုရိုးတံ ကိုယ်ထည်လုံးလုံး) */
+        /* 🍦 MUSHROOM STEM */
         .mushroom-stem {
             width: 82%;
             background: #fffbeb;
@@ -81,7 +130,7 @@
             box-shadow: inset 0 -10px 15px rgba(217, 119, 6, 0.15);
         }
 
-        /* 🚪 MUSHROOM CUTE DOOR */
+        /* 🚪 MUSHROOM DOOR */
         .mushroom-door {
             width: 44px;
             height: 48px;
@@ -116,7 +165,7 @@
             box-shadow: 0 0 15px #facc15, inset 2px 2px 0px #fff;
         }
 
-        /* 🎨 MUSHROOM THEME COLORS (CAP GRADIENTS & GLOWS) */
+        /* 🎨 MUSHROOM THEME COLORS */
         .cap-stage1 { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); box-shadow: 0 0 25px rgba(239, 68, 68, 0.4); }
         .cap-stage2 { background: linear-gradient(135deg, #f97316 0%, #c2410c 100%); box-shadow: 0 0 25px rgba(249, 115, 22, 0.4); }
         .cap-stage3 { background: linear-gradient(135deg, #a855f7 0%, #6d28d9 100%); box-shadow: 0 0 25px rgba(168, 85, 247, 0.4); }
@@ -132,58 +181,58 @@
         }
     </style>
 </head>
-<body class="game-map-container text-white min-h-screen flex flex-col items-center justify-start burmese-font overflow-x-hidden p-4 pb-24">
+<body class="text-white min-h-screen flex flex-col items-center justify-start overflow-x-hidden p-4 pb-24 relative">
 
-    <!-- 🌟 Intro Welcome Screen -->
-    <main id="welcomeIntroScreen" class="fixed inset-0 bg-slate-950/95 backdrop-blur-2xl flex items-center justify-center z-50 p-4">
-        <div class="w-full max-w-md p-8 bg-emerald-950/40 border-2 border-emerald-500/30 rounded-3xl shadow-2xl text-center">
-            <div class="text-6xl mb-4 float-mascot inline-block">🍄✨</div>
-            <h1 class="title-font text-3xl font-black bg-gradient-to-r from-emerald-400 via-green-400 to-amber-300 bg-clip-text text-transparent drop-shadow mb-2 tracking-wide uppercase">
-                Alphabet Quest
+    <!-- 🌟 SPLASH INTRO SCREEN WITH VIDEO BACKGROUND -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="bg-slate-800/90 border-[3px] border-emerald-500 backdrop-blur-xl p-6 md:p-10 rounded-[28px] shadow-2xl max-w-sm md:max-w-md w-full mb-4">
+            <div class="text-4xl md:text-5xl mb-2 float-mascot inline-block">🍄✨</div>
+            <h1 class="text-2xl md:text-3xl font-black text-emerald-400 mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+                "သားသားမီးမီးတို့ရဲ့ အက္ခရာရှာပုံတော်"
             </h1>
-            <p class="text-sm text-emerald-300/90 font-bold mb-4">မြန်မာအက္ခရာ ရှာပုံတော် - အပိုင်း ၄</p>
-            
-            <hr class="border-emerald-500/20 mb-5">
+            <p class="text-xs text-emerald-300 font-bold mb-6">မြန်မာအက္ခရာ (တ - န) မှော်ဝင်မှိုအိမ် စွန့်စားခန်း</p>
 
-            <!-- 📝 တ-န သင်ခန်းစာ မိတ်ဆက်စာစု -->
-            <div class="bg-emerald-900/30 border border-emerald-500/20 rounded-2xl p-5 mb-6 text-left space-y-3.5 text-sm leading-relaxed text-emerald-100">
-                <p class="font-black text-amber-300 text-center text-base mb-1">🍄 မှော်ဝင်မှိုအိမ်တောအုပ်မှ ကြိုဆိုပါတယ် 🍄</p>
-                <p class="indent-6">သားသားမီးမီးတို့ရေ... ဒီနေ့မှာတော့ လျှို့ဝှက်ဆန်းကြယ်တဲ့ မှော်မှိုအိမ်လေးတွေဆီ စွန့်စားခန်းထွက်ရင်း <span class="text-amber-300 font-bold text-base">"တ ၊ ထ ၊ ဒ ၊ ဓ ၊ န"</span> ဆိုတဲ့ ချစ်စရာ မြန်မာအက္ခရာ (၅) လုံးကို အတူတူ လေ့လာသွားကြရအောင်နော်။</p>
-                <p class="indent-6">မှိုအိမ်လေးတွေထဲမှာ အသံထွက်ဖတ်နည်းတွေ၊ ဆေးရောင်ခြယ်ကမ္ဘာတွေနဲ့ တူတူပုန်းတမ်း ဂိမ်းအသစ်တွေ အများကြီး စောင့်ကြိုနေတယ်နော်။ အဆင်သင့်ဖြစ်ရင် စတင်လိုက်ရအောင်... ✨</p>
+            <div id="splashActionArea">
+                <button onclick="unmuteIntroVideo()" class="font-bold py-3.5 px-6 md:px-8 text-lg md:text-xl text-white bg-amber-500 hover:bg-amber-600 rounded-2xl shadow-[0_5px_0_#9a6207] active:translate-y-0.5 active:shadow-[0_3px_0_#9a6207] transition-all duration-75 animate-pulse cursor-pointer">
+                    🔊 Intro အသံဖွင့်ပြီး ကြည့်မည်
+                </button>
             </div>
-
-            <!-- 🚀 စတင်မယ် ခလုတ် -->
-            <button onclick="startMagicForestAdventure()" class="w-full py-4 px-6 text-xl font-black text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-xl shadow-[0_5px_0_#b45309] active:translate-y-1 active:shadow-none transition-all cursor-pointer float-mascot">
-                🔊 စတင်မယ် 🌟
-            </button>
         </div>
-    </main>
+        <div class="text-[14px] md:text-[18px] font-bold text-white/80 tracking-wider uppercase drop-shadow-[0_2px_2px_rgba(0,0,0,0.9)]">
+            DESIGNED BY DASSY. DIGITAL ACADEMY
+        </div>
+    </div>
+
+    <!-- 🎥 VIDEO BACKGROUND CONTAINER (FULL DISPLAY FIX) -->
+    <div class="video-bg-container" id="videoBgWrapper">
+        <video id="bgVideo" autoplay muted loop playsinline>
+            <source src="main-bg.mp4" type="video/mp4" />
+        </video>
+    </div>
+
+    <!-- 🔊 AUDIO CONTROLS -->
+    <div class="audio-controls">
+        <button id="muteBtn" onclick="toggleMuteState()" class="text-lg focus:outline-none active:scale-90 transition-transform cursor-pointer">🔊</button>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5" oninput="updateVolumeLevel(this.value)" class="w-16 h-1.5 bg-slate-600 rounded-lg appearance-none cursor-pointer accent-emerald-500" />
+    </div>
+
+    <audio id="mainAudio" src="main-bgm.mp3" loop></audio>
 
     <!-- 🗺️ Main Game Dashboard -->
-    <div id="gameDashboard" class="w-full max-w-xl flex flex-col items-center hidden relative z-10 px-4">
+    <div id="gameDashboard" class="w-full max-w-xl flex flex-col items-center relative z-10 px-4">
         
-        <div id="audioControllerPanel" class="w-full bg-emerald-900/80 border border-white/10 backdrop-blur-md px-4 py-2 rounded-2xl flex items-center justify-between gap-4 shadow-xl my-4 z-30">
-            <button id="muteBtn" onclick="toggleMuteState()" class="text-lg bg-emerald-950/60 p-2 rounded-lg hover:bg-emerald-950 transition-colors cursor-pointer">🔊</button>
-            <div class="flex-1 flex items-center gap-2">
-                <span class="text-xs text-emerald-200 font-black">MUSIC VOL</span>
-                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5" oninput="updateVolumeLevel(this.value)"
-                    class="w-full h-2 bg-emerald-950 rounded-lg appearance-none cursor-pointer accent-amber-400">
-            </div>
-        </div>
-
-        <header class="w-full text-center mb-6">
-            <div class="inline-flex items-center gap-3 bg-white/5 px-5 py-1.5 rounded-full border border-white/10 backdrop-blur-md mb-3">
+        <header class="w-full text-center my-6">
+            <div class="inline-flex items-center gap-3 bg-white/10 px-5 py-1.5 rounded-full border border-white/20 backdrop-blur-md mb-3">
                 <span class="text-xs font-black tracking-wider text-emerald-300 uppercase">LEVEL 4: တ မှ န မှော်ဝင်မှိုအိမ်မြေပုံ</span>
             </div>
-            <h1 class="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-green-400 to-amber-300 tracking-wide drop-shadow py-1">
+            <h1 class="text-3xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-green-400 to-amber-300 tracking-wide drop-shadow py-1">
                 မြန်မာစာအက္ခရာ စွန့်စားခန်း
             </h1>
         </header>
 
         <!-- Map Nodes Container -->
-        <div class="w-full relative py-12 grid grid-cols-12 gap-y-14 px-6 border border-white/5 rounded-[40px] bg-emerald-950/10 overflow-hidden">
+        <div class="w-full relative py-12 grid grid-cols-12 gap-y-14 px-6 border border-white/10 rounded-[40px] bg-emerald-950/30 backdrop-blur-sm overflow-hidden">
             
-            <!-- SVG Roadmap path Line -->
             <div class="absolute top-[85px] bottom-[115px] left-0 right-0 z-0 pointer-events-none px-10 overflow-hidden">
                 <svg class="w-full h-full" viewBox="0 0 400 1320" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M 70 1270 C 330 1120, 330 970, 80 870 C 80 720, 330 620, 320 470 C 320 320, 110 220, 210 50" stroke="#04120e" stroke-width="60" stroke-linecap="round" fill="none"/>
@@ -284,7 +333,7 @@
     <div id="lessonPopup" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-40 p-4 transition-all">
         <div class="w-full max-w-sm bg-gradient-to-b from-emerald-800 to-emerald-950 border-4 border-emerald-950 rounded-3xl p-6 shadow-[0_16px_0_#022c22] text-center relative">
             
-            <h2 id="popupTitle" class="title-font text-2xl font-black text-emerald-100 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] mb-6">သင်ခန်းစာများ</h2>
+            <h2 id="popupTitle" class="text-2xl font-black text-emerald-100 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] mb-6">သင်ခန်းစာများ</h2>
             
             <div id="lessonsContainer" class="flex flex-col gap-3.5 mb-8"></div>
 
@@ -295,15 +344,24 @@
         </div>
     </div>
 
-    <audio id="mainAudio" src="main-bgm.mp3" loop></audio>
+    <!-- FOOTER SECTION -->
+    <footer class="w-full text-center pb-6 text-[11px] font-black tracking-widest uppercase z-30 relative mt-auto pt-6">
+        <span class="bg-black/60 text-emerald-400 px-4 py-2 rounded-full backdrop-blur-md shadow-lg border border-emerald-500/30">
+            DESIGNED BY DASSY. DIGITAL ACADEMY 🌟
+        </span>
+        <div class="mt-3 text-[9px] text-neutral-400 font-bold opacity-70">
+            &copy; 2026 Alphabet Quest Ecosystem . Curriculum Based Structure
+        </div>
+    </footer>
 
     <script>
-        const mainAudio = document.getElementById('mainAudio');
-        const muteBtn = document.getElementById('muteBtn');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const welcomeIntroScreen = document.getElementById('welcomeIntroScreen');
-        const gameDashboard = document.getElementById('gameDashboard');
-        
+        const backgroundVideoElement = document.getElementById('bgVideo');
+        const videoBgWrapper = document.getElementById('videoBgWrapper');
+        const mainAudioMusicElement = document.getElementById('mainAudio');
+        const muteStateToggleButton = document.getElementById('muteBtn');
+        const audioVolumeSliderControl = document.getElementById('volumeSlider');
+        const splashActionArea = document.getElementById('splashActionArea');
+
         const lessonPopup = document.getElementById('lessonPopup');
         const popupTitle = document.getElementById('popupTitle');
         const lessonsContainer = document.getElementById('lessonsContainer');
@@ -332,6 +390,73 @@
                 ]
             }
         };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('fromGame') === 'true') {
+                document.getElementById('splashScreen').style.display = 'none';
+                if (videoBgWrapper) videoBgWrapper.style.display = 'none';
+                
+                mainAudioMusicElement.volume = audioVolumeSliderControl.value;
+                mainAudioMusicElement.play().catch(e => console.log("Audio autoplay alert:", e));
+                
+                checkUrlParametersForPopup();
+            }
+        });
+
+        function unmuteIntroVideo() {
+            backgroundVideoElement.muted = false;
+            backgroundVideoElement.play();
+            
+            splashActionArea.innerHTML = `
+                <button onclick="initializeEcosystem()" class="font-bold py-3.5 px-8 text-xl text-white bg-emerald-500 hover:bg-emerald-600 rounded-2xl shadow-[0_5px_0_#1e6022] active:translate-y-0.5 active:shadow-[0_3px_0_#1e6022] transition-all duration-75 cursor-pointer">
+                    စွန့်စားခန်းစတင်မယ် 🚀
+                </button>
+            `;
+        }
+
+        function initializeEcosystem() {
+            document.getElementById('splashScreen').classList.add('hide');
+            
+            backgroundVideoElement.pause();
+            backgroundVideoElement.src = "";
+            backgroundVideoElement.load();
+            if (videoBgWrapper) {
+                videoBgWrapper.style.display = 'none';
+            }
+            
+            mainAudioMusicElement.volume = audioVolumeSliderControl.value;
+            mainAudioMusicElement.play().catch(error => {
+                console.log("Audio autoplay restriction triggered: ", error);
+            });
+
+            checkUrlParametersForPopup();
+        }
+
+        function updateVolumeLevel(targetVolume) {
+            mainAudioMusicElement.volume = targetVolume;
+            if (targetVolume == 0) {
+                mainAudioMusicElement.muted = true;
+                muteStateToggleButton.textContent = '🔇';
+            } else {
+                mainAudioMusicElement.muted = false;
+                muteStateToggleButton.textContent = '🔊';
+            }
+        }
+
+        function toggleMuteState() {
+            if (mainAudioMusicElement.muted) {
+                mainAudioMusicElement.muted = false;
+                muteStateToggleButton.textContent = '🔊';
+                if(mainAudioMusicElement.volume === 0) {
+                    mainAudioMusicElement.volume = 0.5;
+                    audioVolumeSliderControl.value = 0.5;
+                }
+            } else {
+                mainAudioMusicElement.muted = true;
+                muteStateToggleButton.textContent = '🔇';
+            }
+        }
 
         function openLessonPopup(stageKey) {
             const data = stageLessonsData[stageKey];
@@ -363,40 +488,6 @@
             window.history.pushState({ path: cleanUrl }, '', cleanUrl);
         }
 
-        function startMagicForestAdventure() {
-            welcomeIntroScreen.classList.add('hidden');
-            gameDashboard.classList.remove('hidden');
-            mainAudio.volume = volumeSlider.value;
-            mainAudio.play().catch(e => console.log("Audio play blocked", e));
-            
-            checkUrlParametersForPopup();
-        }
-
-        function updateVolumeLevel(targetVolume) {
-            mainAudio.volume = targetVolume;
-            if (targetVolume == 0) {
-                mainAudio.muted = true;
-                muteBtn.textContent = '🔇';
-            } else {
-                mainAudio.muted = false;
-                muteBtn.textContent = '🔊';
-            }
-        }
-
-        function toggleMuteState() {
-            if (mainAudio.muted) {
-                mainAudio.muted = false;
-                muteBtn.textContent = '🔊';
-                if (mainAudio.volume === 0) {
-                    mainAudio.volume = 0.5;
-                    volumeSlider.value = 0.5;
-                }
-            } else {
-                mainAudio.muted = true;
-                muteBtn.textContent = '🔇';
-            }
-        }
-
         function checkUrlParametersForPopup() {
             const urlParams = new URLSearchParams(window.location.search);
             const targetPopup = urlParams.get('showPopup');
@@ -404,142 +495,6 @@
                 openLessonPopup(targetPopup);
             }
         }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('fromGame') === 'true' || urlParams.get('showPopup')) {
-                welcomeIntroScreen.classList.add('hidden');
-                gameDashboard.classList.remove('hidden');
-                mainAudio.volume = volumeSlider.value;
-                mainAudio.play().catch(e => console.log("Audio play blocked", e));
-                
-                checkUrlParametersForPopup();
-            }
-        });
     </script>
-
-    <!-- ========================================================================= -->
-    <!-- 🏃‍♂️ DASSY "LITTLE BRAINS" ANIMATED LOGO SYSTEM -->
-    <!-- ========================================================================= -->
-    <style>
-        .dassy-logo-wrapper {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            padding: 20px 0;
-            margin-top: 25px;
-            position: relative;
-            z-index: 10;
-            user-select: none;
-        }
-
-        .dassy-logo-line {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            font-family: 'Fredoka One', sans-serif;
-        }
-
-        .dassy-space {
-            width: 10px;
-        }
-
-        .animated-char {
-            display: inline-block;
-            font-weight: 900;
-            cursor: pointer;
-            opacity: 0;
-            animation: 
-                walkInLetters 2s cubic-bezier(0.25, 1, 0.5, 1) forwards,
-                continuousJiggle 0.6s ease-in-out infinite alternate;
-        }
-
-        .line-top .animated-char {
-            font-size: 0.85rem;
-            color: #a7f3d0; 
-            text-shadow: 0 2px 0 #064e3b;
-            letter-spacing: 1px;
-        }
-
-        .line-bottom .animated-char {
-            font-size: 1.45rem;
-            color: #fbbf24; 
-            text-shadow: 0 3px 0 #b45309, 0 6px 12px rgba(0,0,0,0.4);
-            letter-spacing: 1.5px;
-        }
-
-        @keyframes walkInLetters {
-            0% {
-                opacity: 0;
-                transform: translateX(var(--x-start, -100px)) translateY(0) scale(0.4) rotate(-30deg);
-            }
-            25% { opacity: 1; transform: translateX(calc(var(--x-start, -100px) * 0.75)) translateY(-12px) scale(1.1) rotate(20deg); }
-            50% { transform: translateX(calc(var(--x-start, -100px) * 0.5)) translateY(0) scale(0.9) rotate(-15deg); }
-            75% { transform: translateX(calc(var(--x-start, -100px) * 0.25)) translateY(-10px) scale(1.05) rotate(10deg); }
-            100% {
-                opacity: 1;
-                transform: translateX(0) translateY(0) scale(1) rotate(0deg);
-            }
-        }
-
-        @keyframes continuousJiggle {
-            0% { transform: translateY(0) scale(1) rotate(-2deg); }
-            50% { transform: translateY(-3px) scale(1.03) rotate(2.5deg); }
-            100% { transform: translateY(0) scale(0.98) rotate(-1deg); }
-        }
-    </style>
-
-    <div class="dassy-logo-wrapper">
-        <div class="dassy-logo-line line-top" id="textLine1">IMAGINED FOR</div>
-        <div class="dassy-logo-line line-bottom" id="textLine2">LITTLE BRAINS BY DASSY</div>
-    </div>
-
-    <script>
-        function setupAnimatedText(elementId) {
-            const targetElement = document.getElementById(elementId);
-            const rawText = targetElement.innerText;
-            targetElement.innerHTML = '';
-
-            let delayCounter = 0;
-
-            [...rawText].forEach((char) => {
-                if (char === ' ') {
-                    const spaceSpan = document.createElement('div');
-                    spaceSpan.className = 'dassy-space';
-                    targetElement.appendChild(spaceSpan);
-                } else {
-                    const charSpan = document.createElement('span');
-                    charSpan.className = 'animated-char';
-                    charSpan.innerText = char;
-
-                    const startingX = -120 - (delayCounter * 12); 
-                    const animationDelay = delayCounter * 0.06; 
-
-                    charSpan.style.setProperty('--x-start', `${startingX}px`);
-                    charSpan.style.animationDelay = `${animationDelay}s, ${animationDelay + 1.8}s`;
-
-                    targetElement.appendChild(charSpan);
-                    delayCounter++;
-                }
-            });
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            setupAnimatedText('textLine1');
-            setupAnimatedText('textLine2');
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const stage = urlParams.get('stage'); 
-
-            if (stage) {
-                openLessonPopup(`stage${stage}`); 
-            }
-        });
-    </script>
-
 </body>
 </html>
