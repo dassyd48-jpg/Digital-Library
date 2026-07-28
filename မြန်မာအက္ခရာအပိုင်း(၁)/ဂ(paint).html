@@ -400,10 +400,13 @@
     canvas.addEventListener('touchend', stopDrawing);
     canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); }, { passive: false });
 
-    /* 🎨 CLEAR & VISIBLE DASHED OUTLINE FOR "ဂ" */
-    const svgBackground = `<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='340' text-anchor='middle' dominant-baseline='central' fill='none' stroke='%2394a3b8' stroke-width='10' stroke-dasharray='16 12'>ဂ</text></svg>`;
+    /* 🎨 Vector Path ဖြင့် ရေးဆွဲထားသော မီးခိုးရောင် အစက်လိုင်း "ဂ" အက္ခရာ */
+    const svgBackground = `<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'>
+      <path d='M 160,370 L 160,230 C 160,120 340,120 340,230 L 340,370' fill='none' stroke='%2364748b' stroke-width='60' stroke-linecap='round' stroke-dasharray='20,15' />
+    </svg>`;
+    
     canvas.style.backgroundImage = `url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgBackground)}")`;
-    canvas.style.backgroundSize = "100% 100%";
+    canvas.style.backgroundSize = "contain";
     canvas.style.backgroundPosition = "center";
     canvas.style.backgroundRepeat = "no-repeat";
 
