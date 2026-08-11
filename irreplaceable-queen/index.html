@@ -9,10 +9,10 @@
     <meta name="author" content="DASSY">
     
     <meta property="og:title" content="THE IRREPLACEABLE QUEEN | DASSY">
-<meta property="og:description" content="Master the psychology of high-value choices.">
-<meta property="og:type" content="article"> 
-<meta property="og:image" content="https://dassyd48-jpg.github.io/Digital-Library/irreplaceable-queen/cover.jpg">
-<meta property="og:url" content="https://dassyd48-jpg.github.io/Digital-Library/irreplaceable-queen/">
+    <meta property="og:description" content="Master the psychology of high-value choices.">
+    <meta property="og:type" content="article"> 
+    <meta property="og:image" content="https://dassyd48-jpg.github.io/Digital-Library/irreplaceable-queen/cover.jpg">
+    <meta property="og:url" content="https://dassyd48-jpg.github.io/Digital-Library/irreplaceable-queen/">
 
     <script type="application/ld+json">
     {
@@ -23,8 +23,8 @@
       "publisher": "DASSY DIGITAL LIBRARY"
     }
     </script>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="turn.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="turn.js"></script>
 
     <style>
         :root { 
@@ -144,6 +144,53 @@
             40%  { opacity: 0;    transform: translate(0,0) rotate(0deg); }
             100% { opacity: 0;    transform: translate(0,0) rotate(0deg); }
         }
+
+        /* ⭐ Floating Review Button Style */
+        #review-trigger-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 15px;
+            z-index: 1500;
+            padding: 5px 10px;
+            background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
+            background-size: 200% 200%;
+            animation: gradientAnimation 3s ease infinite;
+            color: #fff;
+            border: 1px solid var(--gold, #d4af37);
+            font-size: 9.5px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 💬 Modal Popup Style */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-card { background: #1c0408; border: 1px solid var(--gold, #d4af37); border-radius: 12px; max-width: 420px; width: 100%; padding: 25px 20px; color: #fff; text-align: center; position: relative; box-shadow: 0 0 25px rgba(212, 175, 55, 0.3); }
+        .modal-close { position: absolute; top: 10px; right: 15px; font-size: 22px; color: var(--gold, #d4af37); cursor: pointer; background: none; border: none; }
+        .modal-title { font-size: 16px; color: var(--gold, #d4af37); font-weight: bold; margin-bottom: 12px; line-height: 1.4; }
+        .modal-text { font-size: 12px; color: #e0e0e0; line-height: 1.7; margin-bottom: 15px; text-align: justify; }
+        .modal-offer { background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--gold, #d4af37); padding: 10px; font-size: 12px; color: var(--gold, #d4af37); font-weight: bold; margin-bottom: 20px; text-align: center; }
+        .modal-step { font-size: 11px; color: #bbb; margin-bottom: 8px; text-align: left; }
+        .modal-btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .modal-btn { display: block; width: 100%; padding: 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; text-align: center; transition: all 0.3s ease; }
+        .btn-fb { background: #1877f2; color: #fff; }
+        .btn-msg { background: linear-gradient(45deg, #0084ff, #a832a7); color: #fff; }
+        .btn-tg { background: #0088cc; color: #fff; }
+
+        @media screen and (max-width: 768px) {
+            #review-trigger-btn { bottom: 12px; right: 8px; padding: 4px 8px; font-size: 8.5px; }
+        }
     </style>
 </head>
 <body>
@@ -173,24 +220,68 @@
         <div class="watermark">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
     </div>
 
+    <!-- Review System Popup Modal -->
+    <button id="review-trigger-btn" onclick="openReviewModal()">⭐ Review ပေးရန် (15% OFF)</button>
+
+    <div id="review-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeReviewModal()">✕</button>
+            <div class="modal-title">သင့်၏ စာအုပ်အပေါ်အမြင်နှင့် တန်ဖိုးရှိသော မျှဝေမှုများသည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
+            
+            <div class="modal-text">
+                စာဖတ်သူ၏ Review တစ်ခုနှင့် Follow တစ်ခုသည် နောက်ထပ် စာအုပ်ဖတ်ရှုမည့် လူငယ်များအတွက် များစွာ အကျိုးသက်ရောက်မှုရှိပြီး စာပေ မဖတ်ရှုရသေးသူများအတွက်လည်း လမ်းပြအလင်းရောင်နှင့် အားအင်များစွာ ဖြစ်စေပါသည်။
+            </div>
+
+            <div class="modal-offer">
+                🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ်(တစ်ကြိမ်) ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
+            </div>
+
+            <div class="modal-step">၁။ Facebook Page ကို <b>Follow ပြုလုပ်၍ Review ရေးသားပါ</b> (ပြီးလျှင် Screenshot ရိုက်ယူပါ)။</div>
+            <div class="modal-step" style="margin-bottom: 15px;">၂။ Screenshot ကို Messenger (သို့မဟုတ်) Telegram သို့ ပေးပို့၍ Discount ရယူပါ။</div>
+
+            <div class="modal-btn-group">
+                 <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">👍 Follow လုပ်ရန် & Review ရေးရန်</a>
+                <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-msg">💬 Messenger သို့ Screenshot ပို့ရန်</a>
+                <a href="https://t.me/YOUR_TELEGRAM_USERNAME" target="_blank" class="modal-btn btn-tg">✈️ Telegram သို့ Screenshot ပို့ရန် (Plan B)</a>
+            </div>
+        </div>
+    </div>
+
     <audio id="sound" src="flip.mp3" preload="auto"></audio>
 
     <script>
-        const myPassword = "D2026@QUEEN"; 
+        const myPassword = "HIGHD2026@QUEEN"; 
         const maxPages = 59; 
         const quizPages = [2, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56]; 
         let isQuizLocked = false; 
 
-        // 🛠️ FIX 2: PASSWORD ကို တစ်ခါပဲတောင်းမယ့် Logic
+        // 🛠️ DYNAMIC PASSWORD CHECK (Password ပြောင်းပါက အရင်ဖတ်သူများပါ Lock Screen ပြန်ကျစေမည့် Logic)
         $(document).ready(function() {
-            const isUnlocked = localStorage.getItem("tiq_unlocked");
-            if (isUnlocked === "true") {
+            const savedPassword = localStorage.getItem("tiq_saved_pass");
+            if (savedPassword === myPassword) {
                 $("#lock, #bg-video").hide();
                 $("#book-container").show().css("opacity", 1);
-                $("#bookmark-btn").show(); // စာအုပ်ပွင့်တာနဲ့ Bookmark ခလုတ်ပြမယ်
+                $("#bookmark-btn").show();
                 loadAndInit();
+            } else {
+                $("#lock").show();
             }
         });
+
+        function unlock() {
+            const inputPass = document.getElementById("pass").value;
+            if(inputPass === myPassword) {
+                localStorage.setItem("tiq_saved_pass", inputPass);
+                $("#lock").fadeOut(600, () => {
+                    $("#bg-video").fadeOut(600);
+                    $("#book-container").css("display", "block").animate({opacity: 1}, 1000);
+                    $("#bookmark-btn").fadeIn(600);
+                    loadAndInit();
+                });
+            } else { 
+                alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။ DASSY ထံမှ ကုဒ်ရယူပါ။"); 
+            }
+        }
 
         function getBookSize() {
             let w = window.innerWidth;
@@ -212,20 +303,6 @@
                 setTimeout(() => { $("#flipbook").turn("next"); }, 300);
             }
         }, false);
-
-        function unlock() {
-            if(document.getElementById("pass").value === myPassword) {
-                localStorage.setItem("tiq_unlocked", "true");
-                $("#lock").fadeOut(600, () => {
-                    $("#bg-video").fadeOut(600);
-                    $("#book-container").css("display", "block").animate({opacity: 1}, 1000);
-                    $("#bookmark-btn").fadeIn(600);
-                    loadAndInit();
-                });
-            } else { 
-                alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။ DASSY ထံမှ ကုဒ်ရယူပါ။"); 
-            }
-        }
 
         let $flipZone = null;
         let $peelHint = null;
@@ -266,7 +343,6 @@
                             if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
                         },
                         turned: function(e, page) {
-                            // စာမျက်နှာလှန်လိုက်တိုင်း လက်ရှိစာမျက်နှာရဲ့ Bookmark status ကို စစ်ဆေးမယ်
                             updateBookmarkButtonStatus(page);
 
                             isQuizLocked = quizPages.includes(page);
@@ -286,7 +362,6 @@
                     }
                 });
 
-                // 🛠️ FIX 1: BOOKMARK စနစ် (Unsave ဖြစ်နေရင် စာမျက်နှာ ၁ ကို အမြဲပြန်ရောက်စေမည့် Logic)
                 const savedBookmarkPage = localStorage.getItem("tiq_bookmark_page");
                 if (savedBookmarkPage) {
                     flipbook.turn("page", parseInt(savedBookmarkPage));
@@ -302,24 +377,20 @@
             }, 100);
         }
 
-        // 🛠️ BOOKMARK TOGGLE FUNCTION (Save / Unsave ပြုလုပ်ခြင်း)
         function toggleBookmark() {
             const flipbook = $("#flipbook");
             const currentPage = flipbook.turn("page");
             const savedPage = localStorage.getItem("tiq_bookmark_page");
 
             if (savedPage && parseInt(savedPage) === currentPage) {
-                // UNSAVE: Bookmark ဒေတာကို ဖြုတ်လိုက်ပြီး ခလုတ်ကို ပုံမှန်အတိုင်း ပြန်လုပ်မယ်
                 localStorage.removeItem("tiq_bookmark_page");
                 $("#bookmark-btn").removeClass("active").text("🔖 SAVE BOOKMARK");
             } else {
-                // SAVE: လက်ရှိစာမျက်နှာကို သိမ်းဆည်းပြီး ခလုတ်ကို ရွှေရောင်လင်းစေမယ်
                 localStorage.setItem("tiq_bookmark_page", currentPage);
                 $("#bookmark-btn").addClass("active").text("✨ BOOKMARKED");
             }
         }
 
-        // စာမျက်နှာပြောင်းသွားတိုင်း ခလုတ်အရောင် လင်း/မှိတ် လိုက်လုပ်ပေးမည့် Function
         function updateBookmarkButtonStatus(page) {
             const savedPage = localStorage.getItem("tiq_bookmark_page");
             if (savedPage && parseInt(savedPage) === page) {
@@ -420,6 +491,14 @@
             }
             positionOverlays();
         });
+
+        /* Review Modal Functions */
+        function openReviewModal() {
+            $("#review-modal").css("display", "flex").hide().fadeIn(300);
+        }
+        function closeReviewModal() {
+            $("#review-modal").fadeOut(300);
+        }
     </script>
     <!-- ========================================== -->
 <!-- 🔻 Review System Code Block Start (Dassy) 🔻 -->
