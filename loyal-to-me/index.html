@@ -89,7 +89,7 @@
 
         .footer-copyright {
             position: fixed;
-            bottom: 20px; 
+            bottom: 10px; 
             width: 100%;
             text-align: center;
             font-size: 9px;
@@ -114,7 +114,7 @@
 
         #bookmark-btn {
             position: fixed;
-            top: 20px;
+            top: 15px;
             left: 10px;
             z-index: 1500;
             padding: 8px 16px;
@@ -161,18 +161,17 @@
 
         @media screen and (max-width: 768px) {
             #bookmark-btn { 
-                top: 15px; 
+                top: 10px; 
                 left: 10px; 
                 right: auto;
                 padding: 6px 12px; 
                 font-size: 10px; 
                 width: auto;
             }
-            .footer-copyright { bottom: 12px; font-size: 8px; letter-spacing: 1px; opacity: 0.6; }
+            .footer-copyright { bottom: 8px; font-size: 8px; letter-spacing: 1px; opacity: 0.6; }
             #restart-btn { bottom: 90px; padding: 8px 16px; font-size: 11px; }
         }
 
-        /* 🎯 Flipbook Centering Container */
         #flipbook-wrapper { 
             width: 100vw; 
             height: 100vh; 
@@ -185,10 +184,6 @@
         
         #flipbook {
             margin: 0 auto !important;
-            position: absolute !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
         }
 
         #flipbook .page { 
@@ -205,7 +200,6 @@
             display: block;
         }
         
-        /* Quiz & Result Modal Styles */
         #quiz-overlay { 
             display: none; 
             position: fixed; 
@@ -333,19 +327,22 @@
         let h = window.innerHeight; 
 
         if (w < 768) {
-            w = window.innerWidth * 0.95;
-            h = window.innerHeight * 0.85;
+            // Mobile Screen အပြည့်အရှည် ရရှိစေရန်
+            w = window.innerWidth;
+            h = window.innerHeight;
         } else {
-            const pageRatio = 0.65; 
-            h = window.innerHeight * 0.9;
-            w = h * pageRatio;
-            
-            if (w > window.innerWidth * 0.8) {
-                w = window.innerWidth * 0.8;
-                h = w / pageRatio;
-            }
+            // Computer Screen
+            h = window.innerHeight * 0.95;
+            w = h * 0.62;
         }
         return { w, h };
+    }
+
+    function resizeAndCenterBook() {
+        const { w, h } = getBookSize();
+        if ($("#flipbook").data().done) {
+            $("#flipbook").turn("size", w, h);
+        }
     }
 
     function unlock() {
@@ -425,6 +422,7 @@
             if (currentPage < totalPages) {
                 $("#flipbook").turn("next");
             }
+            setTimeout(resizeAndCenterBook, 100);
         });
         document.getElementById("bgm-dark").play().catch(()=>{});
     }
@@ -457,6 +455,7 @@
 
     function goToFirstPage() {
         $("#flipbook").turn("page", 1);
+        setTimeout(resizeAndCenterBook, 100);
     }
 
     function loadAndInit() {
@@ -530,15 +529,7 @@
             $("#restart-btn").show();
         }
 
-        setTimeout(() => {
-            const { w, h } = getBookSize();
-            $("#flipbook").turn("size", w, h);
-            $("#flipbook").css({
-                'left': '50%',
-                'top': '50%',
-                'transform': 'translate(-50%, -50%)'
-            });
-        }, 300);
+        setTimeout(resizeAndCenterBook, 300);
     }
 
     function triggerPsychologyTest(pageNumber) {
@@ -574,6 +565,7 @@
             if (currentPage < totalPages) {
                 $("#flipbook").turn("next"); 
             }
+            setTimeout(resizeAndCenterBook, 100);
         });
     }
 
@@ -588,13 +580,7 @@
     }
 
     $(window).resize(() => {
-        const { w, h } = getBookSize();
-        $("#flipbook").turn("size", w, h);
-        $("#flipbook").css({
-            'left': '50%',
-            'top': '50%',
-            'transform': 'translate(-50%, -50%)'
-        });
+        resizeAndCenterBook();
     });
 </script>
 
@@ -602,7 +588,7 @@
 <style>
     #review-trigger-btn {
         position: fixed;
-        bottom: 60px;
+        bottom: 50px;
         right: 15px;
         z-index: 1500;
         padding: 6px 12px;
@@ -643,7 +629,7 @@
 
     @media screen and (max-width: 768px) {
         #review-trigger-btn { 
-            bottom: 50px; 
+            bottom: 40px; 
             right: 12px; 
             padding: 5px 10px; 
             font-size: 9px; 
