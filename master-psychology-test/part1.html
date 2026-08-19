@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASSY Digital Library - Part 1: Self-Awareness & Core Trait Assessment</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #151d2a;
+            --card-inner: #1e293b;
+            --accent-gold: #d4af37;
+            --accent-gold-hover: #f3e5ab;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border-color: #334155;
+            --alert-bg: rgba(212, 175, 55, 0.08);
+            --border-gold: rgba(212, 175, 55, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 760px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .brand-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .header h1 {
+            color: var(--text-main);
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .header p {
+            color: var(--text-sub);
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .warning-box {
+            background-color: var(--alert-bg);
+            border-left: 4px solid var(--accent-gold);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 0.88rem;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .warning-box strong {
+            color: var(--accent-gold);
+        }
+
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: var(--bg-color);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 10%;
+            background: linear-gradient(90deg, #c5a880, var(--accent-gold));
+            transition: width 0.3s ease;
+        }
+
+        .question-card {
+            display: none;
+        }
+
+        .question-card.active {
+            display: block;
+        }
+
+        .question-number {
+            color: var(--accent-gold);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .question-title {
+            font-size: 1.15rem;
+            margin-bottom: 22px;
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background-color: var(--card-inner);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 16px 20px;
+            border-radius: 10px;
+            text-align: left;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1.5;
+        }
+
+        .option-btn:hover {
+            border-color: var(--accent-gold);
+            background-color: rgba(212, 175, 55, 0.08);
+            transform: translateX(4px);
+        }
+
+        .result-screen {
+            display: none;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .result-header h2 {
+            color: var(--accent-gold);
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .archetype-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #d4af37, #aa820a);
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .detailed-analysis {
+            background-color: var(--card-inner);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .detailed-analysis h3 {
+            color: var(--accent-gold);
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 6px;
+        }
+
+        .detailed-analysis h3:first-child {
+            margin-top: 0;
+        }
+
+        .detailed-analysis p {
+            color: var(--text-sub);
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .detailed-analysis p:last-child {
+            margin-bottom: 0;
+        }
+
+        .cliffhanger-box {
+            border: 1px solid var(--border-gold);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(21, 29, 42, 0.95));
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .cliffhanger-box h4 {
+            color: var(--accent-gold);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .cliffhanger-box p {
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .cta-btn {
+            background: linear-gradient(135deg, var(--accent-gold), #b89228);
+            color: #0b0f19;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-btn:hover {
+            background: var(--accent-gold-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <span class="brand-badge">DASSY Digital Library</span>
+        <h1>PART 1: SELF-AWARENESS & CORE TRAITS</h1>
+        <p>Project 1: Self-Awareness & Core Subconscious Drivers</p>
+    </div>
+
+    <div class="warning-box" id="warningBox">
+        <strong>⚠️ တိကျသော ရလဒ်ရရှိရန် အရေးကြီးသော သတိပေးချက်:</strong><br>
+        ဤ Assessment ကို တစ်ဦးလျှင် <strong>၁ ကြိမ်သာ</strong> ဖြေဆိုခွင့် ရှိပါသည်။ သင် "ဖြစ်သင့်သည်/ပြုလုပ်သင့်သည်" ဟု ထင်သည့် ရွေးချယ်မှုကို မရွေးပါနှင့်။ လွန်ခဲ့သော ၆ လအတွင်း(သို့) လွန်ခဲ့သောအခြေအနေတွင် သင် <strong>"လက်တွေ့ အမှန်တကယ် ပြုလုပ်ခဲ့သည့်"</strong> အပြုအမူနှင့် ခံစားချက်ကိုသာ ဖြောင့်မတ်စွာ ရွေးချယ်ပါ။
+    </div>
+
+    <div class="progress-container" id="progressContainer">
+        <div class="progress-text">
+            <span>PROGRESS</span>
+            <span id="progressPercent">10%</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <div id="quizContainer">
+        <!-- Question 01 -->
+        <div class="question-card active" data-question="1">
+            <div class="question-number">Question 01 / 10</div>
+            <div class="question-title">မမျှော်လင့်ထားသော ဘဝအပြောင်းအလဲ သို့မဟုတ် ရုတ်တရက် အကျပ်အတည်းကြုံရချိန်တွင် သင့်မသိစိတ်၏ ပထမဆုံး တုံ့ပြန်ပုံမှာ—</div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectOption('A')">A. အခြေအနေ အကဲဖြတ်ပြီး အချက်အလက်များ တည်ငြိမ်စွာ စုဆောင်းကာ အဆင့်လိုက် အဖြေရှာသည်။</button>
+                <button class="option-btn" onclick="selectOption('B')">B. ပါဝင်သူများ၏ စိတ်ခံစားချက်နှင့် ဆက်ဆံရေး ပျက်စီးမည်ကို ပထမဆုံး စိုးရိမ်ပြီး ဝေဒနာကို မျှဝေခံစားပေးသည်။</button>
+                <button class="option-btn" onclick="selectOption('C')">C. ချက်ချင်း တာဝန်ယူကာ ဦးဆောင်မှုယူပြီး ပြတ်သားသော ဆုံးဖြတ်ချက်များဖြင့် ထိန်းချုပ်လိုက်သည်။</button>
+            </div>
+        </div>
+
+        <!-- Question 02 -->
+        <div class="question-card" data-question="2">
+            <div class="question-number">Question 02 / 10</div>
+            <div class="question-title">သင်ဖြတ်သန်းခဲ့ဖူးသော ဆုံးရှုံးမှု သို့မဟုတ် အမှားများကို ပြန်လည်သုံးသပ်သည့်အခါ သင့်စိတ်ထဲတွင် မည်သို့ တွေးမိလေ့ရှိသနည်း။</div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectOption('A')">A. ဘာကြောင့် ဒီလို ဖြစ်ခဲ့ရသလဲဆိုသည့် ပြဿနာအရင်းအမြစ်ကို ရှာဖွေပြီး အနာဂတ်အတွက် စနစ်တကျ ပြင်ဆင်သည်။</button>
+                <button class="option-btn" onclick="selectOption('B')">B. အမှားကြောင့် သက်ဆိုင်သူများ ပင်ပန်းသွားမည်ကို စိတ်မကောင်းဖြစ်ပြီး ဆက်ဆံရေး ပြန်လည်ကောင်းမွန်အောင် အာရုံစိုက်သည်။</button>
+                <button class="option-btn" onclick="selectOption('C')">C. အတိတ်ကို ပြန်မတွေးဘဲ အမှားထဲမှ သင်ခန်းစာယူကာ နောက်တစ်ကြိမ် မဖြစ်စေရန် ပိုမိုပြင်းထန်စွာ ထိန်းချုပ်သည်။</button>
+            </div>
+        </div>
+
+        <!-- Question 03 -->
+        <div class="question-card" data-question="3">
+            <div class="question-number">Question 03 / 10</div>
+            <div class="question-title">ပဋိပက္ခ သို့မဟုတ် သဘောထားကွဲလွဲမှုများ ကြုံရချိန်တွင် သင် ဘယ်လို ရပ်တည်လေ့ရှိသနည်း။</div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectOption('A')">A. အချက်အလက်နှင့် ယုတ္တိဗေဒ အပေါ် အခြေခံ၍ ကျိုးကြောင်းဆီလျော်စွာ ငြင်းခုံသည်။</button>
+                <button class="option-btn" onclick="selectOption('B')">B. စိတ်ဒဏ်ရာ မရရှိစေရန်နှင့် ဆက်ဆံရေး အေးစက်မသွားစေရန် တတ်နိုင်သမျှ ညှိနှိုင်းလျှော့ပေးသည်။</button>
+                <button class="option-btn" onclick="selectOption('C')">C. မိမိ၏ ရပ်တည်ချက်နှင့် စည်းဘောင်ကို မထိခိုက်စေရန် ပြတ်သားစွာ အနိုင်ယူ ရင်ဆိုင်သည်။</button>
+            </div>
+        </div>
+
+        <!-- Question 04 -->
+        <div class="question-card" data-question="4">
+            <div class="question-number">Question 04 / 10</div>
+            <div class="question-title">အခြေအနေ မရေမရာဖြစ်ပြီး စည်းကမ်းမရှိသော ပတ်ဝန်းကျင်သို့ ရောက်ရှိသွားချိန်တွင် သင့်စိတ်ထဲတွင် ပထမဆုံး ဖြစ်ပေါ်လာသည့် စိုးရိမ်စိတ်မှာ—</div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectOption('A')">A. အချက်အလက် တိကျမှုမရှိဘဲ လမ်းပျောက်သွားမည်ကို ကြောက်ရွံ့ခြင်း။</button>
+                <button class="option-btn" onclick="selectOption('B')">B. အခြားသူများ၏ လျစ်လျူရှုခြင်း သို့မဟုတ် စွန့်ပစ်ခံရမည်ကို စိုးရိမ်ခြင်း။</button>
+                <button class="option-btn" onclick="selectOption('C')">C. မိမိတွင် ထိန်းချုပ်ပိုင်ခွင့် မရှိတော့ဘဲ အခြားသူများ၏ လွှမ်းမိုးမှုအောက် ရောက်သွားမည်ကို ကြောက်ရွံ့ခြင်း။</button>
+            </div>
+        </div>
+
+        <!-- Question 05 -->
+        <div class="question-card" data-question="5">
+            <div class="question-number">Question 05 / 10</div>
+            <div class="question-title">တစ်စုံတစ်ယောက်က သင့်အား မတရား ဝေဖန်တိုက်ခိုက်လာပါက သင့်မသိစိတ်၏ အလိုအလျောက် Defensiveness (အကာအကွယ်ယူမှု) ပုံစံမှာ—</div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectOption('A')">A. အေးစက်စွာ နှုတ်ဆိတ်သွားပြီး ၎င်းတို့၏ စကားထဲမှ မှားယွင်းချက်များကို စိတ်ထဲမှ လိုက်လံစစ်ဆေးမှု ပြုလုပ်နေသည်။</button>
+                <button class="option-btn" onclick="selectOption('B')">B. စိတ်ထိခိုက်သွားပြီး ငါ ဘာလွဲမှားသွားသလဲဆိုကာ မိမိကိုယ်ကို ချက်ချင်း ပြန်လည် သံသယဝင်မိသည်။</button>
+                <button class="option-btn" onclick="selectOption('C')">C. ဒေါသထွက်သွားပြီး မိမိ ကိုယ်ပိုင်နယ်မြေနှင့် စည်းမျဉ်းကို ပြန်လည် ကာကွယ်ရန် တိုက်ခိုက်သည်။</button>
+            </div>
+        </div>
+
+        <!-- Question 06 -->
+        <div class="question-card" data-question="6">
+            <div class="question-number">Question 06 / 10</div>
+            <div class="question-title">သင့်၏ စွမ်းအင် (Energy) ကို အများဆုံး ကုန်ခမ်းစေပြီး စိတ်ဖိစီးမှု ဖြစ်စေသည့် အခြေအနေမှာ—</div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectOption('A')">A. စနစ်ကျမှုမရှိဘဲ ယုတ္တိမရှိသော အဖွဲ့အစည်း/လူများနှင့် အတူ လုပ်ကိုင်ရခြင်း။</button>
+                <button class="option-btn" onclick="selectOption('B')">B. ချစ်ခင်ရသူများ၏ အေးစက်စွာ ဆက်ဆံခံရခြင်း သို့မဟုတ် နားလည်မှုလွဲခြင်း။</button>
+                <button class="option-btn" onclick="selectOption('C')">C. မိမိ၏ ဆုံးဖြတ်ချက်များကို ကန့်သတ်ခံရခြင်း သို့မဟုတ် မစွမ်းဆောင်နိုင်တော့ဟု ခံစားရခြင်း။</button>
+            </div>
+        </div>
+
+        <!-- Question 07 -->
+        <div class="question-card" data-question="7">
+            <div class="question-number">Question 07 / 10</div>
+            <div class="question-title">လွန်ခဲ့သော ၆ လအတွင်း ဆက်ဆံရေးများတွင် စည်းကျော်မှု (Boundary Infringement) ကြုံရစဉ် <b>သင် လက်တွေ့ အမှန်တကယ် ပြုလုပ်ခဲ့သည့်</b> အပြုအမူမှာ—</div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectOption('A')">A. အခြေအနေကို သုံးသပ်ပြီး စကားပြောဆိုမှုများကို လျှော့ချကာ အေးစက်စွာ အကွာအဝေး ခြားလိုက်သည်။</button>
+                <button class="option-btn" onclick="selectOption('B')">B. စိတ်ဆိုးပြခဲ့သော်လည်း ဆက်ဆံရေး ပျက်ပြားမည်ကို ကြောက်သဖြင့် နောက်ဆုံးတွင် ခွင့်လွှတ်၍ အခွင့်အရေး ထပ်ပေးခဲ့သည်။</button>
+                <button class="option-btn" onclick="selectOption('C')">C. ပြတ်သားစွာ စည်းတားခဲ့ပြီး လိုက်နာမှု မရှိပါက တကယ် လှည့်ထွက်ခဲ့သည်။</button>
+            </div>
+        </div>
+
+        <!-- Question 08 -->
+        <div class="question-card" data-question="8">
+            <div class="question-number">Question 08 / 10</div>
+            <div class="question-title">အဖွဲ့အစည်း သို့မဟုတ် မိသားစုအတွင်း ပြဿနာတစ်ခုတက်လျှင် <b>လူအများက သင့်အား မည်သို့သော အခန်းကဏ္ဍတွင် လက်တွေ့ မြင်တွေ့ရသလဲ။</b></div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectOption('A')">A. အကြံဉာဏ်ကောင်းပေးသော၊ အေးဆေးတည်ငြိမ်ပြီး အချက်အလက် ခိုင်မာသော သုံးသပ်သူ။</button>
+                <button class="option-btn" onclick="selectOption('B')">B. လူတိုင်း၏ ခံစားချက်ကို နားလည်ပေးသော၊ ကူညီစောင့်ရှောက်ပေးသူ။</button>
+                <button class="option-btn" onclick="selectOption('C')">C. ပြဿနာကို တာဝန်ယူ ဖြေရှင်းပေးသော၊ ပြတ်သားသည့် ခေါင်းဆောင်။</button>
+            </div>
+        </div>
+
+        <!-- Question 09 -->
+        <div class="question-card" data-question="9">
+            <div class="question-number">Question 09 / 10</div>
+            <div class="question-title">စိတ်ပင်ပန်းနွမ်းနယ်သည့် အခါမျိုးတွင် <b>သင် လက်တွေ့ Recharge ပြုလုပ်လေ့ရှိသည့် နည်းလမ်းမှာ—</b></div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectOption('A')">A. တစ်ဦးတည်း သီးသန့် အချိန်ယူကာ စာဖတ်ခြင်း၊ လေ့လာခြင်း သို့မဟုတ် စိတ်အေးချမ်းရာ လုပ်ဆောင်ခြင်း။</button>
+                <button class="option-btn" onclick="selectOption('B')">B. ရင်းနှီးသူများနှင့် စကားပြောဆိုခြင်း၊ ရင်ဖွင့်ခြင်း သို့မဟုတ် ချစ်ခြင်းမေတ္တာ ဖလှယ်ခြင်း။</button>
+                <button class="option-btn" onclick="selectOption('C')">C. ကိုယ်လက်လှုပ်ရှားမှု လုပ်ခြင်း၊ ရည်မှန်းချက်အသစ်များ ချမှတ်ခြင်း သို့မဟုတ် အလုပ်ထဲ ပိုမို အာရုံစနစ်တကျ နှစ်မြှုပ်လိုက်ခြင်း။</button>
+            </div>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="question-card" data-question="10">
+            <div class="question-number">Question 10 / 10</div>
+            <div class="question-title">အခြားသူများက သင့်ကို ဖော်ပြရာတွင် <b>မည်သည့်စကားလုံးသည် သင့်လက်တွေ့ သဘောသဘာဝနှင့် အကိုက်ညီဆုံးဖြစ်သနည်း။</b></div>
+            <div class="options-list">
+                <button class="option-btn" onclick="selectOption('A')">A. "ဉာဏ်ရည်ထက်မြက်ပြီး စနစ်ကျသော်လည်း ဘက်မလိုက်ဘဲ အနည်းငယ် အေးစက်သည်"</button>
+                <button class="option-btn" onclick="selectOption('B')">B. "စိတ်ရင်း စိတ်ကောင်းရှိပြီး ချစ်ခင်ရသူအပေါ် စွဲလန်းလွန်းလှသဖြင့်၊ တစ်ဖက်လူ၏ ပြုမူပုံ အသေးစားလေးကြောင့်ပင် အလွန်အမင်း စိတ်ဒဏ်ရာ ရလွယ်သည်။"</button>
+                <button class="option-btn" onclick="selectOption('C')">C. "အကျပ်အတည်းကြုံလျှင် ရဲဝံ့စွာ တာဝန်ယူ ပြတ်သားနိုင်သော်လည်း၊ အရာရာကို မိမိစိတ်ကြိုက် သြဇာပေး ချုပ်ကိုင်ချင်သည်။"</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div class="result-screen" id="resultScreen">
+        <div class="result-header">
+            <h2>YOUR CORE SUBCONSCIOUS PROFILE</h2>
+            <div class="archetype-badge" id="archetypeBadge">Strategic Analyst</div>
+        </div>
+
+        <div class="detailed-analysis" id="detailedAnalysis"></div>
+
+        <div class="cliffhanger-box">
+            <h4>🚨 SUB-SURFACE SHADOW TRAIT DETECTED</h4>
+            <p id="cliffDesc">သင့်၏ မသိစိတ် Profile ထဲတွင် Depth Mask တစ်ခု ရှိနေပါသည်။ ဤ Core Profile သည် သင့်ကို ရင်းနှီးသော ဆက်ဆံရေးများနှင့် စိတ်ဖိစီးချိန်တွင် မည်သို့ ဒဏ်ရာရစေသည်ကို သိရှိနိုင်ရန် Part 2 (Shadow Work & Trauma Assessment) သို့ ဆက်လက် တက်ရောက်ရန် လိုအပ်ပါသည်။</p>
+            <a href="part2.html" class="cta-btn" id="nextPartBtn">Proceed to Part 2 Assessment →</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQuestion = 1;
+    const totalQuestions = 10;
+    let scores = { A: 0, B: 0, C: 0 };
+
+    function selectOption(option) {
+        scores[option]++;
+
+        if (currentQuestion < totalQuestions) {
+            document.querySelector(`.question-card[data-question="${currentQuestion}"]`).classList.remove('active');
+            currentQuestion++;
+            document.querySelector(`.question-card[data-question="${currentQuestion}"]`).classList.add('active');
+            
+            // Progress Bar Update
+            let progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressPercent').innerText = `${Math.round(progress)}%`;
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        document.getElementById('quizContainer').style.display = 'none';
+        document.getElementById('warningBox').style.display = 'none';
+        document.getElementById('progressContainer').style.display = 'none';
+        document.getElementById('resultScreen').style.display = 'block';
+
+        let winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+        
+        let badge = document.getElementById('archetypeBadge');
+        let analysis = document.getElementById('detailedAnalysis');
+        let cliffDesc = document.getElementById('cliffDesc');
+
+        let titleText = "";
+        let summaryText = "";
+
+        if (winner === 'A') {
+            titleText = "Type A: Strategic Analyst (သတိကြီးစွာ စီမံသော သုံးသပ်သူ)";
+            summaryText = "အချက်အလက်၊ စနစ်ကျမှုနှင့် Logic ကို ဦးစားပေးပြီး မရေမရာ အခြေအနေများကို Emotional Detachment ဖြင့် အေးဆေးစွာ အဖြေရှာ စိစစ်သူ ဖြစ်သည်။";
+            
+            badge.innerText = titleText;
+            analysis.innerHTML = `
+                <h3>၁။ စိတ္တဗေဒဆိုင်ရာ အဓိက မောင်းနှင်အား (Core Subconscious Driver)</h3>
+                <p>သင်သည် မသိစိတ်၏ လုံခြုံမှုကို <b>"အချက်အလက်၊ စနစ်ကျမှုနှင့် Logic"</b> တွင် အခြေခံ၍ တည်ဆောက်ထားသူ ဖြစ်သည်။ အရာရာကို အေးဆေး တည်ငြိမ်စွာ စိစစ်သုံးသပ်နိုင်ပြီး သတင်းအချက်အလက် စုဆောင်းမှုကို ဦးစားပေးသည်။ မရေမရာ အခြေအနေများကို စီမံခန့်ခွဲရာတွင် အင်မတန် ထက်မြက်သော ခွဲခြားသိမြင်စိတ် ရှိပြီး၊ ခံစားချက်ထက် ယုတ္တိဗေဒကို ရှေ့တန်းတင် တုံ့ပြန်တတ်သည်။</p>
+                
+                <h3>၂။ မသိစိတ်၏ စိုးရိမ်စိတ်နှင့် Defensive Defense Mechanism</h3>
+                <p>သင့်၏ မသိစိတ်ထဲမှ အကြီးမားဆုံး စိုးရိမ်စိတ်မှာ <b>"မရေမရာဖြစ်ခြင်း၊ အစီအစဉ် ပျက်စီးသွားခြင်းနှင့် အသိဉာဏ်မဲ့စွာ ပြုမူခံရခြင်း"</b> ဖြစ်သည်။ စိတ်ဖိစီးမှု သို့မဟုတ် ခြိမ်းခြောက်မှု ကြုံရပါက သင့်မသိစိတ်သည် Emotional Detachment (အေးစက်စွာ အကွာအဝေး ခြားလိုက်ခြင်း) ဖြင့် အကာအကွယ် ယူသည်။ ခံစားချက်များကို မထုတ်ပြဘဲ အရာရာကို အေးစက်စွာ စိစစ်နေခြင်းဖြင့် မိမိကိုယ်ကို လုံခြုံအောင် ပြုလုပ်တတ်သည်။</p>
+                
+                <h3>၃။ Boundary Integrity & Behavioral Pattern သုံးသပ်ချက်</h3>
+                <p>သင်သည် အပြင်ပန်းတွင် စည်းမျဉ်းပြတ်သားပြီး မူဝါဒ ရှိသူဟု မြင်ရသော်လည်း၊ မသိစိတ်၏ စိုးရိမ်စိတ်ကြောင့် ဆက်ဆံရေးများတွင် <b>"အမှန်တကယ် ရင်ဖွင့် ရင်းနှီးခွင့် (Emotional Vulnerability)"</b> ကို ကန့်သတ်ထားတတ်သည်။ ပြဿနာများ ကြုံသည့်အခါ ရင်းနှီးစွာ ရှင်းလင်းခြင်းထက် စိတ်ကူးထဲတွင် သုံးသပ်ကာ နှုတ်ဆိတ်သွားလေ့ရှိသဖြင့် အခြားသူများက သင့်ကို ချဉ်းကပ်ရခက်သော၊ အေးစက်လွန်းသော လူအဖြစ် ထင်မြင်သွားစေပါသည်။</p>
+            `;
+            cliffDesc.innerText = "သင့်၏ စနစ်ကျသော ခွဲခြားသိမြင်စိတ်ကြောင့် စိတ်အေးချမ်းမှု ရနိုင်သော်လည်း မသိစိတ်ထဲတွင် ရင်းနှီးမှုကို ကြောက်ရွံ့စိတ်နှင့် စိတ်ပိုင်းဆိုင်ရာ အထီးကျန်မှု စိတ်ဒဏ်ရာတွေ ပုန်းကွယ်နေနိုင်ပါတယ်။ ဤ မျက်နှာဖုံး က ဆက်ဆံရေးကို ဘယ်လို နှောင့်ယှက်နေသလဲဆိုတာကို Part 2 (Shadow Work Assessment) တွင် ဆက်လက် လေ့လာပါ။";
+
+        } else if (winner === 'B') {
+            titleText = "Type B: Empathetic Visionary (စာနာလွန်းသော စိတ်ကူးအမြင်ရှိသူ)";
+            summaryText = "နားလည်မှုနှင့် စာနာစိတ် (High Empathy) မြင့်မားသူ ဖြစ်ပြီး၊ ဆက်ဆံရေး မျှခြေကို အသက်ထက်မက တန်ဖိုးထားသော်လည်း People-Pleasing ပုံစံ ဖြစ်လွယ်သည်။";
+
+            badge.innerText = titleText;
+            analysis.innerHTML = `
+                <h3>၁။ စိတ္တဗေဒဆိုင်ရာ အဓိက မောင်းနှင်အား (Core Subconscious Driver)</h3>
+                <p>သင်သည် မသိစိတ်၏ လုံခြုံမှုကို <b>"နားလည်မှု၊ ချစ်ခြင်းမေတ္တာနှင့် ဆက်ဆံရေး မျှခြေ"</b> တွင် တည်ဆောက်ထားသူ ဖြစ်သည်။ အခြားသူများ၏ စိတ်ခံစားချက်၊ လိုအပ်ချက်နှင့် စွမ်းအင် ပြောင်းလဲမှုများကို စိတ္တဇအတိုင်းအတာထိ လျင်မြန်စွာ ခံစားသိရှိနိုင်သော စာနာစိတ် (High Empathy) အပြည့် ရှိသူဖြစ်သည်။ ဆက်ဆံရေးများတွင် တန်ဖိုးပေးတတ်ပြီး ပတ်ဝန်းကျင် အေးချမ်းရေးအတွက် ကိုယ်တိုင် အနစ်နာခံတတ်သည်။</p>
+                
+                <h3>၂။ မသိစိတ်၏ စိုးရိမ်စိတ်နှင့် Defensive Defense Mechanism</h3>
+                <p>သင့်၏ မသိစိတ်ထဲမှ အကြီးမားဆုံး စိုးရိမ်စိတ်မှာ <b>"စွန့်ပစ်ခံရမည်ကို ကြောက်ရွံ့ခြင်း (Fear of Abandonment) နှင့် ငြင်းပယ်ခံရခြင်း"</b> ဖြစ်သည်။ စိတ်ဖိစီးမှု သို့မဟုတ် ပဋိပက္ခ ကြုံရပါက သင့်မသိစိတ်သည် People-Pleasing (အခြားသူ စိတ်ကျေနပ်အောင် ပြုလုပ်ပေးခြင်း) သို့မဟုတ် မိမိ စည်းဘောင်သတ်မှတ်ချက်(Boundaries) များကို လျှော့ပေးလိုက်ခြင်းဖြင့် အကာအကွယ် ယူတတ်သည်။</p>
+                
+                <h3>၃။ Boundary Integrity & Behavioral Pattern သုံးသပ်ချက်</h3>
+                <p>သင်သည် အသိစိတ်ထဲတွင် ပြတ်သားချင်သော်လည်း လက်တွေ့တွင် မသိစိတ်၏ မောင်းနှင်မှုကြောင့် စည်းမျဉ်းများကို ကိုယ်တိုင် ပြန်လည် ချိုးဖောက်နေမိသည်။ မတရား ပြုမူခံရချိန်တွင် စိတ်ဆိုးပြသော်လည်း စွန့်ပစ်ခံရမည်စိုးသဖြင့် ပြန်လည် ခွင့်လွှတ်မိလေ့ရှိသည်။ ဤ စိတ်ကူးအယူအဆနှင့် လက်တွေ့ပြုလုပ်သော အပြုအမူကြား ကွာဟမှုကြောင့် ဖြစ်ပေါ်လာသည့် စိတ်တွင်း မညီမျှမှု (သို့) စိတ်ဖိစီးမှု သည် သင့်ကို စွမ်းအင် ကုန်ခမ်းမှုကို အမြင့်ဆုံး ပေးနေသည့် အရင်းမြစ်ပြဿနာဖြစ်သည်။</p>
+            `;
+            cliffDesc.innerText = "သင့်၏ ကြင်နာတတ်သော သဘာဝသည် အခြားသူများကို ဆွဲဆောင်နိုင်သော်လည်း မသိစိတ်ထဲတွင် 'ငယ်စဉ်က စွန့်ပစ်ခံခဲ့ရသည့် စိတ်ဒဏ်ရာ' နှင့် မိမိသတ်မှတ်ထားသော စည်းမျဉ်းများကို ကိုယ်တိုင် လျှော့ပေးမိသည့် 'စည်းနိမိတ် ယိုယွင်းမှု အပြုအမူ' များ တည်ရှိနေပါသည်။ ဤ ပုန်းကွယ်နေသော မသိစိတ်အမူအကျင့် များကို အမြစ်ဖြတ်နိုင်ရန် Part 2 (Shadow Work Assessment) သို့ ဆက်သွားပါ။";
+
+        } else {
+            titleText = "Type C: Executive Director (ဩဇာရှိသော ဦးဆောင်သူ)";
+            summaryText = "ထိန်းချုပ်ပိုင်ခွင့်၊ ဩဇာလွှမ်းမိုးမှုနှင့် ပြတ်သားသော ရလဒ်ကို အခြေခံပြီး အကျပ်အတည်းများကို ရဲဝံ့စွာ တာဝန်ယူ ဖြေရှင်းနိုင်သော Power Dynamics အပြည့်ရှိသူ ဖြစ်သည်။";
+
+            badge.innerText = titleText;
+            analysis.innerHTML = `
+                <h3>၁။ စိတ္တဗေဒဆိုင်ရာ အဓိက မောင်းနှင်အား (Core Subconscious Driver)</h3>
+                <p>သင်သည် မသိစိတ်၏ လုံခြုံမှုကို <b>"ထိန်းချုပ်ပိုင်ခွင့်၊ စီမံခန့်ခွဲမှုနှင့် ပြတ်သားသော ရလဒ်"</b> တွင် တည်ဆောက်ထားသူ ဖြစ်သည်။ အကျပ်အတည်းများ ကြုံလာပါက ရဲဝံ့စွာ တာဝန်ယူ တိုက်ခိုက်နိုင်ပြီး ဆုံးဖြတ်ချက်များကို ပြတ်သားစွာ ချနိုင်သည့် Power Dynamics အပြည့်ရှိသူ ဖြစ်သည်။ ဩဇာလွှမ်းမိုးမှုနှင့် ကိုယ်ပိုင် လွတ်လပ်ခွင့်ကို အသက်ထက်မက တန်ဖိုးထားသည်။</p>
+
+                <h3>၂။ မသိစိတ်၏ စိုးရိမ်စိတ်နှင့် Defensive Defense Mechanism</h3>
+                <p>သင့်၏ မသိစိတ်ထဲမှ အကြီးမားဆုံး စိုးရိမ်စိတ်မှာ <b>"မိမိတွင် ထိန်းချုပ်ပိုင်ခွင့် မရှိတော့ခြင်း သို့မဟုတ် အခြားသူများ၏ ချုပ်ကိုင်မှုအောက် ရောက်ရှိသွားခြင်း"</b> ဖြစ်သည်။ ဤ စိုးရိမ်စိတ် ပေါ်ပေါက်လာပါက သင့်မသိစိတ်သည် Dominance & Control (လွှမ်းမိုးချုပ်ကိုင်မှုနှင့် ပြင်းထန်သော တုံ့ပြန်မှု) ဖြင့် အလိုအလျောက် အကာအကွယ် ယူသည်။ အားနည်းချက်ကို ပုန်းကွယ်ရန်အတွက် ပိုမို ပြင်းထန်စွာ တိုက်ခိုက်တတ်သည်။</p>
+
+                <h3>၃။ Boundary Integrity & Behavioral Pattern သုံးသပ်ချက်</h3>
+                <p>သင့်၏ ဦးဆောင်နိုင်စွမ်းကြောင့် အရာရာကို စနစ်တကျ စီမံနိုင်သော်လည်း မသိစိတ်ထဲတွင် "ဘယ်တော့မှ အခြားသူများအပေါ် မှီခိုခြင်း မပြုလုပ်ရ" ဟူသော ကြောက်ရွံ့စိတ် အကာအကွယ် ရေခဲပြင်ကြီး တည်ရှိနေသည်။ ရလဒ်အနေဖြင့် ဆက်ဆံရေးများတွင် အကင်းပါးစွာ လွှမ်းမိုးလိုစိတ် မြင့်မားနေပြီး၊ အခြားသူများနှင့် စစ်မှန်သော ရင်းနှီးမှု (Emotional Connection) ရယူရန် အတားအဆီး ဖြစ်စေပါသည်။</p>
+            `;
+            cliffDesc.innerText = "သင့်၏ ပြတ်သားသော စွမ်းရည်ကြောင့် အောင်မြင်မှုများ ရရှိနိုင်သော်လည်း မသိစိတ်ထဲတွင် အားနည်းချက်နှင့် စိတ်ဒဏ်ရာကို မထုတ်ပြဘဲ ရှောင်လွှဲခြင်း နှင့် ဩဇာနှင့် ထိန်းချုပ်လိုစိတ် ပုန်းကွယ်နေသော အရိပ်စရိုက် များ ကိန်းဝပ်နေပါသည်။ ဤ သဘောတရားများကို စိစစ်ရန် Part 2 (Shadow Work Assessment) သို့ ဆက်လက် တက်ရောက်ပါ။";
+        }
+
+        // --- DASSY INTEGRATED STORAGE LOGIC ---
+        // Save Part 1 Title and Summary for Part 4 Full Report Integration
+        localStorage.setItem('dassy_p1_title', titleText);
+        localStorage.setItem('dassy_p1_summary', summaryText);
+
+        // Also update unified JSON object if exists
+        let masterData = JSON.parse(localStorage.getItem('DASSY_MASTER_TEST')) || {};
+        masterData.part1 = {
+            title: titleText,
+            summary: summaryText
+        };
+        localStorage.setItem('DASSY_MASTER_TEST', JSON.stringify(masterData));
+
+        // Update CTA Button
+        let ctaBtn = document.getElementById('nextPartBtn');
+        if (ctaBtn) {
+            ctaBtn.innerText = "PROCEED TO PART 2 ASSESSMENT ➔";
+            ctaBtn.setAttribute('href', 'part2.html');
+        }
+    }
+</script>
+
+</body>
+</html>
