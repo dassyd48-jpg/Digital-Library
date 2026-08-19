@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DASSY Digital Library - Attachment & Relationship Alignment Test</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', 'Padauk', sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #fde047 0%, #eab308 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 md:p-8">
+
+  <!-- Header Section -->
+  <header class="max-w-3xl mx-auto w-full text-center py-6">
+    <div class="inline-block px-3 py-1 bg-amber-500/10 border border-amber-500/30 rounded-full text-amber-400 text-xs font-semibold uppercase tracking-wider mb-3">
+      DASSY Master Psychology Test • Part 3
+    </div>
+    <h1 class="text-3xl md:text-4xl font-bold gold-gradient-text mb-2">
+      Relationship & Attachment Alignment
+    </h1>
+    <p class="text-slate-400 text-sm md:text-base">
+      သင့်မသိစိတ်၏ သံယောဇဉ် တွယ်တာပုံ၊ ကိုယ်ပိုင် စည်းနိမိတ်နှင့် ဆက်ဆံရေး တုံ့ပြန်ပုံများကို ဆန်းစစ်ပါ။
+    </p>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="max-w-2xl mx-auto w-full flex-grow flex flex-col justify-center">
+    
+    <!-- Intro Card -->
+    <div id="intro-card" class="glass-card rounded-2xl p-6 md:p-8 text-center shadow-2xl">
+      <h2 class="text-xl font-bold text-slate-200 mb-4">ဆန်းစစ်မှု မစတင်မီ အသိပေးချက်</h2>
+      <p class="text-slate-300 text-sm leading-relaxed mb-6">
+        ဤဆန်းစစ်ချက်သည် စိတ္တဇရောဂါ ဆေးကုသမှု မဟုတ်ပါ။
+        မိမိကိုယ်ကို ပိုမို သတိမူမိစေရန်နှင့် စိတ္တဗေဒဆိုင်ရာ တိုးတက်ရေးအတွက် ရေးဆွဲထားခြင်း ဖြစ်ပါသည်။ မှန်/မှား မရှိဘဲ သင့်၏ စစ်မှန်သော လက်တွေ့ တုံ့ပြန်မှုကိုသာ ဖြစ်ပြီး ဖြောင့်မတ်စွာ ရွေးချယ်ပါ။
+      </p>
+      <button onclick="startQuiz()" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-slate-950 font-bold rounded-xl shadow-lg transition duration-200">
+        Start Assessment
+      </button>
+    </div>
+
+    <!-- Quiz Card -->
+    <div id="quiz-card" class="glass-card rounded-2xl p-6 md:p-8 shadow-2xl hidden">
+      <div class="mb-6">
+        <div class="flex justify-between text-xs text-slate-400 mb-2">
+          <span id="question-number">Scenario 1 of 12</span>
+          <span id="progress-percent">8%</span>
+        </div>
+        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+          <div id="progress-bar" class="bg-amber-400 h-full transition-all duration-300 w-1/12"></div>
+        </div>
+      </div>
+
+      <h3 id="scenario-title" class="text-lg md:text-xl font-bold text-amber-300 mb-2"></h3>
+      <p id="scenario-desc" class="text-slate-300 text-sm md:text-base mb-6 leading-relaxed"></p>
+
+      <div id="options-container" class="space-y-3"></div>
+    </div>
+
+    <!-- Result Card -->
+    <div id="result-card" class="glass-card rounded-2xl p-6 md:p-8 shadow-2xl hidden">
+      <div class="text-center mb-6">
+        <span class="text-xs font-semibold text-amber-400 uppercase tracking-widest">Your Attachment & Alignment Profile</span>
+        <h2 id="result-title" class="text-2xl md:text-3xl font-bold gold-gradient-text mt-1"></h2>
+      </div>
+
+      <div class="space-y-4 text-slate-300 text-sm leading-relaxed mb-6">
+        <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+          <div id="result-analysis"></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="space-y-3 mb-6">
+        <a id="cta-btn-p3" href="part4.html" class="block text-center w-full py-3.5 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-slate-950 font-bold rounded-xl shadow-lg transition duration-200 text-xs md:text-sm uppercase tracking-wide">
+          ➡️ PROCEED TO PART 4: RECEIVE CUSTOM PRIORITY ROADMAP
+        </a>
+
+        <button onclick="resetQuiz()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl text-xs font-bold border border-slate-700 transition duration-200">
+          🔄 Retest Assessment (စမ်းသပ်ရန် ပြန်စမည်)
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="max-w-3xl mx-auto w-full text-center py-6 text-xs text-slate-500">
+    © DASSY Digital Library. Personal Growth & Life Mentorship System.
+  </footer>
+
+  <!-- Assessment Engine Script -->
+  <script>
+    const questions = [
+      {
+        title: "Scenario 1: စာမပြန်သည့်အခါ တုံ့ပြန်ပုံ",
+        desc: "သင် အလေးထားရသော လက်တွဲဖော်ထံ စာပို့လိုက်သော်လည်း ၆ နာရီကြာသည်အထိ စာပြန်မလာဘဲ Social Media တွင် Active ဖြစ်နေသည်ကို မြင်တွေ့ရသည့်အခါ သင့်မသိစိတ်၏ တုံ့ပြန်မှုမှာ—",
+        options: [
+          { text: "'ငါ့ကို စိတ်ဆိုးသွားတာလား သို့မဟုတ် စိတ်ကုန်သွားတာလား' ဟု စိုးရိမ်စိတ်မြင့်တက်လာပြီး စာထပ်မံပို့ခြင်း သို့မဟုတ် အကြောင်းရင်းကို အတင်းလိုက်စစ်စမ်းမိသည်။", type: "anxious" },
+          { text: "စိတ်ထဲမှ ချက်ချင်း အကွာအဝေးခြားလိုက်ပြီး 'သူလည်း ဂရုမစိုက်ရင် ငါလည်း လုံးဝ ဂရုစိုက်စရာမလိုဘူး' ဟု စိမ်းကားစွာ ပစ်ထားလိုက်သည်။", type: "avoidant" },
+          { text: "သူ အလုပ်ရှုပ်နေသည် သို့မဟုတ် ကိုယ်ပိုင်အချိန် လိုအပ်နေသည်ဟု တည်ငြိမ်စွာ တွေးတောပြီး မိမိ၏ လက်ရှိအလုပ်ကိုသာ ဆက်လက်လုပ်ဆောင်သည်။", type: "secure" }
+        ]
+      },
+      {
+        title: "Scenario 2: စကားများ ရန်ဖြစ်ချိန် တုံ့ပြန်ပုံ",
+        desc: "အယူအဆ မတူညီ၍ စကားများရန်ဖြစ်ကြစဉ် အခြားတစ်ဖက်သူက စိတ်လိုက်မာန်ပါ လေသံကျယ်ကျယ်ဖြင့် စတင်ငြင်းခုံလာသည့်အခါ—",
+        options: [
+          { text: "ပြဿနာ၏ တင်းမာမှုကို မခံစားနိုင်သဖြင့် ချက်ချင်း စကားလမ်းကြောင်းဖြတ်၍ ထထွက်သွားခြင်း သို့မဟုတ် စိမ်းကားစွာ ဥပေက္ခာပြု၍ စကားမပြောဘဲ နေလိုက်သည်။", type: "avoidant" },
+          { text: "စွန့်ပစ်ခံရမည်ကို ကြောက်၍ ပြဿနာကို ယခုချက်ချင်း အပြတ်ရှင်းချင်သဖြင့် အခြားတစ်ဖက်သူ အေးဆေးမဖြစ်မချင်း တောင်းပန်ခြင်း သို့မဟုတ် ကပ်တွယ်ဖြေရှင်းသည်။", type: "anxious" },
+          { text: "'အခုချိန်မှာ နှစ်ဘက်စလုံး စိတ်ခံစားမှု ပြင်းထန်နေလို့ ခဏနားပြီးမှ အေးအေးဆေးဆေး ပြန်ပြောကြတာပေါ့' ဟု တည်ငြိမ်စွာ မိမိ၏ စည်းမျဉ်းကို သတ်မှတ်သည်။", type: "secure" }
+        ]
+      },
+      {
+        title: "Scenario 3: ကိုယ်ပိုင်အချိန် လိုအပ်ချိန်",
+        desc: "လက်တွဲဖော်က သင်နှင့် ပိတ်ရက်တိုင်း အတူတူရှိချင်သော်လည်း သင်က မိမိ၏ ကိုယ်ပိုင်အချိန် သို့မဟုတ် စိတ်အနားယူရေးအတွက် သီးသန့် အချိန် လိုအပ်နေသည့်အခါ—",
+        options: [
+          { text: "ငြင်းပယ်လိုက်ပါက စိတ်ကောက်သွားမည်ကို စိုးရိမ်သဖြင့် မိမိ၏ လိုအပ်ချက်ကို စွန့်လွှတ်ပြီး အခြားသူ စိတ်ချမ်းသာစေရန်အတွက် အချိန်အားလုံး ပေးလိုက်သည်။", type: "anxious" },
+          { text: "စိတ်တိုသွားပြီး 'ငါ့ကို ချုပ်ကိုင်ဖို့ မကြိုးစားနဲ့' ဟု ဒေါသဖြင့် တုံ့ပြန်ကာ အဆက်အသွယ် လုံးဝ ဖြတ်တောက်ရန် ကြိုးစားသည်။", type: "avoidant" },
+          { text: "နံနက်ပိုင်းသည် မိမိ၏ ကိုယ်ပိုင်အချိန်ဖြစ်ပြီး မွန်းလွဲပိုင်းတွင် အတူတူရှိမည်ဟု ရှင်းလင်းပြတ်သားစွာ ညှိနှိုင်း ပြောဆိုသည်။", type: "secure" }
+        ]
+      },
+      {
+        title: "Scenario 4: အားနည်းချက်ကို ရင်ဖွင့်ခြင်း",
+        desc: "မိမိ၏ အတိတ်က စိတ်ဒဏ်ရာ၊ အားနည်းချက် သို့မဟုတ် ကြောက်ရွံ့မှုတစ်ခုကို လက်တွဲဖော်အား မျှဝေပြောပြရန် အခွင့်အရေး ရလာသည့်အခါ—",
+        options: [
+          { text: "မိမိ၏ အားနည်းချက်ကို ပြသမိပါက အနိုင်ယူခံရမည်ဟု ယူဆ၍ 'ငါ့မှာ ဘာပြဿနာမှ မရှိဘူး' ဟု အေးစက်စွာ ဖုံးကွယ်ထားသည်။", type: "avoidant" },
+          { text: "သံယောဇဉ်နှင့် နီးကပ်မှု ပိုမိုတိုးလာစေရန်အတွက် စာနာမှုရရှိရေး အတိတ်က ဒဏ်ရာများကို အလွန်အမင်း အသေးစိတ် ရင်ဖွင့်ပြမိသည်။", type: "anxious" },
+          { text: "နှစ်ဦးနှစ်ဖက် တည်ဆောက်ထားသော ယုံကြည်မှုနှင့် လုံခြုံမှုအပေါ် မူတည်၍ တည်ငြိမ်စွာ အချိုးအစားကျကျ မျှဝေသည်။", type: "secure" }
+        ]
+      },
+      {
+        title: "Scenario 5: ပူးပေါင်း လုပ်ဆောင်ချိန်",
+        desc: "နှစ်ယောက်အတူ အရေးကြီးသော ခရီးတစ်ခု သို့မဟုတ် စီမံကိန်းတစ်ခုအတွက် အစီအစဉ်ဆွဲရန် လိုအပ်လာသည့်အခါ—",
+        options: [
+          { text: "အခြားသူ ဆုံးဖြတ်ပုံကို မယုံကြည်သဖြင့် အလွန်အမင်း စိုးရိမ်ကာ အသေးစိတ်မှအစ အရာရာကို မိမိတစ်ဦးတည်း ထိန်းချုပ်ပြင်ဆင်သည်။", type: "anxious" },
+          { text: "ပါဝင်ပတ်သက်လိုစိတ် မရှိဘဲ 'စိတ်ကြိုက်လုပ်၊ ငါနဲ့ မဆိုင်ဘူး' ဟု စိမ်းကားစွာဖြင့် တာဝန်မယူဘဲ ဘေးဖယ်နေသည်။", type: "avoidant" },
+          { text: "မိမိ၏ နှစ်သက်မှုကို ရှင်းလင်းစွာ ပြောပြပြီး အခြားသူ၏ အမြင်ကိုလည်း လေးစားစွာဖြင့် ပူးပေါင်းညှိနှိုင်း ဆုံးဖြတ်သည်။", type: "secure" }
+        ]
+      },
+      {
+        title: "Scenario 6: အေးစက်မှုကို ခံစားရချိန်",
+        desc: "လက်တွဲဖော် သို့မဟုတ် စိတ်နီးစပ်သူက မသိမသာ ခပ်စိမ်းစိမ်း ပြုမူလာသည်ဟု သတိပြုမိချိန်တွင် မသိစိတ်၏ တုံ့ပြန်မှုမှာ—",
+        options: [
+          { text: "စွန့်ပစ်ခံရမည်ကို အလွန်အမင်း စိုးရိမ်ပြီး ပိုမို နီးကပ်အောင် ကြိုးစားကာ သက်သေပြခိုင်းသော တောင်းဆိုမှုများ ပြုလုပ်သည်။", type: "anxious" },
+          { text: "မိမိဘက်မှ စတင်၍ ပိုမို အေးစက်အောင် ပြုလုပ်လိုက်ပြီး စိတ်ခံစားမှု အရ ခပ်ကင်းကွာ တည်ဆောက်လိုက်သည်။", type: "avoidant" },
+          { text: "အခြေအနေကို တည်ငြိမ်စွာ စောင့်ကြည့်ပြီး သင့်တော်သော အချိန်တွင် ပွင့်လင်း အေးဆေးစွာ မေးမြန်း ဆွေးနွေးသည်။", type: "secure" }
+        ]
+      },
+      {
+        title: "Scenario 7: စည်းကျော်ခံရချိန်",
+        desc: "အခြားတစ်ဖက်သူက သင့်၏ ကိုယ်ပိုင်နယ်ပယ်၊ စည်းကမ်း သို့မဟုတ် စိတ်လွတ်လပ်ခွင့်ကို ကျူးလွန်သည့်အခါ—",
+        options: [
+          { text: "ငြင်းပယ်ပါက ဆက်ဆံရေး ပျက်စီးသွားမည်ကို စိုးရိမ်၍ မိမိ၏ မကျေနပ်မှုကို နှုတ်ဆိတ်ကာ အောင့်စည်း လိုက်လျောသည်။", type: "anxious" },
+          { text: "ချက်ချင်း ဒေါသထွက်သွားပြီး အဆက်အသွယ် လုံးဝ ဖြတ်တောက်ရန် ကြိုးစားသည်။", type: "avoidant" },
+          { text: "မိမိ၏ စည်းမျဉ်းနှင့် ရပ်တည်ချက်ကို တည်ငြိမ် လေးနက်သော လေသံဖြင့် ပြတ်သားစွာ အသိပေးသည်။", type: "secure" }
+        ]
+      },
+      {
+        title: "Scenario 8: အသိအမှတ် မပြုခံရချိန်",
+        desc: "မိမိ ပေးဆပ်ပြုလုပ်ထားသော အရာများအပေါ် လက်တွဲဖော်ထံမှ တုံ့ပြန်မှု သို့မဟုတ် ချီးမွမ်းမှု မရရှိသည့်အခါ—",
+        options: [
+          { text: "စိတ်ပျက် နာကျင်သွားပြီး အသိအမှတ်ပြုမှု ရရှိရန် အတင်းအကျပ် သတိပေး စွပ်စွဲမိသည်။", type: "anxious" },
+          { text: "အလေးမထားသကဲ့သို့ ဟန်ဆောင်ကာ ထိုသူအပေါ် ထားရှိသော စိတ်ခံစားမှုနှင့် မျှော်လင့်ချက်ကို ရုပ်သိမ်းလိုက်သည်။", type: "avoidant" },
+          { text: "မိမိ၏ တန်ဖိုးကို မိမိကိုယ်တိုင် အတည်ပြုပြီး တည်ငြိမ်စွာဖြင့် လိုအပ်ပါက ပွင့်လင်းစွာ ပြောဆိုသည်။", type: "secure" }
+        ]
+      },
+      {
+        title: "Scenario 9: လွှမ်းမိုး ချုပ်ကိုင်ခံရချိန်",
+        desc: "ဆက်ဆံရေးတွင် တစ်ဖက်လူက စကားလုံးများ သို့မဟုတ် ပြုမူပုံဖြင့် ဩဇာလွှမ်းမိုး ထိန်းချုပ်ရန် ကြိုးစားလာသည့်အခါ—",
+        options: [
+          { text: "သဘောထားကွဲလွဲပြီး စွန့်ပစ်ခံရမည်ကို ကြောက်၍ မိမိ၏ ဆုံးဖြတ်ပိုင်ခွင့်ကို အလွယ်တကူ လွှဲပြောင်းပေးလိုက်သည်။", type: "anxious" },
+          { text: "တိုက်ရိုက် တိုက်ခိုက်ပြီး အာဏာလုပွဲ ပြုလုပ်သည် သို့မဟုတ် အပြည့်အဝ အဆက်အသွယ် ပိတ်ပင်လိုက်သည်။", type: "avoidant" },
+          { text: "နှစ်ဦးနှစ်ဖက် ညီမျှသော ဆက်ဆံရေးဖြစ်အောင် မိမိ၏ ရပ်တည်ချက်နှင့် ဂုဏ်သိက္ခာကို ငြိမ်းချမ်းစွာ စောင့်ထိန်းသည်။", type: "secure" }
+        ]
+      },
+      {
+        title: "Scenario 10: နက်ရှိုင်းသော ကတိကဝတ်ပြုချိန်",
+        desc: "ဆက်ဆံရေးသည် အလွန်အမင်း နက်ရှိုင်းပြီး ရေရှည် ကတိကဝတ် (Commitment) ပြုရတော့မည့် အဆင့်သို့ ရောက်ရှိလာချိန်—",
+        options: [
+          { text: "တစ်ဖက်လူ ပျောက်ကွယ်သွားမည်ကို စိုးရိမ်စိတ် ပိုမို မြင့်မားလာပြီး ထိန်းချုပ်လိုစိတ်၊ ပိုင်စိုးလိုစိတ် ဖြစ်ပေါ်လာသည်။", type: "anxious" },
+          { text: "မိမိ၏ လွတ်လပ်မှု ဆုံးရှုံးမည်ကို စိုးရိမ်၍ အကြောင်းပြချက် ရှာကာ အကွာအဝေး ဝေးကွာသွားအောင် ပြုလုပ်သည်။", type: "avoidant" },
+          { text: "အပြန်အလှန် ယုံကြည်မှုနှင့် လေးစားမှုအပေါ် မူတည်၍ ရေရှည် ပန်းတိုင်များကို သဘာဝကျစွာ အတူတကူ တည်ဆောက်သည်။", type: "secure" }
+        ]
+      },
+      {
+        title: "Scenario 11: သဝန်တိုမှု သို့မဟုတ် မလုံခြုံမှု ဖြစ်ချိန်",
+        desc: "လက်တွဲဖော်က အခြားသူတစ်ဦးနှင့် ရင်းနှီးစွာ စကားပြောဆို ဆက်ဆံနေသည်ကို မြင်တွေ့ရသည့်အခါ သင့်မသိစိတ်၏ တုံ့ပြန်မှုမှာ—",
+        options: [
+          { text: "စွန့်ပစ်ခံရမည်ကို စိုးရိမ်ပြီး မလုံခြုံစိတ်ကြောင့် စိတ်တိုကာ စစ်ဆေးမေးမြန်းမှုများ စတင်ပြုလုပ်မိသည်။", type: "anxious" },
+          { text: "လုံးဝ ဂရုမစိုက်သကဲ့သို့ ပြုလုပ်ကာ ခက်ထန်စွာဖြင့် ထိုသူထံမှ စိတ်ခံစားမှု ရုပ်သိမ်းလိုက်သည်။", type: "avoidant" },
+          { text: "မိမိကိုယ်ကို လုံခြုံမှုရှိစွာဖြင့် အခြေအနေကို ပုံမှန်အတိုင်း သာမန် ရိုးသားစွာ ရှုမြင်သည်။", type: "secure" }
+        ]
+      },
+      {
+        title: "Scenario 12: လမ်းခွဲ ပြတ်တောက်သွားချိန်",
+        desc: "အကြောင်းတစ်ခုခုကြောင့် ဆက်ဆံရေးတစ်ခု လုံးဝ ပြီးဆုံး ပြတ်တောက်သွားသည့်အခါ မသိစိတ် တုံ့ပြန်မှုမှာ—",
+        options: [
+          { text: "အတိတ်ကို စွဲလန်းနေပြီး မိမိကိုယ်ကိုယ် အပြစ်တင်ကာ သံယောဇဉ်မှ ရုန်းထွက်ရ အလွန်ခက်ခဲနေသည်။", type: "anxious" },
+          { text: "ခံစားချက် မရှိသကဲ့သို့ ခက်ထန်စွာ တုံ့ပြန်ပြီး ချက်ချင်း အဆက်အသွယ် ပိတ်ပင်ကာ မေ့ပစ်လိုက်သည်။", type: "avoidant" },
+          { text: "နာကျင်မှုကို လက်ခံဆန်းစစ်ပြီး အဖိုးတန် သင်ခန်းစာယူကာ တည်ငြိမ်စွာ ရှေ့ဆက် ရုန်းထွက်သည်။", type: "secure" }
+        ]
+      }
+    ];
+
+    let currentQuestion = 0;
+    let scores = { anxious: 0, avoidant: 0, secure: 0 };
+
+    function startQuiz() {
+      document.getElementById('intro-card').classList.add('hidden');
+      document.getElementById('quiz-card').classList.remove('hidden');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById('scenario-title').innerText = q.title;
+      document.getElementById('scenario-desc').innerText = q.desc;
+      document.getElementById('question-number').innerText = `Scenario ${currentQuestion + 1} of ${questions.length}`;
+      const percent = Math.round(((currentQuestion + 1) / questions.length) * 100);
+      document.getElementById('progress-percent').innerText = `${percent}%`;
+      document.getElementById('progress-bar').style.width = `${percent}%`;
+
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      q.options.forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-4 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 hover:border-amber-500/50 text-slate-200 text-sm transition duration-150 flex items-start space-x-3";
+        btn.innerHTML = `<span class="mt-0.5 h-2 w-2 rounded-full bg-amber-400 shrink-0"></span><span>${opt.text}</span>`;
+        btn.onclick = () => selectOption(opt.type);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(type) {
+      scores[type]++;
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function resetQuiz() {
+      currentQuestion = 0;
+      scores = { anxious: 0, avoidant: 0, secure: 0 };
+      document.getElementById('result-card').classList.add('hidden');
+      document.getElementById('intro-card').classList.remove('hidden');
+    }
+
+    function showResult() {
+      document.getElementById('quiz-card').classList.add('hidden');
+      document.getElementById('result-card').classList.remove('hidden');
+
+      let resultType = "secure";
+      if (scores.anxious >= scores.avoidant && scores.anxious > scores.secure) {
+        resultType = "anxious";
+      } else if (scores.avoidant > scores.anxious && scores.avoidant > scores.secure) {
+        resultType = "avoidant";
+      }
+
+      const resultsData = {
+        anxious: {
+          title: "စိုးရိမ်စိတ်ဖြင့် လွန်ကဲစွာ တွယ်တာတတ်သူ (Anxious Attachment)",
+          analysis: `
+            <div class="space-y-4">
+              <div>
+                <h4 class="font-bold text-amber-400 text-base mb-2">[ ပင်မ မသိစိတ် အကဲဖြတ်ချက် ]</h4>
+                <h5 class="font-semibold text-slate-200 text-sm mb-2">စွန့်ပစ်ခံရမည်ကို စိုးရိမ်၍ အရာရာကို အမြဲမပြတ် သတိကြီးစွာ စောင့်ကြည့်နေသော ပုံစံ</h5>
+                <p class="mb-3">သင့် မသိစိတ်အတွင်း၌ ဆက်ဆံရေး ပျက်စီးသွားမည် သို့မဟုတ် လက်တွဲဖော် အဝေးသို့ ထွက်ခွာသွားမည်ကို အလွန်အမင်း စိုးရိမ်သော စိတ်ပုံစံ ရှိနေသည်။ လက်တွဲဖော်၏ စာပြန်ချိန် နှောင့်နှေးခြင်း သို့မဟုတ် သာမန် အမူအယာ ပြောင်းလဲခြင်း အသေးစိတ်ကိုပင် အလွန်အမင်း အာရုံခံမိပြီး မိမိအား ငြင်းပယ်ခြင်း သို့မဟုတ် စိတ်ကုန်သွားခြင်းဟု ထင်ကာ မသိစိတ်က စွန့်ပစ်ခံရမည့် အကြောက်တရားကို နိုးထစေခြင်း ဖြစ်သည်။</p>
+                <p class="mb-3">ဤတွယ်တာမှု ပုံစံ၏ ပင်မ စိတ်ဒဏ်ရာမှာ ငယ်စဉ် ကလေးဘဝ ကာလများအတွင်း မိဘ/ပြုစုစောင့်ရှောက်သူများထံမှ စိတ်ပိုင်းဆိုင်ရာ လုံခြုံမှုကို ပုံမှန်မရရှိခဲ့ခြင်းမှ စတင်ခဲ့လေ့ရှိသည်။ အချို့အချိန်များတွင် ဂရုစိုက်ခံရပြီး အချို့အချိန်များတွင် လျစ်လျူရှု ခဲ့ရသဖြင့် မသိစိတ်က "ငါသည် အမြဲမပြတ် ကပ်တွယ် ထိန်းချုပ်မထားပါက အချစ်ကို ဆုံးရှုံးရလိမ့်မည်" ဟု မှတ်ယူလိုက်ခြင်း ဖြစ်သည်။</p>
+                <p>နေ့စဉ် ဆက်ဆံရေးများတွင် ဤပုံစံသည် သင့်အား လက်တွဲဖော်ထံမှ စိတ်ချရမှုကို အကြိမ်ကြိမ် တောင်းဆိုစေပြီး မိမိကိုယ်ပိုင် စည်းနိမိတ်များကို အလွယ်တကူ လျှော့ချမိစေသည်။ မိမိ၏ လိုအပ်ချက်များကို စွန့်လွှတ်ပေးဆပ်ရင်း စိတ်အတွင်း တင်းမာမှုနှင့် စိတ္တဇဖြစ်မှုများကို ခံစားရတတ်သည်။</p>
+              </div>
+              <div>
+                <h4 class="font-bold text-amber-400 text-base mb-2">[ ပုန်းကွယ်နေသော စိတ်ဒဏ်ရာနှင့် ဩဇာလွှမ်းမိုးမှု သုံးသပ်ချက် ]</h4>
+                <h5 class="font-semibold text-slate-200 text-sm mb-2">အကွာအဝေး ဝေးကွာခြင်း ကြောက်ရွံ့စိတ်နှင့် စွမ်းအင် မညီမျှမှု သံသရာ</h5>
+                <p class="mb-3">သင့်၏ ပုန်းကွယ်နေသော စိုးရိမ်စိတ်မှာ လက်တွဲဖော်ထံမှ စိတ်ပိုင်းဆိုင်ရာ အကွာအဝေး ဝေးကွာသွားသည်ဟု ခံစားရခြင်း ဖြစ်သည်။ ထိုအခါ မသိစိတ်က စွန့်ပစ်ခံရတော့မည်ဟု ထိတ်လန့်ကာ စာထပ်မံ ပို့ခြင်း သို့မဟုတ် အပြစ်တင် စစ်ဆေးခြင်းများ ပြုလုပ်မိသည်။</p>
+                <p>ဩဇာလွှမ်းမိုးမှု အပိုင်းတွင် သင်သည် မိမိ၏ ဆုံးဖြတ်ပိုင်ခွင့်များကို လက်တွဲဖော်ထံ လွှဲပြောင်းပေးအပ်မိပြီး စွမ်းအင် မညီမျှမှုကို ဖြစ်ပေါ်စေသည်။ အခြားတစ်ဖက်သူအား ဖိအားပေးမိသဖြင့် တစ်ဖက်လူက ပိုမို ဝေးကွာသွားပြီး မိမိစိုးရိမ်သော စွန့်ပစ်ခံရမှုကို မိမိကိုယ်တိုင် ဖန်တီးမိလျက်သား ဖြစ်သွားသည့် မကောင်းသော သံသရာကို ဖြစ်ပေါ်စေပါသည်။</p>
+              </div>
+              <div class="cliffhanger-box border-l-2 border-amber-500 bg-amber-500/5 p-3 rounded-r-lg mt-4">
+                <div class="text-amber-400 font-bold text-xs mb-1">[ နောက်တစ်ဆင့်သို့ ကူးပြောင်းခြင်း ]</div>
+                <div class="text-slate-200 text-xs">
+                  သင့်တွင် ဖြစ်ပေါ်နေသော ဤ စိတ်ဖိစီးမှုများနှင့် မသိစိတ်၏ အရိပ်မည်းများကို မည်သို့ အစဉ်လိုက် စနစ်တကျ ပြုပြင်ရမည်ဆိုသည့် အဆင့်လိုက် လမ်းညွှန်ချက်ကို Part 4 တွင် ဆက်လက် ဖော်ပြပေးပါမည်။
+                </div>
+              </div>
+            </div>
+          `
+        },
+        avoidant: {
+          title: "အကွာအဝေးခြား၍ စိတ်ခံစားချက်ကို ပိတ်ပင်ထားသူ (Avoidant Attachment)",
+          analysis: `
+            <div class="space-y-4">
+              <div>
+                <h4 class="font-bold text-amber-400 text-base mb-2">[ ပင်မ မသိစိတ် အကဲဖြတ်ချက် ]</h4>
+                <h5 class="font-semibold text-slate-200 text-sm mb-2">လွတ်လပ်မှု ဆုံးရှုံးမည်ကို စိုးရိမ်၍ အကွာအဝေးခြားထားသော ပုံစံ</h5>
+                <p class="mb-3">သင့် မသိစိတ်အတွင်း၌ စိတ်ခံစားချက် အလွန်နက်ရှိုင်းလာပါက မိမိ၏ လွတ်လပ်မှု ဆုံးရှုံးပြီး ချုပ်ကိုင်ခံရမည်ဟု စိုးရိမ်သော ပုံစံ ရှိနေသည်။ ဆက်ဆံရေး နက်ရှိုင်းလာချိန်တွင် စိတ်ဒဏ်ရာ မရရှိစေရန် မသိစိတ်မှ အကွာအဝေး ခြားထားခြင်း၊ အပြစ်ရှာခြင်း သို့မဟုတ် စိတ်ခံစားမှုကို အေးစက်စွာ ပိတ်ပင်လိုက်ခြင်းများကို အလိုအလျောက် အသုံးပြုတတ်ပါသည်။</p>
+                <p class="mb-3">ဤတွယ်တာမှု ပုံစံ၏ ပင်မ စိတ်ဒဏ်ရာမှာ ငယ်စဉ် ကလေးဘဝ ကာလများအတွင်း မိမိ၏ စိတ်ပိုင်းဆိုင်ရာ လိုအပ်ချက်များကို တောင်းဆိုခဲ့စဉ်က ငြင်းပယ်ခံခဲ့ရခြင်း သို့မဟုတ် အုပ်ထိန်းသူများ၏ အလွန်အမင်း စွက်ဖက် ချုပ်ကိုင်မှုကို ခံခဲ့ရခြင်းမှ အစပြုသည်။ မသိစိတ်က "အခြားသူများကို မှီခိုခြင်းသည် အန္တရာယ်ရှိသည်၊ ငါတစ်ယောက်တည်း ရပ်တည်မှသာ လွတ်လပ်ပြီး ဘေးကင်းမည်" ဟု ယူဆလိုက်ခြင်း ဖြစ်သည်။</p>
+                <p>နေ့စဉ် ဆက်ဆံရေးများတွင် ဤပုံစံသည် သင့်အား အေးစက်သူ သို့မဟုတ် ကတိမပေးရဲသူအဖြစ် မြင်တွေ့သွားစေသည်။ ပဋိပက္ခများ ဖြစ်ပွားလာပါက တိုက်ရိုက် မဖြေရှင်းဘဲ နှုတ်ဆိတ်နေပြီး အဆက်အသွယ် ဖြတ်တောက်လိုက်သဖြင့် လက်တွဲဖော်အား နာကျင်စေတတ်သည်။</p>
+              </div>
+              <div>
+                <h4 class="font-bold text-amber-400 text-base mb-2">[ ပုန်းကွယ်နေသော စိတ်ဒဏ်ရာနှင့် ဩဇာလွှမ်းမိုးမှု သုံးသပ်ချက် ]</h4>
+                <h5 class="font-semibold text-slate-200 text-sm mb-2">နီးကပ်မှု ကြောက်ရွံ့စိတ်နှင့် အေးစက်သော စည်းနိမိတ် သံသရာ</h5>
+                <p class="mb-3">သင့်၏ ပုန်းကွယ်နေသော စိုးရိမ်စိတ်မှာ လက်တွဲဖော်က စိတ်ခံစားမှု ရင်ဖွင့်လာခြင်း သို့မဟုတ် တောင်းဆိုမှုများ ပြုလုပ်လာခြင်း ဖြစ်သည်။ ထိုအခါ မသိစိတ်က ချုပ်ကိုင်ခံရတော့မည်ဟု ယူဆကာ အကွာအဝေး ဝေးကွာအောင် ပြုလုပ်သည်။</p>
+                <p>ဩဇာလွှမ်းမိုးမှု အပိုင်းတွင် သင်သည် အေးစက်မှုများကို လက်နက်သဖွယ် အသုံးပြု၍ ဆက်ဆံရေး၏ အကွာအဝေးကို ထိန်းချုပ်ရန် ကြိုးစားသည်။ သို့သော် ဤသို့ ပြုလုပ်ခြင်းသည် အခြားတစ်ဖက်သူ၏ စိုးရိမ်စိတ်ကို ပိုမို မြင့်မားစေပြီး သင့်ထံ ပိုမို ကပ်တွယ်လာစေကာ သင့်အား ပိုမို စိတ်ကွပ်ကွဲစေသည့် မကောင်းသော သံသရာကို ဖန်တီးမိလျက်သား ဖြစ်သွားစေသည်။</p>
+              </div>
+              <div class="cliffhanger-box border-l-2 border-amber-500 bg-amber-500/5 p-3 rounded-r-lg mt-4">
+                <div class="text-amber-400 font-bold text-xs mb-1">[ နောက်တစ်ဆင့်သို့ ကူးပြောင်းခြင်း ]</div>
+                <div class="text-slate-200 text-xs">
+                  သင့်တွင် ဖြစ်ပေါ်နေသော ဤ စိတ်ဖိစီးမှုများနှင့် မသိစိတ်၏ အရိပ်မည်းများကို မည်သို့ အစဉ်လိုက် စနစ်တကျ ပြုပြင်ရမည်ဆိုသည့် အဆင့်လိုက် လမ်းညွှန်ချက်ကို Part 4 တွင် ဆက်လက် ဖော်ပြပေးပါမည်။
+                </div>
+              </div>
+            </div>
+          `
+        },
+        secure: {
+          title: "စိတ်ပိုင်းဆိုင်ရာ တည်ငြိမ်စွာ တွယ်တာသူ (Secure Attachment)",
+          analysis: `
+            <div class="space-y-4">
+              <div>
+                <h4 class="font-bold text-amber-400 text-base mb-2">[ ပင်မ မသိစိတ် အကဲဖြတ်ချက် ]</h4>
+                <h5 class="font-semibold text-slate-200 text-sm mb-2">ကိုယ်ပိုင် တန်ဖိုးအပေါ် လုံခြုံမှုရှိသော တည်ငြိမ်သည့် ပုံစံ</h5>
+                <p class="mb-3">သင့် မသိစိတ်အတွင်း၌ မိမိကိုယ်ပိုင် တန်ဖိုးအပေါ် ခိုင်မာသော လုံခြုံမှုရှိပြီး ဆက်ဆံရေးများတွင် တည်ငြိမ်သော စည်းနိမိတ်များ သတ်မှတ်နိုင်သည့် ပုံစံ ရှိနေသည်။ နီးစပ်မှုနှင့် ကိုယ်ပိုင် လွတ်လပ်မှုကို မျှတစွာ စီမံနိုင်ပြီး လက်တွဲဖော်၏ စိတ်ခံစားချက်များကို စာနာနားလည်ပေးနိုင်သကဲ့သို့ မိမိ၏ လိုအပ်ချက်များကိုလည်း ပွင့်လင်းစွာ ပြောဆိုဆွေးနွေးနိုင်သော စိတ်ကြံ့ခိုင်မှု ရှိပါသည်။</p>
+                <p class="mb-3">ဤ တည်ငြိမ်သော ပုံစံ၏ အခြေခံမှာ အတိတ် ပြုစုပျိုးထောင်မှု သို့မဟုတ် မိမိ၏ စိတ်ပိုင်းဆိုင်ရာ ပြုပြင်ပြောင်းလဲမှု ကြိုးပမ်းမှုများကြောင့် စိတ်ပိုင်းဆိုင်ရာ လုံခြုံမှုကို စနစ်တကျ တည်ဆောက်နိုင်ခဲ့ခြင်းမှ လာသည်။ "ငါသည် ချစ်ခြင်း ခံရရန် ထိုက်တန်သည်၊ အခြားသူများ၏ တုံ့ပြန်မှုသည် ငါ၏ တန်ဖိုးကို မဆုံးဖြတ်နိုင်ပါ" ဟူသော ကျန်းမာသော မသိစိတ် ရပ်တည်ချက် ရှိနေခြင်း ဖြစ်သည်။</p>
+                <p>သို့သော်လည်း ပြင်းထန်သော စိတ်ဖိစီးမှုများ သို့မဟုတ် သစ္စာဖောက်ခံရမှုများနှင့် ရင်ဆိုင်ရသည့်အခါ မသိစိတ်အတွင်း ပုန်းကွယ်နေသော စိုးရိမ်စိတ် သို့မဟုတ် ရှောင်ဖယ်လိုစိတ်များ ယိမ်းယိုင် ပေါ်ပေါက်လာနိုင်သည့် ဟာကွက် အနည်းငယ် ရှိနေနိုင်သေးသည်။</p>
+              </div>
+              <div>
+                <h4 class="font-bold text-amber-400 text-base mb-2">[ ပုန်းကွယ်နေသော စိတ်ဒဏ်ရာနှင့် ဩဇာလွှမ်းမိုးမှု သုံးသပ်ချက် ]</h4>
+                <h5 class="font-semibold text-slate-200 text-sm mb-2">စွမ်းအင် ညီမျှမှုနှင့် စည်းမျဉ်းများ စိစစ်ခြင်း</h5>
+                <p class="mb-3">သင့်၏ တုံ့ပြန်မှုများသည် ဆက်ဆံရေးတွင် စွမ်းအင် ညီမျှမှုကို ထိန်းသိမ်းနိုင်ပြီး စိတ်ခံစားချက် ထိန်းချုပ်မှု မြင့်မားစေသည်။ အာဏာပြပွဲများ ပြုလုပ်ခြင်းထက် ပူးပေါင်းညှိနှိုင်းမှုကို ဦးစားပေးတတ်သည်။</p>
+                <p>သို့သော် အခြားတစ်ဖက်သူက အလွန်အမင်း အဆိပ်အတောက် ဖြစ်နေသော ပုံစံများဖြင့် ကျူးလွန်လာသည့်အခါ သင့်၏ တည်ငြိမ်သော စည်းနိမိတ်များ ယိမ်းယိုင် မသွားစေရန်နှင့် စိုးရိမ်စိတ်များ နိုးထမလာစေရန် မသိစိတ် အခင်းအကျင်းကို ဆက်လက် စောင့်ကြည့်ရန် လိုအပ်ပါသည်။</p>
+              </div>
+              <div class="cliffhanger-box border-l-2 border-amber-500 bg-amber-500/5 p-3 rounded-r-lg mt-4">
+                <div class="text-amber-400 font-bold text-xs mb-1">[ နောက်တစ်ဆင့်သို့ ကူးပြောင်းခြင်း ]</div>
+                <div class="text-slate-200 text-xs">
+                  သင့်တွင် ဖြစ်ပေါ်နေသော ဤ စိတ်ဖိစီးမှုများနှင့် မသိစိတ်၏ အရိပ်မည်းများကို မည်သို့ အစဉ်လိုက် စနစ်တကျ ပြုပြင်ရမည်ဆိုသည့် အဆင့်လိုက် လမ်းညွှန်ချက်ကို Part 4 တွင် ဆက်လက် ဖော်ပြပေးပါမည်။
+                </div>
+              </div>
+            </div>
+          `
+        }
+      };
+
+      const res = resultsData[resultType];
+      document.getElementById('result-title').innerText = res.title;
+      document.getElementById('result-analysis').innerHTML = res.analysis;
+
+      // --- DASSY INTEGRATED STORAGE LOGIC (PART 3 FIX) ---
+      // 1. Save Part 3 Title & Summary directly for Part 4 Integration
+      localStorage.setItem('dassy_p3_title', res.title);
+      localStorage.setItem('dassy_p3_summary', res.title);
+
+      // 2. Save to unified DASSY_MASTER_TEST object
+      let masterData = JSON.parse(localStorage.getItem('DASSY_MASTER_TEST')) || {};
+      masterData.part3 = {
+        title: res.title,
+        summary: res.title
+      };
+      localStorage.setItem('DASSY_MASTER_TEST', JSON.stringify(masterData));
+    }
+  </script>
+</body>
+</html>
