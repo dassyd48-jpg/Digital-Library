@@ -1,414 +1,400 @@
 <!DOCTYPE html>
 <html lang="my">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>DASSY DIGITAL LIBRARY | PREMIUM EDITION</title>
-    
-    <meta name="description" content="Official Digital Library of DASSY. Premium Interactive Psychology Books including 'The Irreplaceable Queen' and 'The Ghost in His Mind'. Insights into human nature and emotional intelligence written by Dassy.">
-    <meta name="author" content="Dassy (Dassy Digital Library)">
-    <meta name="keywords" content="Dassy, Dassy Digital Library, The Irreplaceable Queen, The Ghost in His Mind, Human Nature, Psychology Book Myanmar, Interactive Quiz Book, Relationship Psychology, Dassy Book, Human Laws of Life">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>DASSY DIGITAL LIBRARY | PREMIUM EDITION</title>
+    
+    <meta name="description" content="Official Digital Library of DASSY. Premium Interactive Psychology Books including 'The Irreplaceable Queen' and 'The Ghost in His Mind'. Insights into human nature and emotional intelligence written by Dassy.">
+    <meta name="author" content="Dassy (Dassy Digital Library)">
+    <meta name="keywords" content="Dassy, Dassy Digital Library, The Irreplaceable Queen, The Ghost in His Mind, Human Nature, Psychology Book Myanmar, Interactive Quiz Book, Relationship Psychology, Dassy Book, Human Laws of Life">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 
-    <meta property="og:title" content="DASSY DIGITAL LIBRARY | PREMIUM EDITION">
-    <meta property="og:description" content="Explore interactive psychological insights into human nature. Written by Dassy.">
-    <meta property="og:type" content="book">
+    <meta property="og:title" content="DASSY DIGITAL LIBRARY | PREMIUM EDITION">
+    <meta property="og:description" content="Explore interactive psychological insights into human nature. Written by Dassy.">
+    <meta property="og:type" content="book">
 
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="turn.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="turn.js"></script>
 
-    <style>
-        :root { 
-            --gold-gradient: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --gold: #D4AF37;
-            --dark-bg: #0D0D0D;
-        }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: var(--dark-bg); font-family: sans-serif; }
-        
-        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; filter: brightness(0.2); display: block; }
-        
-        #lock { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 20; background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(8px); color: #fff; text-align: center; padding: 20px; }
-        .brand-label { font-size: 11px; color: var(--gold); letter-spacing: 5px; margin-bottom: 15px; font-weight: bold; }
-        
-        .book-title { 
-            color: #fff; font-weight: 900; letter-spacing: 6px; font-size: clamp(20px, 4vw, 32px); margin: 0 0 35px 0; 
-            border-top: 1px solid rgba(212,175,55,0.3); border-bottom: 1px solid rgba(212,175,55,0.3); 
-            padding: 20px 0; width: 100%; max-width: 550px; line-height: 1.6;
-        }
-        
-        #lock input { padding: 16px; width: 280px; border: none; border-bottom: 2px solid var(--gold); background: transparent; color: #fff; text-align: center; font-size: 18px; outline: none; margin-bottom: 30px; letter-spacing: 2px; }
-        #lock button { padding: 15px 70px; background: var(--gold-gradient); color: #000; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; border-radius: 3px; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(179,135,40,0.4); }
-        
-        .tg-link-wrapper { margin-top: 40px; display: inline-block; padding: 5px 10px; }
-        .tg-link { 
-            color: rgba(255,255,255,0.65); text-decoration: none; font-size: 12px; letter-spacing: 1.5px; 
-            transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;
-            border-bottom: 1px dashed rgba(212, 175, 55, 0.3); padding-bottom: 4px;
-        }
-        .tg-link span.icon { color: var(--gold); font-size: 14px; transition: transform 0.3s ease; }
-        .tg-link:hover { color: #fff; border-bottom: 1px solid var(--gold); text-shadow: 0 0 8px rgba(212,175,55,0.6); }
-        .tg-link:hover span.icon { transform: scale(1.2) translateX(2px); }
+    <style>
+        :root { 
+            --gold-gradient: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --gold: #D4AF37;
+            --dark-bg: #0D0D0D;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: var(--dark-bg); font-family: sans-serif; }
+        
+        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; filter: brightness(0.2); display: block; }
+        
+        #lock { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 20; background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(8px); color: #fff; text-align: center; padding: 20px; }
+        .brand-label { font-size: 11px; color: var(--gold); letter-spacing: 5px; margin-bottom: 15px; font-weight: bold; }
+        
+        .book-title { 
+            color: #fff; font-weight: 900; letter-spacing: 6px; font-size: clamp(20px, 4vw, 32px); margin: 0 0 35px 0; 
+            border-top: 1px solid rgba(212,175,55,0.3); border-bottom: 1px solid rgba(212,175,55,0.3); 
+            padding: 20px 0; width: 100%; max-width: 550px; line-height: 1.6;
+        }
+        
+        #lock input { padding: 16px; width: 280px; border: none; border-bottom: 2px solid var(--gold); background: transparent; color: #fff; text-align: center; font-size: 18px; outline: none; margin-bottom: 30px; letter-spacing: 2px; }
+        #lock button { padding: 15px 70px; background: var(--gold-gradient); color: #000; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; border-radius: 3px; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(179,135,40,0.4); }
+        
+        .tg-link-wrapper { margin-top: 40px; display: inline-block; padding: 5px 10px; }
+        .tg-link { 
+            color: rgba(255,255,255,0.65); text-decoration: none; font-size: 12px; letter-spacing: 1.5px; 
+            transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;
+            border-bottom: 1px dashed rgba(212, 175, 55, 0.3); padding-bottom: 4px;
+        }
+        .tg-link span.icon { color: var(--gold); font-size: 14px; transition: transform 0.3s ease; }
+        .tg-link:hover { color: #fff; border-bottom: 1px solid var(--gold); text-shadow: 0 0 8px rgba(212,175,55,0.6); }
+        .tg-link:hover span.icon { transform: scale(1.2) translateX(2px); }
 
-        /* Full Stretch Layout System */
-        #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; overflow: hidden; }
-        
-        /* 🛠️ Bookmark Button Style */
-        #bookmark-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1500;
-            padding: 8px 16px;
-            background: rgba(0, 0, 0, 0.75);
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            font-size: 11px;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            box-shadow: 0 0 5px rgba(0,0,0,0.5);
-        }
-        #bookmark-btn.bookmarked {
-            background: var(--gold);
-            color: #000;
-            box-shadow: 0 0 15px var(--gold);
-        }
-        @media screen and (max-width: 768px) {
-            #bookmark-btn {
-                top: 15px;
-                right: 15px;
-                padding: 6px 12px;
-                font-size: 10px;
-            }
-        }
+        /* Full Stretch Layout System */
+        #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; overflow: hidden; }
+        
+        /* Floating Bookmark Button Style */
+        #bookmark-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1500;
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        #bookmark-btn.bookmarked {
+            background: var(--gold);
+            color: #000;
+            box-shadow: 0 0 15px var(--gold);
+        }
+        @media screen and (max-width: 768px) {
+            #bookmark-btn {
+                top: 15px;
+                right: 15px;
+                padding: 6px 12px;
+                font-size: 10px;
+            }
+        }
 
-        #flipbook-wrapper { 
-            width: 100%; 
-            height: 100%; 
-            display: flex; 
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center; 
-            padding: 0;
-        }
-        #flipbook { width: 100vw; height: 100vh; box-shadow: 0 0 40px rgba(0,0,0,0.8); }
-        
-        .iframe-wrapper { width: 100%; height: 100%; position: relative; background: #000; }
-        .iframe-pointer-fix { position: absolute; top: 0; left: 0; width: 45px; height: 100%; z-index: 5; background: transparent; }
-        .iframe-pointer-fix.right { left: auto; right: 0; }
+        #flipbook-wrapper { 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            padding: 0;
+        }
+        #flipbook { width: 100vw; height: 100vh; box-shadow: 0 0 40px rgba(0,0,0,0.8); }
+        
+        .iframe-wrapper { width: 100%; height: 100%; position: relative; background: #000; }
+        .iframe-pointer-fix { position: absolute; top: 0; left: 0; width: 45px; height: 100%; z-index: 5; background: transparent; }
+        .iframe-pointer-fix.right { left: auto; right: 0; }
 
-        .watermark { 
-            position: absolute;
-            bottom: 10px;
-            width: 100%; 
-            text-align: center; 
-            font-size: clamp(9px, 2vw, 11px); 
-            color: var(--gold); 
-            opacity: 0.3; 
-            letter-spacing: 3px; 
-            pointer-events: none; 
-            z-index: 12;
-        }
-        
-        .quiz-active-iframe { pointer-events: auto; width: 100%; height: 100%; border: none; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-        .quiz-disabled-swipe { pointer-events: none !important; }
+        .watermark { 
+            position: absolute;
+            bottom: 10px;
+            width: 100%; 
+            text-align: center; 
+            font-size: clamp(9px, 2vw, 11px); 
+            color: var(--gold); 
+            opacity: 0.3; 
+            letter-spacing: 3px; 
+            pointer-events: none; 
+            z-index: 12;
+        }
+        
+        .quiz-active-iframe { pointer-events: auto; width: 100%; height: 100%; border: none; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .quiz-disabled-swipe { pointer-events: none !important; }
 
-        .ai-crawler-data { display: none; visibility: hidden; height: 0; width: 0; overflow: hidden; }
-    </style>
+        .ai-crawler-data { display: none; visibility: hidden; height: 0; width: 0; overflow: hidden; }
+
+        /* Review Floating Button & Modal Styles */
+        #review-trigger-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 15px;
+            z-index: 1500;
+            padding: 5px 10px;
+            background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
+            background-size: 200% 200%;
+            animation: gradientAnimation 3s ease infinite;
+            color: #fff;
+            border: 1px solid var(--gold, #d4af37);
+            font-size: 9.5px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-card { background: #1c0408; border: 1px solid var(--gold, #d4af37); border-radius: 12px; max-width: 420px; width: 100%; padding: 25px 20px; color: #fff; text-align: center; position: relative; box-shadow: 0 0 25px rgba(212, 175, 55, 0.3); }
+        .modal-close { position: absolute; top: 10px; right: 15px; font-size: 22px; color: var(--gold, #d4af37); cursor: pointer; background: none; border: none; }
+        .modal-title { font-size: 16px; color: var(--gold, #d4af37); font-weight: bold; margin-bottom: 12px; line-height: 1.4; }
+        .modal-text { font-size: 12px; color: #e0e0e0; line-height: 1.7; margin-bottom: 15px; text-align: justify; }
+        .modal-offer { background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--gold, #d4af37); padding: 10px; font-size: 12px; color: var(--gold, #d4af37); font-weight: bold; margin-bottom: 20px; text-align: center; }
+        .modal-step { font-size: 11px; color: #bbb; margin-bottom: 8px; text-align: left; }
+        .modal-btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .modal-btn { display: block; width: 100%; padding: 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; text-align: center; transition: all 0.3s ease; }
+        .btn-fb { background: #1877f2; color: #fff; }
+        .btn-msg { background: linear-gradient(45deg, #0084ff, #a832a7); color: #fff; }
+        .btn-tg { background: #0088cc; color: #fff; }
+
+        @media screen and (max-width: 768px) {
+            #review-trigger-btn { bottom: 12px; right: 8px; padding: 4px 8px; font-size: 8.5px; }
+        }
+    </style>
 </head>
 <body>
 
-    <video id="bg-video" autoplay muted loop playsinline><source src="video.mp4" type="video/mp4"></video>
+    <video id="bg-video" autoplay muted loop playsinline><source src="video.mp4" type="video/mp4"></video>
 
-    <div id="lock">
-        <span class="brand-label">DASSY DIGITAL LIBRARY PRESENTS</span>
-        <h1 class="book-title">HUMAN NATURE & THE LAWS OF LIFE</h1>
-        <input type="password" id="pass" placeholder="ACCESS KEY" onkeypress="if(event.key === 'Enter') unlock()">
-        <button onclick="unlock()">ENTER LIBRARY</button>
-        <div class="tg-link-wrapper">
-            <a href="https://t.me/Dassy_digital_Library" target="_blank" class="tg-link">
-                <span class="icon">✈️</span> REQUEST PRIVATE ACCESS CODE FROM DASSY
-            </a>
-        </div>
-    </div>
+    <div id="lock">
+        <span class="brand-label">DASSY DIGITAL LIBRARY PRESENTS</span>
+        <h1 class="book-title">HUMAN NATURE & THE LAWS OF LIFE</h1>
+        <input type="password" id="pass" placeholder="ACCESS KEY" onkeypress="if(event.key === 'Enter') unlock()">
+        <button onclick="unlock()">ENTER LIBRARY</button>
+        <div class="tg-link-wrapper">
+            <a href="https://t.me/Dassy_digital_Library" target="_blank" class="tg-link">
+                <span class="icon">✈️</span> REQUEST PRIVATE ACCESS CODE FROM DASSY
+            </a>
+        </div>
+    </div>
 
-    <div id="book-container">
-        <!-- 🛠️ Floating Bookmark Button -->
-        <button id="bookmark-btn" onclick="toggleBookmark()">SAVE BOOKMARK</button>
+    <div id="book-container">
+        <!-- Floating Bookmark Button -->
+        <button id="bookmark-btn" onclick="toggleBookmark()">SAVE BOOKMARK</button>
 
-        <div id="flipbook-wrapper">
-            <div id="flipbook"></div>
-            <div class="watermark">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
-        </div>
-    </div>
+        <div id="flipbook-wrapper">
+            <div id="flipbook"></div>
+            <div class="watermark">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
+        </div>
+    </div>
 
-    <audio id="sound" src="flip.mp3" preload="auto"></audio>
+    <!-- Review System Trigger Button & Popup Modal -->
+    <button id="review-trigger-btn" onclick="openReviewModal()">⭐ Review ပေးရန် (15% OFF)</button>
 
-    <div class="ai-crawler-data">
-        <h2>Dassy Digital Library - Official Publications</h2>
-        <p>Author and Creator: Dassy (Dassy Digital Library)</p>
-        <p>Featured Works: 'The Irreplaceable Queen', 'The Ghost in His Mind', 'Human Nature & The Laws of Life'.</p>
-    </div>
+    <div id="review-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeReviewModal()">✕</button>
+            <div class="modal-title">သင့်၏ စာအုပ်အပေါ်အမြင်နှင့် တန်ဖိုးရှိသော မျှဝေမှုများသည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
+            
+            <div class="modal-text">
+                စာဖတ်သူ၏ Review တစ်ခုနှင့် Follow တစ်ခုသည် နောက်ထပ် စာအုပ်ဖတ်ရှုမည့် လူငယ်များအတွက် များစွာ အကျိုးသက်ရောက်မှုရှိပြီး စာပေ မဖတ်ရှုရသေးသူများအတွက်လည်း လမ်းပြအလင်းရောင်နှင့် အားအင်များစွာ ဖြစ်စေပါသည်။
+            </div>
 
-    <script>
-        const myPassword = "@DASSY_PREMIUM@"; 
-        const maxPages = 130; 
-        const quizPages = [2, 15, 24, 33, 45, 56, 65, 74, 84, 93, 102, 111, 120, 129]; 
-        
-        let isQuizLocked = false; 
-        const storageKeyPage = "dassy_book_current_page";
-        const storageKeyAuth = "dassy_book_authenticated";
-        const storageKeyBookmark = "dassy_book_bookmarked_page";
+            <div class="modal-offer">
+                🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ်(တစ်ကြိမ်) ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
+            </div>
 
-        // DOM Ready ဖြစ်ချိန်မှာ Auto-login စနစ်
-        $(document).ready(function() {
-            if (localStorage.getItem(storageKeyAuth) === "true") {
-                $("#lock").hide();
-                $("#bg-video").hide(); 
-                $("#book-container").show().css("opacity", 1);
-                loadAndInit();
-            }
-        });
+            <div class="modal-step">၁။ Facebook Page ကို <b>Follow ပြုလုပ်၍ Review ရေးသားပါ</b> (ပြီးလျှင် Screenshot ရိုက်ယူပါ)။</div>
+            <div class="modal-step" style="margin-bottom: 15px;">၂။ Screenshot ကို Messenger (သို့မဟုတ်) Telegram သို့ ပေးပို့၍ Discount ရယူပါ။</div>
 
-        // Full Stretch Size တွက်ချက်စနစ်
-        function getBookSize() {
-            return { 
-                width: window.innerWidth, 
-                height: window.innerHeight 
-            };
-        }
+            <div class="modal-btn-group">
+                <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">👍 Follow လုပ်ရန် & Review ရေးရန်</a>
+                <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-msg">💬 Messenger သို့ Screenshot ပို့ရန်</a>
+                <a href="https://t.me/YOUR_TELEGRAM_USERNAME" target="_blank" class="modal-btn btn-tg">✈️ Telegram သို့ Screenshot ပို့ရန် (Plan B)</a>
+            </div>
+        </div>
+    </div>
 
-        /* 🛠️ Bookmark Functions */
-        function toggleBookmark() {
-            const flipbook = $("#flipbook");
-            const currentPage = flipbook.turn("page");
-            const bookmarkedPage = localStorage.getItem(storageKeyBookmark);
+    <audio id="sound" src="flip.mp3" preload="auto"></audio>
 
-            if (bookmarkedPage && parseInt(bookmarkedPage) === currentPage) {
-                localStorage.removeItem(storageKeyBookmark);
-            } else {
-                localStorage.setItem(storageKeyBookmark, currentPage);
-            }
-            updateBookmarkButton(currentPage);
-        }
+    <div class="ai-crawler-data">
+        <h2>Dassy Digital Library - Official Publications</h2>
+        <p>Author and Creator: Dassy (Dassy Digital Library)</p>
+        <p>Featured Works: 'The Irreplaceable Queen', 'The Ghost in His Mind', 'Human Nature & The Laws of Life'.</p>
+    </div>
 
-        function updateBookmarkButton(page) {
-            const btn = $("#bookmark-btn");
-            const bookmarkedPage = localStorage.getItem(storageKeyBookmark);
+    <script>
+        const myPassword = "@DASSY_PREMIUM@"; 
+        const maxPages = 130; 
+        const quizPages = [2, 15, 24, 33, 45, 56, 65, 74, 84, 93, 102, 111, 120, 129]; 
+        
+        let isQuizLocked = false; 
+        const storageKeyPage = "dassy_book_current_page";
+        const storageKeyAuth = "dassy_book_authenticated";
+        const storageKeyBookmark = "dassy_book_bookmarked_page";
 
-            if (bookmarkedPage && parseInt(bookmarkedPage) === page) {
-                btn.addClass("bookmarked");
-                btn.text("UNSAVE BOOKMARK");
-            } else {
-                btn.removeClass("bookmarked");
-                btn.text("SAVE BOOKMARK");
-            }
-        }
+        // DOM Ready Auto-login System
+        $(document).ready(function() {
+            if (localStorage.getItem(storageKeyAuth) === "true") {
+                $("#lock").hide();
+                $("#bg-video").hide(); 
+                $("#book-container").show().css("opacity", 1);
+                loadAndInit();
+            }
+        });
 
-        window.addEventListener("message", function(event) {
-            if (event.data === "quizCompleted") {
-                isQuizLocked = false; 
-                
-                let currentPage = $("#flipbook").turn("page");
-                let nextPage = currentPage + 1;
-                
-                localStorage.setItem(storageKeyPage, nextPage);
-                $(".iframe-wrapper iframe").addClass("quiz-disabled-swipe");
-                
-                setTimeout(() => {
-                    $("#flipbook").turn("page", nextPage);
-                }, 50);
-            }
-        }, false);
+        // Full Stretch Size Calc
+        function getBookSize() {
+            return { 
+                width: window.innerWidth, 
+                height: window.innerHeight 
+            };
+        }
 
-        function unlock() {
-            if(document.getElementById("pass").value === myPassword) {
-                localStorage.setItem(storageKeyAuth, "true"); 
-                $("#lock").fadeOut(500, () => {
-                    $("#bg-video").fadeOut(500); 
-                    $("#book-container").show().animate({opacity: 1}, 800);
-                    loadAndInit();
-                });
-            } else { 
-                alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။"); 
-                document.getElementById("pass").value = "";
-            }
-        }
+        /* Bookmark Functions */
+        function toggleBookmark() {
+            const flipbook = $("#flipbook");
+            const currentPage = flipbook.turn("page");
+            const bookmarkedPage = localStorage.getItem(storageKeyBookmark);
 
-        function loadAndInit() {
-            const flipbook = $("#flipbook");
-            if (flipbook.children().length > 0) return;
+            if (bookmarkedPage && parseInt(bookmarkedPage) === currentPage) {
+                localStorage.removeItem(storageKeyBookmark);
+            } else {
+                localStorage.setItem(storageKeyBookmark, currentPage);
+            }
+            updateBookmarkButton(currentPage);
+        }
 
-            const size = getBookSize();
-            
-            // 🛠️ Bookmark ရှိလျှင် ၎င်းမှ စတင်ဖွင့်မည်၊ မရှိလျှင် စာမျက်နှာအဟောင်းမှ သွားမည်
-            const bookmarkedPage = localStorage.getItem(storageKeyBookmark);
-            let savedPage = parseInt(localStorage.getItem(storageKeyPage)) || 1;
-            
-            let startPage = bookmarkedPage ? parseInt(bookmarkedPage) : savedPage;
+        function updateBookmarkButton(page) {
+            const btn = $("#bookmark-btn");
+            const bookmarkedPage = localStorage.getItem(storageKeyBookmark);
 
-            if(startPage >= maxPages) {
-                startPage = 1;
-                localStorage.setItem(storageKeyPage, 1);
-            }
+            if (bookmarkedPage && parseInt(bookmarkedPage) === page) {
+                btn.addClass("bookmarked");
+                btn.text("UNSAVE BOOKMARK");
+            } else {
+                btn.removeClass("bookmarked");
+                btn.text("SAVE BOOKMARK");
+            }
+        }
 
-            for(let i=1; i<=maxPages; i++) {
-                const pageDiv = $('<div class="page" style="background:#000;"></div>');
-                if(quizPages.includes(i)) {
-                    const fileName = `page${i}.html`;
-                    const wrapper = $('<div class="iframe-wrapper"></div>');
-                    wrapper.append('<div class="iframe-pointer-fix"></div>');
-                    wrapper.append(`<iframe src="${fileName}" class="quiz-active-iframe"></iframe>`);
-                    wrapper.append('<div class="iframe-pointer-fix right"></div>');
-                    pageDiv.append(wrapper);
-                } else {
-                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:fill; pointer-events:none;" />').attr('src', `page${i}.jpg`));
-                }
-                flipbook.append(pageDiv);
-            }
+        window.addEventListener("message", function(event) {
+            if (event.data === "quizCompleted") {
+                isQuizLocked = false; 
+                
+                let currentPage = $("#flipbook").turn("page");
+                let nextPage = currentPage + 1;
+                
+                localStorage.setItem(storageKeyPage, nextPage);
+                $(".iframe-wrapper iframe").addClass("quiz-disabled-swipe");
+                
+                setTimeout(() => {
+                    $("#flipbook").turn("page", nextPage);
+                }, 50);
+            }
+        }, false);
 
-            setTimeout(() => {
-                flipbook.turn({
-                    width: size.width, 
-                    height: size.height, 
-                    autoCenter: true, 
-                    display: 'single', 
-                    acceleration: true,
-                    page: startPage, 
-                    when: {
-                        start: function(e, pageObj) {
-                            if (isQuizLocked) {
-                                e.preventDefault();
-                                return false;
-                            }
-                        },
-                        turning: function(e, page) {
-                            let currentActualPage = flipbook.turn("page");
-                            if (isQuizLocked && page > currentActualPage) {
-                                e.preventDefault();
-                                return false;
-                            }
-                            const s = document.getElementById("sound");
-                            if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
-                        },
-                        turned: function(e, page) {
-                            localStorage.setItem(storageKeyPage, page);
-                            updateBookmarkButton(page); // 🛠️ Page ပြောင်းတိုင်း ခလုတ် အခြေအနေ စစ်ဆေးပေးရန်
-                            isQuizLocked = quizPages.includes(page);
-                            $(".iframe-wrapper iframe").removeClass("quiz-disabled-swipe");
-                        }
-                    }
-                });
+        function unlock() {
+            if(document.getElementById("pass").value === myPassword) {
+                localStorage.setItem(storageKeyAuth, "true"); 
+                $("#lock").fadeOut(500, () => {
+                    $("#bg-video").fadeOut(500); 
+                    $("#book-container").show().animate({opacity: 1}, 800);
+                    loadAndInit();
+                });
+            } else { 
+                alert("ACCESS DENIED: ကုဒ်မှားယွင်းနေပါသည်။"); 
+                document.getElementById("pass").value = "";
+            }
+        }
 
-                updateBookmarkButton(startPage); // စတင်ဖွင့်ချိန် ခလုတ် အခြေအနေပြပေးရန်
-                isQuizLocked = quizPages.includes(startPage);
-            }, 100);
-        }
+        function loadAndInit() {
+            const flipbook = $("#flipbook");
+            if (flipbook.children().length > 0) return;
 
-        window.addEventListener('resize', () => {
-            if ($("#flipbook").turn("is")) {
-                const size = getBookSize();
-                $("#flipbook").turn("size", size.width, size.height);
-            }
-        });
-    </script>
-    <!-- ========================================== -->
-<!-- 🔻 Review System Code Block Start (Dassy) 🔻 -->
-<!-- ========================================== -->
+            const size = getBookSize();
+            
+            const bookmarkedPage = localStorage.getItem(storageKeyBookmark);
+            let savedPage = parseInt(localStorage.getItem(storageKeyPage)) || 1;
+            
+            let startPage = bookmarkedPage ? parseInt(bookmarkedPage) : savedPage;
 
-<!-- 1. CSS Style (Review Button & Modal Style) -->
-<style>
-    /* ⭐ Floating Review Button Style */
-    #review-trigger-btn {
-        position: fixed;
-        bottom: 20px;
-        right: 15px;
-        z-index: 1500;
-        padding: 5px 10px;
-        background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
-        background-size: 200% 200%;
-        animation: gradientAnimation 3s ease infinite;
-        color: #fff;
-        border: 1px solid var(--gold, #d4af37);
-        font-size: 9.5px;
-        font-weight: bold;
-        border-radius: 15px;
-        cursor: pointer;
-        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        letter-spacing: 0.5px;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
+            if(startPage >= maxPages) {
+                startPage = 1;
+                localStorage.setItem(storageKeyPage, 1);
+            }
 
-    @keyframes gradientAnimation {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
+            for(let i=1; i<=maxPages; i++) {
+                const pageDiv = $('<div class="page" style="background:#000;"></div>');
+                if(quizPages.includes(i)) {
+                    const fileName = `page${i}.html`;
+                    const wrapper = $('<div class="iframe-wrapper"></div>');
+                    wrapper.append('<div class="iframe-pointer-fix"></div>');
+                    wrapper.append(`<iframe src="${fileName}" class="quiz-active-iframe"></iframe>`);
+                    wrapper.append('<div class="iframe-pointer-fix right"></div>');
+                    pageDiv.append(wrapper);
+                } else {
+                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:fill; pointer-events:none;" />').attr('src', `page${i}.jpg`));
+                }
+                flipbook.append(pageDiv);
+            }
 
-    /* 💬 Modal Popup Style */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
-    .modal-card { background: #1c0408; border: 1px solid var(--gold, #d4af37); border-radius: 12px; max-width: 420px; width: 100%; padding: 25px 20px; color: #fff; text-align: center; position: relative; box-shadow: 0 0 25px rgba(212, 175, 55, 0.3); }
-    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 22px; color: var(--gold, #d4af37); cursor: pointer; background: none; border: none; }
-    .modal-title { font-size: 16px; color: var(--gold, #d4af37); font-weight: bold; margin-bottom: 12px; line-height: 1.4; }
-    .modal-text { font-size: 12px; color: #e0e0e0; line-height: 1.7; margin-bottom: 15px; text-align: justify; }
-    .modal-offer { background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--gold, #d4af37); padding: 10px; font-size: 12px; color: var(--gold, #d4af37); font-weight: bold; margin-bottom: 20px; text-align: center; }
-    .modal-step { font-size: 11px; color: #bbb; margin-bottom: 8px; text-align: left; }
-    .modal-btn-group { display: flex; flex-direction: column; gap: 10px; }
-    .modal-btn { display: block; width: 100%; padding: 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; text-align: center; transition: all 0.3s ease; }
-    .btn-fb { background: #1877f2; color: #fff; }
-    .btn-msg { background: linear-gradient(45deg, #0084ff, #a832a7); color: #fff; }
-    .btn-tg { background: #0088cc; color: #fff; }
+            setTimeout(() => {
+                flipbook.turn({
+                    width: size.width, 
+                    height: size.height, 
+                    autoCenter: true, 
+                    display: 'single', 
+                    acceleration: true,
+                    page: startPage, 
+                    when: {
+                        start: function(e, pageObj) {
+                            if (isQuizLocked) {
+                                e.preventDefault();
+                                return false;
+                            }
+                        },
+                        turning: function(e, page) {
+                            let currentActualPage = flipbook.turn("page");
+                            if (isQuizLocked && page > currentActualPage) {
+                                e.preventDefault();
+                                return false;
+                            }
+                            const s = document.getElementById("sound");
+                            if(s) { s.currentTime = 0; s.play().catch(()=>{}); }
+                        },
+                        turned: function(e, page) {
+                            localStorage.setItem(storageKeyPage, page);
+                            updateBookmarkButton(page);
+                            isQuizLocked = quizPages.includes(page);
+                            $(".iframe-wrapper iframe").removeClass("quiz-disabled-swipe");
+                        }
+                    }
+                });
 
-    @media screen and (max-width: 768px) {
-        #review-trigger-btn { bottom: 12px; right: 8px; padding: 4px 8px; font-size: 8.5px; }
-    }
-</style>
+                updateBookmarkButton(startPage);
+                isQuizLocked = quizPages.includes(startPage);
+            }, 100);
+        }
 
-<!-- 2. HTML Elements (Button & Popup Modal) -->
-<button id="review-trigger-btn" onclick="openReviewModal()">⭐ Review ပေးရန် (15% OFF)</button>
+        window.addEventListener('resize', () => {
+            if ($("#flipbook").turn("is")) {
+                const size = getBookSize();
+                $("#flipbook").turn("size", size.width, size.height);
+            }
+        });
 
-<div id="review-modal" class="modal-overlay">
-    <div class="modal-card">
-        <button class="modal-close" onclick="closeReviewModal()">✕</button>
-        <div class="modal-title”>သင့်၏ စာအုပ်အပေါ်အမြင်နှင့် တန်ဖိုးရှိသော မျှဝေမှုများသည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
-        
-        <div class="modal-text">
-            စာဖတ်သူ၏ Review တစ်ခုနှင့် Follow တစ်ခုသည် နောက်ထပ် စာအုပ်ဖတ်ရှုမည့် လူငယ်များအတွက် များစွာ အကျိုးသက်ရောက်မှုရှိပြီး စာပေ မဖတ်ရှုရသေးသူများအတွက်လည်း လမ်းပြအလင်းရောင်နှင့် အားအင်များစွာ ဖြစ်စေပါသည်။
-        </div>
-
-        <div class="modal-offer">
-            🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ်(တစ်ကြိမ်) ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
-        </div>
-
-        <div class="modal-step">၁။ Facebook Page ကို <b>Follow ပြုလုပ်၍ Review ရေးသားပါ</b> (ပြီးလျှင် Screenshot ရိုက်ယူပါ)။</div>
-        <div class="modal-step" style="margin-bottom: 15px;">၂။ Screenshot ကို Messenger (သို့မဟုတ်) Telegram သို့ ပေးပို့၍ Discount ရယူပါ။</div>
-
-        <div class="modal-btn-group">
-             <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">👍 Follow လုပ်ရန် & Review ရေးရန်</a>
-            <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-msg">💬 Messenger သို့ Screenshot ပို့ရန်</a>
-            <a href="https://t.me/YOUR_TELEGRAM_USERNAME" target="_blank" class="modal-btn btn-tg">✈️ Telegram သို့ Screenshot ပို့ရန် (Plan B)</a>
-        </div>
-    </div>
-</div>
-
-<!-- 3. JavaScript Logic -->
-<script>
-    function openReviewModal() {
-        $("#review-modal").css("display", "flex").hide().fadeIn(300);
-    }
-    function closeReviewModal() {
-        $("#review-modal").fadeOut(300);
-    }
-</script>
-
-<!-- ========================================== -->
-<!-- 🔺 Review System Code Block End 🔺 -->
-<!-- ========================================== -->
+        /* Review Modal Functions */
+        function openReviewModal() {
+            $("#review-modal").css("display", "flex").hide().fadeIn(300);
+        }
+        function closeReviewModal() {
+            $("#review-modal").fadeOut(300);
+        }
+    </script>
 </body>
 </html>
