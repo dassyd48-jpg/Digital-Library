@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paint the Burmese Letter မ - Starry Night Adventure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+    
+    body {
+      font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+      min-height: 100vh;
+      background: #312547;
+      position: relative;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* ==========================================================================
+       TOP NAVIGATION BUTTONS (HOME & RESET)
+       ========================================================================== */
+    .top-nav {
+      position: absolute; top: clamp(10px, 2vh, 20px); left: clamp(10px, 2vw, 20px);
+      z-index: 150; display: flex; gap: 8px;
+    }
+    .nav-btn {
+      width: clamp(36px, 8vw, 44px); height: clamp(36px, 8vw, 44px);
+      background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border: 2px solid #d97706; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transform: scale(1); transition: transform 0.1s; font-size: clamp(16px, 4vw, 22px);
+    }
+    .nav-btn:active { transform: scale(0.95); }
+
+    /* ==========================================================================
+       INTRO SCREEN
+       ========================================================================== */
+    .intro-screen {
+      position: absolute; inset: 0; 
+      background-color: #0f172a;
+      z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center;
+      transition: opacity 0.5s ease-out, pointer-events 0.5s;
+    }
+    .intro-screen.hide { opacity: 0; pointer-events: none; }
+    .intro-emojis { font-size: clamp(24px, 5vw, 36px); margin-bottom: 15px; letter-spacing: 6px; }
+    .intro-main-title { font-size: clamp(28px, 6vw, 42px); font-weight: 800; color: #a855f7; margin-bottom: 15px; }
+    .intro-badge { background-color: #6b21a8; border-radius: 50px; padding: 10px 25px; font-size: clamp(14px, 3vw, 18px); color: #ffffff; margin-bottom: 25px; }
+    .intro-description { font-size: clamp(14px, 3.5vw, 17px); color: #94a3b8; max-width: 600px; line-height: 1.8; margin-bottom: 35px; text-align: justify; text-justify: inter-word; }
+    .btn-start { padding: 12px 50px; font-size: clamp(18px, 4vw, 24px); font-weight: 800; color: white; background: #a855f7; border: none; border-radius: 20px; cursor: pointer; box-shadow: 0 8px 0 #7e22ce; transition: transform 0.1s; }
+    .btn-start:active { transform: translateY(4px); box-shadow: 0 4px 0 #7e22ce; }
+
+    /* ==========================================================================
+       ENVIRONMENT SCENE DESIGN (Adaptive Anchoring & Viewport Responsive)
+       ========================================================================== */
+    .game-scene { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+    .sky-gradient { position: absolute; inset: 0; background: linear-gradient(to bottom, #21153b 0%, #3b2d54 45%, #563d6b 75%, #221a30 100%); }
+    
+    .moon {
+      position: absolute; left: 10%; top: 5vh; 
+      width: clamp(60px, 12vw, 90px); height: clamp(60px, 12vw, 90px);
+      background: #fef08a; border-radius: 50%; box-shadow: 0 0 30px rgba(254, 240, 138, 0.6);
+    }
+
+    .utility-lines {
+      position: absolute; left: 0; right: 0; bottom: 0; 
+      height: clamp(180px, 35vh, 40vh);
+      background-size: 100% 100%;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'><path d='M0,230 Q250,190 500,240 T1000,220 L1000,300 L0,300 Z' fill='%23191224'/><path d='M0,250 Q350,220 700,260 T1000,240 L1000,300 L0,300 Z' fill='%230f0a17'/><line x1='150' y1='120' x2='150' y2='250' stroke='%230f0a17' stroke-width='5'/><line x1='120' y1='125' x2='180' y2='125' stroke='%230f0a17' stroke-width='4'/><line x1='800' y1='90' x2='800' y2='240' stroke='%230f0a17' stroke-width='6'/><line x1='760' y1='95' x2='840' y2='95' stroke='%230f0a17' stroke-width='4'/><path d='M150,125 Q475,180 800,95' fill='none' stroke='%230f0a17' stroke-width='1.5'/><path d='M0,160 Q75,140 150,125' fill='none' stroke='%230f0a17' stroke-width='1.5'/></svg>");
+    }
+
+    .star-field { position: absolute; inset: 0; }
+    .twinkle-star { position: absolute; background: #fff; border-radius: 50%; animation: starBlink 2.5s infinite ease-in-out alternate; }
+    .ts1 { width: 4px; height: 4px; top: 12vh; right: 20%; animation-delay: 0.2s; }
+    .ts2 { width: 5px; height: 5px; top: 22vh; left: 45%; animation-delay: 1.2s; }
+    .ts3 { width: 3px; height: 3px; top: 8vh; left: 35%; animation-delay: 0.7s; }
+    .ts4 { width: 5px; height: 5px; top: 18vh; right: 38%; animation-delay: 1.8s; }
+    @keyframes starBlink { 0% { opacity: 0.3; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px #fff; } }
+
+    .shooting-star-zone { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+    .shooting-star { position: absolute; width: 60px; height: 2px; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); transform: rotate(-25deg); opacity: 0; top: -50px; }
+    .ss1 { left: 40%; } .ss2 { left: 65%; }
+    .shooting-star.blast { animation: shootEffect 1.2s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    @keyframes shootEffect { 0% { top: 5vh; opacity: 0; transform: scaleX(0.5) rotate(-25deg); } 30% { opacity: 1; } 100% { top: 38vh; left: calc(initial + 180px); opacity: 0; transform: scaleX(1.5) rotate(-25deg); } }
+
+    /* ==========================================================================
+       MAIN WORKSPACE GRAPHIC INTERFACE (Responsive Wrapper & Containers)
+       ========================================================================== */
+    .game-wrapper {
+      position: absolute; inset: 0; z-index: 20;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: clamp(10px, 3vh, 30px) clamp(10px, 3vw, 30px);
+    }
+    .game-container {
+      display: flex; flex-direction: column; align-items: center; 
+      width: 100%; max-width: 600px;
+    }
+    
+    .heading-box {
+      background-color: #4a2872; border: 3px solid #ffffff; border-radius: 16px;
+      padding: 6px 20px; margin-bottom: clamp(10px, 2vh, 20px); box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .heading-text { font-size: clamp(15px, 4vw, 20px); font-weight: 700; color: #ffffff; }
+    .heading-glyph {
+      color: #4a2872; font-size: clamp(20px, 5vw, 26px); font-weight: 800;
+      background: #ffffff; padding: 2px 12px; border-radius: 8px;
+    }
+    
+    .stage {
+      display: flex; flex-direction: column; gap: 15px; 
+      align-items: center; justify-content: center; width: 100%;
+    }
+    .whiteboard-frame {
+      position: relative; padding: clamp(8px, 2vw, 12px); border-radius: 24px; background-color: #6b21a8;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3); border: 4px solid #ffffff;
+      width: 100%; aspect-ratio: 1/1; max-width: 400px;
+    }
+    .canvas-container { border-radius: 16px; background: #ffffff; overflow: hidden; position: relative; width: 100%; height: 100%; }
+    canvas { display: block; width: 100%; height: 100%; cursor: crosshair; touch-action: none; }
+    
+    .panel {
+      width: 100%; max-width: 400px; background-color: rgba(255, 255, 255, 0.96); border-radius: 20px; border: 3px solid #6b21a8;
+      padding: 10px 14px; display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .panel-controls-left { display: flex; align-items: center; gap: clamp(6px, 2vw, 10px); flex-grow: 1; }
+    
+    .eraser {
+      width: 44px; height: 44px; min-width: 44px; border-radius: 12px; background: white;
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+      cursor: pointer; border: 2px solid #e2e8f0; box-shadow: 0 3px 0 #cbd5e1;
+    }
+    .eraser.selected { border-color: #c084fc; background: #faf5ff; box-shadow: 0 0 12px #c084fc; }
+    
+    .brush-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .brush { width: 44px; height: 44px; border-radius: 50%; cursor: pointer; position: relative; background: white; border: 2px solid #e2e8f0; transition: transform 0.1s; }
+    .brush.selected { border-color: #6b21a8; transform: scale(1.1); box-shadow: 0 0 8px #6b21a8; border-width: 3px; }
+    .swatch { position: absolute; inset: 2px; border-radius: 50%; }
+    
+    .action-container { display: flex; gap: 8px; }
+    
+    /* ပြင်ဆင်ထားသော ခလုတ်ဒီဇိုင်း (စာသားများ အောက်မဆင်းအောင် white-space နဲ့ font-size ပြင်ထားသည်) */
+    .btn {
+      padding: 6px 8px; height: 44px; border-radius: 12px; border: none; color: white;
+      font-weight: 700; font-size: 11px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 4px; text-align: center;
+      white-space: nowrap;
+    }
+    .btn-reset { background-color: #ef4444; box-shadow: 0 4px 0 #b91c1c; }
+    .btn-next { background-color: #a855f7; box-shadow: 0 4px 0 #7e22ce; font-size: 11px; }
+    .btn:active { transform: translateY(3px); box-shadow: none; }
+
+    /* ==========================================================================
+       BONUS MINI-GAME DISPLAY AREA (Shooting Star Catcher)
+       ========================================================================= */
+    .bonus-game-overlay {
+      position: absolute; inset: 0; background: linear-gradient(to bottom, #110c1f, #25183a);
+      z-index: 120; display: none; flex-direction: column; align-items: center; justify-content: space-between;
+      padding: 20px; text-align: center; overflow: hidden;
+    }
+    .bonus-header { margin-top: 5vh; z-index: 10; }
+    .bonus-title { font-size: clamp(24px, 6vw, 36px); color: #fbbf24; text-shadow: 0 0 10px rgba(251,191,36,0.5); font-weight: 800; margin-bottom: 8px; }
+    .bonus-score { background: rgba(255,255,255,0.1); padding: 6px 20px; border-radius: 20px; color: #fff; font-size: clamp(14px, 4vw, 18px); border: 1px solid rgba(255,255,255,0.2); }
+    
+    .game-canvas-area { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 5; }
+    .falling-star {
+      position: absolute; width: clamp(50px, 12vw, 65px); height: clamp(50px, 12vw, 65px);
+      background: radial-gradient(circle, #fef08a 30%, #eab308 70%);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: #312547; font-weight: 800; font-size: clamp(20px, 5vw, 26px);
+      box-shadow: 0 0 20px #fef08a; cursor: pointer;
+      animation: fallDown 4s linear forwards;
+    }
+    
+    /* ပြင်ဆင်ထားသော ကြယ်ကျသည့် Animation (rotate ကို ဖြုတ်ထားသည်) */
+    @keyframes fallDown {
+      0% { transform: translateY(-80px); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(105vh); opacity: 1; }
+    }
+
+    /* Popups & Dialog Box System */
+    .success-popup {
+      position: absolute; inset: 0; background: rgba(15, 23, 42, 0.85);
+      z-index: 210; display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .popup-card {
+      background: #ffffff; border-radius: 28px; border: 4px solid #a855f7;
+      padding: 30px 20px; max-width: 400px; width: 100%; text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5); transform: scale(0.9); animation: popUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes popUp { 100% { transform: scale(1); } }
+    .popup-emoji { font-size: 50px; margin-bottom: 10px; }
+    .popup-title { font-size: 28px; font-weight: 800; color: #6b21a8; margin-bottom: 12px; }
+    .popup-text { font-size: 16px; color: #475569; line-height: 1.6; margin-bottom: 24px; }
+    .btn-popup-action { width: 100%; padding: 12px; font-size: 18px; font-weight: 800; color: white; background: #10b981; border: none; border-radius: 16px; cursor: pointer; box-shadow: 0 6px 0 #047857; }
+    .btn-popup-action:active { transform: translateY(3px); box-shadow: 0 3px 0 #047857; }
+
+    /* ==========================================================================
+       MEDIA QUERY VIEWPORT ADAPTATION (Computer & Tablet Layout)
+       ========================================================================== */
+    @media (min-width: 769px) {
+      .stage { flex-direction: row; gap: 20px; }
+      .panel { width: 110px; height: 400px; flex-direction: column; padding: 16px 10px; }
+      .panel-controls-left { flex-direction: column; width: 100%; }
+      .brush-grid { grid-template-columns: repeat(2, 1fr); display: grid; gap: 8px; justify-content: center; }
+      .action-container { flex-direction: column; width: 100%; }
+      .btn { width: 100%; font-size: 12px; white-space: normal; }
+      .btn-next { font-size: 12px; }
+      .eraser { width: 100%; }
+    }
+
+    /* Mobile Screen Element Scaling Matrix */
+    @media (max-width: 768px) {
+      .moon { transform: scale(0.8); left: 5%; }
+      .utility-lines { transform: scaleY(0.85); transform-origin: bottom; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAVIGATION BUTTONS -->
+  <div class="top-nav">
+    <button onclick="location.href='index.html?fromGame=true'" class="nav-btn" title="ပင်မစာမျက်နှာ">🏠</button>
+    <button id="btnTopReset" class="nav-btn" title="ပြန်စမည်">🔄</button>
+  </div>
+
+  <!-- INTRO SCREEN -->
+  <div class="intro-screen" id="welcomeIntro">
+    <div class="intro-emojis">🌕 🌌 🌃 ✨ ⚡</div>
+    <h1 class="intro-main-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</h1>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "မ" လှပတောက်ပတဲ့ ညဉ့်ဦးယံကောင်းကင်ကြီးကို အရောင်ခြယ်စို့</div>
+    <p class="intro-description">
+      ကလေးတို့ရေ... ဝါရွှေရောင်လမင်းကြီး ထိန်ထိန်သာနေပြီး စုတ်တံလေးတွေကိုကိုင်၊ ကြိုက်တဲ့အရောင်လေးတွေရွေးပြီး "မ" လမ်းကြောင်းအတိုင်း ဆေးခြယ်ကြရအောင်။
+    </p>
+    <button class="btn-start" onclick="startGame()">စတင်ကစားမည်</button>
+  </div>
+
+  <!-- STATIC ENVIRONMENT ENVIRONMENT -->
+  <div class="game-scene">
+    <div class="sky-gradient"></div>
+    <div class="star-field">
+      <div class="twinkle-star ts1"></div>
+      <div class="twinkle-star ts2"></div>
+      <div class="twinkle-star ts3"></div>
+      <div class="twinkle-star ts4"></div>
+    </div>
+    <div class="moon"></div>
+    <div class="shooting-star-zone">
+      <div class="shooting-star ss1" id="ss1"></div>
+      <div class="shooting-star ss2" id="ss2"></div>
+    </div>
+    <div class="utility-lines"></div>
+  </div>
+
+  <!-- MAIN PAINT WORKSPACE AREA -->
+  <div class="game-wrapper" id="mainPaintWorkspace">
+    <div class="game-container">
+      <div class="heading-box">
+        <span class="heading-text">အက္ခရာ</span>
+        <span class="heading-glyph">မ</span>
+        <span class="heading-text">ကို ခြယ်ကြစို့!</span>
+      </div>
+
+      <div class="stage">
+        <div class="whiteboard-frame">
+          <div class="canvas-container">
+            <canvas id="paintCanvas" width="400" height="400"></canvas>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <div class="panel-controls-left">
+            <div class="eraser" id="eraser" title="ခဲဖျက်">🧼</div>
+            <div class="brush-grid" id="brushGrid"></div>
+          </div>
+          <div class="action-container">
+            <button class="btn btn-reset" id="btnReset">ပြန်စမည်</button>
+            <button class="btn btn-next" id="btnNext">ရှေ့သို့ 🌌</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- BONUS MINI GAME OVERLAY -->
+  <div class="bonus-game-overlay" id="bonusGameSection">
+    <div class="bonus-header">
+      <h2 class="bonus-title">ကြယ်ပျံလေးတွေ ဖမ်းကြစို့! 🌌</h2>
+      <div class="bonus-score">"မ" အက္ခရာ ကြယ်ပွင့် ရရှိမှု: <span id="scoreTracker">0</span> / 5</div>
+    </div>
+    <div class="game-canvas-area" id="starSpawnZone"></div>
+  </div>
+
+  <!-- CUSTOM DIALOG DIALOG POPUPS -->
+  <div class="success-popup" id="celebrationPopup">
+    <div class="popup-card">
+      <div class="popup-emoji">🎉 🌟 🏆</div>
+      <div class="popup-title">ထူးချွန်လိုက်တာ!</div>
+      <div class="popup-text">ကလေးတို့ရေ... "မ" အက္ခရာကို ဆေးရောင်လှလှလေးလည်း ခြယ်သပြီး၊ ညကောင်းကင်ယံက "မ" ကြယ်ပွင့်လေးတွေကိုလည်း အကုန်ဖမ်းနိုင်ခဲ့ပြီနော်! တကယ်တော်ကြပါတယ်ကွယ်။</div>
+      <button class="btn-popup-action" onclick="restartEntireWorkflow()">နောက်တစ်ခေါက် ပြန်ဆော့မည်</button>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    let isPainting = false;
+    let currentColor = '#a855f7';
+    let isEraser = false;
+    let brushSize = 24;
+    let lastX = 0, lastY = 0;
+    let isAnimating = false;
+    
+    // Bonus Game Variables Matrix
+    let score = 0;
+    let spawnInterval = null;
+
+    const colors = ['#a855f7', '#c084fc', '#eab308', '#ef4444', '#3b82f6', '#10b981'];
+
+    function startGame() {
+      document.getElementById('welcomeIntro').classList.add('hide');
+    }
+
+    function getCoordinates(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      
+      // Calculate CSS scaling adjustments dynamically
+      return {
+        x: (clientX - rect.left) * (canvas.width / rect.width),
+        y: (clientY - rect.top) * (canvas.height / rect.height)
+      };
+    }
+
+    function startDrawing(e) {
+      isPainting = true;
+      const coords = getCoordinates(e);
+      lastX = coords.x; lastY = coords.y;
+    }
+    
+    function stopDrawing() { isPainting = false; ctx.beginPath(); }
+
+    function draw(e) {
+      if (!isPainting) return;
+      const coords = getCoordinates(e);
+
+      ctx.lineWidth = brushSize; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+      if (isEraser) {
+        ctx.globalCompositeOperation = 'destination-out'; ctx.lineWidth = 36;
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = currentColor;
+      }
+
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(coords.x, coords.y); ctx.stroke();
+      lastX = coords.x; lastY = coords.y;
+    }
+
+    function triggerShootingStarEffect() {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      const ss1 = document.getElementById('ss1');
+      const ss2 = document.getElementById('ss2');
+
+      ss1.classList.add('blast');
+      setTimeout(() => ss2.classList.add('blast'), 350);
+
+      setTimeout(() => {
+        ss1.classList.remove('blast');
+        ss2.classList.remove('blast');
+        isAnimating = false;
+        
+        // Switch view panel smoothly into Bonus Star Catching Game
+        switchToBonusGame();
+      }, 1500);
+    }
+
+    function switchToBonusGame() {
+      document.getElementById('mainPaintWorkspace').style.display = 'none';
+      document.getElementById('bonusGameSection').style.display = 'flex';
+      score = 0;
+      document.getElementById('scoreTracker').textContent = score;
+      startSpawningStars();
+    }
+
+    function startSpawningStars() {
+      const zone = document.getElementById('starSpawnZone');
+      zone.innerHTML = ''; 
+      
+      spawnInterval = setInterval(() => {
+        const star = document.createElement('div');
+        star.className = 'falling-star';
+        
+        // Random horizontal positions without layout overflow
+        const randomLeft = Math.floor(Math.random() * 80) + 5; 
+        star.style.left = randomLeft + '%';
+        
+        // Distribute content logic (Letter 'မ' vs distraction alphabets)
+        const pool = ['မ', 'မ', 'က', 'ခ', 'စ'];
+        const selectedText = pool[Math.floor(Math.random() * pool.length)];
+        star.textContent = selectedText;
+        
+        if(selectedText === 'မ') {
+          star.dataset.target = "true";
+        }
+        
+        star.addEventListener('mousedown', catchStarItem);
+        star.addEventListener('touchstart', catchStarItem);
+        
+        // Automatic deletion when falling ends
+        star.addEventListener('animationend', () => star.remove());
+        
+        zone.appendChild(star);
+      }, 900);
+    }
+
+    function catchStarItem(e) {
+      e.preventDefault();
+      const element = e.currentTarget;
+      
+      if(element.dataset.target === "true") {
+        score++;
+        document.getElementById('scoreTracker').textContent = score;
+        element.style.transform = 'scale(0)';
+        element.remove();
+        
+        if (score >= 5) {
+          clearInterval(spawnInterval);
+          document.getElementById('celebrationPopup').style.display = 'flex';
+        }
+      } else {
+        // Punish distraction selections gently via standard shake animations
+        element.style.background = 'radial-gradient(circle, #f87171 30%, #ef4444 70%)';
+        setTimeout(() => element.remove(), 200);
+      }
+    }
+
+    function restartEntireWorkflow() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById('celebrationPopup').style.display = 'none';
+      document.getElementById('bonusGameSection').style.display = 'none';
+      document.getElementById('mainPaintWorkspace').style.display = 'flex';
+      isEraser = false;
+      currentColor = colors[0];
+      updateUISelection();
+    }
+
+    function updateUISelection() {
+      document.querySelectorAll('.brush').forEach((el, index) => {
+        if(colors[index] === currentColor && !isEraser) el.classList.add('selected');
+        else el.classList.remove('selected');
+      });
+      if(isEraser) document.getElementById('eraser').classList.add('selected');
+      else document.getElementById('eraser').classList.remove('selected');
+    }
+
+    function initGameUI() {
+      const grid = document.getElementById('brushGrid');
+      colors.forEach((color, i) => {
+        const div = document.createElement('div');
+        div.className = 'brush' + (i === 0 ? ' selected' : '');
+        div.innerHTML = `<div class="swatch" style="background:${color}"></div>`;
+        div.onclick = () => {
+          isEraser = false; currentColor = color;
+          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+          document.getElementById('eraser').classList.remove('selected');
+          div.classList.add('selected');
+        };
+        grid.appendChild(div);
+      });
+
+      document.getElementById('eraser').onclick = () => {
+        isEraser = true;
+        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+        document.getElementById('eraser').classList.add('selected');
+      };
+
+      const clearCanvas = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById('btnReset').onclick = clearCanvas;
+      document.getElementById('btnTopReset').onclick = clearCanvas;
+      document.getElementById('btnNext').onclick = () => triggerShootingStarEffect();
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); }, { passive: false });
+
+    // Center standard baseline configurations alignment safely
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><text x='50%' y='55%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='240' text-anchor='middle' alignment-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,10'>မ</text></svg>\")";
+    canvas.style.backgroundSize = "100% 100%";
+
+    initGameUI();
+  </script>
+</body>
+</html>

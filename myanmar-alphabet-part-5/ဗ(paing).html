@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>မြန်မာအက္ခရာ "ဗ" ဆေးရောင်ခြယ်စွန့်စားခန်း - Rainbow Grassland Adventure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; background: #38bdf8; }
+    
+    body {
+      font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ==========================================================================
+       TOP NAVIGATION BUTTONS (HOME & RESET)
+       ========================================================================== */
+    .top-nav {
+      position: absolute; top: 16px; left: 16px; z-index: 95; display: flex; gap: 8px;
+    }
+    .top-nav-btn {
+      width: 40px; height: 40px; background-color: #ffffff; border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 2px solid #d97706;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      font-size: 20px; transition: transform 0.1s;
+    }
+    .top-nav-btn:active { transform: scale(0.95); }
+
+    /* ==========================================================================
+       INTRO SCREEN
+       ========================================================================== */
+    .intro-screen {
+      position: absolute; inset: 0; 
+      background-color: #0f172a;
+      z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center;
+      transition: opacity 0.4s ease-out;
+    }
+    .intro-screen.hide { opacity: 0; display: none !important; pointer-events: none; }
+    .intro-emojis { font-size: clamp(24px, 4vw, 32px); margin-bottom: 15px; letter-spacing: 6px; }
+    .intro-main-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(28px, 5vw, 42px); font-weight: 800; color: #38bdf8; margin-bottom: 15px; }
+    .intro-badge { background-color: #0284c7; border-radius: 50px; padding: 10px 30px; font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(14px, 2.5vw, 18px); color: #ffffff; margin-bottom: 25px; }
+    .intro-description { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(14px, 2vw, 18px); color: #94a3b8; max-width: 600px; line-height: 1.8; margin-bottom: 35px; }
+    .btn-start { font-family: 'Noto Sans Myanmar', sans-serif; padding: 14px 60px; font-size: clamp(18px, 3vw, 24px); font-weight: 800; color: white; background: #06b6d4; border: none; border-radius: 20px; cursor: pointer; box-shadow: 0 8px 0 #0891b2; transition: transform 0.1s; z-index: 105; position: relative;}
+    .btn-start:active { transform: translateY(4px); box-shadow: 0 4px 0 #0891b2; }
+
+    /* ==========================================================================
+       ENVIRONMENT SCENE DESIGN
+       ========================================================================== */
+    .game-scene { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+    
+    .rainbow {
+      position: absolute; left: 5%; right: 5%; top: 4vh; height: 45vh;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      box-shadow: 
+        inset 0 30px 20px -10px rgba(239, 68, 68, 0.4),
+        inset 0 50px 20px -10px rgba(249, 115, 22, 0.4),
+        inset 0 70px 20px -10px rgba(234, 179, 8, 0.4),
+        inset 0 90px 20px -10px rgba(34, 197, 94, 0.4),
+        inset 0 110px 20px -10px rgba(59, 130, 246, 0.4),
+        inset 0 130px 20px -10px rgba(168, 85, 247, 0.4);
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+      opacity: 0.85; filter: blur(4px);
+    }
+
+    .hills-bg {
+      position: absolute; left: 0; right: 0; bottom: 0; height: 42vh;
+      background-size: 100% 100%;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300' preserveAspectRatio='none'><path d='M0,150 Q300,90 600,160 T1000,120 L1000,300 L0,300 Z' fill='%23a3e635'/><path d='M0,180 Q250,130 500,200 T1000,160 L1000,300 L0,300 Z' fill='%2384cc16'/><path d='M300,175 Q450,160 550,220 T750,280 L700,300 L280,300 Z' fill='%23fef08a' opacity='0.7'/><path d='M0,210 Q350,170 700,220 T1000,190 L1000,300 L0,300 Z' fill='%2365a30d'/></svg>");
+    }
+
+    .cloud-layer { position: absolute; top: 10vh; left: 0; right: 0; height: 100px; }
+    .sky-cloud {
+      position: absolute; background: rgba(255, 255, 255, 0.85); border-radius: 100px; filter: blur(1px);
+      animation: floatSkyCloud 35s infinite linear;
+    }
+    .sky-cloud::before, .sky-cloud::after { content: ''; position: absolute; background: rgba(255, 255, 255, 0.9); border-radius: 50%; }
+    .sky-cloud::before { width: 50px; height: 50px; top: -20px; left: 15px; }
+    .sky-cloud::after { width: 40px; height: 40px; top: -15px; right: 20px; }
+    .sc1 { width: 130px; height: 40px; top: 10px; left: -150px; animation-duration: 40s; }
+    .sc2 { width: 160px; height: 45px; top: -30px; left: -200px; animation-duration: 55s; animation-delay: -15s; }
+
+    @keyframes floatSkyCloud { 0% { left: -200px; } 100% { left: 100vw; } }
+
+    .foreground-grass {
+      position: absolute; left: 0; right: 0; bottom: -5px; height: 12vh;
+      display: flex; align-items: flex-end; justify-content: space-around;
+      z-index: 4; overflow: hidden;
+    }
+    .grass-blade {
+      width: 6px; height: clamp(40px, 8vh, 80px); background: #4d7c0f;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      transform-origin: bottom center;
+      animation: grassSway 3s infinite ease-in-out alternate;
+    }
+    .grass-blade:nth-child(2n) { height: clamp(50px, 10vh, 95px); background: #65a30d; animation-delay: -0.5s; }
+    .grass-blade:nth-child(3n) { height: clamp(30px, 6vh, 65px); background: #3f6212; animation-delay: -1.2s; }
+
+    @keyframes grassSway { 0% { transform: rotate(-5deg) skewX(-3deg); } 100% { transform: rotate(8deg) skewX(5deg); } }
+
+    .sparkle-field { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+    .sparkle {
+      position: absolute; width: 18px; height: 18px; background: #fff;
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      opacity: 0; top: 15vh;
+    }
+    .sparkle.burst { animation: sparkleFall 1.5s forwards ease-out; }
+    @keyframes sparkleFall {
+      0% { top: 15vh; opacity: 0; transform: scale(0.5) rotate(0deg); }
+      30% { opacity: 1; background: #fef08a; }
+      100% { top: 70vh; opacity: 0; transform: scale(1.3) rotate(360deg); }
+    }
+
+    /* ==========================================================================
+       MAIN GAME WORKSPACE INTERFACE
+       ========================================================================== */
+    .game-wrapper {
+      position: absolute; inset: 0; z-index: 20;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 10px; pointer-events: auto;
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+    }
+    .game-wrapper.hide { opacity: 0; display: none !important; pointer-events: none; transform: scale(0.9); }
+    
+    .game-container { 
+      position: relative; display: flex; flex-direction: column; align-items: center; 
+      width: 100%; max-width: min(90vw, 850px);
+    }
+    
+    .heading-box {
+      background-color: #15803d; border: 3px solid #ffffff; border-radius: 16px;
+      padding: 6px 20px; margin-bottom: 2vh; box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .heading-text { font-size: clamp(14px, 2.5vw, 18px); font-weight: 700; color: #ffffff; }
+    .heading-glyph {
+      font-family: 'Noto Sans Myanmar', sans-serif; color: #15803d; font-size: clamp(20px, 3.5vw, 26px); font-weight: 800;
+      background: #ffffff; padding: 0 10px; border-radius: 6px;
+    }
+    
+    .stage { display: flex; gap: 16px; align-items: stretch; justify-content: center; width: 100%; }
+    
+    .whiteboard-frame {
+      position: relative; padding: 10px; border-radius: 24px; background-color: #65a30d;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.25); border: 4px solid #ffffff;
+      flex-grow: 1; display: flex; justify-content: center; align-items: center;
+    }
+    .canvas-container { 
+      border-radius: 16px; background: #ffffff; overflow: hidden; position: relative;
+      width: 100%; aspect-ratio: 1/1; max-width: clamp(260px, 50vh, 400px);
+    }
+    canvas { display: block; width: 100%; height: 100%; cursor: crosshair; touch-action: none; z-index: 30; position: relative; }
+    
+    .panel {
+      width: clamp(90px, 12vw, 110px); background-color: rgba(255, 255, 255, 0.95); border-radius: 24px; border: 3px solid #65a30d;
+      padding: 12px 8px; display: flex; flex-direction: column; align-items: center; gap: 10px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15); justify-content: space-between; z-index: 35;
+    }
+    .panel-title { font-size: clamp(9px, 1.5vw, 11px); font-weight: 700; text-align: center; color: #65a30d; }
+    
+    .eraser {
+      width: 100%; height: clamp(36px, 6vh, 42px); border-radius: 12px; background: white;
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+      cursor: pointer; border: 2px solid #e2e8f0; box-shadow: 0 3px 0 #cbd5e1;
+    }
+    .eraser.selected { border-color: #a3e635; background: #f7fee7; box-shadow: 0 0 12px #a3e635; }
+    
+    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; width: 100%; }
+    .brush { aspect-ratio: 1/1; border-radius: 10px; cursor: pointer; position: relative; background: white; border: 2px solid #e2e8f0; }
+    .brush.selected { border-color: #65a30d; transform: scale(1.05); box-shadow: 0 0 8px #65a30d; }
+    .swatch { position: absolute; inset: 0; border-radius: 7px; }
+    
+    .action-container { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+    .btn {
+      width: 100%; height: clamp(38px, 6vh, 44px); border-radius: 12px; border: none; color: white;
+      font-weight: 700; font-size: clamp(10px, 1.8vw, 12px); cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2;
+    }
+    .btn-reset { background-color: #ef4444; box-shadow: 0 4px 0 #b91c1c; }
+    .btn-next { background-color: #84cc16; box-shadow: 0 4px 0 #4d7c0f; }
+    .btn:active { transform: translateY(3px); box-shadow: none; }
+
+    /* ==========================================================================
+       LIBERATED BONUS GAME OVERLAY
+       ========================================================================== */
+    .game-overlay {
+      position: absolute; inset: 0; background: rgba(56, 189, 248, 0.1);
+      z-index: 70; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      opacity: 0; display: none; pointer-events: none; transition: opacity 0.4s ease-in-out; padding-top: 25px;
+    }
+    .game-overlay.show { opacity: 1; display: flex !important; pointer-events: auto; }
+    
+    .overlay-ui-container {
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      background: rgba(21, 128, 61, 0.95); padding: 10px 24px; border-radius: 20px;
+      border: 3px solid white; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      max-width: min(90vw, 500px); z-index: 80; position: relative;
+    }
+    .overlay-title { color: white; font-size: clamp(16px, 3vw, 24px); font-weight: 800; margin-bottom: 2px; }
+    .overlay-subtitle { color: #fef08a; font-size: clamp(11px, 1.8vw, 14px); margin-bottom: 6px; font-weight: 700; }
+    
+    .score-badge {
+      background: white; color: #15803d; padding: 2px 14px; border-radius: 50px;
+      font-size: 14px; font-weight: 700; border: 2px solid #16a34a;
+    }
+
+    .free-play-field {
+      position: absolute; inset: 0; z-index: 72; overflow: hidden; pointer-events: auto;
+    }
+
+    /* [ပြင်ဆင်ချက်] အနီရောင်မျဉ်းဝိုင်းအတွင်း (မြေပြင်အောက်ခြေအကျဆုံး) တွင်သာ စနစ်တကျ ပေါ်ရန်သတ်မှတ်ချက် */
+    .target-item {
+      position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; user-select: none; z-index: 73;
+      transform-origin: bottom center;
+    }
+    
+    .item-style-bounce { animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, itemFloat 1.8s infinite ease-in-out alternate; }
+    .item-style-sway { animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, itemSway 2.5s infinite ease-in-out alternate; }
+    
+    .item-art { line-height: 1; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)); transition: transform 0.1s; }
+    .target-item:active .item-art { transform: scale(0.9); }
+    
+    .item-text {
+      position: absolute; color: #ffffff; font-weight: 800; text-shadow: 1.5px 1.5px 0 #000, -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000;
+      font-size: clamp(15px, 3.2vw, 22px); top: 25%; background: rgba(0, 0, 0, 0.35);
+      padding: 0px 6px; border-radius: 6px; pointer-events: none;
+    }
+
+    @keyframes popUp { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+    @keyframes itemFloat { 0% { transform: translateY(0); } 100% { transform: translateY(-6px); } }
+    @keyframes itemSway { 0% { transform: rotate(-4deg); } 100% { transform: rotate(4deg); } }
+    
+    @keyframes gather { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0) translateY(-60px); opacity: 0; } }
+    .target-item.collected { animation: gather 0.35s ease-in forwards !important; pointer-events: none; }
+
+    /* ==========================================================================
+       [အသစ်] CUSTOM SUCCESS POPUP DIALOG DESIGN (Screen အပေါ်၌သာပြရန်)
+       ========================================================================== */
+    .success-popup-overlay {
+      position: absolute; inset: 0; background: rgba(15, 23, 42, 0.6);
+      z-index: 200; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px;
+    }
+    .success-popup-overlay.show { opacity: 1; pointer-events: auto; }
+    
+    .success-box {
+      background: #ffffff; border-radius: 28px; border: 4px solid #16a34a;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3); max-width: 460px; width: 100%;
+      padding: 30px 24px; text-align: center; transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .success-popup-overlay.show .success-box { transform: scale(1); }
+    
+    .success-emoji { font-size: 50px; margin-bottom: 15px; display: inline-block; animation: popUp 0.5s ease; }
+    .success-msg-text {
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(16px, 2.2vw, 19px);
+      font-weight: 700; color: #1e293b; line-height: 1.8; margin-bottom: 25px;
+    }
+    .btn-popup-ok {
+      font-family: 'Noto Sans Myanmar', sans-serif; padding: 12px 45px; font-size: 18px;
+      font-weight: 800; color: white; background: #16a34a; border: none; border-radius: 16px;
+      cursor: pointer; box-shadow: 0 5px 0 #15803d; transition: transform 0.1s;
+    }
+    .btn-popup-ok:active { transform: translateY(3px); box-shadow: 0 2px 0 #15803d; }
+
+    @media (max-width: 768px) {
+      .stage { flex-direction: column; align-items: center; gap: 10px; }
+      .panel { 
+        width: 100%; max-width: clamp(260px, 50vh, 400px); 
+        flex-direction: row; padding: 8px 12px; gap: 8px;
+      }
+      .panel-title { display: none; }
+      .eraser { width: 50px; height: 44px; margin-top: 0; }
+      .brush-grid { grid-template-columns: repeat(6, 1fr); gap: 4px; width: auto; flex-grow: 1; }
+      .action-container { flex-direction: row; width: auto; gap: 6px; }
+      .btn { width: 65px; height: 44px; font-size: 10px; }
+      
+      .rainbow { height: 35vh; }
+      .hills-bg { height: 35vh; }
+      .cloud-layer { transform: scale(0.8); top: 6vh; }
+      .game-overlay { padding-top: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAVIGATION BUTTONS -->
+  <div class="top-nav">
+    <button onclick="location.href='index.html?fromGame=true'" class="top-nav-btn" title="ပင်မစာမျက်နှာ">🏠</button>
+    <button id="btnTopReset" class="top-nav-btn" title="ပြန်စမည်">🔄</button>
+  </div>
+
+  <!-- Welcome/Intro Screen Section -->
+  <div class="intro-screen" id="welcomeIntro">
+    <div class="intro-emojis">🌈 🌾 🌤️ 🌻 🎨</div>
+    <h1 class="intro-main-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</h1>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဗ" သာယာလှပတဲ့ သက်တံမြက်ခင်းပြင်ကြီးကို အရောင်ခြယ်စို့</div>
+    <p class="intro-description">
+      ကလေးတို့ရေ... ကောင်းကင်ပြာကြီးပေါ်မှာ ရောင်စုံထွန်းလင်းနေတဲ့ သက်တံကြီးတွေနဲ့ စုတ်တံလေးတွေကို ကိုင်ပြီး "ဗ" လမ်းကြောင်းအတိုင်း ဆေးရောင်စုံလေးတွေ ခြယ်သပြီး သက်တံကမ္ဘာလေးကို 
+      တောက်ပအောင် လုပ်ကြရအောင်။
+    </p>
+    <button class="btn-start" onclick="startGame()">စတင်ကစားမည်</button>
+  </div>
+
+  <!-- Background Environmental Elements -->
+  <div class="game-scene">
+    <div class="rainbow"></div>
+    <div class="cloud-layer">
+      <div class="sky-cloud sc1"></div>
+      <div class="sky-cloud sc2"></div>
+    </div>
+    <div class="hills-bg"></div>
+    <div class="sparkle-field" id="sparkleField"></div>
+    <div class="foreground-grass" id="grassBase"></div>
+  </div>
+
+  <!-- Interactive Writing Arena (Canvas Box Layer) -->
+  <div class="game-wrapper" id="paintingWorkspace">
+    <div class="game-container">
+      <div class="heading-box">
+        <span class="heading-text">"ဗ" အက္ခရာကို</span>
+        <span class="heading-glyph">ဗ</span>
+        <span class="heading-text">ခြယ်သစို့!</span>
+      </div>
+
+      <div class="stage">
+        <div class="whiteboard-frame">
+          <div class="canvas-container">
+            <canvas id="paintCanvas" width="400" height="400"></canvas>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <div class="panel-title">မှော်ဆေးရည်</div>
+          <div class="eraser" id="eraser">🧼</div>
+          <div class="brush-grid" id="brushGrid"></div>
+          <div class="action-container">
+            <button class="btn btn-reset" id="btnReset">↻<br>ဖျက်မည်</button>
+            <button class="btn btn-next" id="btnNext">✨<br>ရှေ့သို့</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIBERATED OVERLAY GAME -->
+  <div class="game-overlay" id="bonusGameOverlay">
+    <div class="overlay-ui-container">
+      <h2 class="overlay-title">🌾 မြက်ခင်းပြင် မှိုရှာပန်းခူးဂိမ်း 🌾</h2>
+      <p class="overlay-subtitle">မြေပြင်ပေါ်က "ဗ" အက္ခရာပါတဲ့ မှိုနဲ့ ပန်းလေးတွေကိုပဲ ရွေးခူးကြစို့!</p>
+      <div class="score-badge">ခူးမိသည့်အရေအတွက်: <span id="scoreText">0</span> / 5</div>
+    </div>
+    <div class="free-play-field" id="freePlayField"></div>
+  </div>
+
+  <!-- [အသစ်] SCREEN ပေါ်တွင်ပြသမည့် CUSTOM POPUP DIALOG -->
+  <div class="success-popup-overlay" id="customAlertOverlay">
+    <div class="success-box">
+      <div class="success-emoji">🎉</div>
+      <div class="success-msg-text" id="successMsgText">
+        အောင်မြင်ပါတယ် ကလေးတို့ရေ! မြက်ခင်းပြင်ပေါ်က "ဗ" အက္ခရာစုံလင်တဲ့ မှိုနဲ့ ပန်းကလေးတွေကို ရှာဖွေခူးဆွတ်နိုင်ခဲ့ပါပြီ! 🌟
+      </div>
+      <button class="btn-popup-ok" id="btnPopupClose">OK</button>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    let isPainting = false;
+    let currentColor = '#84cc16';
+    let isEraser = false;
+    let brushSize = 24;
+    let lastX = 0, lastY = 0;
+    let isAnimating = false;
+    let score = 0;
+    let gameInterval;
+
+    const colors = ['#84cc16', '#22c55e', '#3b82f6', '#f43f5e', '#eab308', '#a855f7'];
+    const artsList = ['🍄', '🌻', '🌸'];
+    const wrongLetters = ['က', 'ခ', 'ဂ', 'င', 'စ', 'ဆ', 'တ', 'ထ', 'ပ', 'ဖ', 'မ', 'လ', 'သ'];
+
+    function startGame() {
+      const intro = document.getElementById('welcomeIntro');
+      intro.classList.add('hide');
+    }
+
+    function getMousePos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+      const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+      
+      return {
+        x: (clientX - rect.left) * (canvas.width / rect.width),
+        y: (clientY - rect.top) * (canvas.height / rect.height)
+      };
+    }
+
+    function startDrawing(e) {
+      isPainting = true;
+      const pos = getMousePos(e);
+      lastX = pos.x;
+      lastY = pos.y;
+    }
+    
+    function stopDrawing() { isPainting = false; ctx.beginPath(); }
+
+    function draw(e) {
+      if (!isPainting) return;
+      const pos = getMousePos(e);
+
+      ctx.lineWidth = brushSize; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+      if (isEraser) {
+        ctx.globalCompositeOperation = 'destination-out'; ctx.lineWidth = 36;
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = currentColor;
+      }
+
+      ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(pos.x, pos.y); ctx.stroke();
+      lastX = pos.x; lastY = pos.y;
+    }
+
+    function resetCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function triggerRainbowSparkleEffect() {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      const field = document.getElementById('sparkleField');
+      field.innerHTML = '';
+
+      for (let i = 0; i < 15; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle burst';
+        sparkle.style.left = `${15 + Math.random() * 70}%`;
+        sparkle.style.animationDelay = `${Math.random() * 0.5}s`;
+        field.appendChild(sparkle);
+      }
+
+      setTimeout(() => {
+        field.innerHTML = '';
+        isAnimating = false;
+        document.getElementById('paintingWorkspace').classList.add('hide');
+        startBonusGame();
+      }, 1800);
+    }
+
+    function startBonusGame() {
+      score = 0;
+      document.getElementById('scoreText').innerText = score;
+      document.getElementById('bonusGameOverlay').classList.add('show');
+      
+      const playField = document.getElementById('freePlayField');
+      playField.innerHTML = '';
+
+      for (let i = 0; i < 4; i++) { spawnItem(); }
+
+      gameInterval = setInterval(() => {
+        if (document.querySelectorAll('.target-item').length < 6) {
+          spawnItem();
+        }
+      }, 750);
+    }
+
+    function spawnItem() {
+      const playField = document.getElementById('freePlayField');
+      if (!playField) return;
+
+      const item = document.createElement('div');
+      item.className = 'target-item';
+      
+      const isTarget = Math.random() > 0.45;
+      const letterText = isTarget ? 'ဗ' : wrongLetters[Math.floor(Math.random() * wrongLetters.length)];
+      const randomArt = artsList[Math.floor(Math.random() * artsList.length)];
+      
+      const randomSize = Math.floor(55 + Math.random() * 20);
+      item.style.width = `${randomSize}px`;
+      item.style.height = `${randomSize}px`;
+
+      const animClass = Math.random() > 0.5 ? 'item-style-bounce' : 'item-style-sway';
+      item.classList.add(animClass);
+
+      // [ပြင်ဆင်ချက်] Dassy ညွှန်ကြားထားသော အနီရောင်မျဉ်းဝိုင်း (မြေပြင်အောက်ဆုံးအပိုင်း 80% to 92%) အတွင်းမှာပဲ ကွက်တိပေါ်စေခြင်း
+      const maxX = playField.clientWidth - randomSize - 20;
+      const minY = Math.floor(playField.clientHeight * 0.80); 
+      const maxY = playField.clientHeight - randomSize - 25;
+      
+      const posX = Math.max(15, Math.random() * maxX);
+      const posY = Math.max(minY, minY + Math.random() * (maxY - minY));
+      
+      item.style.left = `${posX}px`;
+      item.style.top = `${posY}px`;
+
+      item.innerHTML = `
+        <div class="item-art" style="font-size: ${randomSize - 18}px;">${randomArt}</div>
+        <div class="item-text">${letterText}</div>
+      `;
+
+      item.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        if (isTarget) {
+          score++;
+          document.getElementById('scoreText').innerText = score;
+          item.classList.add('collected');
+          
+          setTimeout(() => { item.remove(); }, 350);
+
+          if (score >= 5) {
+            clearInterval(gameInterval);
+            // Browser alert အစား Custom Screen Popup ကို အသုံးပြုထားခြင်း
+            setTimeout(() => {
+              document.getElementById('customAlertOverlay').classList.add('show');
+            }, 400);
+          }
+        } else {
+          item.style.transition = 'transform 0.05s';
+          item.style.transform = 'scale(1.1) translateX(6px)';
+          setTimeout(() => { item.style.transform = 'scale(1.1) translateX(-6px)'; }, 50);
+          setTimeout(() => { item.style.transform = 'scale(1) translateX(0)'; }, 100);
+        }
+      });
+
+      playField.appendChild(item);
+      
+      setTimeout(() => {
+        if (item && item.parentNode && !item.classList.contains('collected')) {
+          item.remove();
+        }
+      }, 4500);
+    }
+
+    function initGameUI() {
+      const grassBase = document.getElementById('grassBase');
+      for (let i = 0; i < 35; i++) {
+        const blade = document.createElement('div');
+        blade.className = 'grass-blade';
+        grassBase.appendChild(blade);
+      }
+
+      const grid = document.getElementById('brushGrid');
+      colors.forEach((color, i) => {
+        const div = document.createElement('div');
+        div.className = 'brush' + (i === 0 ? ' selected' : '');
+        div.innerHTML = `<div class="swatch" style="background:${color}"></div>`;
+        div.onclick = () => {
+          isEraser = false; currentColor = color;
+          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+          document.getElementById('eraser').classList.remove('selected');
+          div.classList.add('selected');
+        };
+        grid.appendChild(div);
+      });
+
+      document.getElementById('eraser').onclick = () => {
+        isEraser = true;
+        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+        document.getElementById('eraser').classList.add('selected');
+      };
+
+      document.getElementById('btnReset').onclick = resetCanvas;
+      
+      // Popup OK ကိုနှိပ်ရင် Reset ဖြစ်ပြီး အစကပြန်ဆော့နိုင်အောင် စီမံထားခြင်း
+      document.getElementById('btnPopupClose').onclick = () => {
+        document.getElementById('customAlertOverlay').classList.remove('show');
+        document.getElementById('bonusGameOverlay').classList.remove('show');
+        document.getElementById('paintingWorkspace').classList.remove('hide'); 
+        resetCanvas();
+      };
+
+      document.getElementById('btnTopReset').onclick = () => {
+        clearInterval(gameInterval);
+        document.getElementById('customAlertOverlay').classList.remove('show');
+        document.getElementById('bonusGameOverlay').classList.remove('show');
+        document.getElementById('paintingWorkspace').classList.remove('hide');
+        resetCanvas();
+      };
+      
+      document.getElementById('btnNext').onclick = triggerRainbowSparkleEffect;
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mousemove', draw);
+    
+    canvas.addEventListener('touchstart', (e) => { 
+      startDrawing(e); 
+      e.preventDefault(); 
+    }, { passive: false });
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchmove', (e) => { 
+      draw(e); 
+      e.preventDefault(); 
+    }, { passive: false });
+
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><text x='50%' y='47%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='240' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,10'>ဗ</text></svg>\")";
+    canvas.style.backgroundSize = "100% 100%";
+
+    initGameUI();
+  </script>
+</body>
+</html>
