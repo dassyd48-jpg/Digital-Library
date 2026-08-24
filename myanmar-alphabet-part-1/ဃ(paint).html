@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>"ဃ"ကို အရောင်ခြယ်ပါ </title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+Myanmar:wght@600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    html, body { 
+      height: 100dvh; 
+      width: 100%;
+      overflow: hidden; 
+      touch-action: manipulation;
+    }
+    
+    /* တောင်တန်းကြီးများနှင့် နေဝင်ရိုးရီကောင်းကင်အလှ ကာတွန်းနောက်ခံ */
+    body {
+      font-family: 'Fredoka', system-ui, sans-serif;
+      background: linear-gradient(to bottom, #ffedd5 0%, #fed7aa 30%, #fdba74 50%, #f97316 50%, #c2410c 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      color: #7c2d12;
+      position: relative;
+      padding-bottom: env(safe-area-inset-bottom, 10px);
+    }
+
+    /* MAGICAL MOUNTAIN ANIMATIONS */
+    .balloon-container {
+      position: absolute;
+      top: 12%;
+      left: 8%;
+      z-index: 1;
+      pointer-events: none;
+      animation: floatBalloon 6s ease-in-out infinite alternate;
+    }
+    @keyframes floatBalloon {
+      0% { transform: translateY(0) scale(0.95); }
+      100% { transform: translateY(-20px) scale(1); }
+    }
+    .balloon {
+      font-size: 42px;
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15));
+    }
+
+    .mountain-range {
+      position: absolute;
+      bottom: 10%;
+      width: 100%;
+      height: 200px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .mountain-back {
+      position: absolute;
+      bottom: 0;
+      left: -10%;
+      width: 60%;
+      height: 100%;
+      background: #ea580c;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      opacity: 0.7;
+    }
+    .mountain-back.right {
+      left: auto;
+      right: -10%;
+      width: 65%;
+      height: 90%;
+      background: #d97706;
+    }
+
+    .mountain-front {
+      position: absolute;
+      bottom: -20px;
+      left: 15%;
+      width: 45%;
+      height: 70%;
+      background: #c2410c;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      z-index: 2;
+      transform-origin: bottom center;
+      animation: mountainSway 7s ease-in-out infinite alternate;
+    }
+    @keyframes mountainSway {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(1deg) translateX(3px); }
+    }
+
+    .mountain-foothills {
+      position: absolute;
+      bottom: -10px;
+      width: 100%;
+      height: 90px;
+      background: #9a3412;
+      z-index: 3;
+      border-radius: 50% 50% 0 0 / 20px 20px 0 0;
+      box-shadow: inset 0 12px 0 #b45309;
+    }
+
+    /* GAME UI INTERFACE */
+    .intro-screen {
+      position: fixed; inset: 0; background-color: #0f172a; z-index: 1000;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center; color: #ffffff; transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .intro-screen.hide { opacity: 0; pointer-events: none; transform: scale(1.05); }
+    .intro-emojis { font-size: clamp(32px, 5vw, 48px); margin-bottom: 15px; letter-spacing: 8px; }
+    .intro-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(26px, 4.5vw, 42px); font-weight: 800; margin-bottom: 10px; color: #f97316; }
+    .intro-badge { font-family: 'Noto Sans Myanmar', sans-serif; background-color: #c2410c; padding: 6px 18px; border-radius: 20px; font-size: clamp(13px, 2vw, 16px); font-weight: 700; margin-bottom: 20px; display: inline-block; white-space: nowrap; }
+    .intro-desc { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(14px, 2.2vw, 17px); max-width: 550px; line-height: 1.7; color: #ffedd5; margin-bottom: 30px; }
+    
+    .btn-start {
+      font-family: 'Noto Sans Myanmar', sans-serif; background-color: #ea580c; color: white; border: none; padding: 12px 40px; font-size: clamp(16px, 2.5vw, 20px); font-weight: 700; border-radius: 30px; cursor: pointer; box-shadow: 0 6px 0 #9a3412, 0 10px 20px rgba(0,0,0,0.3); transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+    .btn-start:active { transform: translateY(4px); box-shadow: 0 2px 0 #9a3412; }
+
+    .game-container { 
+      position: relative; 
+      z-index: 10; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: space-between;
+      width: 100%; 
+      height: 100%;
+      padding: 10px 12px env(safe-area-inset-bottom, 10px) 12px; 
+      opacity: 0; 
+      transform: scale(0.95); 
+      transition: opacity 0.5s ease, transform 0.5s ease; 
+    }
+    .game-container.show { opacity: 1; transform: scale(1); }
+
+    /* NAVIGATION CONTROLS */
+    .top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      margin-bottom: 4px;
+    }
+    .nav-buttons-container { display: flex; gap: 8px; }
+    .btn-action-back, .btn-action-home {
+      font-family: 'Noto Sans Myanmar', sans-serif; font-weight: 800; font-size: 13px;
+      color: #ffffff; padding: 8px 16px; border-radius: 14px; border: none; cursor: pointer;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.2); display: flex; align-items: center; gap: 4px;
+    }
+    .btn-action-back { background: linear-gradient(180deg, #f43f5e 0%, #be123c 100%); }
+    .btn-action-home { background: linear-gradient(180deg, #e11d48 0%, #9f1239 100%); }
+
+    .audio-slider-panel {
+      background: rgba(194, 65, 12, 0.85); border: 1.5px solid #ffedd5; padding: 4px 10px; border-radius: 16px;
+      display: flex; align-items: center; gap: 6px; color: #ffffff;
+    }
+    .vol-range-input { width: 65px; height: 5px; background: #e2e8f0; border-radius: 8px; appearance: none; cursor: pointer; accent-color: #fef08a; }
+
+    /* TITLE */
+    h1 { 
+      font-size: 18px; font-weight: 700; color: #ffffff; 
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2); 
+      background: rgba(194, 65, 12, 0.9); 
+      padding: 4px 18px; border-radius: 16px; 
+      margin-bottom: 6px; text-align: center;
+    }
+    h1 .glyph { font-family: 'Noto Sans Myanmar', sans-serif; color: #fef08a; font-size: 1.2em; }
+    
+    /* STAGE & CANVAS */
+    .stage { 
+      display: flex; 
+      flex-direction: column;
+      align-items: center; 
+      justify-content: center;
+      width: 100%; 
+      flex: 1;
+      gap: 10px;
+    }
+    
+    .wood-frame {
+      position: relative; 
+      padding: 10px; 
+      border-radius: 20px;
+      background: linear-gradient(180deg, #b45309 0%, #78350f 100%);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.25), inset 0 0 0 3px #ffedd5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 100%;
+    }
+    .canvas-container { 
+      background: #ffffff; 
+      border-radius: 12px; 
+      overflow: hidden; 
+      position: relative; 
+      box-shadow: inset 0 3px 8px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* 🎨 CANVAS HEIGHT CONTROL (52vh FIXED STRUCTURE) */
+    canvas { 
+      display: block; 
+      cursor: crosshair; 
+      touch-action: none; 
+      max-height: 52vh;
+      max-width: 88vw;
+      width: auto;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+    }
+    
+    /* TOOL PANEL */
+    .panel {
+      width: 100%; 
+      max-width: 420px; 
+      background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%); 
+      border-radius: 20px;
+      padding: 10px; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 8px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15), inset 0 0 0 2px #ffedd5;
+      z-index: 20;
+    }
+    
+    .panel-top-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .eraser {
+      width: 65px;
+      height: 50px; 
+      border-radius: 12px; 
+      background: white;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 3px 0 #ffedd5; font-weight: 700; font-size: 11px; user-select: none; border: 2px solid #ffedd5;
+      flex-shrink: 0;
+    }
+    .eraser.selected { background: #ffedd5; border-color: #b45309; box-shadow: inset 0 0 0 2px #b45309; }
+    
+    .brush-grid { 
+      display: grid; 
+      grid-template-columns: repeat(5, 1fr); 
+      gap: 6px; 
+      flex: 1;
+    }
+    .brush {
+      aspect-ratio: 1/1; 
+      border-radius: 10px; 
+      cursor: pointer; 
+      position: relative;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.08); 
+      display: flex; align-items: center; justify-content: center; 
+      background: white; border: 1px solid #e2e8f0;
+    }
+    .brush.selected { transform: scale(1.05); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #ca8a04; }
+    .swatch { position: absolute; inset: 3px; border-radius: 8px; }
+    
+    .actions { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 8px; 
+    }
+    
+    .btn { 
+      font-family: 'Noto Sans Myanmar', sans-serif; 
+      height: 42px; 
+      padding: 2px 4px; 
+      border-radius: 12px; border: none; color: white; font-weight: 700; font-size: 12px; cursor: pointer; 
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-reset { background: #d97706; box-shadow: 0 3px 0 #b45309; }
+    .btn-next { background: #ca8a04; box-shadow: 0 3px 0 #854d0e; }
+    
+    /* CONGRATS MODAL */
+    .congrats-modal-overlay {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px); z-index: 2000; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.4s ease; padding: 20px;
+    }
+    .congrats-modal-overlay.show { opacity: 1; pointer-events: auto; }
+    .congrats-card {
+      background: linear-gradient(180deg, #ffffff 0%, #fff7ed 100%);
+      border: 4px solid #b45309; border-radius: 28px; padding: 25px; text-align: center; max-width: 380px; width: 100%;
+      box-shadow: 0 20px 25px rgba(0,0,0,0.2); transform: scale(0.8);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .congrats-modal-overlay.show .congrats-card { transform: scale(1); }
+    .congrats-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 26px; font-weight: 800; color: #b45309; margin-bottom: 10px; }
+    .congrats-text { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 14px; font-weight: 600; color: #7c2d12; margin-bottom: 20px; line-height: 1.5; }
+    .btn-modal-done {
+      font-family: 'Noto Sans Myanmar', sans-serif; background-color: #2ed573; color: white; border: none; padding: 10px 40px; font-size: 16px; font-weight: 700; border-radius: 20px; cursor: pointer; box-shadow: 0 4px 0 #21a95a;
+    }
+
+    #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+    .star { position: absolute; font-size: 24px; animation: fall 1.5s ease-out forwards; }
+    @keyframes fall {
+      0% { transform: translate(0,0) rotate(0deg) scale(0.5); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) rotate(360deg) scale(1.4); opacity: 0; }
+    }
+
+    /* DESKTOP RESPONSIVE ADJUSTMENT */
+    @media (min-width: 768px) {
+      .game-container { padding: 20px; }
+      .stage { flex-direction: row; gap: 20px; }
+      canvas { max-height: 60vh; max-width: 500px; }
+      .panel { width: 180px; }
+      .panel-top-row { flex-direction: column; }
+      .eraser { width: 100%; height: 55px; }
+      .brush-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="paintBgmAudio" src="main-bgm.mp3" loop></audio>
+  <audio id="applauseSoundEffect" src="clapping.mp3"></audio>
+
+  <div class="balloon-container">
+    <div class="balloon">🎈</div>
+  </div>
+
+  <div class="mountain-range">
+    <div class="mountain-back left"></div>
+    <div class="mountain-back right"></div>
+    <div class="mountain-front"></div>
+  </div>
+  
+  <div class="mountain-foothills"></div>
+
+  <!-- INTRO SCREEN -->
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-emojis">⛰️🎈✨🌄🌸</div>
+    <div class="intro-title">ဆေးရောင်ခြယ် ကမ္ဘာစွန့်စားခန်း</div>
+    <div class="intro-badge">အက္ခရာ သင်ခန်းစာ : "ဃ" မဟာတောင်တန်းကြီးများ</div>
+    <div class="intro-desc">
+      ကလေးတို့ရေ... အခုဆိုရင် အလွန်ကြီးမားပြီး ခန့်ညားတဲ့ မဟာတောင်တန်းကြီးတွေဆီ ရောက်လာခဲ့ပြီနော်။ လေထဲမှာ ကစားနေတဲ့ မိုးပျံပူဖောင်းကြီးတွေနဲ့အတူ မြန်မာအက္ခရာ "ဃ" လေးကို ကြယ်ပျံစုတ်တံလေး သုံးပြီး လှလှပပ ခြယ်သလိုက်ရအောင်။
+    </div>
+    <button class="btn-start" id="btnStart">စတင်ကစားမည်</button>
+  </div>
+
+  <!-- CONGRATS MODAL -->
+  <div class="congrats-modal-overlay" id="congratsWindowBox">
+    <div class="congrats-card">
+      <div style="font-size: 45px; margin-bottom: 8px;">🎉✨⭐</div>
+      <div class="congrats-title">Congratulations!</div>
+      <div class="congrats-text">သားသားမီးမီးတို့ရေ... အခန့်ညားဆုံး မဟာတောင်တန်းကြီးပေါ်က အက္ခရာ "ဃ" လေးကို အောင်မြင်စွာနဲ့ ဆေးရောင်ခြယ်သလို့ ပြီးမြောက်သွားပါပြီ ကွယ်။ တော်လိုက်တာ။ 🌟</div>
+      <button class="btn-modal-done" onclick="window.location.href='index.html?fromGame=true'">ပြီးပြီ</button>
+    </div>
+  </div>
+
+  <!-- MAIN GAME CONTAINER -->
+  <div class="game-container" id="gameContainer">
+    
+    <div class="top-bar">
+      <div class="nav-buttons-container">
+        <button class="btn-action-back" id="btnNavigationBack">← Back</button>
+        <button class="btn-action-home" onclick="window.location.href='index.html?fromGame=true'">🏠 Home</button>
+      </div>
+
+      <div class="audio-slider-panel">
+        <span id="volIndicatorIcon">🔊</span>
+        <input type="range" id="gameVolumeControl" min="0" max="1" step="0.05" value="0.3" class="vol-range-input" oninput="adjustGameVolume(this.value)" />
+      </div>
+    </div>
+
+    <h1>အရောင်ခြယ်ပါ <span class="glyph">ဃ</span> !</h1>
+
+    <div class="stage">
+      <div class="wood-frame">
+        <div class="canvas-container">
+          <canvas id="paintCanvas" width="550" height="550"></canvas>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <div class="panel-top-row">
+          <div class="eraser" id="eraser">
+            <span style="font-size:18px">🧽</span><div>Eraser</div>
+          </div>
+          <div class="brush-grid" id="brushGrid"></div>
+        </div>
+        
+        <div class="actions">
+          <button class="btn btn-reset" id="btnReset">↻ အသစ်ပြန်စ</button>
+          <button class="btn btn-next" id="btnNext">✓ ပြီးပြီ</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div id="confetti"></div>
+
+  <script>
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    let isPainting = false;
+    let currentColor = '#f59e0b';
+    let currentType = 'star'; 
+    let currentPattern = '';
+    let isEraser = false;
+    let brushSize = 36;
+    let lastX = 0, lastY = 0;
+
+    const bgMusicAudio = document.getElementById('paintBgmAudio');
+    const winApplauseAudio = document.getElementById('applauseSoundEffect');
+
+    const brushes = [
+      { id: 'star-brush', type: 'star', color: '#f59e0b' }, 
+      { id: 'orange', type: 'solid', color: '#f97316' },
+      { id: 'brown', type: 'solid', color: '#b45309' },
+      { id: 'yellow', type: 'solid', color: '#fde047' },
+      { id: 'red', type: 'solid', color: '#ef4444' },
+      { id: 'green', type: 'solid', color: '#22c55e' },
+      { id: 'blue', type: 'solid', color: '#3b82f6' },
+      { id: 'rainbow', type: 'rainbow', color: 'linear-gradient(45deg, #ff3366, #ff9933, #ffff33, #33cc66, #3399ff, #9933ff)' },
+      { id: 'pat-dots', type: 'pattern', color: '#ea580c', pattern: 'dots' },
+      { id: 'pat-stripes', type: 'pattern', color: '#ca8a04', pattern: 'stripes' }
+    ];
+
+    function getPattern(type, color, pName) {
+      if (type === 'solid' || type === 'star') return color;
+      if (type === 'rainbow') {
+        const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        grad.addColorStop(0, '#ff3366');
+        grad.addColorStop(0.2, '#ff9933');
+        grad.addColorStop(0.4, '#ffff33');
+        grad.addColorStop(0.6, '#33cc66');
+        grad.addColorStop(0.8, '#3399ff');
+        grad.addColorStop(1, '#9933ff');
+        return grad;
+      }
+      const pCanvas = document.createElement('canvas');
+      pCanvas.width = 20; pCanvas.height = 20;
+      const pCtx = pCanvas.getContext('2d');
+      pCtx.fillStyle = color; pCtx.fillRect(0,0,20,20);
+      if (pName === 'dots') {
+        pCtx.fillStyle = '#ffffff'; pCtx.beginPath(); pCtx.arc(10,10,3,0,Math.PI*2); pCtx.fill();
+      } else if (pName === 'stripes') {
+        pCtx.strokeStyle = '#ffffff'; pCtx.lineWidth = 3; pCtx.beginPath(); pCtx.moveTo(0,0); pCtx.lineTo(20,20); pCtx.stroke();
+      }
+      return ctx.createPattern(pCanvas, 'repeat');
+    }
+
+    function startDrawing(e) {
+      isPainting = true;
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      lastX = (clientX - rect.left) * (canvas.width / rect.width);
+      lastY = (clientY - rect.top) * (canvas.height / rect.height);
+    }
+    
+    function stopDrawing() { isPainting = false; ctx.beginPath(); }
+
+    function draw(e) {
+      if (!isPainting) return;
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const x = (clientX - rect.left) * (canvas.width / rect.width);
+      const y = (clientY - rect.top) * (canvas.height / rect.height);
+
+      ctx.lineWidth = brushSize;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      if (isEraser) {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.lineWidth = 50;
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = getPattern(currentType, currentColor, currentPattern);
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+
+      if (!isEraser && Math.random() < 0.45) {
+        ctx.save();
+        ctx.globalCompositeOperation = 'source-over';
+        if (currentType === 'star') {
+          ctx.fillStyle = '#fef08a';
+          ctx.font = '22px serif';
+          ctx.fillText('⭐', x + (Math.random() * 30 - 15), y + (Math.random() * 30 - 15));
+        } else {
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(x + (Math.random() * 26 - 13), y + (Math.random() * 26 - 13), Math.random() * 3 + 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      lastX = x; lastY = y;
+    }
+
+    function adjustGameVolume(volValue) {
+      if(bgMusicAudio) bgMusicAudio.volume = volValue;
+      if(winApplauseAudio) winApplauseAudio.volume = volValue;
+      const iconIndicator = document.getElementById('volIndicatorIcon');
+      if (volValue == 0) iconIndicator.textContent = '🔇';
+      else if (volValue < 0.4) iconIndicator.textContent = '🔈';
+      else iconIndicator.textContent = '🔊';
+    }
+
+    function initUI() {
+      if(bgMusicAudio) bgMusicAudio.volume = 0.3;
+
+      document.getElementById('btnStart').onclick = () => {
+        document.getElementById('introScreen').classList.add('hide');
+        document.getElementById('gameContainer').classList.add('show');
+        if(bgMusicAudio) bgMusicAudio.play().catch(() => {});
+      };
+
+      document.getElementById('btnNavigationBack').onclick = () => {
+        document.getElementById('gameContainer').classList.remove('show');
+        document.getElementById('introScreen').classList.remove('hide');
+      };
+
+      const grid = document.getElementById('brushGrid');
+      brushes.forEach((b, i) => {
+        const div = document.createElement('div');
+        div.className = 'brush' + (i === 0 ? ' selected' : '');
+        
+        if(b.type === 'star') {
+          div.innerHTML = `<div class="swatch" style="background:${b.color}; display:flex; align-items:center; justify-content:center; font-size:14px;">⭐</div>`;
+        } else {
+          div.innerHTML = `<div class="swatch" style="background:${b.color}"></div>`;
+        }
+        
+        if(b.pattern === 'dots') div.firstChild.style.backgroundImage = 'radial-gradient(circle, #fff 20%, transparent 20%)';
+        if(b.pattern === 'stripes') div.firstChild.style.backgroundImage = 'linear-gradient(45deg, #fff 25%, transparent 25%)';
+        
+        div.onclick = () => {
+          isEraser = false;
+          currentColor = b.color; currentType = b.type; currentPattern = b.pattern || '';
+          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+          document.getElementById('eraser').classList.remove('selected');
+          div.classList.add('selected');
+        };
+        grid.appendChild(div);
+      });
+
+      document.getElementById('eraser').onclick = () => {
+        isEraser = true;
+        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+        document.getElementById('eraser').classList.add('selected');
+      };
+
+      document.getElementById('btnReset').onclick = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      };
+
+      document.getElementById('btnNext').onclick = () => {
+        if(bgMusicAudio) bgMusicAudio.pause();
+        if(winApplauseAudio) {
+          winApplauseAudio.currentTime = 0;
+          winApplauseAudio.play().catch(() => {});
+        }
+
+        const host = document.getElementById('confetti');
+        const items = ['⭐', '🌄', '✨', '🎉', '🎈', '☀️', '⛰️'];
+        for (let i = 0; i < 45; i++) {
+          const el = document.createElement('div');
+          el.className = 'star';
+          el.textContent = items[Math.floor(Math.random() * items.length)];
+          el.style.left = '50%'; el.style.top = '50%';
+          const angle = Math.random() * Math.PI * 2;
+          const dist = 100 + Math.random() * 250;
+          el.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+          el.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+          host.appendChild(el);
+          setTimeout(() => el.remove(), 1500);
+        }
+
+        document.getElementById('congratsWindowBox').classList.add('show');
+      };
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); }, { passive: false });
+
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='550' height='550'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='410' text-anchor='middle' dominant-baseline='middle' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='4' stroke-dasharray='10,8'>ဃ</text></svg>\")";
+    canvas.style.backgroundSize = "100% 100%";
+
+    initUI();
+  </script>
+</body>
+</html>
