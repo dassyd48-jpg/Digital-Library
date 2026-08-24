@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>မြန်မာအက္ခရာ (တ-န) - မှော်ဝင်မှိုအိမ် စွန့်စားခန်းမြေပုံ</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght=400;700;900&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
+            background: radial-gradient(circle, #0f172a 0%, #020617 100%);
+        }
+
+        /* ==========================================================================
+           SPLASH SCREEN & VIDEO CONTAINER SYSTEM (FIXED FOR ALL DEVICES)
+           ========================================================================= */
+        .video-bg-container {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh;
+            z-index: 9998; 
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #020617;
+        }
+
+        /* 📱 Mobile/Desktop ဘယ်မှာကြည့်ကြည့် ဗီဒီယို မပျက်ဘဲ အပြည့်ပေါ်စေရန် */
+        .video-bg-container video {
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+        }
+
+        .splash-screen {
+            position: fixed; 
+            inset: 0; 
+            background: transparent; 
+            z-index: 9999; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            padding: 20px; 
+            text-align: center; 
+            transition: opacity 0.5s ease, pointer-events 0.5s;
+        }
+        .splash-screen.hide { 
+            opacity: 0; 
+            pointer-events: none; 
+        }
+        .audio-controls {
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(8px); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 14px; 
+            border-radius: 30px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* ========================================================================= */
+        /* 🏃‍♂️ DASSY "LITTLE BRAINS" ANIMATED LOGO SYSTEM                           */
+        /* ========================================================================= */
+        .dassy-logo-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 0;
+            margin-top: 15px;
+            position: relative;
+            z-index: 10;
+            user-select: none;
+        }
+
+        .dassy-logo-line {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            font-family: 'Fredoka One', sans-serif;
+        }
+
+        .dassy-space {
+            width: 10px;
+        }
+
+        .animated-char {
+            display: inline-block;
+            font-weight: 900;
+            cursor: pointer;
+            opacity: 0;
+            animation: 
+                walkInLetters 2s cubic-bezier(0.25, 1, 0.5, 1) forwards,
+                continuousJiggle 0.6s ease-in-out infinite alternate;
+        }
+
+        .line-top .animated-char {
+            font-size: 0.85rem;
+            color: #a7f3d0; 
+            text-shadow: 0 2px 0 #064e3b;
+            letter-spacing: 1px;
+        }
+
+        .line-bottom .animated-char {
+            font-size: 1.25rem;
+            color: #fbbf24; 
+            text-shadow: 0 3px 0 #b45309, 0 6px 12px rgba(0,0,0,0.4);
+            letter-spacing: 1.5px;
+        }
+
+        @keyframes walkInLetters {
+            0% {
+                opacity: 0;
+                transform: translateX(var(--x-start, -100px)) translateY(0) scale(0.4) rotate(-30deg);
+            }
+            25% { opacity: 1; transform: translateX(calc(var(--x-start, -100px) * 0.75)) translateY(-12px) scale(1.1) rotate(20deg); }
+            50% { transform: translateX(calc(var(--x-start, -100px) * 0.5)) translateY(0) scale(0.9) rotate(-15deg); }
+            75% { transform: translateX(calc(var(--x-start, -100px) * 0.25)) translateY(-10px) scale(1.05) rotate(10deg); }
+            100% {
+                opacity: 1;
+                transform: translateX(0) translateY(0) scale(1) rotate(0deg);
+            }
+        }
+
+        @keyframes continuousJiggle {
+            0% { transform: translateY(0) scale(1) rotate(-2deg); }
+            50% { transform: translateY(-3px) scale(1.03) rotate(2.5deg); }
+            100% { transform: translateY(0) scale(0.98) rotate(-1deg); }
+        }
+
+        /* 🍄 CARTOON MAGIC MUSHROOM HOUSE STRUCTURE */
+        .mushroom-container {
+            position: relative;
+            width: 100%;
+            max-width: 340px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.65));
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        .mushroom-container:hover {
+            transform: scale(1.05) translateY(-8px);
+        }
+
+        /* 🔴 MUSHROOM CAP */
+        .mushroom-cap {
+            width: 100%;
+            height: 110px;
+            border-radius: 120px 120px 20px 20px;
+            position: relative;
+            z-index: 20;
+            border: 4px solid #1e293b;
+            box-shadow: inset 0 8px 16px rgba(255, 255, 255, 0.35);
+            overflow: hidden;
+        }
+
+        .mushroom-cap::before, .mushroom-cap::after, .mushroom-dot-3, .mushroom-dot-4 {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
+            box-shadow: inset -2px -2px 0px rgba(0,0,0,0.1);
+        }
+        .mushroom-cap::before { width: 28px; height: 24px; top: 20px; left: 30px; }
+        .mushroom-cap::after { width: 34px; height: 30px; top: 15px; right: 40px; }
+        .mushroom-dot-3 { width: 22px; height: 20px; bottom: 25px; left: 50%; transform: translateX(-50%); }
+        .mushroom-dot-4 { width: 20px; height: 18px; bottom: 30px; right: 25px; }
+
+        /* 🍦 MUSHROOM STEM */
+        .mushroom-stem {
+            width: 82%;
+            background: #fffbeb;
+            border: 4px solid #1e293b;
+            border-top: none;
+            border-radius: 0 0 45px 45px;
+            padding: 18px 14px 20px 14px;
+            margin-top: -8px;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: inset 0 -10px 15px rgba(217, 119, 6, 0.15);
+        }
+
+        /* 🚪 MUSHROOM DOOR */
+        .mushroom-door {
+            width: 44px;
+            height: 48px;
+            background: #b45309;
+            border: 3.5px solid #1e293b;
+            border-bottom: none;
+            border-radius: 22px 22px 0 0;
+            position: absolute;
+            bottom: 0;
+            right: 28px;
+            box-shadow: inset 2px 2px 0px rgba(255,255,255,0.2);
+        }
+        .mushroom-door::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 6px;
+            width: 5px; height: 5px;
+            background: #facc15;
+            border-radius: 50%;
+        }
+
+        /* 🪟 GLOWING WINDOWS */
+        .mushroom-window {
+            background: #fef08a;
+            border: 3.5px solid #1e293b;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            top: 22px;
+            left: 28px;
+            box-shadow: 0 0 15px #facc15, inset 2px 2px 0px #fff;
+        }
+
+        /* 🎨 MUSHROOM THEME COLORS */
+        .cap-stage1 { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); box-shadow: 0 0 25px rgba(239, 68, 68, 0.4); }
+        .cap-stage2 { background: linear-gradient(135deg, #f97316 0%, #c2410c 100%); box-shadow: 0 0 25px rgba(249, 115, 22, 0.4); }
+        .cap-stage3 { background: linear-gradient(135deg, #a855f7 0%, #6d28d9 100%); box-shadow: 0 0 25px rgba(168, 85, 247, 0.4); }
+        .cap-stage4 { background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%); box-shadow: 0 0 25px rgba(14, 165, 233, 0.4); cursor: default; }
+        .cap-final  { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); box-shadow: 0 0 35px rgba(236, 72, 153, 0.6); }
+
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .float-mascot {
+            animation: bounce-slow 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex flex-col items-center justify-start overflow-x-hidden p-4 pb-24 relative">
+
+    <!-- 🌟 SPLASH INTRO SCREEN WITH VIDEO BACKGROUND -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="bg-slate-800/90 border-[3px] border-emerald-500 backdrop-blur-xl p-6 md:p-10 rounded-[28px] shadow-2xl max-w-sm md:max-w-md w-full mb-2">
+            <div class="text-4xl md:text-5xl mb-2 float-mascot inline-block">🍄✨</div>
+            <h1 class="text-2xl md:text-3xl font-black text-emerald-400 mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+                "သားသားမီးမီးတို့ရဲ့ အက္ခရာရှာပုံတော်"
+            </h1>
+            <p class="text-xs text-emerald-300 font-bold mb-6">မြန်မာအက္ခရာ (တ - န) မှော်ဝင်မှိုအိမ် စွန့်စားခန်း</p>
+
+            <div id="splashActionArea">
+                <button onclick="unmuteIntroVideo()" class="font-bold py-3.5 px-6 md:px-8 text-lg md:text-xl text-white bg-amber-500 hover:bg-amber-600 rounded-2xl shadow-[0_5px_0_#9a6207] active:translate-y-0.5 active:shadow-[0_3px_0_#9a6207] transition-all duration-75 animate-pulse cursor-pointer">
+                    🔊 Intro အသံဖွင့်ပြီး ကြည့်မည်
+                </button>
+            </div>
+        </div>
+
+        <!-- 🏃‍♂️ DASSY "LITTLE BRAINS" ANIMATED LOGO COMPONENT -->
+        <div class="dassy-logo-wrapper">
+            <div class="dassy-logo-line line-top" id="textLine1">IMAGINED FOR</div>
+            <div class="dassy-logo-line line-bottom" id="textLine2">LITTLE BRAINS BY DASSY</div>
+        </div>
+    </div>
+
+    <!-- 🎥 VIDEO BACKGROUND CONTAINER -->
+    <div class="video-bg-container" id="videoBgWrapper">
+        <video id="bgVideo" autoplay muted loop playsinline>
+            <source src="main-bg.mp4" type="video/mp4" />
+        </video>
+    </div>
+
+    <!-- 🔊 AUDIO CONTROLS -->
+    <div class="audio-controls">
+        <button id="muteBtn" onclick="toggleMuteState()" class="text-lg focus:outline-none active:scale-90 transition-transform cursor-pointer">🔊</button>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5" oninput="updateVolumeLevel(this.value)" class="w-16 h-1.5 bg-slate-600 rounded-lg appearance-none cursor-pointer accent-emerald-500" />
+    </div>
+
+    <audio id="mainAudio" src="main-bgm.mp3" loop></audio>
+
+    <!-- 🗺️ Main Game Dashboard -->
+    <div id="gameDashboard" class="w-full max-w-xl flex flex-col items-center relative z-10 px-4">
+        
+        <header class="w-full text-center my-6">
+            <div class="inline-flex items-center gap-3 bg-white/10 px-5 py-1.5 rounded-full border border-white/20 backdrop-blur-md mb-3">
+                <span class="text-xs font-black tracking-wider text-emerald-300 uppercase">LEVEL 4: တ မှ န မှော်ဝင်မှိုအိမ်မြေပုံ</span>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-green-400 to-amber-300 tracking-wide drop-shadow py-1">
+                မြန်မာစာအက္ခရာ စွန့်စားခန်း
+            </h1>
+        </header>
+
+        <!-- Map Nodes Container -->
+        <div class="w-full relative py-12 grid grid-cols-12 gap-y-14 px-6 border border-white/10 rounded-[40px] bg-emerald-950/30 backdrop-blur-sm overflow-hidden">
+            
+            <div class="absolute top-[85px] bottom-[115px] left-0 right-0 z-0 pointer-events-none px-10 overflow-hidden">
+                <svg class="w-full h-full" viewBox="0 0 400 1320" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 70 1270 C 330 1120, 330 970, 80 870 C 80 720, 330 620, 320 470 C 320 320, 110 220, 210 50" stroke="#04120e" stroke-width="60" stroke-linecap="round" fill="none"/>
+                    <path d="M 70 1270 C 330 1120, 330 970, 80 870 C 80 720, 330 620, 320 470 C 320 320, 110 220, 210 50" stroke="#0f513d" stroke-width="48" stroke-linecap="round" fill="none"/>
+                    <path d="M 70 1270 C 330 1120, 330 970, 80 870 C 80 720, 330 620, 320 470 C 320 320, 110 220, 210 50" stroke="#0a3629" stroke-width="42" stroke-linecap="round" fill="none"/>
+                    <path d="M 70 1270 C 330 1120, 330 970, 80 870 C 80 720, 330 620, 320 470 C 320 320, 110 220, 210 50" stroke="#ffffff" stroke-width="2" stroke-dasharray="10 14" stroke-linecap="round" fill="none" opacity="0.3"/>
+                </svg>
+            </div>
+
+            <!-- Stage 1 Mushroom -->
+            <div class="col-span-11 sm:col-span-9 col-start-1 text-slate-900">
+                <div class="mushroom-container" onclick="location.href='level4.html'">
+                    <div class="mushroom-cap cap-stage1"><span class="mushroom-dot-3"></span><span class="mushroom-dot-4"></span></div>
+                    <div class="mushroom-stem">
+                        <div class="mushroom-window"></div>
+                        <div class="mushroom-door"></div>
+                        <div class="bg-slate-900 text-white border border-slate-950 rounded-md px-2.5 py-0.5 mb-1.5 z-20">
+                            <span class="text-[9px] font-black tracking-tight block">STAGE 01</span>
+                        </div>
+                        <h3 class="text-xs font-black text-slate-950 mb-2.5 leading-tight z-20">အက္ခရာအသံနှင့် အရေး</h3>
+                        <span class="px-4 py-1.5 bg-gradient-to-r from-red-500 to-rose-600 text-white border-2 border-slate-900 rounded-xl text-[10px] font-black shadow-[0_3px_0_#0f172a] z-20">✍️ ဝင်မည် ➡️</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 2 Mushroom -->
+            <div class="col-span-11 sm:col-span-9 col-start-2 sm:col-start-4 text-slate-900">
+                <div class="mushroom-container" onclick="openLessonPopup('stage2')">
+                    <div class="mushroom-cap cap-stage2"><span class="mushroom-dot-3"></span><span class="mushroom-dot-4"></span></div>
+                    <div class="mushroom-stem">
+                        <div class="mushroom-window"></div>
+                        <div class="mushroom-door"></div>
+                        <div class="bg-slate-900 text-white border border-slate-950 rounded-md px-2.5 py-0.5 mb-1.5 z-20">
+                            <span class="text-[9px] font-black tracking-tight block">STAGE 02</span>
+                        </div>
+                        <h3 class="text-xs font-black text-slate-950 mb-2.5 leading-tight z-20">ဆေးရောင်ခြယ်ကမ္ဘာ</h3>
+                        <span class="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white border-2 border-slate-900 rounded-xl text-[10px] font-black shadow-[0_3px_0_#0f172a] z-20">🎨 ရွေးချယ်မည်</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 3 Mushroom -->
+            <div class="col-span-11 sm:col-span-9 col-start-1 text-slate-900">
+                <div class="mushroom-container" onclick="openLessonPopup('stage3')">
+                    <div class="mushroom-cap cap-stage3"><span class="mushroom-dot-3"></span><span class="mushroom-dot-4"></span></div>
+                    <div class="mushroom-stem">
+                        <div class="mushroom-window"></div>
+                        <div class="mushroom-door"></div>
+                        <div class="bg-slate-900 text-white border border-slate-950 rounded-md px-2.5 py-0.5 mb-1.5 z-20">
+                            <span class="text-[9px] font-black tracking-tight block">STAGE 03</span>
+                        </div>
+                        <h3 class="text-xs font-black text-slate-950 mb-2.5 leading-tight z-20">အက္ခရာပစ်ခတ်ဂိမ်း</h3>
+                        <span class="px-4 py-1.5 bg-gradient-to-r from-purple-500 to-indigo-600 text-white border-2 border-slate-900 rounded-xl text-[10px] font-black shadow-[0_3px_0_#0f172a] z-20">🚀 ရွေးချယ်မည်</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 4 Mushroom -->
+            <div class="col-span-11 sm:col-span-9 col-start-2 sm:col-start-4 text-slate-900">
+                <div class="mushroom-container">
+                    <div class="mushroom-cap cap-stage4"><span class="mushroom-dot-3"></span><span class="mushroom-dot-4"></span></div>
+                    <div class="mushroom-stem" style="padding-bottom: 14px;">
+                        <div class="mushroom-window"></div>
+                        <div class="mushroom-door"></div>
+                        <div class="bg-slate-900 text-white border border-slate-950 rounded-md px-2.5 py-0.5 mb-1.5 z-20">
+                            <span class="text-[9px] font-black block">STAGE 04</span>
+                        </div>
+                        <h3 class="text-[11px] font-black text-slate-950 mb-2 leading-tight z-20">တူတူပုန်းတမ်းတောအုပ်</h3>
+                        
+                        <div class="flex flex-col gap-1 w-full max-w-[135px] relative z-25">
+                            <a href="တ-န(hike and seek).html" class="block bg-emerald-950 text-white py-1 rounded border border-slate-950 text-[9px] font-bold text-center shadow-[0_1.5px_0_#0f172a] hover:bg-emerald-900 transition-colors">🏖️ ကမ်းခြေပုန်းတမ်း</a>
+                            <a href="(တ-န)detective.html" class="block bg-emerald-950 text-white py-1 rounded border border-slate-950 text-[9px] font-bold text-center shadow-[0_1.5px_0_#0f172a] hover:bg-emerald-900 transition-colors">🕵️‍♂️ စုံထောက်အသစ်</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Boss Stage Mushroom -->
+            <div class="col-span-12 mt-4 text-slate-900">
+                <div class="mushroom-container max-w-[310px]" onclick="location.href='final test.html'">
+                    <div class="mushroom-cap cap-final"><span class="mushroom-dot-3"></span><span class="mushroom-dot-4"></span></div>
+                    <div class="mushroom-stem" style="background: #fff0f6; box-shadow: inset 0 -10px 15px rgba(219, 39, 119, 0.15);">
+                        <div class="mushroom-window" style="box-shadow: 0 0 15px #f43f5e; background: #ffe4e6;"></div>
+                        <div class="mushroom-door" style="background: #9d174d;"></div>
+                        <div class="bg-pink-600 text-white border-2 border-slate-950 rounded-md px-3 py-0.5 mb-1.5 z-20 shadow-sm">
+                            <span class="text-[9px] font-black block">FINAL STAGE</span>
+                        </div>
+                        <h3 class="text-xs font-black text-pink-950 mb-2.5 z-20">🏆 အာကာသနှင့်ကြယ်တာရာစွန့်စားခန်း</h3>
+                        <span class="w-full bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-500 border-2 border-slate-950 py-2 rounded-xl text-[10px] font-black text-white shadow-[0_4px_0_#0f172a] block text-center z-20">💥 BOSS STAGE 🚢</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 🏆 Dynamic Lesson Popup Panel -->
+    <div id="lessonPopup" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-40 p-4 transition-all">
+        <div class="w-full max-w-sm bg-gradient-to-b from-emerald-800 to-emerald-950 border-4 border-emerald-950 rounded-3xl p-6 shadow-[0_16px_0_#022c22] text-center relative">
+            
+            <h2 id="popupTitle" class="text-2xl font-black text-emerald-100 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] mb-6">သင်ခန်းစာများ</h2>
+            
+            <div id="lessonsContainer" class="flex flex-col gap-3.5 mb-8"></div>
+
+            <button onclick="closeLessonPopup()" class="w-16 h-16 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-400 hover:to-rose-500 border-4 border-slate-950 rounded-full shadow-[0_5px_0_#0f172a] active:translate-y-1 active:shadow-none transition-all inline-flex items-center justify-center cursor-pointer text-2xl">
+                🏠
+            </button>
+            <div class="text-[10px] font-black text-emerald-200/80 mt-1 uppercase tracking-wider">Home</div>
+        </div>
+    </div>
+
+    <!-- FOOTER SECTION -->
+    <footer class="w-full text-center pb-6 text-[11px] font-black tracking-widest uppercase z-30 relative mt-auto pt-6">
+        <span class="bg-black/60 text-emerald-400 px-4 py-2 rounded-full backdrop-blur-md shadow-lg border border-emerald-500/30">
+            DESIGNED BY DASSY. DIGITAL ACADEMY 🌟
+        </span>
+        <div class="mt-3 text-[9px] text-neutral-400 font-bold opacity-70">
+            &copy; 2026 Alphabet Quest Ecosystem . Curriculum Based Structure
+        </div>
+    </footer>
+
+    <script>
+        const backgroundVideoElement = document.getElementById('bgVideo');
+        const videoBgWrapper = document.getElementById('videoBgWrapper');
+        const mainAudioMusicElement = document.getElementById('mainAudio');
+        const muteStateToggleButton = document.getElementById('muteBtn');
+        const audioVolumeSliderControl = document.getElementById('volumeSlider');
+        const splashActionArea = document.getElementById('splashActionArea');
+
+        const lessonPopup = document.getElementById('lessonPopup');
+        const popupTitle = document.getElementById('popupTitle');
+        const lessonsContainer = document.getElementById('lessonsContainer');
+
+        const stageLessonsData = {
+            stage2: {
+                title: "🎨 ဆေးရောင်ခြယ်ကမ္ဘာ",
+                buttonStyle: "from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 shadow-orange-950 text-slate-950",
+                links: [
+                    { name: "တ (paint)", url: "တ(paint).html" },
+                    { name: "ထ (paint)", url: "ထ(paint).html" },
+                    { name: "ဒ (paint)", url: "ဒ(paint).html" },
+                    { name: "ဓ (paint)", url: "ဓ(paint).html" },
+                    { name: "န (paint)", url: "န(paint).html" }
+                ]
+            },
+            stage3: {
+                title: "🚀 အက္ခရာပစ်ခတ်ဂိမ်း",
+                buttonStyle: "from-purple-400 to-indigo-600 hover:from-purple-300 hover:to-indigo-500 shadow-purple-950 text-white",
+                links: [
+                    { name: "တ - သင်ခန်းစာ", url: "တ.html" },
+                    { name: "ထ - သင်ခန်းစာ", url: "ထ.html" },
+                    { name: "ဒ - သင်ခန်းစာ", url: "ဒ.html" },
+                    { name: "ဓ - သင်ခန်းစာ", url: "ဓ.html" },
+                    { name: "န - သင်ခန်းစာ", url: "န.html" }
+                ]
+            }
+        };
+
+        // DASSY ANIMATED LOGO SCRIPT
+        function setupAnimatedText(elementId) {
+            const targetElement = document.getElementById(elementId);
+            if (!targetElement) return;
+            const rawText = targetElement.innerText;
+            targetElement.innerHTML = '';
+
+            let delayCounter = 0;
+
+            [...rawText].forEach((char) => {
+                if (char === ' ') {
+                    const spaceSpan = document.createElement('div');
+                    spaceSpan.className = 'dassy-space';
+                    targetElement.appendChild(spaceSpan);
+                } else {
+                    const charSpan = document.createElement('span');
+                    charSpan.className = 'animated-char';
+                    charSpan.innerText = char;
+
+                    const startingX = -120 - (delayCounter * 12); 
+                    const animationDelay = delayCounter * 0.06; 
+
+                    charSpan.style.setProperty('--x-start', `${startingX}px`);
+                    charSpan.style.animationDelay = `${animationDelay}s, ${animationDelay + 1.8}s`;
+
+                    targetElement.appendChild(charSpan);
+                    delayCounter++;
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // Setup Logo Animations
+            setupAnimatedText('textLine1');
+            setupAnimatedText('textLine2');
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const stage = urlParams.get('stage');
+
+            if (stage) {
+                openLessonPopup(`stage${stage}`);
+            }
+
+            if (urlParams.get('fromGame') === 'true') {
+                document.getElementById('splashScreen').style.display = 'none';
+                if (videoBgWrapper) videoBgWrapper.style.display = 'none';
+                
+                mainAudioMusicElement.volume = audioVolumeSliderControl.value;
+                mainAudioMusicElement.play().catch(e => console.log("Audio autoplay alert:", e));
+                
+                checkUrlParametersForPopup();
+            }
+        });
+
+        function unmuteIntroVideo() {
+            backgroundVideoElement.muted = false;
+            backgroundVideoElement.play();
+            
+            splashActionArea.innerHTML = `
+                <button onclick="initializeEcosystem()" class="font-bold py-3.5 px-8 text-xl text-white bg-emerald-500 hover:bg-emerald-600 rounded-2xl shadow-[0_5px_0_#1e6022] active:translate-y-0.5 active:shadow-[0_3px_0_#1e6022] transition-all duration-75 cursor-pointer">
+                    စွန့်စားခန်းစတင်မယ် 🚀
+                </button>
+            `;
+        }
+
+        function initializeEcosystem() {
+            document.getElementById('splashScreen').classList.add('hide');
+            
+            backgroundVideoElement.pause();
+            backgroundVideoElement.src = "";
+            backgroundVideoElement.load();
+            if (videoBgWrapper) {
+                videoBgWrapper.style.display = 'none';
+            }
+            
+            mainAudioMusicElement.volume = audioVolumeSliderControl.value;
+            mainAudioMusicElement.play().catch(error => {
+                console.log("Audio autoplay restriction triggered: ", error);
+            });
+
+            checkUrlParametersForPopup();
+        }
+
+        function updateVolumeLevel(targetVolume) {
+            mainAudioMusicElement.volume = targetVolume;
+            if (targetVolume == 0) {
+                mainAudioMusicElement.muted = true;
+                muteStateToggleButton.textContent = '🔇';
+            } else {
+                mainAudioMusicElement.muted = false;
+                muteStateToggleButton.textContent = '🔊';
+            }
+        }
+
+        function toggleMuteState() {
+            if (mainAudioMusicElement.muted) {
+                mainAudioMusicElement.muted = false;
+                muteStateToggleButton.textContent = '🔊';
+                if(mainAudioMusicElement.volume === 0) {
+                    mainAudioMusicElement.volume = 0.5;
+                    audioVolumeSliderControl.value = 0.5;
+                }
+            } else {
+                mainAudioMusicElement.muted = true;
+                muteStateToggleButton.textContent = '🔇';
+            }
+        }
+
+        function openLessonPopup(stageKey) {
+            const data = stageLessonsData[stageKey];
+            if (!data) return;
+
+            popupTitle.textContent = data.title;
+            lessonsContainer.innerHTML = ""; 
+
+            data.links.forEach((lesson) => {
+                const btn = document.createElement('a');
+                btn.href = lesson.url;
+                btn.className = `w-full py-3 px-6 text-sm font-black rounded-2xl bg-gradient-to-r ${data.buttonStyle} border-2 border-slate-950 shadow-[0_4px_0_rgba(0,0,0,0.6)] active:translate-y-1 active:shadow-none transition-all block text-center`;
+                btn.textContent = lesson.name;
+                lessonsContainer.appendChild(btn);
+            });
+
+            lessonPopup.classList.remove('hidden');
+            lessonPopup.classList.add('flex');
+            
+            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?showPopup=${stageKey}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+        }
+
+        function closeLessonPopup() {
+            lessonPopup.classList.add('hidden');
+            lessonPopup.classList.remove('flex');
+            
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.pushState({ path: cleanUrl }, '', cleanUrl);
+        }
+
+        function checkUrlParametersForPopup() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetPopup = urlParams.get('showPopup');
+            if (targetPopup === 'stage2' || targetPopup === 'stage3') {
+                openLessonPopup(targetPopup);
+            }
+        }
+    </script>
+</body>
+</html>

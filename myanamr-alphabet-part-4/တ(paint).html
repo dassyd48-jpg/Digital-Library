@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>"တ"ကို အရောင်ခြယ်ပါ - Science Alchemist Lab</title>
+  
+  <!-- Fonts & Tailwind CSS CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Pyidaungsu:wght@400;700;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --lab-brown: #713f12;
+      --lab-wood: #a16207;
+      --lab-floor: #ca8a04;
+      --lab-bg-light: #fef9c3;
+      --lab-bg-dark: #facc15;
+    }
+
+    html, body { 
+      height: 100%; 
+      width: 100%; 
+      overflow: hidden; 
+      position: relative; 
+      background-color: #fef08a; 
+      user-select: none; 
+      -webkit-user-select: none;
+      font-family: 'Fredoka', 'Pyidaungsu', system-ui, sans-serif;
+    }
+
+    /* ==========================================================================
+       DYNAMIC LAB BACKGROUND (Adaptive Anchoring)
+       ========================================================================== */
+    .real-lab-bg { 
+      position: fixed; 
+      inset: 0; 
+      pointer-events: none; 
+      background: linear-gradient(to bottom, var(--lab-bg-light) 0%, #fef08a 70%, var(--lab-bg-dark) 100%); 
+      z-index: 1; 
+    }
+    
+    .lab-wood-floor { 
+      position: absolute; 
+      left: 0; right: 0; bottom: 0; 
+      height: 12vh; 
+      background: linear-gradient(to bottom, var(--lab-wood), var(--lab-brown)); 
+      border-top: 6px solid var(--lab-floor); 
+      box-shadow: inset 0 10px 20px rgba(0,0,0,0.3); 
+    }
+
+    .bookshelf-left { 
+      position: absolute; 
+      left: 10px; top: 10%; 
+      width: 12vw; min-width: 60px; max-width: 120px;
+      height: 60vh; 
+      background: #854d0e; border: 4px solid var(--lab-wood); border-radius: 8px; 
+      box-shadow: 5px 10px 25px rgba(0,0,0,0.2); 
+    }
+    .bookshelf-left::before { 
+      content: "📚\A 🧪\A 📘\A 📕\A 📚"; white-space: pre; 
+      position: absolute; inset: 5px; font-size: clamp(12px, 2vw, 18px); 
+      line-height: 2.5; text-align: center; 
+    }
+
+    .cabinet-right { 
+      position: absolute; 
+      right: 10px; bottom: 12vh; 
+      width: 14vw; min-width: 70px; max-width: 130px;
+      height: 30vh; 
+      background: var(--lab-wood); border: 3px solid var(--lab-brown); border-radius: 6px; 
+    }
+    .cabinet-right::before { content: "🪴"; position: absolute; top: -25px; left: 0; right: 0; font-size: 20px; text-align: center; }
+
+    .lab-long-table { position: absolute; left: 0; right: 0; bottom: 4vh; height: 6vh; background: var(--lab-floor); border-top: 5px solid #eab308; }
+
+    .students-container { 
+      position: absolute; 
+      left: 5%; bottom: 4vh; 
+      width: clamp(120px, 25vw, 220px); 
+      height: auto; 
+      z-index: 10; display: flex; gap: 10px; pointer-events: none; align-items: flex-end; 
+    }
+    .student-boy, .student-girl { 
+      width: 45%; 
+      aspect-ratio: 95/230;
+      background-size: 100% 100%; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); 
+    }
+    .student-boy { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 270'><defs><linearGradient id='skin' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='%23ffedd5'/><stop offset='100%' stop-color='%23fed7aa'/></linearGradient></defs><path d='M40,165 L40,245 L25,245 L25,255 L50,255 L50,165 Z M70,165 L70,245 L85,245 L85,255 L60,255 L60,165 Z' fill='%231e3a8a'/><path d='M23,250 L50,250 L50,262 Q35,265 23,260 Z M58,250 L87,250 L87,262 Q75,265 58,260 Z' fill='%23334155'/><path d='M25,75 L85,75 L80,185 L30,185 Z' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='2'/><path d='M25,75 L48,185 L30,185 Z M85,75 L62,185 L80,185 Z' fill='%23e2e8f0'/><circle cx='55' cy='115' r='3' fill='%23475569'/><circle cx='55' cy='135' r='3' fill='%23475569'/><path d='M25,75 Q5,100 12,125' stroke='%23f8fafc' stroke-width='11' stroke-linecap='round' fill='none'/><path d='M85,75 Q105,100 98,125' stroke='%23f8fafc' stroke-width='11' stroke-linecap='round' fill='none'/><circle cx='10' cy='126' r='6' fill='url(%23skin)'/><circle cx='100' cy='126' r='6' fill='url(%23skin)'/><path d='M35,45 Q20,15 55,15 Q90,15 75,45 Z' fill='%23451a03'/><circle cx='55' cy='48' r='24' fill='url(%23skin)'/><path d='M35,45 Q55,25 75,45 Q70,25 35,45 Z' fill='%23451a03'/><circle cx='31' cy='48' r='6' fill='url(%23skin)'/><circle cx='79' cy='48' r='6' fill='url(%23skin)'/><circle cx='45' cy='46' r='5' fill='%230f172a'/><circle cx='65' cy='46' r='5' fill='%230f172a'/><circle cx='46' cy='44' r='1.5' fill='%23fff'/><circle cx='66' cy='44' r='1.5' fill='%23fff'/><rect x='36' y='38' width='38' height='16' fill='none' stroke='%2306b6d4' stroke-width='3.5' rx='4'/><line x1='50' y1='46' x2='60' y2='46' stroke='%2306b6d4' stroke-width='3'/><path d='M47,60 Q55,66 63,60' stroke='%23e11d48' stroke-width='2.5' fill='none' stroke-linecap='round'/></svg>"); }
+    .student-girl { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 270'><defs><linearGradient id='skin' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='%23ffedd5'/><stop offset='100%' stop-color='%23fed7aa'/></linearGradient></defs><path d='M38,165 L38,245 L22,245 L22,255 L48,255 L48,165 Z M68,165 L68,245 L82,245 L82,255 L58,255 L58,165 Z' fill='%239d174d'/><path d='M20,250 L48,250 L48,262 Q33,265 20,260 Z M56,250 L84,250 L84,262 Q70,265 56,260 Z' fill='%23475569'/><path d='M22,75 L82,75 L88,155 L16,155 Z' fill='%23f8fafc' stroke='%23cbd5e1' stroke-width='2'/><path d='M38,75 L46,155 L16,155 Z' fill='%23f1f5f9'/><path d='M66,75 L58,155 L88,155 Z' fill='%23f1f5f9'/><path d='M40,75 L52,100 L64,75 Z' fill='%23db2777'/><path d='M22,75 Q5,100 12,125' stroke='%23f8fafc' stroke-width='10' stroke-linecap='round' fill='none'/><path d='M82,75 Q99,100 93,125' stroke='%23f8fafc' stroke-width='10' stroke-linecap='round' fill='none'/><circle cx='10' cy='126' r='5.5' fill='url(%23skin)'/><circle cx='95' cy='126' r='5.5' fill='url(%23skin)'/><path d='M20,30 Q52,-2 84,30 Q96,65 84,72 Q52,50 20,72 Z' fill='%237c2d12'/><circle cx='52' cy='46' r='22' fill='url(%23skin)'/><circle cx='29' cy='46' r='5.5' fill='url(%23skin)'/><circle cx='75' cy='46' r='5.5' fill='url(%23skin)'/><circle cx='43' cy='45' r='5' fill='%230f172a'/><circle cx='61' cy='45' r='5' fill='%230f172a'/><circle cx='44' cy='43' r='1.5' fill='%23fff'/><circle cx='62' cy='43' r='1.5' fill='%23fff'/><rect x='33' y='37' width='38' height='16' fill='none' stroke='%23ec4899' stroke-width='3.5' rx='4'/><path d='M45,58 Q52,64 59,58' stroke='%23e11d48' stroke-width='2.5' fill='none' stroke-linecap='round'/></svg>"); }
+
+    /* ==========================================================================
+       GAME CONTAINER
+       ========================================================================== */
+    #app-root {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .intro-screen { 
+      position: fixed; inset: 0; z-index: 100; 
+      display: flex; flex-direction: column; align-items: center; justify-content: center; 
+      padding: 20px; text-align: center; 
+      background: rgba(22, 12, 4, 0.7); backdrop-filter: blur(8px); 
+      transition: opacity 0.4s ease; 
+    }
+    .intro-title { font-size: clamp(24px, 8vw, 42px); font-weight: 900; color: #fff; text-shadow: 4px 4px 0px #7c2d12; margin-bottom: 10px; }
+    .intro-description { color: #fff; font-size: clamp(14px, 4vw, 18px); max-width: 500px; background: rgba(120, 53, 4, 0.9); padding: 20px; border-radius: 20px; border: 3px solid #f59e0b; margin-bottom: 20px; }
+
+    .game-wrapper { 
+      flex: 1; 
+      display: none; 
+      flex-direction: column; 
+      width: 100%; 
+      height: 100%;
+      opacity: 0; 
+      transition: opacity 0.4s ease; 
+    }
+    .game-wrapper.active { display: flex; opacity: 1; }
+
+    /* STAGE 1 */
+    #stage1Screen {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .play-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      max-width: 800px;
+    }
+
+    .whiteboard-frame {
+      width: 100%;
+      aspect-ratio: 1/1;
+      max-width: min(70vh, 90vw);
+      background: var(--lab-brown);
+      border: 6px solid var(--lab-wood);
+      border-radius: 20px;
+      padding: 10px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .canvas-container {
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    canvas { width: 100%; height: 100%; display: block; touch-action: none; }
+
+    .panel {
+      width: 140px;
+      height: auto;
+      max-height: 90vh;
+      background: #fff;
+      border: 4px solid var(--lab-wood);
+      border-radius: 24px;
+      padding: 15px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      z-index: 20;
+    }
+
+    @media (max-width: 768px) {
+      #stage1Screen { flex-direction: column; padding: 10px; gap: 10px; }
+      .play-area { height: auto; flex: 1; }
+      .whiteboard-frame { max-width: 85vw; }
+      .panel { 
+        width: 100%; 
+        flex-direction: row; 
+        height: auto; 
+        padding: 10px; 
+        border-radius: 20px 20px 0 0; 
+        position: fixed; 
+        bottom: 0; left: 0; 
+        justify-content: space-around;
+        align-items: center;
+      }
+      .panel-title { display: none; }
+      .brush-grid { 
+        display: flex !important; 
+        flex-direction: row; 
+        overflow-x: auto; 
+        max-height: none !important; 
+        gap: 8px; 
+        flex: 1;
+        padding: 5px;
+      }
+      .brush { min-width: 45px; height: 45px; }
+      .eraser { width: 50px; height: 50px; flex-shrink: 0; }
+      .bottom-controls { width: auto; flex-direction: row; gap: 5px; }
+      .btn-action { width: 60px; height: 45px; font-size: 12px; }
+      .students-container { left: 2%; bottom: 80px; transform: scale(0.7); transform-origin: left bottom; }
+    }
+
+    /* ==========================================================================
+       STAGE 2: EXTRA SPACIOUSPUZZLE
+       ========================================================================== */
+    #stage2Screen {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      padding: 20px 20px 40px 20px;
+    }
+
+    .stage2-header {
+      text-align: center;
+      margin-bottom: 15px;
+      z-index: 20;
+    }
+
+    .stage2-whiteboard {
+      flex: 1;
+      width: 100%;
+      background: var(--lab-brown);
+      border: 8px solid var(--lab-wood);
+      border-radius: 30px;
+      padding: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    #puzzleGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(clamp(80px, 18vw, 120px), 1fr));
+      gap: clamp(12px, 4vw, 30px);
+      width: 100%;
+      height: 100%;
+      justify-items: center;
+      align-items: center;
+      overflow-y: auto;
+    }
+
+    /* Bigger flask sizes for kids to tap easily */
+    .flask-item {
+      width: clamp(80px, 18vw, 110px);
+      aspect-ratio: 60/80;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .flask-text {
+      position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);
+      font-size: clamp(24px, 6vw, 36px); font-weight: 900; color: #1e293b;
+    }
+
+    /* Wrong answer badge indicator */
+    .wrong-badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: white;
+      border: 2px solid #ef4444;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      animation: popIn 0.2s forwards;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0); }
+      100% { transform: scale(1); }
+    }
+
+    /* UTILITIES & ANIMATIONS */
+    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; }
+    .brush { aspect-ratio: 1/1; border-radius: 12px; background: #fff; border: 2px solid #e2e8f0; position: relative; cursor: pointer; }
+    .brush.selected { border-color: #ec4899; box-shadow: 0 0 10px rgba(236, 72, 153, 0.4); transform: scale(1.05); }
+    .swatch { position: absolute; inset: 4px; border-radius: 8px; }
+
+    .btn-action { border-radius: 12px; font-weight: 800; color: #fff; cursor: pointer; border: none; transition: 0.2s; }
+    .btn-reset { background: #94a3b8; box-shadow: 0 4px 0 #475569; }
+    .btn-next { background: #10b981; box-shadow: 0 4px 0 #059669; }
+    .btn-action:active { transform: translateY(2px); box-shadow: none; }
+
+    /* Custom smooth popout scale animation for correct tap */
+    .correct-tap { animation: popOut 0.5s forwards cubic-bezier(0.6, -0.28, 0.735, 0.045); }
+    @keyframes popOut { 0% { transform: scale(1); } 30% { transform: scale(1.2); } 100% { transform: scale(0); opacity: 0; } }
+    
+    .wrong-tap { animation: shake 0.4s; }
+    @keyframes shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
+
+    .celebration-overlay { 
+      position: fixed; inset: 0; z-index: 200; 
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); 
+      display: none; align-items: center; justify-content: center; 
+    }
+    .victory-card { background: #fff; border-radius: 30px; padding: 30px; text-align: center; border: 8px solid #facc15; max-width: 90vw; }
+
+    #effectsLayer { position: fixed; inset: 0; pointer-events: none; z-index: 150; }
+    .spark { position: absolute; font-size: 24px; pointer-events: none; animation: sparkMove 1s forwards; }
+    @keyframes sparkMove { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; } }
+  </style>
+</head>
+<body>
+
+  <!-- FIXED RESPONSIVE BACKGROUND -->
+  <div class="real-lab-bg">
+    <div class="lab-wood-floor"></div>
+    <div class="bookshelf-left"></div>
+    <div class="cabinet-right"></div>
+    <div class="lab-long-table"></div>
+    <div class="students-container">
+      <div id="boyHero" class="student-boy"></div>
+      <div id="girlHero" class="student-girl"></div>
+    </div>
+  </div>
+
+  <div id="app-root">
+    
+    <!-- TOP NAVIGATION BUTTONS (HOME & RESET) -->
+    <div class="absolute top-4 left-4 z-50 flex gap-2">
+      <button onclick="location.href='index.html?fromGame=true'" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပင်မစာမျက်နှာ">
+        🏠
+      </button>
+      <button id="btnTopReset" class="w-10 h-10 bg-white rounded-xl shadow-md border-2 border-amber-600 flex items-center justify-center cursor-pointer transform active:scale-95 transition-transform text-xl" title="ပြန်စမည်">
+        🔄
+      </button>
+    </div>
+    
+    <!-- INTRO -->
+    <div id="introScreen" class="intro-screen">
+      <h1 class="intro-title">Science Lab</h1>
+      <div class="intro-description">
+        <p>သိပ္ပံပညာရှင်လေးတို့ရေ။ <b>"တ"</b> စာလုံးလေးကို ဆေးရောင်ခြယ်ပြီး ရှာဖွေကြမယ်နော်။</p>
+      </div>
+      <button class="btn-start bg-pink-500 text-white px-10 py-4 rounded-2xl font-black text-xl shadow-lg cursor-pointer" onclick="startGame()">စတင်ကစားမည်</button>
+    </div>
+
+    <!-- GAME WRAPPER -->
+    <div id="gameWrapper" class="game-wrapper">
+      
+      <!-- STAGE 1: PAINTING -->
+      <div id="stage1Screen">
+        <div class="play-area">
+          <div class="bg-amber-900 text-white px-6 py-2 rounded-xl border-2 border-white shadow-md mb-4 flex items-center gap-3">
+            <span class="font-bold">ဆေးရောင်ခြယ်ပါ</span>
+            <span class="bg-white text-amber-900 px-3 py-1 rounded-lg font-black text-2xl">တ</span>
+          </div>
+          <div class="whiteboard-frame">
+            <div class="canvas-container">
+              <canvas id="paintCanvas"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title text-center font-bold text-amber-900 text-xs">ဆေးရောင်</div>
+          <div id="brushGrid" class="brush-grid"></div>
+          <div id="eraser" class="eraser border-2 border-amber-200 rounded-xl flex items-center justify-center bg-white cursor-pointer shadow-sm">
+            <span class="text-2xl">🧽</span>
+          </div>
+          <div class="bottom-controls flex flex-col gap-2">
+            <button id="btnReset" class="btn-action btn-reset py-3 px-2 text-xs">ပြန်စ</button>
+            <button id="btnNext" class="btn-action btn-next py-3 px-2 text-xs">ရှေ့သို့</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE 2: PUZZLE (PERFECTLY CLEAN GRID AREA) -->
+      <div id="stage2Screen">
+        <div class="stage2-header">
+          <h2 class="text-2xl font-black text-white drop-shadow-md">"တ" ကိုရှာဖွေစို့</h2>
+          <div id="targetCount" class="bg-white text-pink-600 px-6 py-1 rounded-full font-black mt-2 shadow-lg inline-block">ကျန်ရှိ: 5</div>
+        </div>
+        <div class="stage2-whiteboard">
+          <div id="puzzleGrid"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- EFFECTS -->
+    <div id="effectsLayer"></div>
+
+    <!-- CELEBRATION -->
+    <div id="celebrationOverlay" class="celebration-overlay">
+      <div class="victory-card">
+        <span class="text-6xl mb-4 block">🏆</span>
+        <h2 class="text-3xl font-black text-blue-900 mb-2">အရမ်းတော်တယ်!</h2>
+        <p class="font-bold text-slate-600 mb-6">"တ" စာလုံးကို အောင်မြင်စွာ လေ့လာပြီးပါပြီ။</p>
+        <button onclick="location.reload()" class="bg-pink-500 text-white px-12 py-4 rounded-2xl font-black text-xl shadow-lg cursor-pointer">ပြန်ကစားမည်</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentStage = 0;
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    let painting = false;
+    let currentColor = '#ef4444';
+    let isEraser = false;
+
+    const brushes = [
+      '#ef4444', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899'
+    ];
+
+    function resizeCanvas() {
+      const container = canvas.parentElement;
+      if (!container) return;
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
+      drawTraceLetter();
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    function drawTraceLetter() {
+      ctx.font = `900 ${canvas.height * 0.7}px Pyidaungsu`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.strokeStyle = '#f1f5f9';
+      ctx.lineWidth = 5;
+      ctx.setLineDash([15, 10]);
+      ctx.strokeText('တ', canvas.width/2, canvas.height/2 + 20);
+      ctx.setLineDash([]);
+    }
+
+    function startGame() {
+      document.getElementById('introScreen').style.opacity = '0';
+      setTimeout(() => {
+        document.getElementById('introScreen').style.display = 'none';
+        document.getElementById('gameWrapper').classList.add('active');
+        currentStage = 1;
+        resizeCanvas();
+      }, 400);
+    }
+
+    // Painting Logic
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    function startDrawing(e) { painting = true; draw(e); }
+    function stopDrawing() { painting = false; ctx.beginPath(); }
+    function draw(e) {
+      if (!painting) return;
+      const pos = getPos(e);
+      ctx.lineWidth = isEraser ? 40 : 20;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = isEraser ? '#ffffff' : currentColor;
+      ctx.globalCompositeOperation = isEraser ? 'destination-out' : 'source-over';
+      
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    window.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e); });
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+
+    // UI Init
+    const grid = document.getElementById('brushGrid');
+    brushes.forEach((color, i) => {
+      const b = document.createElement('div');
+      b.className = 'brush' + (i===0?' selected':'');
+      b.innerHTML = `<div class="swatch" style="background:${color}"></div>`;
+      b.onclick = () => {
+        isEraser = false; currentColor = color;
+        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+        document.getElementById('eraser').classList.remove('selected');
+        b.classList.add('selected');
+      };
+      grid.appendChild(b);
+    });
+
+    document.getElementById('eraser').onclick = () => {
+      isEraser = true;
+      document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+      document.getElementById('eraser').classList.add('selected');
+    };
+
+    // Reset Buttons Trigger
+    const cleanCanvas = () => ctx.clearRect(0,0,canvas.width,canvas.height) || drawTraceLetter();
+    document.getElementById('btnReset').onclick = cleanCanvas;
+    document.getElementById('btnTopReset').onclick = cleanCanvas;
+
+    document.getElementById('btnNext').onclick = () => {
+      document.getElementById('stage1Screen').style.display = 'none';
+      document.getElementById('stage2Screen').style.display = 'flex';
+      setupStage2();
+    };
+
+    // Stage 2 Logic with Interactive Feedback
+    function setupStage2() {
+      const grid = document.getElementById('puzzleGrid');
+      grid.innerHTML = '';
+      let left = 5;
+      document.getElementById('targetCount').textContent = `ကျန်ရှိ: ${left}`;
+
+      const pool = ["တ", "ထ", "ဘ", "ဟ", "င", "ပ", "မ"];
+      const items = [...Array(5).fill("တ"), ...Array(10).fill("").map(() => pool[Math.floor(Math.random()*6)+1])];
+      items.sort(() => Math.random() - 0.5);
+
+      items.forEach(char => {
+        const item = document.createElement('div');
+        item.className = 'flask-item';
+        const isT = char === "တ";
+        item.innerHTML = `
+          <svg viewBox="0 0 60 80" class="w-full h-full drop-shadow-md">
+            <path d="M22,5 L38,5 L38,25 L55,65 Q58,72 52,75 L8,75 Q2,72 5,65 L22,25 Z" fill="white" stroke="#334155" stroke-width="3"/>
+            <path d="M10,65 L50,65 L48,72 L12,72 Z" fill="${isT?'#ec4899':'#3b82f6'}"/>
+          </svg>
+          <div class="flask-text">${char}</div>
+        `;
+        
+        item.onclick = () => {
+          // Prevent tapping again if already answered correctly
+          if (item.classList.contains('correct-tap')) return;
+
+          if (isT) {
+            item.classList.add('correct-tap');
+            left--;
+            document.getElementById('targetCount').textContent = `ကျန်ရှိ: ${left}`;
+            createSparks(item);
+            if (left === 0) setTimeout(() => document.getElementById('celebrationOverlay').style.display = 'flex', 800);
+          } else {
+            // If already showing a wrong badge, don't duplicate
+            if (item.querySelector('.wrong-badge')) return;
+
+            item.classList.add('wrong-tap');
+            
+            // Append visual floating '❌' indicator
+            const badge = document.createElement('div');
+            badge.className = 'wrong-badge';
+            badge.textContent = '❌';
+            item.appendChild(badge);
+
+            setTimeout(() => {
+              item.classList.remove('wrong-tap');
+              badge.remove();
+            }, 400);
+          }
+        };
+        grid.appendChild(item);
+      });
+    }
+
+    function createSparks(el) {
+      const rect = el.getBoundingClientRect();
+      const layer = document.getElementById('effectsLayer');
+      for(let i=0; i<6; i++) {
+        const s = document.createElement('div');
+        s.className = 'spark'; s.textContent = ['✨','⭐','🎈'][i%3];
+        s.style.left = (rect.left + rect.width/2) + 'px';
+        s.style.top = (rect.top + rect.height/2) + 'px';
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 50 + Math.random() * 50;
+        s.style.setProperty('--dx', Math.cos(angle)*dist + 'px');
+        s.style.setProperty('--dy', Math.sin(angle)*dist + 'px');
+        layer.appendChild(s);
+        setTimeout(() => s.remove(), 1000);
+      }
+    }
+  </script>
+</body>
+</html>
