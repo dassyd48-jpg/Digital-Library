@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>မြန်မာအက္ခရာ ပုန်းတမ်းကစားနည်း - သင်ခန်းစာ ၂</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Noto+Sans+Myanmar:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; width: 100%; overflow: hidden; user-select: none; -webkit-user-select: none; }
+    
+    body {
+      font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+      background: linear-gradient(to bottom, #e3f2fd 0%, #f1f8e9 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      padding: 12px;
+      position: relative;
+    }
+
+    /* ==========================================================================
+       INTRO COVER SCREEN (ဂိမ်းမစခင် ပထမဆုံးပြသမည့် မိတ်ဆက်စာမျက်နှာ)
+       ========================================================================= */
+    .game-intro-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, #e8f5e9 0%, #c8e6c9 100%);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: opacity 0.4s ease, pointer-events 0.4s ease;
+    }
+    .game-intro-overlay.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .intro-welcome-box {
+      background: white;
+      border: 5px solid #4caf50;
+      border-radius: 28px;
+      padding: 30px 20px;
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    }
+    .intro-welcome-emoji {
+      font-size: 50px;
+      margin-bottom: 10px;
+      animation: waveHand 1s infinite alternate;
+      display: inline-block;
+    }
+    @keyframes waveHand { 0% { transform: rotate(0deg); } 100% { transform: rotate(15deg); } }
+    
+    .intro-title-main {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      color: #2e7d32;
+      margin-bottom: 6px;
+    }
+    .intro-badge-lesson {
+      display: inline-block;
+      background: #ffecb3;
+      color: #ff8f00;
+      padding: 4px 16px;
+      border-radius: 15px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      border: 1.5px solid #ffb300;
+    }
+    .intro-description-card {
+      background: #f1f8e9;
+      border-radius: 16px;
+      padding: 15px;
+      text-align: left;
+      margin-bottom: 25px;
+      border-left: 5px solid #8bc34a;
+    }
+    .intro-instruction-item {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 15px;
+      color: #455a64;
+      line-height: 1.6;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .intro-instruction-item:last-child { margin-bottom: 0; }
+    
+    .btn-start-game {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      font-size: 20px;
+      font-weight: 900;
+      border-radius: 18px;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #2e7d32;
+      transition: transform 0.1s;
+      width: 100%;
+    }
+    .btn-start-game:active { transform: translateY(3px); box-shadow: 0 3px 0 #2e7d32; }
+
+    /* ==========================================================================
+       TOP INTRO CARD (ဂိမ်းထဲတွင် ထိပ်ဆုံး၌ ဆက်လက်ပြသမည့် ခေါင်းစဉ်တို)
+       ========================================================================= */
+    .intro-card {
+      width: 100%;
+      max-width: 650px;
+      background: white;
+      border: 3.5px solid #8bc34a;
+      border-radius: 18px;
+      padding: 12px 16px;
+      text-align: center;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+      margin-bottom: 12px;
+    }
+    .intro-main-title {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: #2e7d32;
+      text-shadow: 1px 1px 0px white;
+      margin-bottom: 4px;
+    }
+    .intro-sub-badge {
+      display: inline-block;
+      background: #e8f5e9;
+      color: #388e3c;
+      padding: 3px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       LESSON CARD PANEL (သင်ခန်းစာ အခြေအနေပြ ကတ်ပြား)
+       ========================================================================= */
+    .lesson-card {
+      width: 100%;
+      max-width: 650px;
+      background: #fffdf7;
+      border: 3.5px solid #ffb300;
+      border-radius: 20px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+      z-index: 10;
+      margin-bottom: 12px;
+    }
+    .lesson-info-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .instruction-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: #5d4037;
+    }
+    
+    .target-box {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: white;
+      background: #ff9800;
+      width: 44px;  
+      height: 44px;
+      border-radius: 12px;
+      box-shadow: 0 4px 0 #f57c00;
+      display: flex;
+      align-items: center;
+      justify-content: center; 
+      padding: 0; 
+      animation: pulseTarget 1s infinite alternate;
+    }
+    @keyframes pulseTarget { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+    
+    .score-stars { font-size: 20px; color: #ffca28; letter-spacing: 2px; white-space: nowrap; }
+    
+    .btn-exit {
+      background: #e53935;
+      color: white;
+      border: none;
+      padding: 8px 16px; 
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #b71c1c;
+      transition: transform 0.1s;
+    }
+    .btn-exit:active { transform: translateY(2px); box-shadow: 0 2px 0 #b71c1c; }
+
+    /* ==========================================================================
+       GAME STAGE (ဂိမ်းကစားမည့် ဧရိယာ)
+       ========================================================================= */
+    .game-stage {
+      position: relative;
+      width: 100%;
+      max-width: 650px;
+      aspect-ratio: 16/11; 
+      background: linear-gradient(to bottom, #b3e5fc 0%, #e1f5fe 40%, #fff9c4 75%);
+      border: 5px solid #558b2f;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+      flex-grow: 0; 
+    }
+
+    .garden-lawn {
+      position: absolute; bottom: 0; left: 0; width: 100%; height: 48%;
+      background: linear-gradient(to bottom, #7cb342 0%, #558b2f 100%);
+      z-index: 2; box-shadow: inset 0 5px 0 #a2d85b;
+    }
+
+    .garden-pond {
+      position: absolute; bottom: -15px; left: -20px; width: 280px; height: 140px;
+      background: linear-gradient(to bottom, #29b6f6 0%, #0288d1 100%);
+      border-radius: 50%; border: 5px solid #81d4fa; z-index: 3;
+      box-shadow: inset 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .sky-cloud { position: absolute; background: white; border-radius: 50%; opacity: 0.85; z-index: 1; }
+    .cloud-1 { top: 12%; left: 8%; width: 80px; height: 28px; box-shadow: 30px 0 0 -4px white, -25px 4px 0 -2px white; animation: floatCloud 6s infinite alternate ease-in-out; }
+    .cloud-2 { top: 18%; right: 12%; width: 95px; height: 32px; box-shadow: 35px 4px 0 -4px white, -30px 0 0 0 white; opacity: 0.7; animation: floatCloud 8s infinite alternate-reverse ease-in-out; }
+    @keyframes floatCloud { 0% { transform: translateX(0px); } 100% { transform: translateX(18px); } }
+
+    /* ==========================================================================
+       HIDING SLOTS & ORGANIC GRAPHICS
+       ========================================================================= */
+    .spot-container { position: absolute; z-index: 4; cursor: pointer; }
+    .object-layer { position: absolute; inset: 0; z-index: 6; pointer-events: none; }
+
+    .spot-lotus { bottom: 6%; left: 6%; width: 100px; height: 65px; z-index: 4; }
+    .organic-lotus { position: absolute; inset: 0; background: #00897b; border-radius: 50%; box-shadow: inset -8px -6px 0 #004d40; }
+    .organic-lotus-cut { position: absolute; top: 0; left: 38px; width: 24px; height: 30px; background: #0288d1; clip-path: polygon(50% 100%, 0% 0%, 100% 0%); }
+
+    .spot-sunflower { bottom: 32%; left: 30%; width: 85px; height: 135px; }
+    .organic-flower-stem { position: absolute; bottom: 0; left: 37px; width: 10px; height: 95px; background: #4caf50; border-radius: 4px; }
+    .organic-flower-leaf { position: absolute; bottom: 45px; left: 16px; width: 26px; height: 14px; background: #388e3c; border-radius: 12px 0 12px 0; transform: rotate(-15deg); }
+    .organic-flower-head { position: absolute; top: 0; left: 0; width: 85px; height: 85px; background: #ffeb3b; border-radius: 50%; border: 6px dashed #fbc02d; }
+    .organic-flower-center { position: absolute; top: 18px; left: 18px; width: 37px; height: 37px; background: #5d4037; border-radius: 50%; }
+
+    .spot-well { bottom: 28%; right: 26%; width: 110px; height: 110px; }
+    .organic-well-brick { position: absolute; bottom: 0; left: 8px; width: 94px; height: 65px; background: #b0bec5; border: 3.5px solid #78909c; border-radius: 10px 10px 4px 4px; box-shadow: inset -12px -8px 0 #90a4ae; }
+    .organic-well-roof-post { position: absolute; bottom: 60px; left: 18px; width: 7px; height: 42px; background: #8d6e63; box-shadow: 66px 0 0 #8d6e63; }
+    .organic-well-roof { position: absolute; top: 0; left: 0; width: 110px; height: 32px; background: #b22222; border-radius: 16px 16px 4px 4px; }
+
+    .spot-fence { bottom: 24%; right: 4%; width: 130px; height: 80px; }
+    .organic-fence-board { position: absolute; bottom: 0; width: 18px; height: 75px; background: #ffe0b2; border: 2.5px solid #b78d65; border-radius: 5px 5px 0 0; }
+    .fb-1 { left: 8px; } .fb-2 { left: 38px; } .fb-3 { left: 68px; } .fb-4 { left: 98px; }
+    .organic-fence-rail { position: absolute; bottom: 18px; left: 0; width: 130px; height: 10px; background: #d7ccc8; border: 2px solid #b78d65; box-shadow: 0 20px 0 #d7ccc8; }
+
+    .spot-mushroom { bottom: 4%; right: 5%; width: 130px; height: 110px; }
+    .organic-shroom-stem { position: absolute; bottom: 0; left: 35px; width: 60px; height: 65px; background: #fff9c4; border: 2.5px solid #fbc02d; border-radius: 25px 25px 8px 8px; }
+    .organic-shroom-door { position: absolute; bottom: 0; left: 53px; width: 22px; height: 36px; background: #ffb74d; border-radius: 8px 8px 0 0; }
+    .organic-shroom-cap { position: absolute; top: 0; left: 0; width: 130px; height: 55px; background: #e53935; border-radius: 65px 65px 12px 12px; box-shadow: inset -12px -8px 0 #b71c1c; }
+    .organic-shroom-dot { position: absolute; background: white; border-radius: 50%; }
+    .sd-1 { top: 14%; left: 20px; width: 14px; height: 14px; }
+    .sd-2 { top: 25%; left: 55px; width: 18px; height: 18px; }
+    .sd-3 { top: 16%; right: 20px; width: 15px; height: 15px; }
+
+    /* ==========================================================================
+       KIDS CHARACTER & PRECISE HELD LETTER
+       ========================================================================= */
+    .kid-character {
+      position: absolute; width: 60px; height: 90px; display: flex; flex-direction: column; align-items: center;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.25); z-index: 3; pointer-events: none;
+    }
+    
+    .spot-lotus .kid-character { left: 20px; bottom: 5px; }
+    .spot-sunflower .kid-character { left: 12px; bottom: 25px; }
+    .spot-well .kid-character { right: -12px; bottom: 8px; }
+    .spot-fence .kid-character { left: 35px; bottom: -8px; }
+    .spot-mushroom .kid-character { left: 5px; bottom: 18px; }
+
+    .held-letter {
+      position: absolute; top: -46px; left: 50%; transform: translateX(-50%) scale(0);
+      font-family: 'Noto Sans Myanmar', sans-serif; 
+      font-size: 22px; 
+      font-weight: 900;
+      background: #fffde7; color: #d84315; border: 3px solid #ff5722;
+      width: 42px; 
+      height: 42px;
+      border-radius: 12px; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+      z-index: 9;
+    }
+    .held-letter::after {
+      content: ''; position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%);
+      border-width: 7px 7px 0; border-style: solid; border-color: #ff5722 transparent; display: block; width: 0;
+    }
+
+    .kid-head { width: 36px; height: 36px; background: #ffebd2; border-radius: 50%; position: relative; border: 2px solid #5d4037; z-index: 4; }
+    .kid-hair { position: absolute; top: -2px; left: -2px; right: -2px; height: 15px; background: #3e2723; border-radius: 15px 15px 0 0; }
+    .kid-eyes { position: absolute; top: 14px; left: 6px; right: 6px; display: flex; justify-content: space-between; }
+    .kid-eyes::before, .kid-eyes::after { content: ''; width: 5px; height: 5px; background: #212121; border-radius: 50%; }
+    .kid-smile { position: absolute; bottom: 5px; left: 13px; width: 8px; height: 5px; border-bottom: 2px solid #212121; border-radius: 0 0 4px 4px; }
+    
+    .kid-body { 
+      width: 34px; height: 40px; background: #e91e63; border-radius: 10px 10px 0 0; margin-top: -2px; position: relative; z-index: 3;
+      opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Peeking States */
+    .spot-lotus.peek .kid-character { transform: translateY(-40px); }
+    .spot-sunflower.peek .kid-character { transform: translateX(40px) translateY(-20px); }
+    .spot-well.peek .kid-character { transform: translateX(30px) translateY(-12px); }
+    .spot-fence.peek .kid-character { transform: translateY(-42px); }
+    .spot-mushroom.peek .kid-character { transform: translateX(-30px) translateY(-20px); }
+
+    .spot-container.peek .held-letter { transform: translateX(-50%) scale(1); }
+    .spot-container.peek .kid-body { opacity: 1; transform: translateY(0); }
+
+    /* Success states animations */
+    .spot-lotus.success .kid-character { animation: winJumpL 0.4s infinite alternate; }
+    @keyframes winJumpL { 0% { transform: translateY(-35px); } 100% { transform: translateY(-55px); } }
+    .spot-sunflower.success .kid-character { animation: winJumpSF 0.4s infinite alternate; }
+    @keyframes winJumpSF { 0% { transform: translateX(40px) translateY(-20px); } 100% { transform: translateX(40px) translateY(-40px); } }
+    .spot-well.success .kid-character { animation: winJumpW 0.4s infinite alternate; }
+    @keyframes winJumpW { 0% { transform: translateX(30px) translateY(-12px); } 100% { transform: translateX(30px) translateY(-32px); } }
+    .spot-fence.success .kid-character { animation: winJumpF 0.4s infinite alternate; }
+    @keyframes winJumpF { 0% { transform: translateY(-40px); } 100% { transform: translateY(-60px); } }
+    .spot-mushroom.success .kid-character { animation: winJumpM 0.4s infinite alternate; }
+    @keyframes winJumpM { 0% { transform: translateX(-30px) translateY(-20px); } 100% { transform: translateX(-30px) translateY(-40px); } }
+
+    .spot-container.success .kid-body { opacity: 1; transform: translateY(0); }
+
+    /* Shaking Animations */
+    .spot-lotus.wrong .kid-character, .spot-fence.wrong .kid-character { animation: shakeV 0.4s ease; }
+    @keyframes shakeV { 0%, 100% { transform: translateY(-40px); } 25% { transform: translateX(-5px) translateY(-40px); } 75% { transform: translateX(5px) translateY(-40px); } }
+    .spot-sunflower.wrong .kid-character { animation: shakeSF 0.4s ease; }
+    @keyframes shakeSF { 0%, 100% { transform: translateX(40px) translateY(-20px); } 25% { transform: translateX(35px) translateY(-20px); } 75% { transform: translateX(45px) translateY(-20px); } }
+    .spot-well.wrong .kid-character { animation: shakeW 0.4s ease; }
+    @keyframes shakeW { 0%, 100% { transform: translateX(30px) translateY(-12px); } 25% { transform: translateX(25px) translateY(-12px); } 75% { transform: translateX(35px) translateY(-12px); } }
+    .spot-mushroom.wrong .kid-character { animation: shakeM 0.4s ease; }
+    @keyframes shakeM { 0%, 100% { transform: translateX(-30px) translateY(-20px); } 25% { transform: translateX(-35px) translateY(-20px); } 75% { transform: translateX(-25px) translateY(-20px); } }
+
+    /* ==========================================================================
+       REWARD OVERLAYS
+       ========================================================================= */
+    .reward-backdrop {
+      position: absolute; inset: 0; background: rgba(0,0,0,0.6);
+      z-index: 200; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .reward-backdrop.show { opacity: 1; pointer-events: auto; }
+    .reward-box {
+      background: white; border: 5px solid #ffca28; border-radius: 24px; padding: 25px;
+      width: 90%; max-width: 400px; text-align: center; transform: scale(0.7); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+    }
+    .reward-backdrop.show .reward-box { transform: scale(1); }
+    .reward-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: 24px; font-weight: 900; color: #e64a19; margin-bottom: 6px; }
+    
+    .reward-letter-display { 
+      font-family: 'Noto Sans Myanmar', sans-serif; 
+      font-size: 52px; 
+      font-weight: 900; 
+      color: #8bc34a; 
+      margin: 10px auto; 
+      width: 80px;
+      height: 80px;
+      background: #f1f8e9;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .stats-container { background: #f9f9f9; padding: 10px; border-radius: 12px; margin-bottom: 15px; border: 1px dashed #ccc; font-size: 14px; color: #555; text-align: left; }
+    .stats-row { display: flex; justify-content: space-between; margin-bottom: 4px; font-family: 'Noto Sans Myanmar', sans-serif; }
+    .btn-action {
+      font-family: 'Noto Sans Myanmar', sans-serif; padding: 12px 35px; font-size: 18px; font-weight: 900;
+      color: white; background: #8bc34a; border: none; border-radius: 16px; cursor: pointer; 
+      box-shadow: 0 6px 0 #558b2f; transition: transform 0.1s;
+    }
+    .btn-action:active { transform: translateY(3px); box-shadow: 0 3px 0 #558b2f; }
+  </style>
+</head>
+<body>
+
+  <!-- 🌟 NEW INTRO SCREEN OVERLAY: ပထမဆုံးပေါ်လာမည့် မိတ်ဆက်စာမျက်နှာ -->
+  <div class="game-intro-overlay" id="introGameOverlay">
+    <div class="intro-welcome-box">
+      <div class="intro-welcome-emoji">👋</div>
+      <h2 class="intro-title-main">မင်္ဂလာပါ သားသားမီးမီးတို့ရေ...</h2>
+      <div class="intro-badge-lesson">သင်ခန်းစာ ၂ : စ ၊ ဆ ၊ ဇ ၊ ဈ ၊ ည</div>
+      
+      <div class="intro-description-card">
+        <div class="intro-instruction-item">
+          <span>🎯</span>
+          <span>အပေါ်က "ရှာဖွေရမည့် အက္ခရာ" အကွက်လေးကို အရင်ကြည့်ပါ။</span>
+        </div>
+        <div class="intro-instruction-item">
+          <span>🌸</span>
+          <span>ဥယျာဉ်ထဲက ကြာပန်း၊ နေကြာပန်း၊ ရေတွင်းလေးတွေထဲမှာ သူငယ်ချင်းလေးတွေ ပုန်းနေကြတယ်နော်။</span>
+        </div>
+        <div class="intro-instruction-item">
+          <span>🔍</span>
+          <span>သူငယ်ချင်းလေးတွေကို နှိပ်ပြီး တို့ရှာခိုင်းတဲ့ အက္ခရာကို မှန်အောင်လိုက်ရှာကြည့်ရအောင်။</span>
+        </div>
+      </div>
+
+      <button class="btn-start-game" onclick="startGameNow()">ဂိမ်းစကစားမည် 🎮</button>
+    </div>
+  </div>
+
+  <!-- ၁။ TOP INTRO CARD -->
+  <div class="intro-card">
+    <h1 class="intro-main-title">မြန်မာအက္ခရာ ပုန်းတမ်းကစားနည်း</h1>
+    <div class="intro-sub-badge">သင်ခန်းစာ ၂ : စ ၊ ဆ ၊ ဇ ၊ ဈ ၊ ည</div>
+  </div>
+
+  <!-- ၂။ LESSON CARD -->
+  <div class="lesson-card">
+    <div class="lesson-info-box">
+      <span class="instruction-text">ရှာဖွေရမည့် အက္ခရာ:</span>
+      <div class="target-box" id="targetDisplay">စ</div>
+    </div>
+    <div class="score-stars" id="starContainer">☆☆☆☆•</div>
+    <button class="btn-exit" onclick="exitToMain()">🚪 ထွက်မည်</button>
+  </div>
+
+  <!-- ၃။ MAIN GAME FRAMESTAGE -->
+  <div class="game-stage">
+    <div class="sky-cloud cloud-1"></div>
+    <div class="sky-cloud cloud-2"></div>
+    <div class="garden-lawn"></div>
+    <div class="garden-pond"></div>
+    
+    <!-- Slot 1: Lotus Leaf -->
+    <div class="spot-container spot-lotus" onclick="handleSpotClick(0)">
+      <div class="kid-character" id="kid0">
+        <div class="held-letter" id="letter0">-</div>
+        <div class="kid-head"><div class="kid-hair" style="background:#ad1457;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#ec407a;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="organic-lotus"></div>
+        <div class="organic-lotus-cut"></div>
+      </div>
+    </div>
+
+    <!-- Slot 2: Sunflower -->
+    <div class="spot-container spot-sunflower" onclick="handleSpotClick(1)">
+      <div class="kid-character" id="kid1">
+        <div class="held-letter" id="letter1">-</div>
+        <div class="kid-head"><div class="kid-hair" style="background:#ff6f00;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#ab47bc;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="organic-flower-stem"></div>
+        <div class="organic-flower-leaf"></div>
+        <div class="organic-flower-head"></div>
+        <div class="organic-flower-center"></div>
+      </div>
+    </div>
+
+    <!-- Slot 3: Water Well -->
+    <div class="spot-container spot-well" onclick="handleSpotClick(2)">
+      <div class="kid-character" id="kid2">
+        <div class="held-letter" id="letter2">-</div>
+        <div class="kid-head"><div class="kid-hair" style="background:#37474f;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#26a69a;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="organic-well-roof-post"></div>
+        <div class="organic-well-brick"></div>
+        <div class="organic-well-roof"></div>
+      </div>
+    </div>
+
+    <!-- Slot 4: Fence -->
+    <div class="spot-container spot-fence" onclick="handleSpotClick(3)">
+      <div class="kid-character" id="kid3">
+        <div class="held-letter" id="letter3">-</div>
+        <div class="kid-head"><div class="kid-hair" style="background:#1565c0;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#ff7043;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="organic-fence-rail"></div>
+        <div class="organic-fence-board fb-1"></div>
+        <div class="organic-fence-board fb-2"></div>
+        <div class="organic-fence-board fb-3"></div>
+        <div class="organic-fence-board fb-4"></div>
+      </div>
+    </div>
+
+    <!-- Slot 5: Mushroom House -->
+    <div class="spot-container spot-mushroom" onclick="handleSpotClick(4)">
+      <div class="kid-character" id="kid4">
+        <div class="held-letter" id="letter4">-</div>
+        <div class="kid-head"><div class="kid-hair" style="background:#2e7d32;"></div><div class="kid-eyes"></div><div class="kid-smile"></div></div>
+        <div class="kid-body" style="background:#29b6f6;"></div>
+      </div>
+      <div class="object-layer">
+        <div class="organic-shroom-stem"></div>
+        <div class="organic-shroom-door"></div>
+        <div class="organic-shroom-cap"></div>
+        <div class="organic-shroom-dot sd-1"></div>
+        <div class="organic-shroom-dot sd-2"></div>
+        <div class="organic-shroom-dot sd-3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Victory Reward Overlay Panel -->
+  <div class="reward-backdrop" id="rewardPanel">
+    <div class="reward-box">
+      <h2 class="reward-title" id="rewardTitleText">မှန်သွားပြီ! ထူးချွန်တယ်! 🎉</h2>
+      <p style="font-family:'Noto Sans Myanmar'; color:#546e7a; font-size: 14px;" id="rewardSubText">သူငယ်ချင်းလေးဆီက ရှာတွေ့လိုက်တဲ့ အက္ခရာကတော့ -</p>
+      <div class="reward-letter-display" id="rewardLetterBox">စ</div>
+      
+      <div class="stats-container" id="statsContainer" style="display:none;">
+        <div class="stats-row"><span>ရှာဖွေမှု အောင်မြင်မှုနှုန်း:</span><span id="statSuccessCount" style="color:#4caf50; font-weight:bold;">5 ကြိမ်</span></div>
+        <div class="stats-row"><span>မှားယွင်းနှိပ်မိမှု အကြိမ်ရေ:</span><span id="statWrongCount" style="color:#f44336; font-weight:bold;">0 ကြိမ်</span></div>
+      </div>
+
+      <button class="btn-action" id="rewardActionBtn" style="background:#ff9800; box-shadow:0 5px 0 #e65100; margin-top: 5px;" onclick="advanceToNextRound()">နောက်တစ်ဆင့်သို့</button>
+    </div>
+  </div>
+
+  <script>
+    const lettersPoolList = ['စ', 'ဆ', 'ဇ', 'ဈ', 'ည'];
+    let assignedPositions = [];
+    let scoreProgress = 0;
+    let currentTargetLetter = '';
+    let isTransitioning = false;
+    let wrongClicksCounter = 0;
+
+    const AudioEngineCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function triggerAudioEffect(type) {
+      if (AudioEngineCtx.state === 'suspended') AudioEngineCtx.resume();
+      const timeNow = AudioEngineCtx.currentTime;
+
+      if (type === 'coinSuccess') {
+        const oscNode = AudioEngineCtx.createOscillator();
+        const gainNode = AudioEngineCtx.createGain();
+        oscNode.type = 'sine';
+        oscNode.frequency.setValueAtTime(587.33, timeNow);
+        oscNode.frequency.exponentialRampToValueAtTime(880, timeNow + 0.1);
+        gainNode.gain.setValueAtTime(0.15, timeNow);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, timeNow + 0.15);
+        oscNode.connect(gainNode); gainNode.connect(AudioEngineCtx.destination);
+        oscNode.start(timeNow); oscNode.stop(timeNow + 0.15);
+      } 
+      else if (type === 'errorWrong') {
+        const oscNode = AudioEngineCtx.createOscillator();
+        const gainNode = AudioEngineCtx.createGain();
+        oscNode.type = 'sawtooth';
+        oscNode.frequency.setValueAtTime(180, timeNow);
+        oscNode.frequency.linearRampToValueAtTime(90, timeNow + 0.25);
+        gainNode.gain.setValueAtTime(0.2, timeNow);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, timeNow + 0.25);
+        oscNode.connect(gainNode); gainNode.connect(AudioEngineCtx.destination);
+        oscNode.start(timeNow); oscNode.stop(timeNow + 0.25);
+      } 
+      else if (type === 'victoryFanfare') {
+        const notesList = [261.63, 329.63, 392.00, 523.25];
+        notesList.forEach((frequency, index) => {
+          const oscSeq = AudioEngineCtx.createOscillator();
+          const gainSeq = AudioEngineCtx.createGain();
+          oscSeq.type = 'triangle';
+          oscSeq.frequency.setValueAtTime(frequency, timeNow + index * 0.08);
+          gainSeq.gain.setValueAtTime(0.12, timeNow + index * 0.08);
+          gainSeq.gain.exponentialRampToValueAtTime(0.001, timeNow + index * 0.08 + 0.2);
+          oscSeq.connect(gainSeq); gainSeq.connect(AudioEngineCtx.destination);
+          oscSeq.start(timeNow + index * 0.08); oscSeq.stop(timeNow + index * 0.08 + 0.2);
+        });
+      }
+    }
+
+    function exitToMain() {
+      window.location.href = 'index.html?fromGame=true';
+    }
+
+    // Window load တွင် နောက်ကွယ်က Game Setup ကိုသာလုပ်ထားပြီး Overlay ပြထားမည်
+    window.onload = function() {
+      scoreProgress = 0;
+      wrongClicksCounter = 0;
+      document.getElementById('statsContainer').style.display = 'none';
+      setupNewTargetRound();
+    };
+
+    // "ဂိမ်းစကစားမည်" ခလုတ်နှိပ်မှ Overlay ကိုပိတ်ပြီး Web Audio ကို အလုပ်ပေးမည်
+    function startGameNow() {
+      if (AudioEngineCtx.state === 'suspended') AudioEngineCtx.resume();
+      document.getElementById('introGameOverlay').classList.add('hide');
+    }
+
+    function setupNewTargetRound() {
+      isTransitioning = false;
+      currentTargetLetter = lettersPoolList[scoreProgress];
+      
+      let tempLettersArray = [...lettersPoolList];
+      assignedPositions = [];
+      
+      for(let i = 0; i < 5; i++) {
+        let randomIndex = Math.floor(Math.random() * tempLettersArray.length);
+        assignedPositions.push(tempLettersArray.splice(randomIndex, 1)[0]);
+        
+        document.getElementById(`letter${i}`).textContent = assignedPositions[i];
+        const parentElementNode = document.getElementById(`kid${i}`).parentElement;
+        parentElementNode.classList.remove('peek', 'success', 'wrong');
+      }
+      
+      renderDashboardUI();
+    }
+
+    function renderDashboardUI() {
+      document.getElementById('targetDisplay').textContent = currentTargetLetter;
+      
+      let starMarkup = '';
+      for(let i = 0; i < 5; i++) {
+        starMarkup += (i < scoreProgress) ? '★' : '☆';
+      }
+      document.getElementById('starContainer').textContent = starMarkup;
+    }
+
+    function handleSpotClick(spotIndex) {
+      if(isTransitioning) return;
+      
+      isTransitioning = true;
+      const clickedSpotContainer = document.getElementById(`kid${spotIndex}`).parentElement;
+      const discoveredLetter = assignedPositions[spotIndex];
+
+      clickedSpotContainer.classList.remove('wrong', 'peek', 'success');
+      void clickedSpotContainer.offsetWidth; 
+      clickedSpotContainer.classList.add('peek');
+
+      setTimeout(() => {
+        if(discoveredLetter === currentTargetLetter) {
+          triggerAudioEffect('coinSuccess');
+          clickedSpotContainer.classList.remove('peek');
+          clickedSpotContainer.classList.add('success');
+          
+          document.getElementById('rewardLetterBox').textContent = currentTargetLetter;
+          scoreProgress++;
+          
+          setTimeout(() => {
+            if(scoreProgress >= 5) {
+              triggerAudioEffect('victoryFanfare');
+              document.getElementById('rewardTitleText').textContent = "🌟 ဂိမ်းတစ်ခုလုံး အောင်မြင်သွားပါပြီ! 🌟";
+              document.getElementById('rewardSubText').textContent = "အက္ခရာသူငယ်ချင်း (၅) လုံးလုံးကို ရှာဖွေတွေ့ရှိသွားပါပြီ။";
+              document.getElementById('rewardLetterBox').textContent = "🎉";
+              
+              document.getElementById('statSuccessCount').textContent = "5 ကြိမ် ကွက်တိ";
+              document.getElementById('statWrongCount').textContent = wrongClicksCounter + " ကြိမ်";
+              document.getElementById('statsContainer').style.display = 'block';
+              
+              document.getElementById('rewardActionBtn').textContent = "🏠 ပင်မစာမျက်နှာသို့ ပြန်မည်";
+              document.getElementById('rewardActionBtn').onclick = exitToMain;
+            } else {
+              document.getElementById('rewardTitleText').textContent = "မှန်သွားပြီ! ထူးချွန်တယ်! 🎉";
+              document.getElementById('rewardSubText').textContent = "သူငယ်ချင်းလေးဆီက ရှာတွေ့လိုက်တဲ့ အက္ခရာကတော့ -";
+              document.getElementById('rewardActionBtn').textContent = "နောက်တစ်ဆင့်သို့";
+              document.getElementById('rewardActionBtn').onclick = advanceToNextRound;
+            }
+            document.getElementById('rewardPanel').classList.add('show');
+          }, 950);
+
+        } else {
+          triggerAudioEffect('errorWrong');
+          wrongClicksCounter++;
+          clickedSpotContainer.classList.add('wrong');
+          setTimeout(() => {
+            clickedSpotContainer.classList.remove('wrong', 'peek');
+            isTransitioning = false;
+          }, 1200);
+        }
+      }, 400);
+    }
+
+    function advanceToNextRound() {
+      document.getElementById('rewardPanel').classList.remove('show');
+      if(scoreProgress >= 5) {
+        scoreProgress = 0;
+      }
+      setupNewTargetRound();
+    }
+  </script>
+</body>
+</html>
