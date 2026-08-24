@@ -105,6 +105,77 @@
         .float-mascot {
             animation: bounce-slow 3s ease-in-out infinite;
         }
+
+        /* 🏃‍♂️ DASSY "LITTLE BRAINS" ANIMATED LOGO SYSTEM */
+        .dassy-logo-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            padding: 20px 0;
+            margin-top: 25px;
+            position: relative;
+            z-index: 10;
+            user-select: none;
+        }
+
+        .dassy-logo-line {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            font-family: 'Fredoka One', sans-serif;
+        }
+
+        .dassy-space {
+            width: 10px;
+        }
+
+        .animated-char {
+            display: inline-block;
+            font-weight: 900;
+            cursor: pointer;
+            opacity: 0;
+            animation: 
+                walkInLetters 2s cubic-bezier(0.25, 1, 0.5, 1) forwards,
+                continuousJiggle 0.6s ease-in-out infinite alternate;
+        }
+
+        .line-top .animated-char {
+            font-size: 0.85rem;
+            color: #d8b4fe; 
+            text-shadow: 0 2px 0 #701a75;
+            letter-spacing: 1px;
+        }
+
+        .line-bottom .animated-char {
+            font-size: 1.45rem;
+            color: #fbbf24; 
+            text-shadow: 0 3px 0 #b45309, 0 6px 12px rgba(0,0,0,0.4);
+            letter-spacing: 1.5px;
+        }
+
+        @keyframes walkInLetters {
+            0% {
+                opacity: 0;
+                transform: translateX(var(--x-start, -100px)) translateY(0) scale(0.4) rotate(-30deg);
+            }
+            25% { opacity: 1; transform: translateX(calc(var(--x-start, -100px) * 0.75)) translateY(-12px) scale(1.1) rotate(20deg); }
+            50% { transform: translateX(calc(var(--x-start, -100px) * 0.5)) translateY(0) scale(0.9) rotate(-15deg); }
+            75% { transform: translateX(calc(var(--x-start, -100px) * 0.25)) translateY(-10px) scale(1.05) rotate(10deg); }
+            100% {
+                opacity: 1;
+                transform: translateX(0) translateY(0) scale(1) rotate(0deg);
+            }
+        }
+
+        @keyframes continuousJiggle {
+            0% { transform: translateY(0) scale(1) rotate(-2deg); }
+            50% { transform: translateY(-3px) scale(1.03) rotate(2.5deg); }
+            100% { transform: translateY(0) scale(0.98) rotate(-1deg); }
+        }
     </style>
 </head>
 <body class="game-map-container text-white min-h-screen flex flex-col items-center justify-start burmese-font overflow-x-hidden p-4 pb-24">
@@ -248,7 +319,6 @@
                             </div>
                             <h3 class="text-[11px] font-black text-white mb-1.5 leading-tight">တူတူပုန်းတမ်းကျောင်း</h3>
                             
-                            <!-- ခလုတ်များနေရာ (ကမ်းခြေ၊ ချုံပုတ်၊ စုံထောက် ဂိမ်းအားလုံး စုံလင်စွာ ထည့်သွင်းထားသည်) -->
                             <div class="flex flex-col gap-1 w-full max-w-[120px]">
                                 <a href="🏖️ကမ်းခြေတူတူပုန်းတမ်း.html" class="block bg-purple-950 text-white py-1 rounded border border-slate-900 text-[9px] font-bold text-center shadow-[0_1.5px_0_#0f172a] hover:bg-purple-900 transition-colors">🏖️ ကမ်းခြေ</a>
                                 <a href="🌳ချုံပုတ်တူတူပုန်းတမ်း.html" class="block bg-purple-950 text-white py-1 rounded border border-slate-900 text-[9px] font-bold text-center shadow-[0_1.5px_0_#0f172a] hover:bg-purple-900 transition-colors">🌳 ချုံပုတ်</a>
@@ -307,6 +377,11 @@
 
     <!-- Audio Element -->
     <audio id="mainAudio" src="main-bgm.mp3" loop preload="auto" crossorigin="anonymous"></audio>
+
+    <div class="dassy-logo-wrapper">
+        <div class="dassy-logo-line line-top" id="textLine1">IMAGINED FOR</div>
+        <div class="dassy-logo-line line-bottom" id="textLine2">LITTLE BRAINS BY DASSY</div>
+    </div>
 
     <script>
         const mainAudio = document.getElementById('mainAudio');
@@ -429,107 +504,6 @@
             }
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('fromGame') === 'true' || urlParams.get('showPopup')) {
-                passwordScreen.classList.add('hidden');
-                gameDashboard.classList.remove('hidden');
-                
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (AudioContext) {
-                    const actx = new AudioContext();
-                    if (actx.state === 'suspended') actx.resume();
-                }
-
-                mainAudio.volume = volumeSlider.value;
-                mainAudio.play().catch(e => console.log("Audio play blocked", e));
-                
-                checkUrlParametersForPopup();
-            }
-        });
-    </script>
-
-    <!-- ========================================================================= -->
-    /* 🏃‍♂️ DASSY "LITTLE BRAINS" ANIMATED LOGO SYSTEM */
-    <!-- ========================================================================= -->
-    <style>
-        .dassy-logo-wrapper {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            padding: 20px 0;
-            margin-top: 25px;
-            position: relative;
-            z-index: 10;
-            user-select: none;
-        }
-
-        .dassy-logo-line {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            font-family: 'Fredoka One', sans-serif;
-        }
-
-        .dassy-space {
-            width: 10px;
-        }
-
-        .animated-char {
-            display: inline-block;
-            font-weight: 900;
-            cursor: pointer;
-            opacity: 0;
-            animation: 
-                walkInLetters 2s cubic-bezier(0.25, 1, 0.5, 1) forwards,
-                continuousJiggle 0.6s ease-in-out infinite alternate;
-        }
-
-        .line-top .animated-char {
-            font-size: 0.85rem;
-            color: #d8b4fe; 
-            text-shadow: 0 2px 0 #701a75;
-            letter-spacing: 1px;
-        }
-
-        .line-bottom .animated-char {
-            font-size: 1.45rem;
-            color: #fbbf24; 
-            text-shadow: 0 3px 0 #b45309, 0 6px 12px rgba(0,0,0,0.4);
-            letter-spacing: 1.5px;
-        }
-
-        @keyframes walkInLetters {
-            0% {
-                opacity: 0;
-                transform: translateX(var(--x-start, -100px)) translateY(0) scale(0.4) rotate(-30deg);
-            }
-            25% { opacity: 1; transform: translateX(calc(var(--x-start, -100px) * 0.75)) translateY(-12px) scale(1.1) rotate(20deg); }
-            50% { transform: translateX(calc(var(--x-start, -100px) * 0.5)) translateY(0) scale(0.9) rotate(-15deg); }
-            75% { transform: translateX(calc(var(--x-start, -100px) * 0.25)) translateY(-10px) scale(1.05) rotate(10deg); }
-            100% {
-                opacity: 1;
-                transform: translateX(0) translateY(0) scale(1) rotate(0deg);
-            }
-        }
-
-        @keyframes continuousJiggle {
-            0% { transform: translateY(0) scale(1) rotate(-2deg); }
-            50% { transform: translateY(-3px) scale(1.03) rotate(2.5deg); }
-            100% { transform: translateY(0) scale(0.98) rotate(-1deg); }
-        }
-    </style>
-
-    <div class="dassy-logo-wrapper">
-        <div class="dassy-logo-line line-top" id="textLine1">IMAGINED FOR</div>
-        <div class="dassy-logo-line line-bottom" id="textLine2">LITTLE BRAINS BY DASSY</div>
-    </div>
-
-    <script>
         function setupAnimatedText(elementId) {
             const targetElement = document.getElementById(elementId);
             const rawText = targetElement.innerText;
@@ -559,7 +533,7 @@
             });
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
+        window.addEventListener('DOMContentLoaded', () => {
             setupAnimatedText('textLine1');
             setupAnimatedText('textLine2');
 
@@ -569,8 +543,23 @@
             if (stage) {
                 openLessonPopup(`stage${stage}`); 
             }
+
+            if (urlParams.get('fromGame') === 'true' || urlParams.get('showPopup')) {
+                passwordScreen.classList.add('hidden');
+                gameDashboard.classList.remove('hidden');
+                
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) {
+                    const actx = new AudioContext();
+                    if (actx.state === 'suspended') actx.resume();
+                }
+
+                mainAudio.volume = volumeSlider.value;
+                mainAudio.play().catch(e => console.log("Audio play blocked", e));
+                
+                checkUrlParametersForPopup();
+            }
         });
     </script>
-
 </body>
 </html>
