@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>မြန်မာအက္ခရာ (ဟ-အ) - ကောင်းကင်ဘုံ စွန့်စားခန်းမြေပုံ</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Montserrat:wght=400;700;900&family=Pyidaungsu:wght=400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Fredoka One', 'Pyidaungsu', 'Montserrat', sans-serif;
+            background: radial-gradient(circle at center, #0284c7, #0c4a6e, #082f49);
+        }
+
+        /* ==========================================================================
+           SPLASH SCREEN & VIDEO CONTAINER SYSTEM (FIXED FOR ALL DEVICES)
+           ========================================================================= */
+        .video-bg-container {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh;
+            z-index: 9998; 
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #082f49;
+        }
+
+        /* 📱 ဘယ် Device မှာကြည့်ကြည့် ဗီဒီယိုတစ်ခုလုံး မပျက်ဘဲ အပြည့်ပေါ်စေရန် */
+        .video-bg-container video {
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+        }
+
+        .splash-screen {
+            position: fixed; 
+            inset: 0; 
+            background: transparent; 
+            z-index: 9999; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            padding: 20px; 
+            text-align: center; 
+            transition: opacity 0.5s ease, pointer-events 0.5s;
+        }
+        .splash-screen.hide { 
+            opacity: 0; 
+            pointer-events: none; 
+        }
+
+        .audio-controls {
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(8px); 
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 6px 14px; 
+            border-radius: 30px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* ========================================================================= */
+        /* ☁️ CARTOON CELESTIAL CLOUD KINGDOM STRUCTURE                              */
+        /* ========================================================================= */
+        .stage-card-container {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.4));
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        .stage-card-container:hover {
+            transform: scale(1.06) translateY(-6px);
+        }
+
+        /* ☁️ CUTE CELESTIAL CLOUD ROOF */
+        .stage-roof {
+            width: 100%;
+            height: 100px;
+            border-radius: 40px 40px 20px 20px;
+            position: relative;
+            z-index: 20;
+            border: 4px solid #0f172a;
+            box-shadow: inset 0 6px 12px rgba(255, 255, 255, 0.4);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stage-roof::before, .stage-roof::after {
+            content: '✨';
+            position: absolute;
+            font-size: 1.25rem;
+            opacity: 0.85;
+        }
+        .stage-roof::before { top: 15px; left: 25px; }
+        .stage-roof::after { bottom: 15px; right: 25px; }
+
+        /* 🏛️ CLOUD CASTLE BASE */
+        .stage-body {
+            width: 88%;
+            background: #f0f9ff;
+            border: 4px solid #0f172a;
+            border-top: none;
+            border-radius: 0 0 32px 32px;
+            padding: 20px 16px;
+            margin-top: -6px;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: inset 0 -8px 0px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 🚪 CUTE SKY GATE */
+        .stage-door {
+            width: 46px;
+            height: 50px;
+            background: #0284c7;
+            border: 3.5px solid #0f172a;
+            border-bottom: none;
+            border-radius: 24px 24px 0 0;
+            position: absolute;
+            bottom: 0;
+            right: 24px;
+        }
+        .stage-door::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 6px;
+            width: 6px; height: 6px;
+            background: #facc15;
+            border-radius: 50%;
+        }
+
+        /* 🪟 ROUND GLOWING STAR WINDOW */
+        .stage-window {
+            background: #fef08a;
+            border: 3.5px solid #0f172a;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            box-shadow: 0 0 12px #facc15, inset 2px 2px 0px #fff;
+        }
+
+        /* 🎨 THEME GRADIENTS & GLOWS FOR ROOFS */
+        .roof-stage1 { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); box-shadow: 0 0 20px rgba(2, 132, 199, 0.5); }
+        .roof-stage2 { background: linear-gradient(135deg, #10b981 0%, #047857 100%); box-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
+        .roof-stage3 { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 0 20px rgba(245, 158, 11, 0.5); }
+        .roof-stage4 { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); box-shadow: 0 0 20px rgba(236, 72, 153, 0.5); cursor: default; }
+        .roof-final  { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); box-shadow: 0 0 30px rgba(139, 92, 246, 0.7); }
+
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .float-mascot {
+            animation: bounce-slow 3s ease-in-out infinite;
+        }
+
+        /* ========================================================================= */
+        /* 🏃‍♂️ DASSY "LITTLE BRAINS" ANIMATED LOGO SYSTEM                           */
+        /* ========================================================================= */
+        .dassy-logo-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 0;
+            margin-top: 15px;
+            position: relative;
+            z-index: 10;
+            user-select: none;
+        }
+
+        .dassy-logo-line {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+            font-family: 'Fredoka One', sans-serif;
+        }
+
+        .dassy-space {
+            width: 10px;
+        }
+
+        .animated-char {
+            display: inline-block;
+            font-weight: 900;
+            cursor: pointer;
+            opacity: 0;
+            animation: 
+                walkInLetters 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards,
+                continuousJiggle 0.6s ease-in-out infinite alternate;
+        }
+
+        .line-top .animated-char {
+            font-size: 0.85rem;
+            color: #7dd3fc; 
+            text-shadow: 0 2px 0 #0369a1;
+            letter-spacing: 1px;
+        }
+
+        .line-bottom .animated-char {
+            font-size: 1.25rem;
+            color: #fbbf24; 
+            text-shadow: 0 3px 0 #b45309, 0 6px 12px rgba(0,0,0,0.4);
+            letter-spacing: 1.5px;
+        }
+
+        @keyframes walkInLetters {
+            0% {
+                opacity: 0;
+                transform: translateX(var(--x-start, -100px)) translateY(0) scale(0.4) rotate(-30deg);
+            }
+            25% { opacity: 1; transform: translateX(calc(var(--x-start, -100px) * 0.75)) translateY(-12px) scale(1.1) rotate(20deg); }
+            50% { transform: translateX(calc(var(--x-start, -100px) * 0.5)) translateY(0) scale(0.9) rotate(-15deg); }
+            75% { transform: translateX(calc(var(--x-start, -100px) * 0.25)) translateY(-10px) scale(1.05) rotate(10deg); }
+            100% {
+                opacity: 1;
+                transform: translateX(0) translateY(0) scale(1) rotate(0deg);
+            }
+        }
+
+        @keyframes continuousJiggle {
+            0% { transform: translateY(0) scale(1) rotate(-2deg); }
+            50% { transform: translateY(-3px) scale(1.03) rotate(2.5deg); }
+            100% { transform: translateY(0) scale(0.98) rotate(-1deg); }
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex flex-col items-center justify-start overflow-x-hidden p-4 pb-24 relative">
+
+    <!-- 🌟 SPLASH INTRO SCREEN -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="bg-sky-950/90 border-[3px] border-sky-400 backdrop-blur-xl p-6 md:p-8 rounded-[28px] shadow-2xl max-w-sm md:max-w-md w-full mb-2 text-center">
+            <div class="text-5xl mb-2 float-mascot inline-block">🦢☁️✨</div>
+            <h1 class="text-3xl font-black bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-200 bg-clip-text text-transparent drop-shadow mb-1 tracking-wide uppercase">
+                Alphabet Quest
+            </h1>
+            <p class="text-xs text-sky-200 font-bold mb-4">မြန်မာအက္ခရာ ရှာပုံတော် - အပိုင်း ၇ (ဟ ၊ ဠ ၊ အ)</p>
+
+            <div class="bg-sky-950/60 border border-sky-400/30 rounded-2xl p-4 mb-5 text-left space-y-3 text-xs md:text-sm leading-relaxed text-sky-100">
+                <p class="font-black text-amber-300 text-center text-sm md:text-base mb-1">☁️ ကောင်းကင်ဘုံ စွန့်စားခန်းမှ ကြိုဆိုပါတယ် ☁️</p>
+                <p class="indent-4">သားသားမီးမီးတို့ရေ... ဒီနေ့မှာတော့တိမ်တိုက်ကမ္ဘာဆီ စွန့်စားခန်းထွက်ရင်း <span class="text-amber-300 font-bold text-base">"ဟ ၊ ဠ ၊ အ"</span> ဆိုတဲ့ ချစ်စရာ မြန်မာအက္ခရာ (၃) လုံးကို အတူတူ လေ့လာသွားကြရအောင်နော်။</p>
+            </div>
+
+            <button onclick="startAdventure()" class="w-full py-3.5 px-6 text-xl font-black text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-2xl shadow-[0_5px_0_#b45309] active:translate-y-1 active:shadow-none transition-all cursor-pointer float-mascot">
+                🔊 စတင်မယ် 🌟
+            </button>
+        </div>
+    </div>
+
+    <!-- 🗺️ MAIN GAME DASHBOARD -->
+    <div id="gameDashboard" class="w-full max-w-xl flex flex-col items-center hidden relative z-10 px-4">
+        
+        <!-- Audio Controller Panel -->
+        <div id="audioControllerPanel" class="w-full bg-slate-900/80 border border-white/10 backdrop-blur-md px-4 py-2 rounded-2xl flex items-center justify-between gap-4 shadow-xl my-4 z-30">
+            <button id="muteBtn" onclick="toggleMuteState()" class="text-lg bg-sky-950/60 p-2 rounded-lg hover:bg-sky-900 transition-colors cursor-pointer">🔊</button>
+            <div class="flex-1 flex items-center gap-2">
+                <span class="text-xs text-sky-200 font-black">MUSIC VOL</span>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5" oninput="updateVolumeLevel(this.value)"
+                    class="w-full h-2 bg-sky-950 rounded-lg appearance-none cursor-pointer accent-amber-400">
+            </div>
+        </div>
+
+        <header class="w-full text-center mb-6">
+            <div class="inline-flex items-center gap-3 bg-white/5 px-5 py-1.5 rounded-full border border-white/10 backdrop-blur-md mb-3">
+                <span class="text-xs font-black tracking-wider text-sky-300 uppercase">LEVEL 7: ဟ ၊ ဠ ၊ အ ကောင်းကင်မြေပုံ</span>
+            </div>
+            <h1 class="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 tracking-wide drop-shadow py-1">
+                မြန်မာစာအက္ခရာ စွန့်စားခန်း
+            </h1>
+        </header>
+
+        <!-- Map Nodes Container -->
+        <div class="w-full relative py-12 grid grid-cols-12 gap-y-14 px-6 border border-white/10 rounded-[40px] bg-sky-950/30 overflow-hidden backdrop-blur-sm">
+            
+            <!-- SVG Roadmap path Line -->
+            <div class="absolute top-[85px] bottom-[115px] left-0 right-0 z-0 pointer-events-none px-10 overflow-hidden">
+                <svg class="w-full h-full" viewBox="0 0 400 1320" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 70 1270 C 330 1120, 330 970, 80 870 C 80 720, 330 620, 320 470 C 320 320, 110 220, 210 50" stroke="#082f49" stroke-width="60" stroke-linecap="round" fill="none"/>
+                    <path d="M 70 1270 C 330 1120, 330 970, 80 870 C 80 720, 330 620, 320 470 C 320 320, 110 220, 210 50" stroke="#0284c7" stroke-width="48" stroke-linecap="round" fill="none"/>
+                    <path d="M 70 1270 C 330 1120, 330 970, 80 870 C 80 720, 330 620, 320 470 C 320 320, 110 220, 210 50" stroke="#38bdf8" stroke-width="42" stroke-linecap="round" fill="none"/>
+                    <path d="M 70 1270 C 330 1120, 330 970, 80 870 C 80 720, 330 620, 320 470 C 320 320, 110 220, 210 50" stroke="#ffffff" stroke-width="2" stroke-dasharray="10 14" stroke-linecap="round" fill="none" opacity="0.4"/>
+                </svg>
+            </div>
+
+            <!-- Stage 1 Card -->
+            <div class="col-span-11 sm:col-span-9 col-start-1 text-slate-900">
+                <div class="stage-card-container" onclick="location.href='level7.html'">
+                    <div class="stage-roof roof-stage1"><span class="text-3xl">📖</span></div>
+                    <div class="stage-body">
+                        <div class="stage-window"></div>
+                        <div class="stage-door"></div>
+                        <div class="bg-sky-600 text-white border border-sky-700 rounded-md px-2.5 py-0.5 mb-1.5 z-20">
+                            <span class="text-[9px] font-black tracking-tight block">STAGE 01</span>
+                        </div>
+                        <h3 class="text-xs font-black text-slate-950 mb-2.5 leading-tight z-20">အက္ခရာအသံနှင့် အရေး</h3>
+                        <span class="px-4 py-1.5 bg-gradient-to-r from-sky-500 to-blue-600 text-white border-2 border-slate-900 rounded-xl text-[10px] font-black shadow-[0_3px_0_#0f172a] z-20">✍️ ဝင်မည် ➡️</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 2 Card -->
+            <div class="col-span-11 sm:col-span-9 col-start-2 sm:col-start-4 text-slate-900">
+                <div class="stage-card-container" onclick="openLessonPopup('stage2')">
+                    <div class="stage-roof roof-stage2"><span class="text-3xl">🎨</span></div>
+                    <div class="stage-body">
+                        <div class="stage-window"></div>
+                        <div class="stage-door"></div>
+                        <div class="bg-emerald-600 text-white border border-emerald-700 rounded-md px-2.5 py-0.5 mb-1.5 z-20">
+                            <span class="text-[9px] font-black tracking-tight block">STAGE 02</span>
+                        </div>
+                        <h3 class="text-xs font-black text-slate-950 mb-2.5 leading-tight z-20">ဆေးရောင်ခြယ်ကမ္ဘာ</h3>
+                        <span class="px-4 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-2 border-slate-900 rounded-xl text-[10px] font-black shadow-[0_3px_0_#0f172a] z-20">🎨 ရွေးချယ်မည်</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 3 Card -->
+            <div class="col-span-11 sm:col-span-9 col-start-1 text-slate-900">
+                <div class="stage-card-container" onclick="openLessonPopup('stage3')">
+                    <div class="stage-roof roof-stage3"><span class="text-3xl">🚀</span></div>
+                    <div class="stage-body">
+                        <div class="stage-window"></div>
+                        <div class="stage-door"></div>
+                        <div class="bg-amber-600 text-white border border-amber-700 rounded-md px-2.5 py-0.5 mb-1.5 z-20">
+                            <span class="text-[9px] font-black tracking-tight block">STAGE 03</span>
+                        </div>
+                        <h3 class="text-xs font-black text-slate-950 mb-2.5 leading-tight z-20">အက္ခရာပစ်ခတ်ဂိမ်း</h3>
+                        <span class="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-orange-600 text-white border-2 border-slate-900 rounded-xl text-[10px] font-black shadow-[0_3px_0_#0f172a] z-20">🚀 ရွေးချယ်မည်</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 4 Card -->
+            <div class="col-span-11 sm:col-span-9 col-start-2 sm:col-start-4 text-slate-900">
+                <div class="stage-card-container">
+                    <div class="stage-roof roof-stage4"><span class="text-3xl">🔍</span></div>
+                    <div class="stage-body" style="padding-bottom: 14px;">
+                        <div class="stage-window"></div>
+                        <div class="stage-door"></div>
+                        <div class="bg-pink-600 text-white border border-pink-700 rounded-md px-2.5 py-0.5 mb-1.5 z-20">
+                            <span class="text-[9px] font-black block">STAGE 04</span>
+                        </div>
+                        <h3 class="text-[11px] font-black text-slate-950 mb-2 leading-tight z-20">တူတူပုန်းတမ်းတောအုပ်</h3>
+                        
+                        <div class="flex flex-col gap-1 w-full max-w-[145px] relative z-25">
+                            <a href="ဟ-အ(hike and seek).html" class="block bg-slate-900 text-white py-1 rounded border border-slate-950 text-[9px] font-bold text-center shadow-[0_1.5px_0_#0f172a] hover:bg-slate-800 transition-colors">🏖️ ကမ်းခြေပုန်းတမ်း</a>
+                            <a href="(ဟ-အ)detective.html" class="block bg-slate-900 text-white py-1 rounded border border-slate-950 text-[9px] font-bold text-center shadow-[0_1.5px_0_#0f172a] hover:bg-slate-800 transition-colors">🕵️‍♂️ စုံထောက်အသစ်</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Boss Card -->
+            <div class="col-span-12 mt-4 text-slate-900">
+                <div class="stage-card-container max-w-[310px]" onclick="location.href='final test.html'">
+                    <div class="stage-roof roof-final"><span class="text-3xl">🏆</span></div>
+                    <div class="stage-body" style="background: #f3e8ff; box-shadow: inset 0 -8px 0px rgba(0, 0, 0, 0.05);">
+                        <div class="stage-window" style="box-shadow: 0 0 15px #a78bfa; background: #ede9fe;"></div>
+                        <div class="stage-door" style="background: #4c1d95;"></div>
+                        <div class="bg-violet-600 text-white border border-violet-700 rounded-md px-3 py-0.5 mb-1.5 z-20 shadow-sm">
+                            <span class="text-[9px] font-black block">FINAL STAGE</span>
+                        </div>
+                        <h3 class="text-xs font-black text-violet-950 mb-2.5 z-20">🏆 ဥယျာဉ်မှူး</h3>
+                        <span class="w-full bg-gradient-to-r from-violet-500 via-purple-600 to-indigo-500 border-2 border-slate-950 py-2 rounded-xl text-[10px] font-black text-white shadow-[0_4px_0_#0f172a] block text-center z-20">💥 BOSS STAGE 🚢</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 🏃‍♂️ DASSY "LITTLE BRAINS" LOGO CONTAINER -->
+        <div class="dassy-logo-wrapper">
+            <div class="dassy-logo-line line-top" id="textLine1">IMAGINED FOR</div>
+            <div class="dassy-logo-line line-bottom" id="textLine2">LITTLE BRAINS BY DASSY</div>
+        </div>
+
+    </div>
+
+    <!-- 🏆 Dynamic Lesson Popup Panel -->
+    <div id="lessonPopup" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-40 p-4 transition-all">
+        <div class="w-full max-w-sm bg-gradient-to-b from-sky-950 to-slate-950 border-4 border-sky-800 rounded-3xl p-6 shadow-2xl text-center relative">
+            
+            <h2 id="popupTitle" class="text-2xl font-black text-white drop-shadow mb-6">သင်ခန်းစာများ</h2>
+            
+            <div id="lessonsContainer" class="flex flex-col gap-3.5 mb-8"></div>
+
+            <button onclick="closeLessonPopup()" class="w-16 h-16 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-400 hover:to-rose-500 border-4 border-slate-950 rounded-full shadow-[0_5px_0_#0f172a] active:translate-y-1 active:shadow-none transition-all inline-flex items-center justify-center cursor-pointer text-2xl">
+                🏠
+            </button>
+            <div class="text-[10px] font-black text-slate-400 mt-1 uppercase tracking-wider">Home</div>
+        </div>
+    </div>
+
+    <audio id="mainAudio" src="main-bgm.mp3" loop></audio>
+
+    <script>
+        const mainAudio = document.getElementById('mainAudio');
+        const muteBtn = document.getElementById('muteBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const splashScreen = document.getElementById('splashScreen');
+        const gameDashboard = document.getElementById('gameDashboard');
+        
+        const lessonPopup = document.getElementById('lessonPopup');
+        const popupTitle = document.getElementById('popupTitle');
+        const lessonsContainer = document.getElementById('lessonsContainer');
+
+        /* 🎯 (ဟ၊ ဠ၊ အ) သင်ခန်းစာများအတွက် Dynamic Links */
+        const stageLessonsData = {
+            stage2: {
+                title: "🎨 ဆေးရောင်ခြယ်ကမ္ဘာ",
+                buttonStyle: "from-emerald-400 to-teal-500 hover:from-emerald-300 hover:to-teal-400 shadow-teal-950 text-white",
+                links: [
+                    { name: "ဟ (paint)", url: "ဟ(paint).html" },
+                    { name: "ဠ (paint)", url: "ဠ(paint).html" },
+                    { name: "အ (paint)", url: "အ(paint).html" }
+                ]
+            },
+            stage3: {
+                title: "🚀 အက္ခရာပစ်ခတ်ဂိမ်း",
+                buttonStyle: "from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 shadow-orange-950 text-slate-950",
+                links: [
+                    { name: "ဟ - သင်ခန်းစာ", url: "ဟ.html" },
+                    { name: "ဠ - သင်ခန်းစာ", url: "ဠ.html" },
+                    { name: "အ - သင်ခန်းစာ", url: "အ.html" }
+                ]
+            }
+        };
+
+        function startAdventure() {
+            splashScreen.classList.add('hide');
+            setTimeout(() => { splashScreen.style.display = 'none'; }, 500);
+            gameDashboard.classList.remove('hidden');
+            
+            mainAudio.volume = volumeSlider.value;
+            mainAudio.play().catch(e => console.log("Audio play blocked", e));
+            
+            checkUrlParametersForPopup();
+        }
+
+        function openLessonPopup(stageKey) {
+            const data = stageLessonsData[stageKey];
+            if (!data) return;
+
+            popupTitle.textContent = data.title;
+            lessonsContainer.innerHTML = ""; 
+
+            data.links.forEach((lesson) => {
+                const btn = document.createElement('a');
+                btn.href = lesson.url;
+                btn.className = `w-full py-3 px-6 text-sm font-black rounded-2xl bg-gradient-to-r ${data.buttonStyle} border-2 border-slate-950 shadow-[0_4px_0_rgba(0,0,0,0.3)] active:translate-y-1 active:shadow-none transition-all block text-center`;
+                btn.textContent = lesson.name;
+                lessonsContainer.appendChild(btn);
+            });
+
+            lessonPopup.classList.remove('hidden');
+            lessonPopup.classList.add('flex');
+            
+            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?showPopup=${stageKey}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+        }
+
+        function closeLessonPopup() {
+            document.getElementById('lessonPopup').classList.add('hidden');
+            document.getElementById('lessonPopup').classList.remove('flex');
+            
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.pushState({ path: cleanUrl }, '', cleanUrl);
+        }
+
+        function updateVolumeLevel(targetVolume) {
+            mainAudio.volume = targetVolume;
+            if (targetVolume == 0) {
+                mainAudio.muted = true;
+                muteBtn.textContent = '🔇';
+            } else {
+                mainAudio.muted = false;
+                muteBtn.textContent = '🔊';
+            }
+        }
+
+        function toggleMuteState() {
+            if (mainAudio.muted) {
+                mainAudio.muted = false;
+                muteBtn.textContent = '🔊';
+                if (mainAudio.volume === 0) {
+                    mainAudio.volume = 0.5;
+                    volumeSlider.value = 0.5;
+                }
+            } else {
+                mainAudio.muted = true;
+                muteBtn.textContent = '🔇';
+            }
+        }
+
+        function checkUrlParametersForPopup() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetPopup = urlParams.get('showPopup');
+            if (targetPopup === 'stage2' || targetPopup === 'stage3') {
+                openLessonPopup(targetPopup);
+            }
+        }
+
+        /* DASSY Animated Logo JS Setup */
+        function setupAnimatedText(elementId) {
+            const targetElement = document.getElementById(elementId);
+            if (!targetElement) return;
+            
+            const rawText = targetElement.innerText;
+            targetElement.innerHTML = '';
+
+            let delayCounter = 0;
+
+            [...rawText].forEach((char) => {
+                if (char === ' ') {
+                    const spaceSpan = document.createElement('div');
+                    spaceSpan.className = 'dassy-space';
+                    targetElement.appendChild(spaceSpan);
+                } else {
+                    const charSpan = document.createElement('span');
+                    charSpan.className = 'animated-char';
+                    charSpan.innerText = char;
+
+                    const startingX = -100 - (delayCounter * 12); 
+                    const animationDelay = delayCounter * 0.05; 
+
+                    charSpan.style.setProperty('--x-start', `${startingX}px`);
+                    charSpan.style.animationDelay = `${animationDelay}s, ${animationDelay + 1.5}s`;
+
+                    targetElement.appendChild(charSpan);
+                    delayCounter++;
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setupAnimatedText('textLine1');
+            setupAnimatedText('textLine2');
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('fromGame') === 'true' || urlParams.get('showPopup')) {
+                startAdventure();
+            }
+
+            const stage = urlParams.get('stage'); 
+            if (stage) {
+                openLessonPopup(`stage${stage}`); 
+            }
+        });
+    </script>
+</body>
+</html>

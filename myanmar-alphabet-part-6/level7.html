@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>မြန်မာစာအက္ခရာ သင်ခန်းစာ - Level 7</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            height: 100dvh;
+            overflow: hidden; 
+            user-select: none; 
+            -webkit-user-select: none; 
+            padding: clamp(10px, 2vh, 20px);
+            position: relative;
+        }
+
+        /* 🌟 OVERLAY & POPUP STYLES (INTRO & VICTORY) */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-card {
+            background: white;
+            border-radius: 24px;
+            padding: clamp(20px, 4vh, 32px) clamp(16px, 4vw, 24px);
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+            border: 4px solid #FFB74D;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .modal-icon {
+            font-size: clamp(40px, 8vh, 56px);
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        .modal-title {
+            color: #FF4A70;
+            font-size: clamp(18px, 4vw, 22px);
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .modal-body {
+            color: #334155;
+            font-size: clamp(13px, 3vw, 15px);
+            line-height: 1.6;
+            background: #FFF5F7;
+            border: 2px dashed #FFB74D;
+            padding: 14px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .modal-btn {
+            background: linear-gradient(135deg, #FFB74D 0%, #FF9800 100%);
+            color: white;
+            font-size: clamp(16px, 3.5vw, 18px);
+            font-weight: bold;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #E65100;
+            transition: all 0.15s ease;
+            width: 100%;
+            display: block;
+            text-decoration: none;
+        }
+        .modal-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #E65100;
+        }
+        .victory-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            box-shadow: 0 4px 0 #1B5E20;
+        }
+        .victory-btn:active {
+            box-shadow: 0 2px 0 #1B5E20;
+        }
+
+        /* TOP NAVIGATION BUTTONS (HOME & BACK) */
+        .top-nav {
+            position: absolute;
+            top: clamp(10px, 2vh, 20px);
+            left: clamp(10px, 2vw, 20px);
+            z-index: 50;
+            display: flex;
+            gap: 8px;
+        }
+        .top-nav-btn {
+            width: clamp(38px, 5vw, 48px);
+            height: clamp(38px, 5vw, 48px);
+            background-color: rgba(15, 23, 42, 0.9);
+            border: 1.5px solid rgba(20, 184, 166, 0.4);
+            border-radius: 12px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: clamp(14px, 2.5vw, 18px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.15s ease;
+            cursor: pointer;
+        }
+        .top-nav-btn.back-btn {
+            border-color: rgba(245, 158, 11, 0.4);
+        }
+        .top-nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* HEADER PANEL */
+        .header-container { 
+            text-align: center; 
+            margin-bottom: clamp(6px, 1.5vh, 12px); 
+            margin-top: clamp(30px, 5vh, 0px);
+        }
+        .instruction-title { 
+            font-size: clamp(16px, 3.5vw, 24px); 
+            color: #FF4A70; 
+            font-weight: bold; 
+            text-shadow: 2px 2px 0px #fff; 
+            margin: 4px 0; 
+        }
+        .mode-badge { 
+            background-color: #FFB74D; 
+            color: white; 
+            padding: clamp(4px, 1vh, 6px) clamp(12px, 2vw, 18px); 
+            border-radius: 20px; 
+            font-size: clamp(13px, 2.5vw, 16px); 
+            font-weight: bold; 
+            display: inline-block; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+        }
+        .stars-container { 
+            display: flex; 
+            gap: clamp(4px, 1.5vw, 8px); 
+            margin: clamp(4px, 1vh, 8px) 0; 
+            font-size: clamp(20px, 4vw, 26px); 
+            justify-content: center; 
+        }
+        .star { color: #E0E0E0; transition: transform 0.2s ease, color 0.2s ease; }
+        .star.active { color: #FFCA28; transform: scale(1.2); text-shadow: 0 0 10px rgba(255,202,40,0.6); }
+
+        /* RESPONSIVE BOARD & CANVAS CONTAINER */
+        .canvas-container { 
+            position: relative; 
+            width: clamp(220px, 65vw, 320px); 
+            height: clamp(220px, 65vw, 320px); 
+            max-height: 40vh;
+            max-width: 40vh;
+            background-color: white; 
+            border: clamp(5px, 1.5vw, 8px) solid #FFB74D; 
+            border-radius: 20px; 
+            box-shadow: 0px 10px 20px rgba(0,0,0,0.1); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            flex-shrink: 0;
+        }
+        .giant-text-letter { 
+            font-size: clamp(110px, 35vw, 180px); 
+            font-weight: bold; 
+            color: #FF4A70; 
+            text-shadow: 4px 4px 0px #F5F5F5; 
+            user-select: none; 
+            pointer-events: none; 
+            z-index: 1; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        canvas { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%;
+            height: 100%;
+            border-radius: 12px; 
+            touch-action: none; 
+            z-index: 2; 
+            cursor: pointer; 
+            image-rendering: -webkit-optimize-contrast; 
+            image-rendering: crisp-edges; 
+        }
+
+        /* CONTROLS & ACTION BUTTONS */
+        .controls { 
+            display: flex; 
+            gap: clamp(8px, 2vw, 15px); 
+            margin-top: clamp(10px, 2vh, 15px); 
+            align-items: center; 
+            justify-content: center;
+            height: clamp(40px, 6vh, 50px); 
+        }
+        .action-btn { 
+            font-size: clamp(14px, 2.8vw, 18px); 
+            font-weight: bold; 
+            padding: clamp(8px, 1.5vh, 10px) clamp(16px, 3vw, 25px); 
+            border: none; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            box-shadow: 0px 4px 0px rgba(0,0,0,0.2); 
+            transition: all 0.1s ease; 
+            white-space: nowrap;
+        }
+        .action-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0px 2px 0px rgba(0,0,0,0.2); }
+        .action-btn:disabled { background-color: #BDBDBD !important; box-shadow: none; cursor: not-allowed; opacity: 0.6; }
+        .clear-btn { background-color: #E57373; color: white; }
+        .practice-btn { background-color: #4CAF50; color: white; font-size: clamp(15px, 3vw, 20px); padding: clamp(8px, 1.5vh, 10px) clamp(20px, 4vw, 35px); }
+
+        /* NAVIGATION BUTTONS */
+        .nav-container { 
+            display: flex; 
+            gap: clamp(20px, 6vw, 40px); 
+            margin-top: clamp(10px, 2vh, 15px); 
+        }
+        .nav-circle-btn { 
+            width: clamp(40px, 8vw, 50px); 
+            height: clamp(40px, 8vw, 50px); 
+            border-radius: 50%; 
+            background-color: white; 
+            border: 3px solid #FFB74D; 
+            font-size: clamp(16px, 3.5vw, 22px); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            transition: transform 0.1s;
+        }
+        .nav-circle-btn:active:not(:disabled) { transform: scale(0.92); }
+        .nav-circle-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* MEDIA QUERIES FOR SMALL MOBILE SCREENS */
+        @media (max-width: 768px) {
+            body { padding-top: 45px; }
+            .top-nav { top: 10px; left: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🌟 INTRO WELCOME SCREEN OVERLAY -->
+    <div id="introScreen" class="modal-overlay">
+        <div class="modal-card">
+            <span class="modal-icon">🎧✍️✨</span>
+            <h2 class="modal-title">မြန်မာစာအက္ခရာ သင်ခန်းစာ</h2>
+            
+            <div class="modal-body">
+                <p style="margin-bottom: 8px;"><strong>သားသားမီးမီးတို့ရေ... ✨</strong></p>
+                <p>ဒီနေ့မှာတော့ မြန်မာစာအက္ခရာ <span style="color:#FF4A70; font-weight:bold;">"ဟ ၊ ဠ ၊ အ"</span> စာလုံးလေးတွေကို အသံနားထောင်ပြီး လှလှပပ လိုက်ရေးဆွဲကြရအောင်နော်။</p>
+                <ul style="margin-top: 8px; padding-left: 18px;">
+                    <li>🔊 အဆင့် ၁ - အသံနားထောင်မယ်</li>
+                    <li>✍️ အဆင့် ၂ - လမ်းကြောင်းလိုက်ဆွဲမယ်</li>
+                </ul>
+            </div>
+
+            <button class="modal-btn" onclick="startLesson()">🚀 စတင်မယ်</button>
+        </div>
+    </div>
+
+    <!-- 🏆 VICTORY CONGRATULATIONS OVERLAY (သင်ခန်းစာပြီးဆုံးကြောင်း POPUP) -->
+    <div id="victoryScreen" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <span class="modal-icon">🎉🏆🌟</span>
+            <h2 class="modal-title" style="color: #4CAF50;">ဂုဏ်ယူပါတယ် သားသားမီးမီးတို့ရေ!</h2>
+            
+            <div class="modal-body" style="text-align: center; background: #E8F5E9; border-color: #81C784;">
+                <p style="font-size: 16px; font-weight: bold; color: #2E7D32; margin-bottom: 6px;">
+                    Level 7 သင်ခန်းစာအားလုံးကို အောင်မြင်စွာ လေ့ကျင့်ပြီးပါပြီ။ 👏
+                </p>
+                <p style="color: #455A64;">
+                    "ဟ ၊ ဠ ၊ အ" စာလုံးလေးတွေကို အမှန်ကန်ဆုံး နားထောင်ပြီး လှလှပပ ရေးဆွဲနိုင်ခဲ့လို့ ကြယ်လေးတွေ အားလုံး ရရှိသွားပါပြီနော်။ ✨
+                </p>
+            </div>
+
+            <!-- ပြီးပြီ ခလုတ်ကို နှိပ်လျှင် သင်ခန်းစာများအားလုံး ပြသထားသည့် မြေပုံ (index.html) သို့ ပြန်ရောက်မည် -->
+            <a href="index.html?fromGame=true" class="modal-btn victory-btn">ပြီးပြီ 🚩</a>
+        </div>
+    </div>
+
+    <!-- TOP NAVIGATION BUTTONS (HOME & BACK) -->
+    <div class="top-nav">
+        <a href="index.html?fromGame=true" class="top-nav-btn" title="ပင်မမြေပုံ">
+            <span>🏠</span>
+        </a>
+        <button type="button" onclick="showIntroScreen()" class="top-nav-btn back-btn" title="မိတ်ဆက်စာမျက်နှာသို့">
+            <span>↩️</span>
+        </button>
+    </div>
+
+    <!-- HEADER AREA -->
+    <div class="header-container">
+        <div id="modeBadge" class="mode-badge">အဆင့် (၁) - နားထောင်စို့ 🔊</div>
+        <div id="instructionTitle" class="instruction-title">စာလုံးလေးကို နှိပ်ပြီး အသံနားထောင်မယ် 🎧</div>
+    </div>
+
+    <div class="stars-container" id="starsRow">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+    </div>
+
+    <!-- CANVAS BOARD -->
+    <div class="canvas-container" id="boardContainer">
+        <div id="giantText" class="giant-text-letter">ဟ</div>
+        <canvas id="paintCanvas"></canvas>
+    </div>
+
+    <!-- ACTION CONTROLS -->
+    <div class="controls">
+        <button id="clearBtn" class="action-btn clear-btn" onclick="clearCanvas()">ဖျက်ပါ 🧼</button>
+        <button id="actionBtn" class="action-btn practice-btn" onclick="handleActionProgress()" disabled>နောက်တစ်ခု 🔄 +⭐</button>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="nav-container">
+        <button id="prevBtn" class="nav-circle-btn" onclick="navigateLetter(-1)">◀</button>
+        <button id="nextBtn" class="nav-circle-btn" onclick="navigateLetter(1)" disabled>▶</button>
+    </div>
+
+    <script>
+        const alphabetData = [
+            { name: "ဟ", traceImg: "ha.png", audioSource: "ha.mp3", requiredStrokes: 3 },
+            { name: "ဠ", traceImg: "u.png", audioSource: "u.mp3", requiredStrokes: 1 },
+            { name: "အ", traceImg: "uu.png", audioSource: "uu.mp3", requiredStrokes: 2 }
+        ];
+
+        let currentIndex = 0; 
+        let currentMode = "LISTEN"; 
+        let currentStars = 0; 
+        let strokeCount = 0; 
+        let isDrawing = false;
+
+        const canvas = document.getElementById('paintCanvas'); 
+        const ctx = canvas.getContext('2d');
+        const boardContainer = document.getElementById('boardContainer');
+        const giantText = document.getElementById('giantText'); 
+        const actionBtn = document.getElementById('actionBtn');
+        const clearBtn = document.getElementById('clearBtn'); 
+        const modeBadge = document.getElementById('modeBadge');
+        const instructionTitle = document.getElementById('instructionTitle'); 
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn'); 
+        const introScreen = document.getElementById('introScreen');
+        const victoryScreen = document.getElementById('victoryScreen');
+        let letterAudio = new Audio();
+
+        // INTRO SCREEN FUNCTIONS
+        function startLesson() {
+            introScreen.style.display = 'none';
+            victoryScreen.style.display = 'none';
+            playVocal();
+        }
+
+        function showIntroScreen() {
+            introScreen.style.display = 'flex';
+            victoryScreen.style.display = 'none';
+            if (letterAudio) {
+                letterAudio.pause();
+                letterAudio.currentTime = 0;
+            }
+        }
+
+        // SHOW VICTORY SCREEN WHEN ALL LESSONS COMPLETE
+        function showVictoryScreen() {
+            victoryScreen.style.display = 'flex';
+            if (letterAudio) {
+                letterAudio.pause();
+            }
+        }
+
+        // CANVAS SCALE RESIZE LOGIC (RESPONSIVE RETINA SUPPORT)
+        function resizeCanvasResolution() {
+            const rect = boardContainer.getBoundingClientRect();
+            const scale = window.devicePixelRatio || 2;
+            
+            canvas.width = rect.width * scale;
+            canvas.height = rect.height * scale;
+            
+            ctx.scale(scale, scale);
+            ctx.lineJoin = 'round'; 
+            ctx.lineCap = 'round'; 
+            ctx.lineWidth = Math.max(8, rect.width / 22); 
+            ctx.strokeStyle = '#ffffff';
+        }
+
+        window.addEventListener('resize', resizeCanvasResolution);
+
+        window.onload = () => { 
+            resizeCanvasResolution();
+            loadAlphabetLevel(); 
+        };
+
+        function loadAlphabetLevel() {
+            currentStars = 0; 
+            strokeCount = 0; 
+            updateStarsUI();
+            const data = alphabetData[currentIndex];
+            letterAudio.src = data.audioSource;
+            prevBtn.disabled = (currentIndex === 0); 
+            nextBtn.disabled = true; 
+            setGameMode("LISTEN");
+        }
+
+        function setGameMode(mode) {
+            currentMode = mode; 
+            const data = alphabetData[currentIndex]; 
+            clearCanvas(); 
+            actionBtn.disabled = true;
+
+            if (currentMode === "LISTEN") {
+                modeBadge.innerText = "အဆင့် (၁) - နားထောင်စို့ 🔊"; 
+                modeBadge.style.backgroundColor = "#FFB74D";
+                instructionTitle.innerText = "စာလုံးလေးကို နှိပ်ပြီး အသံနားထောင်မယ် 🎧";
+                giantText.style.display = "flex"; 
+                giantText.innerText = data.name; 
+                canvas.style.backgroundImage = "none";
+                clearBtn.style.display = "none"; 
+                
+                if (introScreen.style.display === 'none' && victoryScreen.style.display === 'none') {
+                    playVocal();
+                }
+            } else {
+                modeBadge.innerText = "အဆင့် (၂) - လိုက်ဆွဲစို့ ✍️"; 
+                modeBadge.style.backgroundColor = "#4CAF50";
+                instructionTitle.innerText = "မြားအညွှန်းအတိုင်း လမ်းကြောင်းလိုက်ဆွဲပါ 🎨";
+                giantText.style.display = "none"; 
+                canvas.style.backgroundImage = `url('${data.traceImg}')`;
+                canvas.style.backgroundSize = "contain"; 
+                canvas.style.backgroundPosition = "center";
+                canvas.style.backgroundRepeat = "no-repeat"; 
+                clearBtn.style.display = "inline-block";
+            }
+        }
+
+        function playVocal() { 
+            letterAudio.play().catch(e => console.log("Audio waiting for interaction.")); 
+        }
+
+        function handleActionProgress() {
+            if (currentMode === "LISTEN") {
+                currentStars++;
+                if (currentStars < 5) { updateStarsUI(); actionBtn.disabled = true; playVocal(); }
+                else { currentStars = 0; updateStarsUI(); setGameMode("TRACING"); }
+            } else {
+                currentStars++;
+                if (currentStars < 5) { updateStarsUI(); clearCanvas(); }
+                else {
+                    updateStarsUI(); 
+                    // အက္ခရာအားလုံး ပြီးဆုံးသွားသည့်အခါ ဂုဏ်ပြုစာမျက်နှာ ပြသပေးခြင်း
+                    if (currentIndex === alphabetData.length - 1) {
+                        showVictoryScreen();
+                    } else {
+                        nextBtn.disabled = false;
+                        instructionTitle.innerText = "အောင်မြင်ပါပြီ။ နောက်စာလုံးကို သွားပါ 🎉"; 
+                        actionBtn.innerText = "ပြီးပါပြီ 🌟"; 
+                        actionBtn.disabled = true;
+                    }
+                }
+            }
+        }
+
+        function updateStarsUI() {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, idx) => { 
+                idx < currentStars ? star.classList.add('active') : star.classList.remove('active'); 
+            });
+            if (currentStars < 5) actionBtn.innerText = "နောက်တစ်ကြိမ် ထပ်လုပ်ပါ 🔄 +⭐";
+        }
+
+        function getCanvasCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { 
+                x: (clientX - rect.left), 
+                y: (clientY - rect.top) 
+            };
+        }
+
+        function startLine(e) {
+            e.preventDefault();
+            if (currentMode === "LISTEN") { playVocal(); actionBtn.disabled = false; return; }
+            const coords = getCanvasCoords(e); 
+            isDrawing = true; 
+            strokeCount++; 
+            ctx.beginPath(); 
+            ctx.moveTo(coords.x, coords.y);
+        }
+
+        function traceLine(e) {
+            e.preventDefault();
+            if (!isDrawing || currentMode === "LISTEN") return;
+            const coords = getCanvasCoords(e); 
+            ctx.lineTo(coords.x, coords.y); 
+            ctx.stroke();
+        }
+
+        function stopLine() {
+            if (!isDrawing) return; 
+            isDrawing = false; 
+            ctx.beginPath();
+            if (currentMode === "TRACING" && strokeCount >= alphabetData[currentIndex].requiredStrokes) {
+                actionBtn.disabled = false;
+            }
+        }
+
+        canvas.addEventListener('mousedown', startLine); 
+        canvas.addEventListener('mousemove', traceLine); 
+        canvas.addEventListener('mouseup', stopLine);
+        canvas.addEventListener('touchstart', startLine); 
+        canvas.addEventListener('touchmove', traceLine); 
+        canvas.addEventListener('touchend', stopLine);
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (currentMode === "TRACING") { 
+                strokeCount = 0; 
+                actionBtn.disabled = true; 
+            }
+        }
+
+        function navigateLetter(direction) {
+            currentIndex += direction;
+            if (currentIndex >= 0 && currentIndex < alphabetData.length) loadAlphabetLevel();
+        }
+    </script>
+</body>
+</html>

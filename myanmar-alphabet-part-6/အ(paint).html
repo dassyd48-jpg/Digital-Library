@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Paint the Burmese Letter အ - Country Village</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght=500;600;700&family=Noto+Sans+Myanmar:wght=600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    html, body { 
+      height: 100%; 
+      width: 100%; 
+      overflow: hidden; 
+      position: relative;
+      touch-action: manipulation;
+    }
+    
+    body {
+      font-family: 'Fredoka', 'Noto Sans Myanmar', system-ui, sans-serif;
+      background: linear-gradient(to bottom, #a0d2eb 0%, #e5eaf5 60%, #f4f7f6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ☁️ Bright Fluffy Clouds */
+    .sky-clouds { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+    .cloud { position: absolute; background: rgba(255, 255, 255, 0.85); border-radius: 50%; filter: blur(4px); }
+    .c1 { top: 6%; left: 5vw; width: clamp(100px, 20vw, 180px); height: clamp(40px, 8vh, 80px); }
+    .c2 { top: 3%; right: 8vw; width: clamp(140px, 25vw, 250px); height: clamp(50px, 10vh, 100px); }
+
+    /* ⛰️ Distant Soft Mountains */
+    .distant-mountains {
+      position: absolute; bottom: 32%; left: 0; width: 100%; height: 25vh;
+      background: linear-gradient(to bottom, #8ecae6 0%, #a8dadc 100%);
+      clip-path: polygon(0% 100%, 20% 40%, 35% 65%, 55% 30%, 75% 55%, 90% 35%, 100% 100%);
+      z-index: 2; opacity: 0.7;
+    }
+
+    /* 🏡 Village Houses Layer */
+    .village-layer { position: absolute; bottom: 25vh; width: 100%; height: 18vh; z-index: 3; pointer-events: none; }
+    
+    .house-center {
+      position: absolute; bottom: 0; left: 20%; width: clamp(110px, 18vw, 180px); height: clamp(70px, 12vh, 110px);
+      background: #e9e0cf; border-radius: 4px; box-shadow: inset -15px 0 0 rgba(0,0,0,0.05);
+    }
+    .house-center::before {
+      content: ''; position: absolute; top: -35%; left: -8%; width: 116%; height: 45%;
+      background: #dc2626; clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
+    }
+    .house-center .door {
+      position: absolute; bottom: 0; left: 20%; width: 22%; height: 60%;
+      background: #b91c1c; border: 2px solid #7f1d1d; border-radius: 4px 4px 0 0;
+    }
+    .house-center .window {
+      position: absolute; top: 25%; right: 20%; width: 22%; height: 30%;
+      background: #78350f; border: 2px solid #451a03;
+    }
+
+    .house-right {
+      position: absolute; bottom: -10px; right: 5%; width: clamp(120px, 20vw, 190px); height: clamp(85px, 14vh, 140px);
+      background: #f1ebd9;
+    }
+    .house-right::before {
+      content: ''; position: absolute; top: -25%; left: -5%; width: 110%; height: 30%;
+      background: #c2410c; clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+    }
+
+    /* 🌳 Giant Ancient Tree */
+    .giant-tree-container { position: absolute; bottom: 12vh; left: -10px; width: clamp(150px, 25vw, 260px); height: 65vh; z-index: 4; pointer-events: none; }
+    .tree-trunk {
+      position: absolute; bottom: 0; left: 30%; width: 30%; height: 75%;
+      background: linear-gradient(to right, #451a03, #78350f);
+      border-radius: 0 80px 0 0; transform-origin: bottom left;
+    }
+    .tree-foliage {
+      position: absolute; top: 0; left: -20%; width: 130%; height: 50%;
+      background: #15803d; border-radius: 50%;
+      box-shadow: 20px 30px 0 #166534, -15px 20px 0 #1e8449, 10px -10px 0 #22c55e;
+    }
+
+    /* 🌾 Ground Base */
+    .ground-base {
+      position: absolute; bottom: 0; left: 0; width: 100%; height: 22vh;
+      background: linear-gradient(to bottom, #d97706 0%, #b45309 100%);
+      z-index: 5; box-shadow: inset 0 10px 0 #22c55e;
+    }
+    .hill-left-meadow {
+      position: absolute; bottom: 0; left: 0; width: 45%; height: 100%;
+      background: #16a34a; border-radius: 0 100% 0 0 / 0 40px 0 0;
+    }
+    .hill-right-meadow {
+      position: absolute; bottom: 0; right: 0; width: 40%; height: 100%;
+      background: #15803d; border-radius: 100% 0 0 0 / 35px 0 0 0;
+    }
+
+    /* ==========================================================================
+       INTRO SCREEN PANEL
+       ========================================================================= */
+    .intro-screen {
+      position: absolute; inset: 0; 
+      background: linear-gradient(rgba(244, 247, 246, 0.96), rgba(160, 210, 235, 0.98));
+      z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px; text-align: center; transition: opacity 0.5s ease-out, pointer-events 0.5s;
+    }
+    .intro-screen.hide { opacity: 0; pointer-events: none; }
+
+    /* ==========================================================================
+       MAIN DRAWING INTERFACE BOARD
+       ========================================================================= */
+    .game-container {
+      position: relative; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 95%; max-width: 650px; height: 90vh;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .game-container.hidden-canvas {
+      display: none !important;
+    }
+    
+    .heading-box {
+      background-color: #ffffff; border: 3px solid #10b981; border-radius: 14px;
+      padding: clamp(6px, 1vh, 10px) clamp(16px, 3vw, 24px); margin-bottom: clamp(10px, 2vh, 20px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 10px;
+    }
+    .heading-text { font-size: clamp(14px, 3vw, 20px); font-weight: 700; color: #1e3a8a; }
+    .heading-glyph {
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(16px, 3.5vw, 22px); font-weight: 800;
+      background: #10b981; color: white; padding: 2px 12px; border-radius: 8px; box-shadow: 0 4px 10px rgba(16,185,129,0.3);
+    }
+    
+    .stage { display: flex; gap: 12px; align-items: center; justify-content: center; width: 100%; }
+
+    .whiteboard-frame {
+      position: relative; padding: 8px; border-radius: 20px; background-color: #ffffff;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.12); border: 4px solid #10b981;
+      width: min(70vw, 420px); aspect-ratio: 1/1;
+    }
+    .canvas-container { border-radius: 14px; background: #ffffff; overflow: hidden; position: relative; width: 100%; height: 100%; }
+    canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; cursor: crosshair; touch-action: none; }
+    
+    .panel {
+      width: clamp(75px, 18vw, 95px); background-color: #ffffff; border-radius: 20px; border: 4px solid #10b981;
+      padding: 12px 6px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+    .panel-title { font-size: clamp(8px, 1.8vw, 10px); font-weight: 700; text-align: center; color: #10b981; letter-spacing: 1px; }
+    
+    .eraser {
+      width: 100%; height: clamp(32px, 5vh, 40px); border-radius: 10px; background: #f8fafc;
+      display: flex; align-items: center; justify-content: center; font-size: clamp(14px, 3vw, 18px);
+      cursor: pointer; border: 2px solid #e2e8f0; box-shadow: 0 3px 0 #cbd5e1;
+    }
+    .eraser.selected { border-color: #10b981; background: #ecfdf5; box-shadow: 0 0 10px rgba(16,185,129,0.3); }
+    
+    .brush-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; width: 100%; }
+    .brush { aspect-ratio: 1/1; border-radius: 8px; cursor: pointer; position: relative; background: #f8fafc; border: 2px solid #e2e8f0; }
+    .brush.selected { border-color: #10b981; transform: scale(1.05); box-shadow: 0 0 8px rgba(16,185,129,0.4); }
+    .swatch { position: absolute; inset: 0; border-radius: 5px; }
+    
+    .action-container { display: flex; flex-direction: column; gap: 6px; width: 100%; margin-top: auto; }
+    .btn {
+      width: 100%; height: clamp(34px, 5vh, 42px); border-radius: 10px; border: none; color: white;
+      font-weight: 700; font-size: clamp(9px, 1.8vw, 11px); cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .btn-reset { background-color: #ef4444; box-shadow: 0 3px 0 #b91c1c; }
+    .btn-next { background-color: #10b981; box-shadow: 0 3px 0 #047857; }
+    .btn:active { transform: translateY(2px); box-shadow: none; }
+
+    /* ==========================================================================
+       🎈 STAGE 1: BALLOON CATCHER OVERLAY
+       ========================================================================= */
+    .game-stage1-overlay {
+      position: absolute; inset: 0; z-index: 80;
+      display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+      padding: clamp(15px, 3vh, 30px); opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+    }
+    .game-stage1-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .stage1-header {
+      background: rgba(255, 255, 255, 0.95); border: 3px solid #10b981; border-radius: 20px;
+      padding: 10px 24px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      margin-top: clamp(45px, 8vh, 65px); z-index: 85;
+    }
+    .stage1-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(16px, 3vw, 22px); font-weight: 800; color: #1e3a8a; }
+    .stage1-score { font-family: 'Fredoka', sans-serif; font-size: clamp(14px, 2.5vw, 18px); color: #047857; font-weight: 700; margin-top: 2px; }
+
+    .balloon-container { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 82; }
+    
+    .hot-air-balloon {
+      position: absolute; width: clamp(65px, 12vw, 90px); height: clamp(85px, 16vw, 120px);
+      cursor: pointer; pointer-events: auto; user-select: none;
+      display: flex; flex-direction: column; align-items: center;
+      animation: floatUp linear infinite;
+      touch-action: manipulation;
+    }
+
+    .balloon-body {
+      width: 100%; height: 75%; border-radius: 50% 50% 45% 45%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: inset -8px -8px 0 rgba(0,0,0,0.15), 0 8px 15px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .balloon-text {
+      font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(24px, 4.5vw, 36px);
+      font-weight: 800; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .balloon-basket {
+      width: 25%; height: 18%; background: #78350f; border-radius: 3px;
+      margin-top: 4px; box-shadow: 0 3px 0 #451a03;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(105vh) translateX(0); }
+      50% { transform: translateY(50vh) translateX(15px); }
+      100% { transform: translateY(-20vh) translateX(-15px); }
+    }
+
+    @keyframes popOut {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.8; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+    .popping { animation: popOut 0.25s forwards !important; pointer-events: none !important; }
+
+    /* ==========================================================================
+       🌟 POPUP MODALS
+       ========================================================================= */
+    .reward-backdrop {
+      position: absolute; inset: 0; background: rgba(15, 23, 42, 0.6);
+      z-index: 200; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.4s ease; padding: 15px;
+    }
+    .reward-backdrop.show { opacity: 1; pointer-events: auto; }
+    
+    .reward-box {
+      background: #ffffff; border: 4px solid #fbbf24; border-radius: 28px;
+      padding: clamp(20px, 4vh, 35px) clamp(20px, 4vw, 35px);
+      width: 100%; max-width: 400px; text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+      transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .reward-backdrop.show .reward-box { transform: scale(1); }
+    
+    .reward-stars { font-size: clamp(36px, 7vw, 50px); margin-bottom: 10px; }
+    .reward-title { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(20px, 4vw, 26px); font-weight: 800; color: #1e3a8a; margin-bottom: 8px; }
+    .reward-desc { font-family: 'Noto Sans Myanmar', sans-serif; font-size: clamp(13px, 2.5vw, 15px); color: #475569; margin-bottom: 20px; line-height: 1.6; }
+    
+    .btn-claim {
+      font-family: 'Noto Sans Myanmar', sans-serif; padding: 10px 30px; font-size: clamp(15px, 3vw, 18px); font-weight: 800;
+      color: white; background: #10b981; border: none; border-radius: 14px; cursor: pointer;
+      box-shadow: 0 4px 0 #047857; width: 100%;
+    }
+    .btn-claim:active { transform: translateY(2px); box-shadow: 0 2px 0 #047857; }
+
+    @media (max-width: 768px) {
+      .game-container { height: 85vh; justify-content: flex-start; margin-top: 45px; }
+      .stage { flex-direction: column; gap: 10px; }
+      .whiteboard-frame { width: min(82vw, 320px); }
+      .panel { width: min(82vw, 320px); flex-direction: row; padding: 8px 12px; height: auto; }
+      .panel-title { display: none; }
+      .eraser { width: 45px; height: 42px; margin-right: 4px; }
+      .brush-grid { grid-template-columns: repeat(6, 1fr); flex: 1; }
+      .action-container { flex-direction: row; width: auto; margin-top: 0; }
+      .btn { width: 48px; height: 42px; font-size: 9px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🧭 Top Navigation Links (Custom Request Integrated) -->
+  <div class="absolute top-3 left-3 right-3 flex justify-between items-center z-[150] pointer-events-none">
+    <div class="flex space-x-2 pointer-events-auto">
+      <a href="index.html?fromGame=true" class="px-3 py-2 bg-slate-950/90 hover:bg-slate-900 border border-teal-500/30 rounded-xl text-xs text-white flex items-center space-x-1 shadow-md transition-all active:scale-95 cursor-pointer">
+        <span>🏠</span> <span class="hidden sm:inline">ပင်မမြေပုံ</span>
+      </a>
+      <!-- ပြင်ဆင်ချက် ၁: Back ခလုတ်၏ link ကို stage2 URL သို့ ပြောင်းလဲထားပါသည် -->
+      <a href="index.html?fromGame=true&showPopup=stage2" class="px-3 py-2 bg-slate-950/90 hover:bg-slate-900 border border-amber-500/30 rounded-xl text-xs text-white flex items-center space-x-1 shadow-md transition-all active:scale-95 cursor-pointer back-btn">
+        <span>↩️</span> <span class="hidden sm:inline">နောက်သို့</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="sky-clouds">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+  </div>
+  <div class="distant-mountains"></div>
+
+  <div class="village-layer">
+    <div class="house-center">
+      <div class="door"></div>
+      <div class="window"></div>
+    </div>
+    <div class="house-right"></div>
+  </div>
+
+  <div class="giant-tree-container">
+    <div class="tree-foliage"></div>
+    <div class="tree-trunk"></div>
+  </div>
+
+  <div class="ground-base">
+    <div class="hill-left-meadow"></div>
+    <div class="hill-right-meadow"></div>
+  </div>
+
+  <!-- INTRO SCREEN -->
+  <div class="intro-screen" id="welcomeIntro">
+    <div class="text-4xl mb-3">🏡 🌳 🎈 🎨</div>
+    <h1 class="text-2xl sm:text-4xl font-extrabold text-blue-900 mb-2 font-['Noto_Sans_Myanmar']">သာယာလှပတဲ့ ကျေးလက်ရွာလေး</h1>
+    <div class="bg-emerald-500 text-white font-bold text-sm sm:text-base px-5 py-1.5 rounded-full mb-4 font-['Noto_Sans_Myanmar']">နောက်ဆုံးပိတ် အက္ခရာသင်ခန်းစာ : "အ"</div>
+    <p class="text-slate-700 text-xs sm:text-base max-w-lg mb-6 leading-relaxed font-['Noto_Sans_Myanmar']">
+      ကလေးတို့ရေ... မြန်မာအက္ခရာတွေရဲ့ နောက်ဆုံး "အ" အက္ခရာလေးဆီ ရောက်ရှိလို့လာပါပြီ။
+      ပန်းကလေးတွေ ပွင့်လန်းနေတဲ့ သာယာအေးချမ်းတဲ့ ရွာကလေးထဲမှာ "အ" အက္ခရာလေးကို အတူတူ ရေးဆွဲပြီး မီးပုံးပျံဖမ်းတမ်း ကစားကြရအောင်။
+    </p>
+    <button class="bg-rose-500 hover:bg-rose-600 active:translate-y-1 text-white font-bold px-10 py-3 rounded-2xl text-lg shadow-[0_5px_0_#be123c] font-['Noto_Sans_Myanmar']" onclick="startGame()">စတင်ကစားမည်</button>
+  </div>
+
+  <!-- MAIN DRAWING INTERFACE -->
+  <div class="game-container" id="mainGameUI">
+    <div class="heading-box">
+      <span class="heading-text">Paint the letter</span>
+      <span class="heading-glyph">အ</span>
+      <span class="heading-text">!</span>
+    </div>
+
+    <div class="stage">
+      <div class="whiteboard-frame">
+        <div class="canvas-container">
+          <canvas id="paintCanvas"></canvas>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <div class="panel-title">VILLAGE INK</div>
+        <div class="eraser" id="eraser">🧼</div>
+        <div class="brush-grid" id="brushGrid"></div>
+        
+        <div class="action-container">
+          <button class="btn btn-reset" id="btnReset">↻<br>ပြန်စမယ်</button>
+          <button class="btn btn-next" id="btnNext">✨<br>ပြီးပြီး</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- STAGE 1: BALLOON CATCHER OVERLAY -->
+  <div class="game-stage1-overlay" id="stage1Overlay">
+    <div class="stage1-header">
+      <div class="stage1-title">🎈 "အ" ပါသော မီးပုံးပျံများကို ဖမ်းယူပါ!</div>
+      <div class="stage1-score" id="scoreDisplay">ဖမ်းမိသော အရေအတွက် : 0 / 5</div>
+    </div>
+    <div class="balloon-container" id="balloonContainer"></div>
+  </div>
+
+  <!-- DRAWING REWARD MODAL -->
+  <div class="reward-backdrop" id="drawingRewardPopup">
+    <div class="reward-box">
+      <div class="reward-stars">🎉 🎨 🎉</div>
+      <h2 class="reward-title">တကယ့်ကို လှပလွန်းပါတယ်!</h2>
+      <p class="reward-desc">"အ" အက္ခရာလေးကို လှလှပပ ရေးဆွဲပြီးသွားပါပြီ။ အခု ကျေးလက်ကောင်းကင်ပေါ်မှာ ပျံသန်းနေတဲ့ "အ" မီးပုံးပျံလေးတွေကို ဖမ်းတမ်းကစားကြရအောင်။</p>
+      <button class="btn-claim" onclick="startStage1Game()">ဂိမ်းစတင်မည် 🎈</button>
+    </div>
+  </div>
+
+  <!-- FINAL VICTORY MODAL -->
+  <div class="reward-backdrop" id="finalVictoryPopup">
+    <div class="reward-box">
+      <div class="reward-stars">🎉 🏆 🎉</div>
+      <h2 class="reward-title">ထူးချွန်ထက်မြက်တဲ့ ကလေးလေး!</h2>
+      <p class="reward-desc">မြန်မာအက္ခရာ အားလုံးကို အောင်အောင်မြင်မြင်နဲ့ ရေးဆွဲပြီး ဂိမ်းသင်ခန်းစာ အားလုံးကို ပြီးမြောက်သွားခဲ့ပါပြီ။ တကယ်ကို ဂုဏ်ယူပါတယ်ရှင်။</p>
+      <!-- ပြင်ဆင်ချက် ၂: ဂုဏ်ပြုစာ ပေါ်လာချိန် ခလုတ်အား "ပြီးပါပြီ ✨" ဟု ပြောင်းလဲပေးခြင်း -->
+      <button class="btn-claim" onclick="finishGame()">ပြီးပါပြီ ✨</button>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    let isPainting = false;
+    let currentColor = '#f43f5e';
+    let isEraser = false;
+    let brushSize = 22;
+    let points = [];
+    let caughtCount = 0;
+    const targetCount = 5;
+    let balloonInterval = null;
+
+    const colors = ['#f43f5e', '#10b981', '#38bdf8', '#fbbf24', '#a855f7', '#f97316'];
+    const lettersPool = ['အ', 'က', 'ခ', 'င', 'အ', 'စ', 'အ', 'တ', 'အ'];
+
+    function startGame() { 
+      document.getElementById('welcomeIntro').classList.add('hide'); 
+      document.getElementById('mainGameUI').classList.remove('hidden-canvas');
+      resizeCanvas();
+    }
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+
+    function getXY(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    function startDrawing(e) {
+      isPainting = true;
+      points = [];
+      const pos = getXY(e);
+      points.push(pos);
+      
+      ctx.lineWidth = brushSize;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      
+      if (isEraser) {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.lineWidth = 36;
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = currentColor;
+      }
+      
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, ctx.lineWidth / 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function draw(e) {
+      if (!isPainting) return;
+      const pos = getXY(e);
+      points.push(pos);
+
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+
+      let i;
+      for (i = 1; i < points.length - 2; i++) {
+        const xc = (points[i].x + points[i + 1].x) / 2;
+        const yc = (points[i].y + points[i + 1].y) / 2;
+        ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
+      }
+      if (points.length > 2) {
+        ctx.quadraticCurveTo(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
+      }
+      ctx.stroke();
+    }
+
+    function stopDrawing() { isPainting = false; points = []; }
+
+    function initGameUI() {
+      const grid = document.getElementById('brushGrid');
+      grid.innerHTML = '';
+      colors.forEach((color, i) => {
+        const div = document.createElement('div');
+        div.className = 'brush' + (i === 0 ? ' selected' : '');
+        div.innerHTML = `<div class="swatch" style="background:${color}"></div>`;
+        div.onclick = () => {
+          isEraser = false; currentColor = color;
+          document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+          document.getElementById('eraser').classList.remove('selected');
+          div.classList.add('selected');
+        };
+        grid.appendChild(div);
+      });
+
+      document.getElementById('eraser').onclick = () => {
+        isEraser = true;
+        document.querySelectorAll('.brush').forEach(el => el.classList.remove('selected'));
+        document.getElementById('eraser').classList.add('selected');
+      };
+
+      document.getElementById('btnReset').onclick = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById('btnNext').onclick = () => document.getElementById('drawingRewardPopup').classList.add('show');
+    }
+
+    /* ==========================================================================
+       🎈 STAGE 1 MINI-GAME LOGIC (Canvas Hidden on Game Start)
+       ========================================================================= */
+    function startStage1Game() {
+      document.getElementById('drawingRewardPopup').classList.remove('show');
+      
+      // 💥 Canvas Container အားလုံးကို အပြီး Hide လုပ်ပေးခြင်း
+      document.getElementById('mainGameUI').classList.add('hidden-canvas');
+      
+      document.getElementById('stage1Overlay').classList.add('active');
+      
+      caughtCount = 0;
+      updateScoreDisplay();
+      const container = document.getElementById('balloonContainer');
+      container.innerHTML = '';
+
+      if (balloonInterval) clearInterval(balloonInterval);
+      balloonInterval = setInterval(spawnBalloon, 1200);
+      spawnBalloon();
+    }
+
+    function stopStage1Game() {
+      if (balloonInterval) clearInterval(balloonInterval);
+      document.getElementById('balloonContainer').innerHTML = '';
+    }
+
+    function updateScoreDisplay() {
+      document.getElementById('scoreDisplay').innerText = `ဖမ်းမိသော အရေအတွက် : ${caughtCount} / ${targetCount}`;
+    }
+
+    function spawnBalloon() {
+      const container = document.getElementById('balloonContainer');
+      if (!container || caughtCount >= targetCount) return;
+
+      const balloon = document.createElement('div');
+      balloon.className = 'hot-air-balloon';
+      
+      const randomLeft = Math.floor(Math.random() * 75) + 10;
+      const randomDuration = Math.random() * 3 + 6;
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      const randomLetter = lettersPool[Math.floor(Math.random() * lettersPool.length)];
+
+      balloon.style.left = `${randomLeft}%`;
+      balloon.style.animationDuration = `${randomDuration}s`;
+
+      balloon.innerHTML = `
+        <div class="balloon-body" style="background: ${randomColor}">
+          <span class="balloon-text">${randomLetter}</span>
+        </div>
+        <div class="balloon-basket"></div>
+      `;
+
+      balloon.onclick = (e) => {
+        e.stopPropagation();
+        if (randomLetter === 'အ') {
+          balloon.classList.add('popping');
+          caughtCount++;
+          updateScoreDisplay();
+          
+          setTimeout(() => balloon.remove(), 250);
+
+          if (caughtCount >= targetCount) {
+            stopStage1Game();
+            setTimeout(() => {
+              document.getElementById('stage1Overlay').classList.remove('active');
+              document.getElementById('finalVictoryPopup').classList.add('show');
+            }, 500);
+          }
+        } else {
+          balloon.style.transform = 'scale(0.85)';
+          setTimeout(() => balloon.style.transform = 'none', 150);
+        }
+      };
+
+      balloon.addEventListener('animationend', () => balloon.remove());
+      container.appendChild(balloon);
+    }
+
+    // ပြင်ဆင်ချက် ၂: "ပြီးပါပြီ" ခလုတ်နှိပ်ပါက Stage 2 (ဟ၊ ဠ၊ အ) သို့ Redirect လုပ်ပေးသည့် Function
+    function finishGame() {
+      window.location.href = "index.html?fromGame=true&showPopup=stage2";
+    }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    window.addEventListener('mouseup', stopDrawing);
+
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); }, { passive: false });
+    window.addEventListener('touchend', stopDrawing);
+
+    // Standard HD Burmese Letter "အ" SVG Guide Background
+    canvas.style.backgroundImage = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 100 100'><text x='50%' y='52%' font-family='Noto Sans Myanmar, sans-serif' font-weight='800' font-size='56' text-anchor='middle' dominant-baseline='middle' fill='%23f1f5f9' stroke='%2394a3b8' stroke-width='1.2' stroke-dasharray='3,2'>အ</text></svg>\")";
+    canvas.style.backgroundSize = "contain";
+    canvas.style.backgroundPosition = "center";
+    canvas.style.backgroundRepeat = "no-repeat";
+
+    initGameUI();
+    setTimeout(resizeCanvas, 150);
+  </script>
+</body>
+</html>
