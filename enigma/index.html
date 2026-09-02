@@ -77,8 +77,10 @@
         .tg-link { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 11px; letter-spacing: 2px; border-bottom: 1px dashed rgba(212, 175, 55, 0.25); padding-bottom: 5px; transition: color 0.3s; }
         .tg-link:hover { color: var(--gold); }
 
+        /* 📌 Book Container ကို Screen တစ်ခုလုံး နေရာအပြည့် ယူခိုင်းထားသည် */
         #book-container { display: none; position: relative; width: 100vw; height: 100vh; z-index: 10; opacity: 0; display: flex; justify-content: center; align-items: center; background-color: #010714; }
         
+        /* 📌 မလိုအပ်သော ကန့်သတ်ချက်များကို ဖယ်ရှားပြီး Screen အမြင့်၊ အကျယ် တစ်ခုလုံးကို ၁၀၀% အပြည့် ယူစေသည် */
         #flipbook-box { 
             position: relative; 
             width: 100%; 
@@ -92,6 +94,7 @@
         
         .page-node { width: 100%; height: 100%; background: #000; position: relative; }
         
+        /* 📌 object-fit: fill နှင့် image-rendering စနစ်သစ်ကို သုံးပြီး စာရွက်ပုံရိပ်ကို Screen အပြည့်ဆွဲဆန့်ပြီး အလွန်ကြည်လင်စေသည် */
         .page-img { 
             width: 100%; 
             height: 100%; 
@@ -106,15 +109,7 @@
             backface-visibility: hidden;
         }
 
-        /* 📱 Mobile Display (အမြင့်အရှည်ကို အနည်းငယ်တိုပေးထားပါသည်) */
-        @media screen and (max-width: 768px) {
-            #flipbook-box {
-                max-height: 85vh; /* စာမျက်နှာအရှည်ကို Screen ရဲ့ ၈၅% ထိ လျှော့ချထားသည် */
-                margin: auto;
-            }
-        }
-
-        /* 💻 Computer / Laptop Screen Display */
+        /* 💻 Computer / Laptop Screen အတွက် စာအုပ်ပုံရိပ် မပြဲသွားစေရန် သီးသန့် ပြင်ဆင်ချက် */
         @media screen and (min-width: 769px) {
             #flipbook-box {
                 max-width: 1000px;
@@ -134,6 +129,7 @@
         
         .watermark { position: absolute; bottom: 10px; width: 100%; text-align: center; font-size: 9px; color: var(--gold); opacity: 0.2; letter-spacing: 4px; pointer-events: none; z-index: 12; font-weight: bold; }
 
+        /* 📌 Floating Button Floating Placement */
         #bookmark-btn { 
             position: fixed; 
             top: 22px; 
@@ -353,9 +349,13 @@
             }
         });
     </script>
+    <!-- ========================================== -->
+<!-- 🔻 Review System Code Block Start (Dassy) 🔻 -->
+<!-- ========================================== -->
 
-<!-- Review System -->
+<!-- 1. CSS Style (Review Button & Modal Style) -->
 <style>
+    /* ⭐ Floating Review Button Style */
     #review-trigger-btn {
         position: fixed;
         bottom: 20px;
@@ -384,6 +384,7 @@
         100% { background-position: 0% 50%; }
     }
 
+    /* 💬 Modal Popup Style */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
     .modal-card { background: #1c0408; border: 1px solid var(--gold, #d4af37); border-radius: 12px; max-width: 420px; width: 100%; padding: 25px 20px; color: #fff; text-align: center; position: relative; box-shadow: 0 0 25px rgba(212, 175, 55, 0.3); }
     .modal-close { position: absolute; top: 10px; right: 15px; font-size: 22px; color: var(--gold, #d4af37); cursor: pointer; background: none; border: none; }
@@ -402,6 +403,7 @@
     }
 </style>
 
+<!-- 2. HTML Elements (Button & Popup Modal) -->
 <button id="review-trigger-btn" onclick="openReviewModal()">⭐ Review ပေးရန် (15% OFF)</button>
 
 <div id="review-modal" class="modal-overlay">
@@ -428,6 +430,7 @@
     </div>
 </div>
 
+<!-- 3. JavaScript Logic -->
 <script>
     function openReviewModal() {
         $("#review-modal").css("display", "flex").hide().fadeIn(300);
@@ -436,5 +439,9 @@
         $("#review-modal").fadeOut(300);
     }
 </script>
+
+<!-- ========================================== -->
+<!-- 🔺 Review System Code Block End 🔺 -->
+<!-- ========================================== -->
 </body>
 </html>
