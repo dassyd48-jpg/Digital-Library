@@ -25,18 +25,39 @@
         #lock input { padding: 15px; width: 100%; max-width: 280px; border: none; border-bottom: 2px solid var(--gold); background: transparent; color: #fff; text-align: center; font-size: 18px; outline: none; margin-bottom: 30px; letter-spacing: 3px; }
         #lock button { padding: 15px 50px; width: 100%; max-width: 280px; background: linear-gradient(45deg, #8a1426, #d4af37, #8a1426); color: #fff; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; border-radius: 4px; }
         
-        #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; }
+        /* 📌 Computer Screeen တွင် စာအုပ် Aspect Ratio မှန်ကန်စေရန် နေရာချထားမှု ပြင်ဆင်ထားသည် */
+        #book-container { 
+            display: none; 
+            width: 100vw; 
+            height: 100vh; 
+            position: relative; 
+            z-index: 10; 
+            opacity: 0; 
+            overflow: hidden;
+            background: var(--dark-bg);
+        }
         
         #flipbook-wrapper { 
-            width: 100%; 
-            height: 100%; 
+            width: 100vw; 
+            height: 100vh; 
             display: flex; 
             justify-content: center; 
-            align-items: flex-start; 
-            padding-top: 5px;
+            align-items: center; 
+            position: relative;
+            overflow: hidden;
+        }
+
+        #flipbook {
+            margin: 0 auto !important;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
         }
         
         .fixed-watermark { position: fixed; bottom: 12px; left: 0; width: 100%; text-align: center; font-size: 9px; color: var(--gold); opacity: 0.5; letter-spacing: 2px; z-index: 99; pointer-events: none; }
+
+        .page {
+            background: #140204;
+            overflow: hidden;
+        }
 
         .page img {
             width: 100%;
@@ -70,28 +91,28 @@
             box-shadow: 0 0 15px var(--gold);
         }
 
-        /* ⭐ Floating Review Button Style (အရွယ်အစား ပိုသေးအောင် ပြင်ထားသည်) */
-#review-trigger-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 15px;
-    z-index: 1500;
-    padding: 5px 10px; /* ⬅️ မူလ (8px 14px) အစား လျှော့ထားပါသည် */
-    background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
-    background-size: 200% 200%;
-    animation: gradientAnimation 3s ease infinite;
-    color: #fff;
-    border: 1px solid var(--gold);
-    font-size: 9.5px; /* ⬅️ မူလ (11px) အစား လျှော့ထားပါသည် */
-    font-weight: bold;
-    border-radius: 15px; /* ⬅️ ခလုတ် သေးသွားသည့်အတွက် အနိမ့်အမြင့် မျှအောင် ထိန်းထားသည် */
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
+        /* ⭐ Floating Review Button Style (စခရင်အောက်ခြေအထိကပ်ပြီး အလွန်သေးအောင် ပြင်ထားသည်) */
+        #review-trigger-btn {
+            position: fixed;
+            bottom: 6px;
+            right: 8px;
+            z-index: 1500;
+            padding: 3px 6px;
+            background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
+            background-size: 200% 200%;
+            animation: gradientAnimation 3s ease infinite;
+            color: #fff;
+            border: 1px solid var(--gold);
+            font-size: 8px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
 
         @keyframes gradientAnimation {
             0% { background-position: 0% 50%; }
@@ -103,15 +124,15 @@
         #restart-btn {
             display: none;
             position: fixed;
-            bottom: 40px;
+            bottom: 35px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 1500;
-            padding: 10px 22px;
+            padding: 8px 18px;
             background: linear-gradient(45deg, #8a1426, #d4af37, #8a1426);
             color: #fff;
             border: none;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             border-radius: 20px;
             cursor: pointer;
@@ -209,17 +230,21 @@
             background: linear-gradient(45deg, #0084ff, #a832a7);
             color: #fff;
         }
+        .btn-tg {
+            background: #0088cc;
+            color: #fff;
+        }
 
         @media screen and (max-width: 768px) {
             #bookmark-btn { top: 8px; right: 8px; padding: 5px 10px; font-size: 9px; }
             #review-trigger-btn { 
-        bottom: 12px; 
-        right: 8px; 
-        padding: 4px 8px; 
-        font-size: 8.5px; 
-    }
-}
-            #restart-btn { bottom: 35px; padding: 8px 18px; font-size: 11px; }
+                bottom: 4px; 
+                right: 6px; 
+                padding: 2px 5px; 
+                font-size: 7.5px; 
+            }
+            #restart-btn { bottom: 30px; padding: 6px 14px; font-size: 10px; }
+            .fixed-watermark { bottom: 8px; font-size: 8px; }
         }
     </style>
 </head>
@@ -254,40 +279,40 @@
     </div>
 
     <!-- 💬 Review & Follow Modal Popup (Links Updated) -->
-<div id="review-modal" class="modal-overlay">
-    <div class="modal-card">
-        <button class="modal-close" onclick="closeReviewModal()">✕</button>
-        <div class="modal-title">သင့်၏ ထင်မြင်ယူဆချက်သည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
-        
-        <div class="modal-text">
-            စာဖတ်သူ၏ Review တစ်ခုနှင့် Follow တစ်ခုသည် နောက်ထပ် စာအုပ်ဖတ်ရှုမည့် လူငယ်များအတွက် များစွာ အကျိုးသက်ရောက်မှုရှိပြီး စာပေမဖတ်ရှုရသေးသူများအတွက်လည်း လမ်းပြအလင်းရောင်နှင့် အားအင်များစွာ ဖြစ်စေပါသည်။
-        </div>
-
-        <div class="modal-offer">
-            🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ်(တစ်ကြိမ်) ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
-        </div>
-
-        <div class="modal-step">၁။ Facebook Page ကို <b>Follow ပြုလုပ်၍ Review ရေးသားပါ</b> (ပြီးလျှင် Screenshot ရိုက်ယူပါ)။</div>
-        <div class="modal-step" style="margin-bottom: 15px;">၂။ Screenshot ကို Messenger (သို့မဟုတ်) Telegram သို့ ပေးပို့၍ Discount ရယူပါ။</div>
-
-        <div class="modal-btn-group">
-            <!-- 🛠️ Dassy Digital Library Review Link -->
-            <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">
-                👍 Follow လုပ်ရန် & Review ရေးရန်
-            </a>
+    <div id="review-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeReviewModal()">✕</button>
+            <div class="modal-title">သင့်၏ ထင်မြင်ယူဆချက်သည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
             
-            <!-- 🛠️ Messenger Direct Link -->
-            <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-msg">
-                💬 Messenger သို့ Screenshot ပို့ရန်
-            </a>
+            <div class="modal-text">
+                စာဖတ်သူ၏ Review တစ်ခုနှင့် Follow တစ်ခုသည် နောက်ထပ် စာအုပ်ဖတ်ရှုမည့် လူငယ်များအတွက် များစွာ အကျိုးသက်ရောက်မှုရှိပြီး စာပေမဖတ်ရှုရသေးသူများအတွက်လည်း လမ်းပြအလင်းရောင်နှင့် အားအင်များစွာ ဖြစ်စေပါသည်။
+            </div>
 
-            <!-- 🛠️ Telegram Link -->
-            <a href="https://t.me/Dassy_digital_Library" target="_blank" class="modal-btn btn-tg">
-                ✈️ Telegram သို့ Screenshot ပို့ရန်
-            </a>
+            <div class="modal-offer">
+                🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ်(တစ်ကြိမ်) ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
+            </div>
+
+            <div class="modal-step">၁။ Facebook Page ကို <b>Follow ပြုလုပ်၍ Review ရေးသားပါ</b> (ပြီးလျှင် Screenshot ရိုက်ယူပါ)။</div>
+            <div class="modal-step" style="margin-bottom: 15px;">၂။ Screenshot ကို Messenger (သို့မဟုတ်) Telegram သို့ ပေးပို့၍ Discount ရယူပါ။</div>
+
+            <div class="modal-btn-group">
+                <!-- 🛠️ Dassy Digital Library Review Link -->
+                <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">
+                    👍 Follow လုပ်ရန် & Review ရေးရန်
+                </a>
+                
+                <!-- 🛠️ Messenger Direct Link -->
+                <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-msg">
+                    💬 Messenger သို့ Screenshot ပို့ရန်
+                </a>
+
+                <!-- 🛠️ Telegram Link -->
+                <a href="https://t.me/Dassy_digital_Library" target="_blank" class="modal-btn btn-tg">
+                    ✈️ Telegram သို့ Screenshot ပို့ရန်
+                </a>
+            </div>
         </div>
     </div>
-</div>
     
     <div id="global-watermark" class="fixed-watermark" style="display:none;">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
     <audio id="sound" src="flip.mp3" preload="auto"></audio>
@@ -309,7 +334,29 @@
             }
         });
 
-        function getBookSize() { return { width: window.innerWidth, height: window.innerHeight }; }
+        /* 📌 Desktop မော်နီတာနှင့် Mobile ဖုန်းအလိုက် စာအုပ် Aspect Ratio မှန်ကန်စေမည့် Calculation Function */
+        function getBookSize() { 
+            let w = window.innerWidth;
+            let h = window.innerHeight;
+
+            if (w < 768) {
+                // Mobile Screen
+                w = window.innerWidth;
+                h = window.innerHeight;
+            } else {
+                // Computer / Laptop Screen - စာအုပ်ပုံစံမပျက်စေရန် အချိုးအစားညှိပေးထားပါသည်
+                h = window.innerHeight * 0.95;
+                w = h * 0.62;
+            }
+            return { w, h }; 
+        }
+
+        function resizeAndCenterBook() {
+            const { w, h } = getBookSize();
+            if ($("#flipbook").data() && $("#flipbook").data().done) {
+                $("#flipbook").turn("size", w, h);
+            }
+        }
 
         function unlock() {
             if(document.getElementById("pass").value === myPassword) {
@@ -375,7 +422,6 @@
         function loadAndInitBook() {
             const flipbook = $("#flipbook");
             if (flipbook.children().length > 0) return;
-            const size = getBookSize();
 
             const savedBookmark = localStorage.getItem(storageBookmarkKey);
             let startPage = 1;
@@ -384,7 +430,7 @@
             }
 
             for(let i=1; i<=totalPages; i++) {
-                const pageDiv = $('<div class="page" style="background:#140204; overflow:hidden;"></div>');
+                const pageDiv = $('<div class="page"></div>');
                 if(quizPages.includes(i)) {
                     pageDiv.append(`<iframe src="page${i}.html" style="width:100%; height:100%; border:none;" scrolling="yes"></iframe>`);
                 } else {
@@ -394,8 +440,14 @@
             }
 
             setTimeout(() => {
+                const { w, h } = getBookSize();
+
                 flipbook.turn({
-                    width: size.width, height: size.height, autoCenter: true, display: 'single', acceleration: true,
+                    width: w, 
+                    height: h, 
+                    autoCenter: true, 
+                    display: 'single', 
+                    acceleration: true,
                     page: startPage,
                     when: {
                         turning: function(e, page) {
@@ -422,15 +474,17 @@
                     $("#restart-btn").show();
                 }
 
+                setTimeout(resizeAndCenterBook, 100);
             }, 100);
         }
 
         window.addEventListener('resize', () => {
-            if ($("#flipbook").turn("is")) {
-                const size = getBookSize();
-                $("#flipbook").turn("size", size.width, size.height);
-            }
+            resizeAndCenterBook();
         });
+
+        document.addEventListener('fullscreenchange', () => setTimeout(resizeAndCenterBook, 100));
+        document.addEventListener('webkitfullscreenchange', () => setTimeout(resizeAndCenterBook, 100));
+        document.addEventListener('MSFullscreenChange', () => setTimeout(resizeAndCenterBook, 100));
     </script>
 </body>
 </html>
