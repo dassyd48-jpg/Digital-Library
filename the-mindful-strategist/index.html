@@ -130,16 +130,16 @@
             display: flex; 
             justify-content: center; 
             align-items: flex-start; 
-            padding-top: 5px;
+            padding-top: 0px;
         }
         
-        .fixed-watermark { position: fixed; bottom: 12px; left: 0; width: 100%; text-align: center; font-size: 9px; color: var(--gold); opacity: 0.6; letter-spacing: 2px; z-index: 99; pointer-events: none; }
+        .fixed-watermark { position: fixed; bottom: 8px; left: 0; width: 100%; text-align: center; font-size: 9px; color: var(--gold); opacity: 0.6; letter-spacing: 2px; z-index: 99; pointer-events: none; }
 
-        /* 🔧 ပြင်ဆင်ချက် ၁ - ပုံမပျက်ဘဲ အလိုက်သင့် ထိန်းပေးရန် object-fit: contain ပြောင်းထားပါသည် */
+        /* 🔧 စာမျက်နှာပုံရိပ် အောက်ခြေအထိ ပြည့်သွားစေရန် fill အဖြစ် ပြောင်းလဲထားပါသည် */
         .page img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: fill;
             display: block;
         }
 
@@ -391,7 +391,7 @@
         const myPassword = "Strategist//2026"; 
         const totalPages = 64; 
         const quizPages = [2, 16, 22, 27, 32, 38, 42, 46, 51, 57, 63]; 
-        const imageExtension = "webp"; // 💡 .jpg သုံးချင်ပါက "jpg" ဟု အလွယ်တကူ ပြောင်းလဲနိုင်ပါသည်
+        const imageExtension = "webp"; 
         let isQuizLocked = false;
         const storageBookmarkKey = "dassy_saved_bookmark";
         const storageKeyAuth = "dassy_authenticated";
@@ -405,11 +405,11 @@
             }
         });
 
-        /* 🔧 ပြင်ဆင်ချက် ၂ - Desktop/Mobile screen တိုင်းတွင် ၁ ရွက်တည်း Portrait Aspect Ratio (0.7) အတိုင်း အလယ်ခေါင်ရောက်အောင် တွက်ချက်ပေးသည့် Function */
+        /* 🔧 ပြင်ဆင်ချက် - စာအုပ်အောက်ခြေအထိ ရှည်ထွက်သွားအောင် Ratio ကို 0.58 သို့ ပြောင်းလဲထားပါသည် */
         function getBookSize() { 
             const winWidth = window.innerWidth;
             const winHeight = window.innerHeight;
-            const pageRatio = 0.7; // Portrait Aspect Ratio
+            const pageRatio = 0.58; // စာအုပ်အလျား အောက်ခြေဘက်သို့ ရှည်အောင် ပြင်ဆင်ထားသည်
 
             let height = winHeight;
             let width = height * pageRatio;
