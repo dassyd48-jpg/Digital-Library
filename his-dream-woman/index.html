@@ -64,7 +64,7 @@
         
         #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; filter: brightness(0.25); }
         
-        #lock { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 20; background: rgba(10, 10, 10, 0.4); backdrop-filter: blur(5px); color: #fff; text-align: center; padding: 20px; }
+        #lock { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 2000; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(5px); color: #fff; text-align: center; padding: 20px; }
         .brand-label { font-size: 11px; color: var(--gold); letter-spacing: 5px; margin-bottom: 15px; font-weight: bold; }
         .book-title { color: #fff; font-weight: 900; letter-spacing: 2px; font-size: clamp(18px, 4vw, 28px); margin: 0 0 35px 0; border-top: 1px solid rgba(212,175,55,0.3); border-bottom: 1px solid rgba(212,175,55,0.3); padding: 20px 10px; width: 100%; max-width: 550px; line-height: 1.6; }
         #lock input { padding: 16px; width: 280px; border: none; border-bottom: 2px solid var(--gold); background: transparent; color: #fff; text-align: center; font-size: 18px; outline: none; margin-bottom: 30px; letter-spacing: 2px; }
@@ -72,53 +72,100 @@
         .tg-link-wrapper { margin-top: 40px; }
         .tg-link { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 12px; letter-spacing: 1.5px; border-bottom: 1px dashed rgba(212, 175, 55, 0.3); padding-bottom: 4px; }
 
-        #book-container { display: none; position: relative; width: 100vw; height: 100vh; z-index: 10; opacity: 0; display: flex; justify-content: center; align-items: center; background-color: #050505; }
+        /* 📌 ထပ်မံပေးပို့ထားသည့် CSS Layout အတိုင်း ပြင်ဆင်ထားသော Book Container Style */
+        #book-container { 
+            display: none; 
+            width: 100vw; 
+            height: 100vh; 
+            position: relative; 
+            z-index: 10; 
+            background: var(--dark-bg); 
+            opacity: 0; 
+            overflow: hidden; 
+        }
+
+        #flipbook-wrapper {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #flipbook { 
+            margin: 0 auto !important; 
+        }
         
-        /* 📌 သင်ဝိုင်းပြထားသော ပန်းရောင်မျဉ်းအချိုးအစားအတိုင်း အရှည်ကို ညှိရန် max-height အား 78vh သို့ ပြောင်းလဲပြင်ဆင်ထားသည် */
-        #flipbook-box { position: relative; width: 100%; height: 100%; max-width: 500px; max-height: 78vh; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 60px rgba(0,0,0,0.9); }
-        #flipbook { width: 100%; height: 100%; }
+        .page-node { 
+            width: 100%; 
+            height: 100%; 
+            background: #000; 
+            position: relative; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+        }
         
-        .page-node { width: 100%; height: 100%; background: #000; position: relative; }
-        
-        /* 📌 စာမျက်နှာပုံရိပ်များ ပုံမပျက်ဘဲ ဝိုင်းထားသည့်အထိပဲ ကွက်တိဝင်စေရန် object-fit: contain သို့ ပြောင်းထားသည် */
-        .page-img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+        .page-img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: fill; 
+            pointer-events: none; 
+            display: block;
+        }
         
         .iframe-wrapper { width: 100%; height: 100%; position: relative; }
         .iframe-pointer-fix { position: absolute; top: 0; left: 0; width: 45px; height: 100%; z-index: 5; background: transparent; }
         .iframe-pointer-fix.right { left: auto; right: 0; }
         .quiz-active-iframe { width: 100%; height: 100%; border: none; overflow-y: auto; -webkit-overflow-scrolling: touch; }
         
-        .watermark { position: absolute; bottom: 10px; width: 100%; text-align: center; font-size: 10px; color: var(--gold); opacity: 0.2; letter-spacing: 3px; pointer-events: none; z-index: 12; }
+        .footer-copyright { 
+            position: fixed; 
+            bottom: 10px; 
+            width: 100%; 
+            text-align: center; 
+            font-size: 9px; 
+            color: var(--gold); 
+            opacity: 0.6; 
+            z-index: 12; 
+            letter-spacing: 2px; 
+            pointer-events: none; 
+            text-transform: uppercase; 
+        }
 
-        /* 📌 Top-Level Fixed UI Layer */
+        /* 📌 Bookmark Button Style */
         #bookmark-btn { 
             position: fixed; 
-            top: 20px; 
-            left: calc(50% + 250px - 145px); 
-            z-index: 99999 !important; 
-            background: rgba(0, 0, 0, 0.85); 
+            top: 15px; 
+            left: 10px; 
+            z-index: 1500; 
+            padding: 8px 16px; 
+            background: rgba(15, 3, 25, 0.85); 
             border: 1px solid var(--gold); 
             color: #fff; 
-            padding: 8px 14px; 
             font-size: 11px; 
             font-weight: bold; 
-            letter-spacing: 1px; 
-            border-radius: 20px; 
+            border-radius: 6px; 
             cursor: pointer; 
-            display: none; 
-            align-items: center; 
-            gap: 6px; 
-            backdrop-filter: blur(5px); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6); 
-            transition: opacity 0.3s ease, background 0.3s ease; 
+            transition: all 0.3s ease; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); 
+            display: none;
         }
-        #bookmark-btn.active { background: var(--gold-gradient); color: #000; border-color: transparent; }
+        #bookmark-btn.active { 
+            background: var(--gold-gradient); 
+            color: #000; 
+            border-color: transparent; 
+        }
 
-        @media (max-width: 500px) {
-            #bookmark-btn {
-                left: auto;
-                right: 20px;
-            }
+        @media screen and (max-width: 768px) {
+            #bookmark-btn { top: 10px; left: 10px; padding: 6px 12px; font-size: 10px; }
+            .footer-copyright { bottom: 8px; font-size: 8px; letter-spacing: 1px; }
         }
 
         .ai-context-vault { display: none; visibility: hidden; height: 0; width: 0; overflow: hidden; }
@@ -139,15 +186,13 @@
         </div>
     </div>
 
-    <button id="bookmark-btn" onclick="toggleBookmark()">
-        <span id="bookmark-icon">🔖</span> <span id="bookmark-text">SAVE BOOKMARK</span>
-    </button>
+    <button id="bookmark-btn" onclick="toggleBookmark()">🔖 SAVE BOOKMARK</button>
 
     <div id="book-container">
-        <div id="flipbook-box">
+        <div id="flipbook-wrapper">
             <div id="flipbook"></div>
-            <div class="watermark">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
         </div>
+        <div class="footer-copyright">PROPRIETARY MATERIAL | © DASSY DIGITAL LIBRARY</div>
     </div>
 
     <div class="ai-context-vault">
@@ -174,14 +219,33 @@
         $(document).ready(function() {
             if (localStorage.getItem(storageKeyAuth) === "true") {
                 $("#lock, #bg-video").hide(); 
-                $("#book-container").css("display", "flex").css("opacity", 1);
+                $("#book-container").show().css("opacity", 1);
                 loadAndInit();
             }
         });
 
+        /* 📌 သစ်လွင်သော Layout အရွယ်အစားနှင့် တည်နေရာသတ်မှတ်ခြင်း Function */
         function getBookSize() {
-            const box = document.getElementById("flipbook-box");
-            return { width: box.clientWidth, height: box.clientHeight };
+            let w = window.innerWidth;
+            let h = window.innerHeight;
+
+            if (w < 768) {
+                // Mobile Screen အပြည့်အရှည်
+                w = window.innerWidth;
+                h = window.innerHeight;
+            } else {
+                // Computer Screen 
+                h = window.innerHeight * 0.95;
+                w = h * 0.62;
+            }
+            return { w, h };
+        }
+
+        function resizeAndCenterBook() {
+            const { w, h } = getBookSize();
+            if ($("#flipbook").data() && $("#flipbook").data().done) {
+                $("#flipbook").turn("size", w, h);
+            }
         }
 
         window.addEventListener("message", function(event) {
@@ -203,7 +267,7 @@
             if(document.getElementById("pass").value === myPassword) {
                 localStorage.setItem(storageKeyAuth, "true"); 
                 $("#lock, #bg-video").fadeOut(500, () => {
-                    $("#book-container").css("display", "flex").animate({opacity: 1}, 600);
+                    $("#book-container").show().animate({opacity: 1}, 600);
                     loadAndInit();
                 });
             } else { 
@@ -235,15 +299,18 @@
             }
 
             setTimeout(() => {
-                const size = getBookSize();
+                const { w, h } = getBookSize();
                 isInitializing = true; 
 
                 flipbook.turn({
-                    width: size.width, 
-                    height: size.height, 
+                    width: w, 
+                    height: h, 
                     display: 'single', 
                     acceleration: true,
                     page: savedPage, 
+                    elevation: 0,
+                    gradients: false,
+                    duration: 400,
                     when: {
                         start: function(e) { 
                             if (!isInitializing && isQuizLocked) e.preventDefault(); 
@@ -266,12 +333,13 @@
                 isQuizLocked = quizPages.includes(savedPage);
                 updateBookmarkButtonUI(savedPage);
                 isInitializing = false;
+                setTimeout(resizeAndCenterBook, 100);
             }, 150);
         }
 
         function toggleBookmark() {
             if (quizPages.includes(globalCurrentPage)) {
-                alert("မေးခွန်းစာမျက်နှာများကို )မှတ်သား၍မရပါရှင်။");
+                alert("မေးခွန်းစာမျက်နှာများကို မှတ်သား၍မရပါရှင်။");
                 return;
             }
 
@@ -297,118 +365,101 @@
                 } else {
                     $("#bookmark-btn").removeClass("active").html("🔖 SAVE BOOKMARK");
                 }
-                $("#bookmark-btn").css("display", "inline-flex").fadeIn(200);
+                $("#bookmark-btn").css("display", "inline-block").fadeIn(200);
             }
         }
 
-        window.addEventListener('resize', () => {
-            if ($("#flipbook").turn("is")) {
-                const size = getBookSize();
-                $("#flipbook").turn("size", size.width, size.height);
-                
-                if (!quizPages.includes(globalCurrentPage)) {
-                    if (window.innerWidth > 500) {
-                        $("#bookmark-btn").css("left", `calc(50% + 250px - 145px)`).css("right", "auto");
-                    } else {
-                        $("#bookmark-btn").css("left", "auto").css("right", "20px");
-                    }
-                }
-            }
+        $(window).resize(() => {
+            resizeAndCenterBook();
         });
+
+        document.addEventListener('fullscreenchange', () => setTimeout(resizeAndCenterBook, 100));
+        document.addEventListener('webkitfullscreenchange', () => setTimeout(resizeAndCenterBook, 100));
+        document.addEventListener('MSFullscreenChange', () => setTimeout(resizeAndCenterBook, 100));
     </script>
-    <!-- ========================================== -->
-<!-- 🔻 Review System Code Block Start (Dassy) 🔻 -->
-<!-- ========================================== -->
 
-<!-- 1. CSS Style (Review Button & Modal Style) -->
-<style>
-    /* ⭐ Floating Review Button Style */
-    #review-trigger-btn {
-        position: fixed;
-        bottom: 20px;
-        right: 15px;
-        z-index: 1500;
-        padding: 5px 10px;
-        background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
-        background-size: 200% 200%;
-        animation: gradientAnimation 3s ease infinite;
-        color: #fff;
-        border: 1px solid var(--gold, #d4af37);
-        font-size: 9.5px;
-        font-weight: bold;
-        border-radius: 15px;
-        cursor: pointer;
-        box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        letter-spacing: 0.5px;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
+    <!-- 🔻 Review System Code Block Start (Dassy) 🔻 -->
+    <style>
+        #review-trigger-btn {
+            position: fixed;
+            bottom: 50px;
+            right: 15px;
+            z-index: 1500;
+            padding: 6px 12px;
+            background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
+            background-size: 200% 200%;
+            animation: gradientAnimation 3s ease infinite;
+            color: #fff;
+            border: 1px solid var(--gold);
+            font-size: 9.5px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
-    @keyframes gradientAnimation {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-    /* 💬 Modal Popup Style */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
-    .modal-card { background: #1c0408; border: 1px solid var(--gold, #d4af37); border-radius: 12px; max-width: 420px; width: 100%; padding: 25px 20px; color: #fff; text-align: center; position: relative; box-shadow: 0 0 25px rgba(212, 175, 55, 0.3); }
-    .modal-close { position: absolute; top: 10px; right: 15px; font-size: 22px; color: var(--gold, #d4af37); cursor: pointer; background: none; border: none; }
-    .modal-title { font-size: 16px; color: var(--gold, #d4af37); font-weight: bold; margin-bottom: 12px; line-height: 1.4; }
-    .modal-text { font-size: 12px; color: #e0e0e0; line-height: 1.7; margin-bottom: 15px; text-align: justify; }
-    .modal-offer { background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--gold, #d4af37); padding: 10px; font-size: 12px; color: var(--gold, #d4af37); font-weight: bold; margin-bottom: 20px; text-align: center; }
-    .modal-step { font-size: 11px; color: #bbb; margin-bottom: 8px; text-align: left; }
-    .modal-btn-group { display: flex; flex-direction: column; gap: 10px; }
-    .modal-btn { display: block; width: 100%; padding: 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; text-align: center; transition: all 0.3s ease; }
-    .btn-fb { background: #1877f2; color: #fff; }
-    .btn-msg { background: linear-gradient(45deg, #0084ff, #a832a7); color: #fff; }
-    .btn-tg { background: #0088cc; color: #fff; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-card { background: #1c0408; border: 1px solid var(--gold); border-radius: 12px; max-width: 420px; width: 100%; padding: 25px 20px; color: #fff; text-align: center; position: relative; box-shadow: 0 0 25px rgba(212, 175, 55, 0.3); }
+        .modal-close { position: absolute; top: 10px; right: 15px; font-size: 22px; color: var(--gold); cursor: pointer; background: none; border: none; }
+        .modal-title { font-size: 16px; color: var(--gold); font-weight: bold; margin-bottom: 12px; line-height: 1.4; }
+        .modal-text { font-size: 12px; color: #e0e0e0; line-height: 1.7; margin-bottom: 15px; text-align: justify; }
+        .modal-offer { background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--gold); padding: 10px; font-size: 12px; color: var(--gold); font-weight: bold; margin-bottom: 20px; text-align: center; }
+        .modal-step { font-size: 11px; color: #bbb; margin-bottom: 8px; text-align: left; }
+        .modal-btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .modal-btn { display: block; width: 100%; padding: 12px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; text-align: center; transition: all 0.3s ease; }
+        .btn-fb { background: #1877f2; color: #fff; }
+        .btn-msg { background: linear-gradient(45deg, #0084ff, #a832a7); color: #fff; }
+        .btn-tg { background: #0088cc; color: #fff; }
 
-    @media screen and (max-width: 768px) {
-        #review-trigger-btn { bottom: 12px; right: 8px; padding: 4px 8px; font-size: 8.5px; }
-    }
-</style>
+        @media screen and (max-width: 768px) {
+            #review-trigger-btn { bottom: 40px; right: 12px; padding: 5px 10px; font-size: 9px; }
+        }
+    </style>
 
-<!-- 2. HTML Elements (Button & Popup Modal) -->
-<button id="review-trigger-btn" onclick="openReviewModal()">⭐ Review ပေးရန် (15% OFF)</button>
+    <button id="review-trigger-btn" onclick="openReviewModal()">⭐ Review ပေးရန် (15% OFF)</button>
 
-<div id="review-modal" class="modal-overlay">
-    <div class="modal-card">
-        <button class="modal-close" onclick="closeReviewModal()">✕</button>
-        <div class="modal-title”>သင့်၏ စာအုပ်အပေါ်အမြင်နှင့် တန်ဖိုးရှိသော မျှဝေမှုများသည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
-        
-        <div class="modal-text">
-            စာဖတ်သူ၏ Review တစ်ခုနှင့် Follow တစ်ခုသည် နောက်ထပ် စာအုပ်ဖတ်ရှုမည့် လူငယ်များအတွက် များစွာ အကျိုးသက်ရောက်မှုရှိပြီး စာပေ မဖတ်ရှုရသေးသူများအတွက်လည်း လမ်းပြအလင်းရောင်နှင့် အားအင်များစွာ ဖြစ်စေပါသည်။
-        </div>
+    <div id="review-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeReviewModal()">✕</button>
+            <div class="modal-title">သင့်၏ စာအုပ်အပေါ်အမြင်နှင့် တန်ဖိုးရှိသော မျှဝေမှုများသည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
+            
+            <div class="modal-text">
+                စာဖတ်သူ၏ Review တစ်ခုနှင့် Follow တစ်ခုသည် နောက်ထပ် စာအုပ်ဖတ်ရှုမည့် လူငယ်များအတွက် များစွာ အကျိုးသက်ရောက်မှုရှိပြီး စာပေ မဖတ်ရှုရသေးသူများအတွက်လည်း လမ်းပြအလင်းရောင်နှင့် အားအင်များစွာ ဖြစ်စေပါသည်။
+            </div>
 
-        <div class="modal-offer">
-            🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ်(တစ်ကြိမ်) ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
-        </div>
+            <div class="modal-offer">
+                🎁 Follow လုပ်ပြီး Review ပေးပါက နောက်ထပ်(တစ်ကြိမ်) ဝယ်ယူမည့် စာအုပ်တိုင်းအတွက် 15% DISCOUNT ရရှိပါမည်။
+            </div>
 
-        <div class="modal-step">၁။ Facebook Page ကို <b>Follow ပြုလုပ်၍ Review ရေးသားပါ</b> (ပြီးလျှင် Screenshot ရိုက်ယူပါ)။</div>
-        <div class="modal-step" style="margin-bottom: 15px;">၂။ Screenshot ကို Messenger (သို့မဟုတ်) Telegram သို့ ပေးပို့၍ Discount ရယူပါ။</div>
+            <div class="modal-step">၁။ Facebook Page ကို <b>Follow ပြုလုပ်၍ Review ရေးသားပါ</b> (ပြီးလျှင် Screenshot ရိုက်ယူပါ)။</div>
+            <div class="modal-step" style="margin-bottom: 15px;">၂။ Screenshot ကို Messenger (သို့မဟုတ်) Telegram သို့ ပေးပို့၍ Discount ရယူပါ။</div>
 
-        <div class="modal-btn-group">
-             <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">👍 Follow လုပ်ရန် & Review ရေးရန်</a>
-            <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-msg">💬 Messenger သို့ Screenshot ပို့ရန်</a>
-            <a href="https://t.me/YOUR_TELEGRAM_USERNAME" target="_blank" class="modal-btn btn-tg">✈️ Telegram သို့ Screenshot ပို့ရန်</a>
+            <div class="modal-btn-group">
+                 <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">👍 Follow လုပ်ရန် & Review ရေးရန်</a>
+                <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-msg">💬 Messenger သို့ Screenshot ပို့ရန်</a>
+                <a href="https://t.me/Dassy_digital_Library" target="_blank" class="modal-btn btn-tg">✈️ Telegram သို့ Screenshot ပို့ရန်</a>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- 3. JavaScript Logic -->
-<script>
-    function openReviewModal() {
-        $("#review-modal").css("display", "flex").hide().fadeIn(300);
-    }
-    function closeReviewModal() {
-        $("#review-modal").fadeOut(300);
-    }
-</script>
-
-<!-- ========================================== -->
-<!-- 🔺 Review System Code Block End 🔺 -->
-<!-- ========================================== -->
+    <script>
+        function openReviewModal() {
+            $("#review-modal").css("display", "flex").hide().fadeIn(300);
+        }
+        function closeReviewModal() {
+            $("#review-modal").fadeOut(300);
+        }
+    </script>
+    <!-- 🔺 Review System Code Block End 🔺 -->
 </body>
 </html>
