@@ -72,7 +72,7 @@
         .tg-link-wrapper { margin-top: 40px; }
         .tg-link { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 12px; letter-spacing: 1.5px; border-bottom: 1px dashed rgba(212, 175, 55, 0.3); padding-bottom: 4px; }
 
-        /* Book Container Style */
+        /* 📌 ထပ်မံပေးပို့ထားသည့် CSS Layout အတိုင်း ပြင်ဆင်ထားသော Book Container Style */
         #book-container { 
             display: none; 
             width: 100vw; 
@@ -125,19 +125,19 @@
         
         .footer-copyright { 
             position: fixed; 
-            bottom: 8px; 
-            left: 10px;
-            text-align: left; 
-            font-size: 8px; 
+            bottom: 10px; 
+            width: 100%; 
+            text-align: center; 
+            font-size: 9px; 
             color: var(--gold); 
-            opacity: 0.5; 
+            opacity: 0.6; 
             z-index: 12; 
-            letter-spacing: 1px; 
+            letter-spacing: 2px; 
             pointer-events: none; 
             text-transform: uppercase; 
         }
 
-        /* Bookmark Button Style */
+        /* 📌 Bookmark Button Style */
         #bookmark-btn { 
             position: fixed; 
             top: 15px; 
@@ -165,7 +165,7 @@
 
         @media screen and (max-width: 768px) {
             #bookmark-btn { top: 10px; left: 10px; padding: 6px 12px; font-size: 10px; }
-            .footer-copyright { bottom: 6px; left: 8px; font-size: 7px; letter-spacing: 0.5px; }
+            .footer-copyright { bottom: 8px; font-size: 8px; letter-spacing: 1px; }
         }
 
         .ai-context-vault { display: none; visibility: hidden; height: 0; width: 0; overflow: hidden; }
@@ -224,18 +224,18 @@
             }
         });
 
-        /* 📌 စာအုပ်အောက်ခြေ၌ Margin နေရာလွတ် အချိုးကျ ရရှိစေသည့် Function */
+        /* 📌 မူရင်း သစ်လွင်သော Layout အရွယ်အစားနှင့် တည်နေရာသတ်မှတ်ခြင်း Function အတိုင်း ထားရှိပါသည် */
         function getBookSize() {
             let w = window.innerWidth;
             let h = window.innerHeight;
 
             if (w < 768) {
-                // Mobile Screen အတွက် အောက်ခြေတွင် Review ခလုတ်အတွက် Space လွတ် ကျန်အောင် Height ကို 88% သာ ယူမည်
-                h = window.innerHeight * 0.88;
+                // Mobile Screen အပြည့်အရှည်
                 w = window.innerWidth;
+                h = window.innerHeight;
             } else {
-                // Computer Screen
-                h = window.innerHeight * 0.92;
+                // Computer Screen 
+                h = window.innerHeight * 0.95;
                 w = h * 0.62;
             }
             return { w, h };
@@ -382,24 +382,24 @@
     <style>
         #review-trigger-btn {
             position: fixed;
-            bottom: 12px;
-            right: 12px;
+            bottom: 6px;
+            right: 8px;
             z-index: 1500;
-            padding: 4px 8px;
+            padding: 3px 6px;
             background: linear-gradient(45deg, #d4af37, #8a1426, #d4af37);
             background-size: 200% 200%;
             animation: gradientAnimation 3s ease infinite;
             color: #fff;
             border: 1px solid var(--gold);
-            font-size: 9px;
+            font-size: 8px;
             font-weight: bold;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-            letter-spacing: 0.5px;
+            box-shadow: 0 0 6px rgba(212, 175, 55, 0.4);
+            letter-spacing: 0.3px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
 
         @keyframes gradientAnimation {
@@ -421,13 +421,12 @@
         .btn-msg { background: linear-gradient(45deg, #0084ff, #a832a7); color: #fff; }
         .btn-tg { background: #0088cc; color: #fff; }
 
-        /* 📌 မိုဘိုင်းအတွက် Review Button Size ကို သေးပြီး အောက်ခြေအထိ ချထားခြင်း */
         @media screen and (max-width: 768px) {
             #review-trigger-btn { 
-                bottom: 6px; 
-                right: 8px; 
-                padding: 3px 7px; 
-                font-size: 8px; 
+                bottom: 4px; 
+                right: 6px; 
+                padding: 2px 5px; 
+                font-size: 7.5px; 
             }
         }
     </style>
@@ -451,7 +450,7 @@
             <div class="modal-step" style="margin-bottom: 15px;">၂။ Screenshot ကို Messenger (သို့မဟုတ်) Telegram သို့ ပေးပို့၍ Discount ရယူပါ။</div>
 
             <div class="modal-btn-group">
-                <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">👍 Follow လုပ်ရန် & Review ရေးရန်</a>
+                 <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-fb">👍 Follow လုပ်ရန် & Review ရေးရန်</a>
                 <a href="https://www.facebook.com/share/1E3zQjMZHA/?mibextid=wwXIfr" target="_blank" class="modal-btn btn-msg">💬 Messenger သို့ Screenshot ပို့ရန်</a>
                 <a href="https://t.me/Dassy_digital_Library" target="_blank" class="modal-btn btn-tg">✈️ Telegram သို့ Screenshot ပို့ရန်</a>
             </div>
