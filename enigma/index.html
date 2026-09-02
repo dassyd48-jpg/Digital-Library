@@ -108,6 +108,19 @@
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
         }
+
+        /* 💻 Computer / Laptop Screen အတွက် စာအုပ်ပုံရိပ် မပြဲသွားစေရန် သီးသန့် ပြင်ဆင်ချက် */
+        @media screen and (min-width: 769px) {
+            #flipbook-box {
+                max-width: 1000px;
+                max-height: 96vh;
+                aspect-ratio: 1 / 1.414;
+                margin: auto;
+            }
+            .page-img {
+                object-fit: contain;
+            }
+        }
         
         .iframe-wrapper { width: 100%; height: 100%; position: relative; }
         .iframe-pointer-fix { position: absolute; top: 0; left: 0; width: 45px; height: 100%; z-index: 5; background: transparent; }
@@ -396,7 +409,7 @@
 <div id="review-modal" class="modal-overlay">
     <div class="modal-card">
         <button class="modal-close" onclick="closeReviewModal()">✕</button>
-        <div class="modal-title”>သင့်၏ စာအုပ်အပေါ်အမြင်နှင့် တန်ဖိုးရှိသော မျှဝေမှုများသည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
+        <div class="modal-title">သင့်၏ စာအုပ်အပေါ်အမြင်နှင့် တန်ဖိုးရှိသော မျှဝေမှုများသည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
         
         <div class="modal-text">
             စာဖတ်သူ၏ Review တစ်ခုနှင့် Follow တစ်ခုသည် နောက်ထပ် စာအုပ်ဖတ်ရှုမည့် လူငယ်များအတွက် များစွာ အကျိုးသက်ရောက်မှုရှိပြီး စာပေ မဖတ်ရှုရသေးသူများအတွက်လည်း လမ်းပြအလင်းရောင်နှင့် အားအင်များစွာ ဖြစ်စေပါသည်။
