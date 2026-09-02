@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 6 QUIZ | DASSY DIGITAL LIBRARY</title>
+    <style>
+        :root {
+            --dark-burgundy: #2b0409;
+            --black-bg: #0d0203;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+            --bright-gold: #ffcf40;
+        }
+        body { 
+            background: var(--black-bg); 
+            color: var(--light-gold); 
+            font-family: 'Pyidaungsu', sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: rgba(43, 4, 9, 0.4); 
+            border: 1px solid var(--gold); 
+            border-radius: 12px; 
+            padding: 22px; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(43, 4, 9, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: var(--gold); 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            display: block; 
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .chapter-title {
+            font-size: 14px;
+            color: var(--bright-gold);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 10px;
+        }
+        h2 { font-size: 15px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; }
+        
+        .option { 
+            display: block; width: 100%; padding: 14px; margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.04); border: 1px solid rgba(212, 175, 55, 0.25); 
+            color: #fff; border-radius: 6px; cursor: pointer; text-align: left; 
+            transition: 0.3s; font-size: 13.5px; line-height: 1.5;
+        }
+        .option:hover { 
+            background: linear-gradient(45deg, #520812, var(--dark-burgundy)); 
+            border-color: var(--gold); 
+            transform: translateX(5px); 
+        }
+        .option strong { color: var(--gold); }
+        
+        /* Result Box Styling */
+        #result-box { 
+            display: none; margin-top: 15px; padding: 20px; 
+            border: 1px solid var(--gold); background: rgba(43, 4, 9, 0.6); 
+            border-radius: 8px; animation: fadeInUp 0.5s ease-out; 
+            border-left: 5px solid var(--gold);
+        }
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: var(--bright-gold); 
+            margin-bottom: 12px; display: block; text-align: left;
+        }
+        .res-desc { color: #fff; font-size: 13.5px; line-height: 1.7; margin-bottom: 20px; text-align: left; }
+        
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: linear-gradient(45deg, #520812, #8a1426); 
+            color: #fff; border: 1px solid var(--gold); border-radius: 6px; font-weight: bold; 
+            cursor: pointer; text-align: center; text-transform: uppercase; transition: 0.3s;
+            letter-spacing: 1px; font-size: 13px;
+        }
+        .next-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(212,175,55,0.4); }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">PAGE 42</span>
+        <div class="chapter-title">အခန်း (၆) ဆန်းစစ်ချက်</div>
+        
+        <h2><strong>မေးခွန်း။ ။</strong> သူတစ်ပါး၏ တန်ဖိုးဖြတ်မှု သို့မဟုတ် မသမာသော ပရိယာယ်များ ကြုံတွေ့ရသည့်အခါ မိမိ၏ ကိုယ်ပိုင်တန်ဖိုးနှင့် ဂုဏ်သိက္ခာကို မည်သို့ စည်းထရံခတ် ကာကွယ်မည်နည်း။</h2>
+        
+        <div id="options-group">
+            <button class="option" onclick="showAnalysis('နှုတ်ထွက်ရလဒ်အဖြေလွှာ (အခန်း ၆) - သင် (က) ကို ရွေးချယ်ပါက', 'သင်သည် မိမိ၏ တန်ဖိုးကို သူတစ်ပါး၏ နှုတ်ဖျား၌ တင်ထားသူ ဖြစ်၏။ ရွှံ့နွံထဲ ကျသော်လည်း တန်ဖိုးမလျော့သော စိန်တုံးကဲ့သို့ ခိုင်မာသော အတွင်းစိတ်ကို တည်ဆောက်ရန် လိုအပ်နေသေးသည်။')">
+                <strong>(က)</strong> သူတစ်ပါး၏ ကဲ့ရဲ့အထင်သေးမှုကြောင့် မိမိကိုယ်ကို တန်ဖိုးမရှိဟု ခံစားရပြီး အတွင်းစိတ် ယိမ်းယိုင်သွားမည်။
+            </button>
+            <button class="option" onclick="showAnalysis('နှုတ်ထွက်ရလဒ်အဖြေလွှာ (အခန်း ၆) - သင် (ခ) ကို ရွေးချယ်ပါက', 'သင်သည် အပေါ်ယံ သာယာမှုအပေါ် မမှီတွယ်သင့်ဘဲ မှီတွယ်နေမိသူ ဖြစ်၏။ သူတစ်ပါး၏ အကဲဖြတ်မှုအပေါ် မှီခိုနေသမျှ ကာလပတ်လုံး မသမာသော ပရိယာယ်များ၏ လွှမ်းမိုးမှုကို ခံရပေလိမ့်မည်။')">
+                <strong>(ခ)</strong> သူတစ်ပါးထံမှ ချီးမွမ်းမှုကို အမြဲတမ်း မျှော်လင့်နေပြီး ချီးမွမ်းခံရမှသာ မိမိကိုယ်ကို တန်ဖိုးရှိသည်ဟု မှတ်ယူမည်။
+            </button>
+            <button class="option" onclick="showAnalysis('နှုတ်ထွက်ရလဒ်အဖြေလွှာ (အခန်း ၆) - သင် (ဂ) ကို ရွေးချယ်ပါက', 'ဂုဏ်သိက္ခာရှိလှပေသည်။ သင်သည် မိမိ၏ အတွင်းစိတ်၌ ခိုင်မာသော တန်ဖိုးကို တည်ဆောက်ထားသူ ဖြစ်၏။ သူတစ်ပါး စကားကြောင့် မယိမ်းယိုင်သော သင်၏ စည်းထရံကြောင့် မသမာသော ပရိယာယ်တို့ ချဉ်းကပ်နိုင်မည် မဟုတ်ပေ။')">
+                <strong>(ဂ)</strong> မိမိ၏ အားသာချက်၊ အားနည်းချက်ကို မှန်ကန်စွာ သိမြင်ပြီး ချီးမွမ်းခြင်း/ကဲ့ရဲ့ခြင်းတို့၌ မယိမ်းယိုင်ဘဲ မိမိစည်းတံတိုင်းကို စောင့်ရှောက်မည်။
+            </button>
+        </div>
+    </div>
+
+    <!-- RESULT EXPANSION SCREEN -->
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button onclick="completeQuiz()" class="next-btn">CONTINUE TO NEXT PAGE →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

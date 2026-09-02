@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRE-READING LEVEL TEST | DASSY DIGITAL LIBRARY</title>
+    <style>
+        :root {
+            --dark-burgundy: #2b0409;
+            --black-bg: #0d0203;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+            --bright-gold: #ffcf40;
+        }
+        body { 
+            background: var(--black-bg); 
+            color: var(--light-gold); 
+            font-family: 'Pyidaungsu', sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 500px; 
+            background: rgba(43, 4, 9, 0.4); 
+            border: 1px solid var(--gold); 
+            border-radius: 12px; 
+            padding: 22px; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(43, 4, 9, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: var(--gold); 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            display: block; 
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .chapter-title {
+            font-size: 15px;
+            color: var(--bright-gold);
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 10px;
+        }
+        .notice-box {
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 3px solid var(--gold);
+            padding: 12px;
+            font-size: 12.5px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #eee;
+        }
+        .notice-title {
+            color: var(--bright-gold);
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .q-block {
+            margin-bottom: 25px;
+            border-bottom: 1px dashed rgba(212, 175, 55, 0.2);
+            padding-bottom: 15px;
+        }
+        .q-block:last-child {
+            border-bottom: none;
+        }
+        h3 { font-size: 14px; line-height: 1.5; margin: 10px 0; color: #fff; text-align: left; font-weight: bold; }
+        
+        .option-label { 
+            display: flex; 
+            align-items: flex-start;
+            width: 100%; 
+            padding: 12px; 
+            margin: 8px 0; 
+            background: rgba(212, 175, 55, 0.04); 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+            color: #fff; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-align: left; 
+            transition: 0.3s; 
+            font-size: 13px; 
+            line-height: 1.5;
+            box-sizing: border-box;
+        }
+        .option-label:hover { 
+            background: linear-gradient(45deg, #520812, var(--dark-burgundy)); 
+            border-color: var(--gold); 
+        }
+        .option-label input {
+            margin-top: 3px;
+            margin-right: 10px;
+            accent-color: var(--gold);
+        }
+        
+        .submit-btn {
+            display: block; 
+            width: 100%; 
+            padding: 15px; 
+            margin-top: 10px;
+            background: linear-gradient(45deg, #520812, #8a1426); 
+            color: #fff; 
+            border: 1px solid var(--gold); 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-align: center; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+            letter-spacing: 1px; 
+            font-size: 13.5px;
+        }
+        .submit-btn:hover { 
+            background: var(--gold); 
+            color: #000; 
+            box-shadow: 0 0 15px rgba(212,175,55,0.4); 
+        }
+
+        /* Result Box Styling */
+        #result-box { 
+            display: none; 
+            margin-top: 15px; 
+            padding: 20px; 
+            border: 1px solid var(--gold); 
+            background: rgba(43, 4, 9, 0.6); 
+            border-radius: 8px; 
+            animation: fadeInUp 0.5s ease-out; 
+            border-left: 5px solid var(--gold);
+        }
+        .res-level { 
+            font-size: 16px; 
+            font-weight: bold; 
+            color: var(--bright-gold); 
+            margin-bottom: 12px; 
+            display: block; 
+            text-align: left;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 8px;
+        }
+        .res-section { margin-bottom: 12px; font-size: 13px; line-height: 1.6; color: #fff; text-align: left; }
+        .res-section strong { color: var(--gold); }
+        
+        .next-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 14px; 
+            margin-top: 20px;
+            background: linear-gradient(45deg, #520812, #8a1426); 
+            color: #fff; 
+            border: 1px solid var(--gold); 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-align: center; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+            letter-spacing: 1px; 
+            font-size: 12.5px;
+        }
+        .next-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(212,175,55,0.4); }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">PAGE 2</span>
+        <div class="chapter-title">စာအုပ်မဖတ်မီ စိတ်ပညာ Level Test (Pre-Reading Assessment)</div>
+        
+        <div class="notice-box">
+            <span class="notice-title">--- စာဖတ်သူသို့ သတိပေးချက် (Notice for Reader) ---</span>
+            <strong>စမ်းသပ်ချက် မပြုလုပ်မီ သတိပြုရန် -</strong><br>
+            ဤဆန်းစစ်ချက်သည် သင့်အား အမှား/အမှန် အမှတ်ပေးရန် မဟုတ်ဘဲ၊ စာအုပ်ပါ သဘောတရားများကို မလေ့လာမီ သင့်စိတ္တဇနယ်ပယ်နှင့် ဆက်ဆံရေးဆိုင်ရာ လက်ရှိ ရောက်ရှိနေသော စိတ်ပညာ Level ကို မှန်ကန်စွာ ဆန်းစစ်ရန် ဖြစ်ပါသည်။ ထို့ကြောင့် တတ်သိလိမ္မာသလို ဟန်ဆောင်ဖြေဆိုခြင်း မပြုဘဲ မိမိ၏ ပုံမှန်တုံ့ပြန်လေ့ရှိသော ဗီဇအတိုင်း အတိအကျ ရိုးသားစွာ ဖြေဆိုပေးပါရန် အထူး အသိပေးအပ်ပါသည်။
+        </div>
+
+        <form id="level-test-form">
+            <!-- Question 1 -->
+            <div class="q-block">
+                <h3>မေးခွန်း (၁) – စိတ်ဓာတ်ရေးရာ တိုက်ခိုက်ခံရမှုအပေါ် တုံ့ပြန်နိုင်စွမ်း</h3>
+                <p style="font-size: 13px; color: #ddd; margin-bottom: 10px;">လူတစ်ယောက်က သင့်အား မဟုတ်မမှန် စွပ်စွဲ၍ မိမိကိုယ်ကို အပြစ်ရှိစိတ် ဖြစ်အောင် ဖန်တီးလာပါက (Guilt-tripping) သင် မည်သို့ ပြုမူလေ့ရှိသနည်း။</p>
+                
+                <label class="option-label">
+                    <input type="radio" name="q1" value="A" required>
+                    <span><strong>(က)</strong> အလွန် စိတ်မကောင်းဖြစ်သွားပြီး မိမိ၌ အပြစ်ရှိသလို ခံစားရကာ ပြဿနာပြေလည်စေရန် စိတ်ထဲမှ မပါသော်လည်း ပြန်လည် ချော့မော့လိုက်လျောပေးမိသည်။</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="q1" value="B">
+                    <span><strong>(ခ)</strong> ဒေါသဖြစ်သွားပြီး မိမိ၌ အပြစ်မရှိကြောင်း အကျိုးအကြောင်းပြ၍ ထိုသူနှင့် အနိုင်ရအောင် အတင်းအကျပ် ငြင်းခုံတိုက်ခိုက်မိသည်။</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="q1" value="C">
+                    <span><strong>(ဂ)</strong> ထိုသူ၏ စကားသည် စိတ်ဓာတ်ရေးရာ တိုက်ခိုက်မှုဖြစ်ကြောင်း သတိဖြင့် ရိပ်စားမိပြီး တုန်လှုပ်ခြင်းမရှိဘဲ တည်ငြိမ်စွာ စောင့်ကြည့်အကဲခတ်သည်။</span>
+                </label>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="q-block">
+                <h3>မေးခွန်း (၂) – စည်းတံတိုင်း (Boundaries) စိုက်ထူနိုင်စွမ်း</h3>
+                <p style="font-size: 13px; color: #ddd; margin-bottom: 10px;">သင့်ထံမှ မတန်တဆ အကူအညီတောင်းလာသောအခါ သို့မဟုတ် သင့်နယ်ပယ်ကို စည်းကျော်လာသောအခါ သင် မည်သို့ တုံ့ပြန်လေ့ရှိသနည်း။</p>
+                
+                <label class="option-label">
+                    <input type="radio" name="q2" value="A" required>
+                    <span><strong>(က)</strong> အားနာစိတ်နှင့် ထိုသူ စိတ်ပျက်သွားမည်ကို စိုးရိမ်သောကြောင့် မိမိ အဆင်မပြေမှုကို ဦးနှောက်ထဲမှ ခဏမေ့ထား၍ မငြင်းဆန်ဘဲ လက်ခံပေးလိုက်သည်။</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="q2" value="B">
+                    <span><strong>(ခ)</strong> မိမိအပေါ် စည်းကျော်လာသည်ကို မကျေနပ်သဖြင့် ပြင်းထန်သော စကားလုံး သို့မဟုတ် ဒေါသပါသော လေသံဖြင့် ပြတ်တောက်စွာ တုံ့ပြန်လိုက်သည်။</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="q2" value="C">
+                    <span><strong>(ဂ)</strong> ဒေါသ သို့မဟုတ် စိတ်လှုပ်ရှားမှု မပါဘဲ မိမိ၏ လက်ခံနိုင်သော အတိုင်းအတာနှင့် စံနှုန်းကို စကားလုံး အတိအကျဖြင့် တည်ငြိမ်စွာ ငြင်းပယ်/ချပြသည်။</span>
+                </label>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="q-block">
+                <h3>မေးခွန်း (၃) – အမှန်တရားနှင့် စိတ္တဇ လှုပ်ရှားမှုကို အကဲခတ်နိုင်စွမ်း</h3>
+                <p style="font-size: 13px; color: #ddd; margin-bottom: 10px;">တစ်ဖက်လူက သင့်အား မဓုရသကြားဆန်သော စကားများဖြင့် အလွန်အမင်း ချီးမွမ်းလာပြီး ဆုံးဖြတ်ချက်များကို ဝေဝါးအောင် ဖန်တီးလာပါက (Gaslighting & Love Bombing) သင် မည်သို့ သုံးသပ်သနည်း။</p>
+                
+                <label class="option-label">
+                    <input type="radio" name="q3" value="A" required>
+                    <span><strong>(က)</strong> ချီးမွမ်းမှုကို သာယာမိပြီး သံသယမရှိ ယုံကြည်လိုက်သဖြင့် မိမိ၏ မူလဆုံးဖြတ်ချက်နှင့် မှတ်ဉာဏ်ကိုပင် ပြန်လည် သံသယဝင်မိသွားသည်။</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="q3" value="B">
+                    <span><strong>(ခ)</strong> စကားပြောဆိုသူ၏ အပြုအမူကို မယုံသင်္ကာဖြစ်ပြီး လျှို့ဝှက်ချက် ရှိမည်ဟု အမြဲတမ်း တရားလွန် သံသယစိတ်ဖြင့် စိတ်ဖိစီးမှု ခံယူနေမိသည်။</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="q3" value="C">
+                    <span><strong>(ဂ)</strong> စကားလုံး အလှအပထက် ယင်း၏ နောက်ကွယ်ရှိ အပြုအမူ၊ သဟဇာတဖြစ်မှုနှင့် တောင်းဆိုလာမည့် အကျိုးအမြတ်ကို သတိပညာဖြင့် ချိန်ထိုး ကြည့်ရှုသည်။</span>
+                </label>
+            </div>
+
+            <button type="button" onclick="calculateResult()" class="submit-btn">ရလဒ်ဆန်းစစ်ချက် ကြည့်ရှုမည် →</button>
+        </form>
+    </div>
+
+    <!-- RESULT EXPANSION SCREEN -->
+    <div id="result-box">
+        <div id="res-level-title" class="res-level"></div>
+        
+        <div class="res-section">
+            <strong>သုံးသပ်ချက်:</strong>
+            <p id="res-analysis" style="margin: 5px 0 15px 0; color: #eee;"></p>
+        </div>
+        
+        <div class="res-section">
+            <strong>လမ်းညွှန်ချက်:</strong>
+            <p id="res-guide" style="margin: 5px 0 0 0; color: #eee;"></p>
+        </div>
+        
+        <button onclick="completeQuiz()" class="next-btn">CONTINUE TO CHAPTER 1 →</button>
+    </div>
+</div>
+
+<script>
+    function calculateResult() {
+        const form = document.getElementById('level-test-form');
+        const q1 = form.elements['q1'].value;
+        const q2 = form.elements['q2'].value;
+        const q3 = form.elements['q3'].value;
+
+        if (!q1 || !q2 || !q3) {
+            alert("ကျေးဇူးပြု၍ မေးခွန်း (၃) ခုလုံးကို ရွေးချယ်ဖြေဆိုပေးပါ။");
+            return;
+        }
+
+        let countA = 0, countB = 0, countC = 0;
+        [q1, q2, q3].forEach(ans => {
+            if (ans === 'A') countA++;
+            if (ans === 'B') countB++;
+            if (ans === 'C') countC++;
+        });
+
+        let levelTitle = "";
+        let analysis = "";
+        let guide = "";
+
+        // Determine majority choice
+        if (countA >= countB && countA >= countC) {
+            levelTitle = "Level 1: ကျားကွက်ထဲမှ သားကောင်အဆင့်";
+            analysis = "သင်သည် အပေါ်ယံ စကားလုံးများနှင့် အားနာစိတ်အောက်တွင် မိမိ၏ စိတ်ဓာတ်နယ်မြေကို သူတစ်ပါးထံ အလိုက်သင့် ထိုးအပ်နေသူ ဖြစ်၏။ မမြင်နိုင်သော စိတ်၏ ကျော့ကွင်းများ (Gaslighting & Guilt-tripping) ထဲသို့ လွယ်ကူစွာ ကျရောက်လေ့ရှိပြီး သူတစ်ပါး၏ ကြိုးဆွဲရာအတိုင်း ကနေရတတ်သည်။";
+            guide = "ဤစာအုပ်၏ အခန်း (၁) မှ (၃) ထိ ပါဝင်သော စိတ်ဓာတ်ရေးရာ ကစားကွက်များကို အဓိကထား၍ လေ့လာသင့်ပါသည်။";
+        } else if (countB >= countA && countB >= countC) {
+            levelTitle = "Level 2: တိုက်ပွဲဝင် သားကောင်အဆင့်";
+            analysis = "သင်သည် သူတစ်ပါး၏ စည်းကျော်မှုကို ဗီဇအရ ရိပ်စားမိပြီး တုံ့ပြန်ရန် ကြိုးစားသော်လည်း ဒေါသ သို့မဟုတ် အငြင်းပွားမှုဖြင့် တုံ့ပြန်မိသဖြင့် စိတ်အင်အား ကုန်ခမ်းနေသူ ဖြစ်၏။ စည်းတံတိုင်း (Boundaries) စိုက်ထူခြင်းကို စိတ်လှုပ်ရှားမှုဖြင့် မှားယွင်းစွာ ကျင့်သုံးနေသဖြင့် ထိရောက်မှု အားနည်းနေသေးသည်။";
+            guide = "ဤစာအုပ်ပါ အခန်း (၅)၊ (၈) နှင့် (၉) ပါ တည်ငြိမ်သော အသိပညာဖြင့် Boundaries စိုက်ထူနည်းများကို ဂရုပြု ဖတ်ရှုသင့်ပါသည်။";
+        } else {
+            levelTitle = "Level 3: ကျားကွက် ရွှေ့သူ အခြေခံအဆင့်";
+            analysis = "ပါးနပ်ထက်မြက်လှပေသည်။ သင်သည် ပင်ကိုယ်ဗီဇအရ သတိတည်းဟူသော ကင်းတဲကို စိုက်ထူထားနိုင်သူ ဖြစ်ပြီး စကားလုံးတို့၏ နောက်ကွယ်မှ စိတ္တဇ အမှန်တရားကို တည်ငြိမ်စွာ ခွဲခြားကြည့်ရှုနိုင်စွမ်း ရှိ၏။";
+            guide = "ဤစာအုပ်ပါ အခန်း (၇) နှင့် (၁၀) ကို ဆက်လက် ဖတ်ရှုခြင်းဖြင့် မိမိ၏ ဉာဏ်မျက်စိကို အပြည့်အဝ မြှင့်တင်ပြီး ဘဝကစားကွက်ကို ကိုယ်တိုင် စေခိုင်းသူအဖြစ် တည်ဆောက်နိုင်ပါလိမ့်မည်။";
+        }
+
+        document.getElementById('quiz-flow').style.display = 'none';
+        document.getElementById('res-level-title').innerText = levelTitle;
+        document.getElementById('res-analysis').innerText = analysis;
+        document.getElementById('res-guide').innerText = guide;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

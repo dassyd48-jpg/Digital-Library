@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 5 QUIZ | DASSY DIGITAL LIBRARY</title>
+    <style>
+        :root {
+            --dark-burgundy: #2b0409;
+            --black-bg: #0d0203;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+            --bright-gold: #ffcf40;
+        }
+        body { 
+            background: var(--black-bg); 
+            color: var(--light-gold); 
+            font-family: 'Pyidaungsu', sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: rgba(43, 4, 9, 0.4); 
+            border: 1px solid var(--gold); 
+            border-radius: 12px; 
+            padding: 22px; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(43, 4, 9, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: var(--gold); 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            display: block; 
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .chapter-title {
+            font-size: 14px;
+            color: var(--bright-gold);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 10px;
+        }
+        h2 { font-size: 15px; line-height: 1.6; margin: 15px 0; color: #fff; text-align: left; font-weight: normal; }
+        
+        .option { 
+            display: block; width: 100%; padding: 14px; margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.04); border: 1px solid rgba(212, 175, 55, 0.25); 
+            color: #fff; border-radius: 6px; cursor: pointer; text-align: left; 
+            transition: 0.3s; font-size: 13.5px; line-height: 1.5;
+        }
+        .option:hover { 
+            background: linear-gradient(45deg, #520812, var(--dark-burgundy)); 
+            border-color: var(--gold); 
+            transform: translateX(5px); 
+        }
+        .option strong { color: var(--gold); }
+        
+        /* Result Box Styling */
+        #result-box { 
+            display: none; margin-top: 15px; padding: 20px; 
+            border: 1px solid var(--gold); background: rgba(43, 4, 9, 0.6); 
+            border-radius: 8px; animation: fadeInUp 0.5s ease-out; 
+            border-left: 5px solid var(--gold);
+        }
+        .res-title { 
+            font-size: 15px; font-weight: bold; color: var(--bright-gold); 
+            margin-bottom: 12px; display: block; text-align: left;
+        }
+        .res-desc { color: #fff; font-size: 13.5px; line-height: 1.7; margin-bottom: 20px; text-align: left; }
+        
+        .next-btn { 
+            display: block; width: 100%; padding: 15px; 
+            background: linear-gradient(45deg, #520812, #8a1426); 
+            color: #fff; border: 1px solid var(--gold); border-radius: 6px; font-weight: bold; 
+            cursor: pointer; text-align: center; text-transform: uppercase; transition: 0.3s;
+            letter-spacing: 1px; font-size: 13px;
+        }
+        .next-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(212,175,55,0.4); }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">PAGE 38</span>
+        <div class="chapter-title">အခန်း (၅) ဆန်းစစ်ချက်</div>
+        
+        <h2><strong>မေးခွန်း။ ။</strong> မိမိက မိမိ၏ စည်းတံတိုင်းကို ပြသလိုက်သည့်အခါ တစ်ဖက်လူက အေးစက်စွာ လျှစ်လျူရှုခြင်း (Silent Treatment) နည်းဗျူဟာဖြင့် စကားမပြောဘဲ နေလာပါက မည်သို့ တုံ့ပြန်မည်နည်း။</h2>
+        
+        <div id="options-group">
+            <button class="option" onclick="showAnalysis('နှုတ်ထွက်ရလဒ်အဖြေလွှာ (အခန်း ၅) - သင် (က) ကို ရွေးချယ်ပါက', 'သင်သည် တစ်ဖက်လူ၏ စိတ်ဓာတ်ရေးရာ ကစားကွက်ထဲသို့ အပြည့်အဝ ဝင်ရောက်သွားပြီ ဖြစ်၏။ မလိုလားအပ်ဘဲ တောင်းပန်ခြင်းသည် မိမိ၏ စည်းတံတိုင်းကို သားကောင်အဖြစ် စေတနာထိုးအပ်လိုက်ခြင်းပင် ဖြစ်သည်။')">
+                <strong>(က)</strong> မခံမရပ်နိုင် ဖြစ်ကာ စိတ်ဆင်းရဲစရာ အခြေအနေမှ လွတ်မြောက်ရန် မိမိ၌ အပြစ်မရှိဘဲ သွားရောက်တောင်းပန် လိုက်လျောမည်။
+            </button>
+            <button class="option" onclick="showAnalysis('နှုတ်ထွက်ရလဒ်အဖြေလွှာ (အခန်း ၅) - သင် (ခ) ကို ရွေးချယ်ပါက', 'သင်သည် အေးစက်သော တုံ့ပြန်မှု၌ မိမိစိတ်ကို ခါးသီးအောင် ဖန်တီးမိသူ ဖြစ်၏။ ဒေါသဖြင့် မတုံ့ပြန်ဘဲ တည်ငြိမ်သော အသိပညာဖြင့် တုံ့ပြန်မှသာ ထိုကစားကွက်ကို ကျော်လွှားနိုင်မည်။')">
+                <strong>(ခ)</strong> စကားမပြောဘဲ နေခြင်းအတွက် ဒေါသတကြီးဖြင့် စေတနာခါးသီးစွာ အပြိုင်အဆိုင် အဆက်အသွယ် ဖြတ်တောက်မည်။
+            </button>
+            <button class="option" onclick="showAnalysis('နှုတ်ထွက်ရလဒ်အဖြေလွှာ (အခန်း ၅) - သင် (ဂ) ကို ရွေးချယ်ပါက', 'ထက်မြက်လှပေသည်။ သင်သည် အေးစက်သော တုံ့ပြန်မှုကို တည်ငြိမ်သော အသိပညာဖြင့် အနိုင်ယူနိုင်သူ ဖြစ်၏။ မိမိ ပုံမှန်အတိုင်း တည်ငြိမ်နေခြင်းသည် တစ်ဖက်လူ၏ နည်းဗျူဟာကို အလိုလို ရပ်တန့်သွားစေပေလိမ့်မည်။')">
+                <strong>(ဂ)</strong> တုန်လှုပ်ချောက်ချားခြင်း မရှိဘဲ တည်ငြိမ်စွာဖြင့် မိမိ၏ ပုံမှန်ဘဝ လုပ်ငန်းစဉ်များကို ဆက်လက် လုပ်ဆောင်နေမည်။
+            </button>
+        </div>
+    </div>
+
+    <!-- RESULT EXPANSION SCREEN -->
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button onclick="completeQuiz()" class="next-btn">CONTINUE TO NEXT PAGE →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>
