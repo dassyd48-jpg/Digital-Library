@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 1 QUIZ | DASSY DIGITAL LIBRARY</title>
+    <style>
+        :root {
+            --dark-emerald: #06231a;
+            --black-bg: #020d09;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+            --bright-gold: #ffcf40;
+        }
+        body { 
+            background: var(--black-bg); 
+            color: var(--light-gold); 
+            font-family: 'Pyidaungsu', sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: rgba(6, 35, 26, 0.4); 
+            border: 1px solid var(--gold); 
+            border-radius: 12px; 
+            padding: 22px; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(2, 13, 9, 0.9);
+            backdrop-filter: blur(10px);
+            box-sizing: border-box;
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: var(--gold); 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            display: block; 
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .chapter-title {
+            font-size: 14px;
+            color: var(--bright-gold);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 10px;
+        }
+        h2 { 
+            font-size: 14.5px; 
+            line-height: 1.6; 
+            margin: 15px 0; 
+            color: #fff; 
+            text-align: left; 
+            font-weight: normal; 
+        }
+        
+        .option { 
+            display: block; 
+            width: 100%; 
+            padding: 14px; 
+            margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.04); 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+            color: #fff; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-align: left; 
+            transition: 0.3s; 
+            font-size: 13px; 
+            line-height: 1.5;
+            box-sizing: border-box;
+        }
+        .option:hover { 
+            background: linear-gradient(45deg, #0a4030, var(--dark-emerald)); 
+            border-color: var(--gold); 
+            transform: translateX(5px); 
+        }
+        .option strong { color: var(--gold); }
+        
+        /* Result Box Styling */
+        #result-box { 
+            display: none; 
+            margin-top: 15px; 
+            padding: 20px; 
+            border: 1px solid var(--gold); 
+            background: rgba(6, 35, 26, 0.6); 
+            border-radius: 8px; 
+            animation: fadeInUp 0.5s ease-out; 
+            border-left: 5px solid var(--gold);
+        }
+        .res-title { 
+            font-size: 14.5px; 
+            font-weight: bold; 
+            color: var(--bright-gold); 
+            margin-bottom: 12px; 
+            display: block; 
+            text-align: left;
+            line-height: 1.5;
+        }
+        .res-desc { 
+            color: #fff; 
+            font-size: 13px; 
+            line-height: 1.7; 
+            margin-bottom: 20px; 
+            text-align: left; 
+        }
+        
+        .next-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 15px; 
+            background: linear-gradient(45deg, #0a4030, var(--gold), #0a4030); 
+            color: #fff; 
+            border: 1px solid var(--gold); 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-align: center; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+            letter-spacing: 1px; 
+            font-size: 13px;
+        }
+        .next-btn:hover { 
+            background: var(--gold); 
+            color: #000; 
+            box-shadow: 0 0 15px rgba(212,175,55,0.4); 
+        }
+        
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">PAGE 13</span>
+        <div class="chapter-title">Chapter 1 Quiz: Emotional Detachment & Control<br>(စိတ်ခံစားချက်များကို သီးခြားခွဲထုတ်ခြင်းနှင့် ထိန်းချုပ်ခြင်း)</div>
+        
+        <h2><strong>မေးခွန်း -</strong> တဖက်လူက သင့်အား စကားမပြောဘဲ အေးစက်စွာ လျစ်လျူရှုလိုက်ချိန် သို့မဟုတ် ရုတ်တရက် အဆက်အသွယ် ဖြတ်တောက်လိုက်ချိန်တွင် သင့်အတွင်းစိတ်၌ ဖြစ်ပေါ်လာသော စိတ်လှုပ်ရှားမှုကို မည်သို့ ကိုင်တွယ်မည်နည်း။</h2>
+        
+        <div id="options-group">
+            <button class="option" onclick="showAnalysis('(A) ကို ရွေးချယ်ပါက → Emotional Reaction (အောက်စီးရောက် တုံ့ပြန်မှု)', 'သုံးသပ်ချက်: စိတ်တိုခြင်းနှင့် အဖြေတောင်းခြင်းသည် တဖက်လူအား &quot;ငါ့အပြုအမူက သူ့ကို လှုပ်ခတ် စိုးမိုးနိုင်တုန်းပဲ&quot; ဆိုသည့် စိတ္တဗေဒဆိုင်ရာ အထက်စီးကို ပေးလိုက်ခြင်း ဖြစ်သည်။')">
+                <strong>(A)</strong> အဘယ်ကြောင့် ထိုသို့ ပြုလုပ်ရသနည်းဟု စိတ်တိုတကြီး စာတိုများ မပြတ် ပို့၍ အဖြေတောင်းမည်။
+            </button>
+            <button class="option" onclick="showAnalysis('(B) ကို ရွေးချယ်ပါက → Guilt Dependency (အပြစ်ရှိစိတ်ဖြင့် မှီခိုမှု)', 'သုံးသပ်ချက်: အမှားမရှိဘဲ တောင်းပန်ခြင်းသည် မိမိ၏ ကိုယ်ပိုင် တန်ဖိုးကို အောက်ခြေသို့ ဆွဲချလိုက်ခြင်းဖြစ်ပြီး တဖက်လူ၏ စိတ္တဗေဒဆိုင်ရာ လျစ်လျူရှုမှုကို ပိုမို အရှိန်မြှင့်ပေးလိုက်သလို ဖြစ်စေသည်။')">
+                <strong>(B)</strong> အပြစ်ရှိသလို ခံစားရပြီး မိမိဘက်က ဘာမှားသွားသနည်းဟု ပြန်လည် စိစစ်ကာ တောင်းပန် စာပို့မည်။
+            </button>
+            <button class="option" onclick="showAnalysis('(C) ကို ရွေးချယ်ပါက → Hidden Attachment (မသိစိတ်ဖြင့် တွယ်တာမှု)', 'သုံးသပ်ချက်: အပြင်ပန်း ငြိမ်နေသော်လည်း လိုက်လံ စောင့်ကြည့်နေခြင်းသည် စိတ္တဗေဒအရ မိမိ၏ စိတ်အားအင်များကို တဖက်လူထံ ဆက်လက် ပေးပို့နေခြင်း ဖြစ်သည်။')">
+                <strong>(C)</strong> ခံစားချက်ကို မြိုသိပ်ထားသော်လည်း တဖက်လူ လှုပ်ရှားမှုများကို နေ့စဉ်မပြတ် လိုက်လံ ကြည့်ရှုမည်။
+            </button>
+            <button class="option" onclick="showAnalysis('(D) ကို ရွေးချယ်ပါက → Sovereign Detachment (အထက်တန်းကျသော သီးခြားရပ်တည်မှု)', 'သုံးသပ်ချက်: တဖက်လူ၏ လှုပ်ရှားမှုကို တုံ့ပြန်မှု အပြတ်ဖြတ်လိုက်ခြင်းသည် မိမိ၏ စိတ္တဗေဒဆိုင်ရာ တန်ဖိုးနှင့် တည်ငြိမ်မှုကို အမြင့်ဆုံး ထိန်းသိမ်းလိုက်ခြင်း ဖြစ်သည်။')">
+                <strong>(D)</strong> တဖက်လူ၏ အပြုအမူသည် မိမိ တန်ဖိုးနှင့် မသက်ဆိုင်ကြောင်း လက်ခံကာ မည်သည့် တုံ့ပြန်မှုမှ မပြုဘဲ ငြိမ်သက်စွာ နေမည်။
+            </button>
+        </div>
+    </div>
+
+    <!-- RESULT EXPANSION SCREEN -->
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button onclick="completeQuiz()" class="next-btn">CONTINUE TO NEXT PAGE →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAPTER 2 QUIZ | DASSY DIGITAL LIBRARY</title>
+    <style>
+        :root {
+            --dark-emerald: #06231a;
+            --black-bg: #020d09;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+            --bright-gold: #ffcf40;
+        }
+        body { 
+            background: var(--black-bg); 
+            color: var(--light-gold); 
+            font-family: 'Pyidaungsu', sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 480px; 
+            background: rgba(6, 35, 26, 0.4); 
+            border: 1px solid var(--gold); 
+            border-radius: 12px; 
+            padding: 22px; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(2, 13, 9, 0.9);
+            backdrop-filter: blur(10px);
+            box-sizing: border-box;
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: var(--gold); 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            display: block; 
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .chapter-title {
+            font-size: 14px;
+            color: var(--bright-gold);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 10px;
+        }
+        h2 { 
+            font-size: 14.5px; 
+            line-height: 1.6; 
+            margin: 15px 0; 
+            color: #fff; 
+            text-align: left; 
+            font-weight: normal; 
+        }
+        
+        .option { 
+            display: block; 
+            width: 100%; 
+            padding: 14px; 
+            margin: 12px 0; 
+            background: rgba(212, 175, 55, 0.04); 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+            color: #fff; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-align: left; 
+            transition: 0.3s; 
+            font-size: 13px; 
+            line-height: 1.5;
+            box-sizing: border-box;
+        }
+        .option:hover { 
+            background: linear-gradient(45deg, #0a4030, var(--dark-emerald)); 
+            border-color: var(--gold); 
+            transform: translateX(5px); 
+        }
+        .option strong { color: var(--gold); }
+        
+        /* Result Box Styling */
+        #result-box { 
+            display: none; 
+            margin-top: 15px; 
+            padding: 20px; 
+            border: 1px solid var(--gold); 
+            background: rgba(6, 35, 26, 0.6); 
+            border-radius: 8px; 
+            animation: fadeInUp 0.5s ease-out; 
+            border-left: 5px solid var(--gold);
+        }
+        .res-title { 
+            font-size: 14.5px; 
+            font-weight: bold; 
+            color: var(--bright-gold); 
+            margin-bottom: 12px; 
+            display: block; 
+            text-align: left;
+            line-height: 1.5;
+        }
+        .res-desc { 
+            color: #fff; 
+            font-size: 13px; 
+            line-height: 1.7; 
+            margin-bottom: 20px; 
+            text-align: left; 
+        }
+        
+        .next-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 15px; 
+            background: linear-gradient(45deg, #0a4030, var(--gold), #0a4030); 
+            color: #fff; 
+            border: 1px solid var(--gold); 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-align: center; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+            letter-spacing: 1px; 
+            font-size: 13px;
+        }
+        .next-btn:hover { 
+            background: var(--gold); 
+            color: #000; 
+            box-shadow: 0 0 15px rgba(212,175,55,0.4); 
+        }
+        
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">PAGE 21</span>
+        <div class="chapter-title">Chapter 2 Quiz: The Art of Silent Metamorphosis<br>(အသံမထွက်သော အပြောင်းအလဲ နိယာမ)</div>
+        
+        <h2><strong>မေးခွန်း -</strong> လမ်းခွဲပြီးနောက် သို့မဟုတ် အဆက်အသွယ် ပြတ်တောက်စဉ်အတွင်း မိမိ၏ ရုပ်ပိုင်းဆိုင်ရာ၊ စီးပွားရေးဆိုင်ရာ တိုးတက်မှုများကို ပြုလုပ်ရာတွင် မည်သည့် နည်းလမ်းဖြင့် တည်ဆောက်မည်နည်း။</h2>
+        
+        <div id="options-group">
+            <button class="option" onclick="showAnalysis('(A) ကို ရွေးချယ်ပါက → Validation Seeking (အသိအမှတ်ပြုခံချင်စိတ်)', 'သုံးသပ်ချက်: တဖက်လူ သတိထားမိစေရန် တင်ပြခြင်းသည် မိမိ၏ တိုးတက်မှုများသည် တဖက်လူ၏ အမြင်ပေါ်တွင် မူတည်နေသေးကြောင်း ဖော်ပြနေသည်။')">
+                <strong>(A)</strong> တဖက်လူ မြင်တွေ့ပြီး နောင်တရစေရန် ရည်ရွယ်၍ အပြောင်းအလဲ ပုံများကို လူမှုကွန်ရက်ပေါ်တွင် တင်ပြမည်။
+            </button>
+            <button class="option" onclick="showAnalysis('(B) ကို ရွေးချယ်ပါက → Performative Happiness (ဟန်ဆောင် ပျော်ရွှင်မှု)', 'သုံးသပ်ချက်: ပေါ်ပေါ်လွင်လွင် ကြွားဝါခြင်းကို စိတ်ပညာအရ &quot;ကျရှုံးမှုကို ဖုံးကွယ်လိုသော ပြသမှု&quot; ဟု တဖက်လူက လွယ်ကူစွာ ရိုက်ထုတ်နိုင်သည်။')">
+                <strong>(B)</strong> မိမိ ပျော်ရွှင်စွာ ရှင်သန်နေကြောင်း ပြသရန် ပွဲလမ်းသဘင်နှင့် အမှတ်တရ ပုံများကို ပေါ်ပေါ်လွင်လွင် တင်ပြမည်။
+            </button>
+            <button class="option" onclick="showAnalysis('(C) ကို ရွေးချယ်ပါက → Hesitant Transition (မပြတ်သားသော ကူးပြောင်းမှု)', 'သုံးသပ်ချက်: ပြောင်းလဲနေသော်လည်း တဖက်လူ၏ သဘောထားကို အာရုံစိုက်နေခြင်းသည် Sovereign Aura ကို အပြည့်အဝ ပေါ်ထွက်မလာစေပေ။')">
+                <strong>(C)</strong> အပြောင်းအလဲများ ပြုလုပ်မည်ဖြစ်သော်လည်း တဖက်လူ သတိထားမိ မသိထားမိကို စိတ်ပူနေမည်။
+            </button>
+            <button class="option" onclick="showAnalysis('(D) ကို ရွေးချယ်ပါက → Silent Metamorphosis (အစွမ်းထက်ဆုံး တိတ်ဆိတ် အပြောင်းအလဲ)', 'သုံးသပ်ချက်: သတင်းအချက်အလက် မရှိဘဲ တိတ်ဆိတ်စွာ ပြောင်းလဲသွားခြင်းသည် တဖက်လူ၏ စိတ်ထဲတွင် စူးစမ်းလိုစိတ်နှင့် ခန့်မှန်းရခက်သော အရှိန်အဝါကို အမြင့်ဆုံး ဖြစ်ပေါ်စေသည်။')">
+                <strong>(D)</strong> ပြင်ပလောကတွင် မည်သည့် လှုပ်ရှားမှုမှ မဖော်ပြဘဲ တိတ်ဆိတ်စွာပင် ကိုယ်လက်လေ့ကျင့်ခန်းနှင့် စီးပွားရေးကို တိုးတက်အောင် ပြုလုပ်မည်။
+            </button>
+        </div>
+    </div>
+
+    <!-- RESULT EXPANSION SCREEN -->
+    <div id="result-box">
+        <span class="res-title" id="res-title"></span>
+        <p class="res-desc" id="res-desc"></p>
+        
+        <button onclick="completeQuiz()" class="next-btn">CONTINUE TO NEXT PAGE →</button>
+    </div>
+</div>
+
+<script>
+    function showAnalysis(title, desc) {
+        document.getElementById('options-group').style.display = 'none';
+        document.getElementById('res-title').innerText = title;
+        document.getElementById('res-desc').innerText = desc;
+        document.getElementById('result-box').style.display = 'block';
+    }
+
+    function completeQuiz() {
+        window.parent.postMessage("quizCompleted", "*");
+    }
+</script>
+
+</body>
+</html>
