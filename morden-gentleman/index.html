@@ -75,7 +75,7 @@
         #flipbook-wrapper { 
             width: 100%; height: 100%; display: flex; 
             justify-content: center; align-items: center; 
-            padding: 0; /* Padding အားလုံးဖယ်ပြီး Full Screen ယူခြင်း */
+            padding: 0;
         }
 
         #flipbook { 
@@ -84,7 +84,6 @@
         }
 
         .page { background: #1a1a1a; width: 100%; height: 100%; }
-        /* စာမျက်နှာပုံရိပ်များကို Screen အပြည့် Stretch ဖြစ်စေရန် object-fit: fill ပြောင်းလဲခြင်း */
         .page img { width: 100%; height: 100%; object-fit: fill; pointer-events: none; }
 
         .watermark { 
@@ -97,6 +96,56 @@
             margin-top: 25px; color: #b0bec5; text-decoration: none; 
             font-size: 12px; opacity: 0.7; border-bottom: 1px solid rgba(176,190,197,0.2);
             padding-bottom: 2px;
+        }
+
+        /* 📌 SAVE BOOKMARK BUTTON STYLING */
+        #bookmark-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1200;
+            padding: 6px 14px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        #bookmark-btn:hover {
+            background: #d4af37;
+            color: #000;
+        }
+
+        /* 📌 RESTART TO PAGE 1 BUTTON (BOTTOM CENTER) */
+        #restart-btn {
+            display: none;
+            position: fixed;
+            bottom: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1200;
+            padding: 8px 18px;
+            background: rgba(10, 10, 10, 0.85);
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            transition: all 0.3s ease;
+        }
+        #restart-btn:hover {
+            background: #d4af37;
+            color: #000;
         }
 
         /* Hidden Content for SEO/AI */
@@ -125,9 +174,16 @@
     </div>
 
     <div id="book-container">
+        <!-- SAVE BOOKMARK BUTTON -->
+        <button id="bookmark-btn" onclick="saveBookmark()">🔖 SAVE BOOKMARK</button>
+
         <div id="flipbook-wrapper">
             <div id="flipbook"></div>
         </div>
+
+        <!-- RESTART TO PAGE 1 BUTTON -->
+        <button id="restart-btn" onclick="goToPageOne()">🔄 စာမျက်နှာ ၁ သို့ ပြန်သွားရန်</button>
+
         <div class="watermark">OFFICIAL RELEASE - DASSY DIGITAL LIBRARY</div>
     </div>
 
@@ -141,7 +197,7 @@
 
         const flipSound = document.getElementById("sound");
         
-        // စာအုပ်တစ်အုပ်ချင်းစီအတွက် LocalStorage သီးသန့် Key များ သတ်မှတ်ခြင်း
+        // LocalStorage Keys
         const storageKeyPage = "gentleman_book_current_page";
         const storageKeyAuth = "gentleman_book_authenticated";
 
@@ -155,7 +211,7 @@
             }
         });
 
-        // 🛠️ မည်သည့်အချိုးအစားမှ ကန့်သတ်မထားသော Full Stretch Size တွက်ချက်စနစ်သစ်
+        // Full Stretch Size တွက်ချက်စနစ်
         function getBookSize() {
             return { 
                 width: window.innerWidth, 
@@ -166,7 +222,7 @@
         function unlock(){
             const entered = document.getElementById("pass").value;
             if(entered === myPassword){
-                localStorage.setItem(storageKeyAuth, "true"); // Password ကို မှတ်သားခိုင်းလိုက်ခြင်း
+                localStorage.setItem(storageKeyAuth, "true");
                 $("#bg-video").css("opacity", "0");
                 $("#lock").fadeOut(600, function(){
                     $("#book-container").fadeIn(500);
@@ -182,12 +238,11 @@
             flipbook.empty();
 
             const size = getBookSize();
-            // သိမ်းဆည်းထားသော ဖတ်လက်စ စာမျက်နှာကို ရယူခြင်း၊ မရှိပါက စာမျက်နှာ ၁ မှ စတင်ခြင်း
+            // SAVE BOOKMARK နှိပ်ထားခဲ့သော စာမျက်နှာကို ခေါ်ယူခြင်း (မရှိပါက စာမျက်နှာ ၁ မှ စမည်)
             let savedPage = parseInt(localStorage.getItem(storageKeyPage)) || 1;
 
             if(savedPage >= maxPages) {
                 savedPage = 1;
-                localStorage.setItem(storageKeyPage, 1);
             }
 
             for(let i=1; i<=maxPages; i++){
@@ -207,18 +262,45 @@
                     gradients: true,
                     elevation: 100,
                     duration: 1000,
-                    page: savedPage, // ဖတ်လက်စ စာမျက်နှာသို့ တိုက်ရိုက် ရောက်ရှိစေခြင်း
+                    page: savedPage,
                     when: {
                         turning: function(event, page, view) {
                             playSound();
                         },
                         turned: function(event, page) {
-                            // စာဖတ်သူ ရောက်ရှိနေသည့် လက်ရှိစာမျက်နှာကို သိမ်းဆည်းခြင်း
-                            localStorage.setItem(storageKeyPage, page);
+                            // နောက်ဆုံးစာမျက်နှာ ရောက်ပါက စာမျက်နှာ ၁ သို့ပြန်သွားရန် ခလုတ် ပြပေးခြင်း
+                            if (page === maxPages) {
+                                $("#restart-btn").fadeIn(300);
+                            } else {
+                                $("#restart-btn").fadeOut(200);
+                            }
                         }
                     }
                 });
+                
+                // စာအုပ် စတင်ပွင့်ချိန်တွင် နောက်ဆုံး စာမျက်နှာ ရောက်နေပါက ခလုတ်ပြရန်
+                if (savedPage === maxPages) {
+                    $("#restart-btn").show();
+                }
             }, 300);
+        }
+
+        // SAVE BOOKMARK ခလုတ်နှိပ်မှသာ လက်ရှိ စာမျက်နှာကို သိမ်းဆည်းပေးမည်
+        function saveBookmark() {
+            if ($("#flipbook").turn("is")) {
+                const currentPage = $("#flipbook").turn("page");
+                localStorage.setItem(storageKeyPage, currentPage);
+                alert(`📌 စာမျက်နှာ (${currentPage}) ကို Bookmark မှတ်သားပြီးပါပြီ။`);
+            }
+        }
+
+        // စာမျက်နှာ ၁ သို့ ပြန်သွားရန် ခလုတ်
+        function goToPageOne() {
+            if ($("#flipbook").turn("is")) {
+                $("#flipbook").turn("page", 1);
+                localStorage.setItem(storageKeyPage, 1);
+                $("#restart-btn").fadeOut(200);
+            }
         }
 
         function playSound(){ 
@@ -246,7 +328,8 @@
           console.log("View Count Updated:", data.value);
         });
     </script>
-    <!-- ========================================== -->
+
+<!-- ========================================== -->
 <!-- 🔻 Review System Code Block Start (Dassy) 🔻 -->
 <!-- ========================================== -->
 
@@ -306,7 +389,7 @@
 <div id="review-modal" class="modal-overlay">
     <div class="modal-card">
         <button class="modal-close" onclick="closeReviewModal()">✕</button>
-        <div class="modal-title”>သင့်၏ စာအုပ်အပေါ်အမြင်နှင့် တန်ဖိုးရှိသော မျှဝေမှုများသည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
+        <div class="modal-title">သင့်၏ စာအုပ်အပေါ်အမြင်နှင့် တန်ဖိုးရှိသော မျှဝေမှုများသည် ကျွန်ုပ်တို့အတွက် လွန်စွာတန်ဖိုးရှိပါသည်။</div>
         
         <div class="modal-text">
             စာဖတ်သူ၏ Review တစ်ခုနှင့် Follow တစ်ခုသည် နောက်ထပ် စာအုပ်ဖတ်ရှုမည့် လူငယ်များအတွက် များစွာ အကျိုးသက်ရောက်မှုရှိပြီး စာပေ မဖတ်ရှုရသေးသူများအတွက်လည်း လမ်းပြအလင်းရောင်နှင့် အားအင်များစွာ ဖြစ်စေပါသည်။
