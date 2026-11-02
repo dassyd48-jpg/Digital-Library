@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>CHAPTER 6 QUIZ | DASSY DIGITAL LIBRARY</title>
+    <style>
+        :root {
+            --dark-burgundy: #2b0409;
+            --black-bg: #0d0203;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+            --bright-gold: #ffcf40;
+            --gold-gradient: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+        }
+        body { 
+            background: var(--black-bg); 
+            color: var(--light-gold); 
+            font-family: 'Pyidaungsu', sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+            overflow-x: hidden; 
+            overflow-y: auto; 
+            -webkit-overflow-scrolling: touch; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 500px; 
+            background: rgba(43, 4, 9, 0.5); 
+            border: 1px solid var(--gold); 
+            border-radius: 12px; 
+            padding: 22px; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(43, 4, 9, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: var(--gold); 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            display: block; 
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .chapter-title {
+            font-size: 15px;
+            color: var(--bright-gold);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 10px;
+        }
+        .q-block {
+            margin-bottom: 20px;
+        }
+        h3 { font-size: 14px; line-height: 1.6; margin: 10px 0 12px 0; color: #fff; text-align: left; font-weight: bold; }
+        
+        .option-label { 
+            display: flex; 
+            align-items: flex-start;
+            width: 100%; 
+            padding: 12px; 
+            margin: 10px 0; 
+            background: rgba(212, 175, 55, 0.04); 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+            color: #fff; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-align: left; 
+            transition: 0.3s; 
+            font-size: 13px; 
+            line-height: 1.5;
+            box-sizing: border-box;
+        }
+        .option-label:hover { 
+            background: linear-gradient(45deg, #520812, var(--dark-burgundy)); 
+            border-color: var(--gold); 
+        }
+        .option-label.selected {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+        }
+        .option-label input {
+            margin-top: 3px;
+            margin-right: 10px;
+            accent-color: var(--gold);
+            transform: scale(1.1);
+        }
+        
+        .submit-btn {
+            display: block; 
+            width: 100%; 
+            padding: 15px; 
+            margin-top: 15px;
+            background: var(--gold-gradient); 
+            color: #000; 
+            border: none; 
+            border-radius: 6px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            text-align: center; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+            letter-spacing: 2px; 
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(179,135,40,0.3);
+        }
+        .submit-btn:hover { 
+            opacity: 0.9;
+            box-shadow: 0 0 20px rgba(212,175,55,0.5); 
+        }
+
+        /* Result Box Styling */
+        #result-box { 
+            display: none; 
+            margin-top: 15px; 
+            padding: 20px; 
+            border: 1px solid var(--gold); 
+            background: rgba(43, 4, 9, 0.7); 
+            border-radius: 8px; 
+            animation: fadeInUp 0.5s ease-out; 
+            border-left: 5px solid var(--gold);
+        }
+        .res-level { 
+            font-size: 15px; 
+            font-weight: bold; 
+            color: var(--bright-gold); 
+            margin-bottom: 12px; 
+            display: block; 
+            text-align: left;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 8px;
+        }
+        .res-section { margin-bottom: 15px; font-size: 13px; line-height: 1.7; color: #fff; text-align: justify; }
+        .res-section strong { color: var(--gold); display: block; margin-bottom: 4px; }
+        
+        .next-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 14px; 
+            margin-top: 20px;
+            background: transparent; 
+            color: var(--gold); 
+            border: 1px solid var(--gold); 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-align: center; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+            letter-spacing: 2px; 
+            font-size: 13px;
+        }
+        .next-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(212,175,55,0.4); }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">PAGE 46</span>
+        <div class="chapter-title">အခန်း (၆) ၏ စိတ္တဗေဒ စမ်းသပ်ချက်</div>
+        
+        <form id="level-test-form">
+            <div class="q-block">
+                <h3>မေးခွန်း။ ။ ဆက်ဆံရေးအတွင်း ပဋိပက္ခများ မဖြစ်ပွားစေရန်နှင့် တစ်ဖက်လူ စိတ်ကျေနပ်စေရန်အတွက် အရာရာတိုင်းကို မစဉ်းစားဘဲ အလွန်အမင်း ခေါင်းငုံ့ခံ လိုက်လျောနေခြင်း (People Pleasing) က မိမိ၏ တန်ဖိုးအပေါ် မည်သို့ သက်ရောက်စေသနည်း။</h3>
+                
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q1" value="A" required>
+                    <span>(က) တစ်ဖက်လူ၏ အလိုကို အကြွင်းမဲ့ လိုက်လျောခြင်းဖြင့် မိမိအပေါ် ပိုမို ချစ်ခင်လာပြီး ဆက်ဆံရေးသည် အမြဲတမ်း ငြိမ်းချမ်းသာယာသွားမည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q1" value="B">
+                    <span>(ခ) အမျိုးသားတို့၏ မသိစိတ်တွင် စစ်မှန်သော လေးစားမှုများ တဖြည်းဖြည်း ကုန်ခမ်းသွားကာ၊ မိမိ၏ တန်ဖိုးနှင့် ဂုဏ်သိက္ခာမှာ အလွန်အမင်း နိမ့်ကျသွားမည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q1" value="C">
+                    <span>(ဂ) ဆက်ဆံရေး၏ အာဏာစက်ကို ပိုမို ခိုင်မာစွာ ပိုင်ဆိုင်လာပြီး နှစ်ဦးသား အညီအမျှ ရပ်တည်နိုင်သည့် အနေအထားကို ရရှိစေမည်။</span>
+                </label>
+            </div>
+
+            <button type="button" onclick="calculateResult()" class="submit-btn">ရလဒ်ဆန်းစစ်ချက် ကြည့်ရှုမည် →</button>
+        </form>
+    </div>
+
+    <!-- RESULT EXPANSION SCREEN -->
+    <div id="result-box">
+        <div id="res-level-title" class="res-level"></div>
+        
+        <div class="res-section">
+            <strong>စိတ္တဗေဒ သုံးသပ်ချက်:</strong>
+            <p id="res-analysis" style="margin: 5px 0 0 0; color: #eee;"></p>
+        </div>
+        
+        <button onclick="completeQuiz()" class="next-btn">CONTINUE TO NEXT CHAPTER →</button>
+    </div>
+</div>
+
+<script>
+    function highlightOption(label) {
+        const container = label.closest('.q-block');
+        container.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+        label.classList.add('selected');
+        const radio = label.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+    }
+
+    function calculateResult() {
+        const form = document.getElementById('level-test-form');
+        const q1 = form.elements['q1'].value;
+
+        if (!q1) {
+            alert("ကျေးဇူးပြု၍ အဖြေတစ်ခုကို ရွေးချယ်ပေးပါရန် မေတ္တာရပ်ခံအပ်ပါသည်။");
+            return;
+        }
+
+        let levelTitle = "";
+        let analysis = "";
+
+        if (q1 === 'A') {
+            levelTitle = "သင် (က) ကို ရွေးချယ်ပါက";
+            analysis = "သင်သည် မှားယွင်းသော ယုံကြည်ချက် ထောင်ချောက်ထဲတွင် ကျရောက်နေဆဲ ဖြစ်၏။ အရာရာကို အကြွင်းမဲ့ လိုက်လျောခြင်းသည် ဆက်ဆံရေးကို ငြိမ်းချမ်းစေသည် မဟုတ်ဘဲ၊ တစ်ဖက်လူ၏ အလေးထားမှုကိုပါ တိုက်စားပစ်တတ်ပေသည်။";
+        } else if (q1 === 'B') {
+            levelTitle = "သင် (ခ) ကို ရွေးချယ်ပါက";
+            analysis = "ထက်မြက်လှပေသည်။ သင်သည် ဆက်ဆံရေး၏ မသိစိတ် ယန္တရားကို အပြည့်အဝ နားလည်သူ ဖြစ်၏။ ခေါင်းငုံ့ခံ လိုက်လျောခြင်းသည် လေးစားမှုကို ပျောက်ကွယ်စေပြီး တန်ဖိုးကျဆင်းစေကြောင်း သင် ကောင်းစွာ သိရှိထားပေသည်။";
+        } else if (q1 === 'C') {
+            levelTitle = "သင် (ဂ) ကို ရွေးချယ်ပါက";
+            analysis = "သင်သည် အဆိပ်သင့်စေသော စိတ်ပိုင်းဆိုင်ရာ အမှားကို ကျူးလွန်နေခြင်း ဖြစ်၏။ အလျော့ပေးလွန်းခြင်းသည် အာဏာစက်ကို မြှင့်တင်ပေးမည့်အစား ဆက်ဆံရေးကို ပြိုလဲစေနိုင်သည်။";
+        }
+
+        document.getElementById('quiz-flow').style.display = 'none';
+        document.getElementById('res-level-title').innerText = levelTitle;
+        document.getElementById('res-analysis').innerText = analysis;
+        document.getElementById('result-box').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function completeQuiz() {
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: "quizCompleted", page: 46 }, "*");
+        }
+    }
+</script>
+
+</body>
+</html>

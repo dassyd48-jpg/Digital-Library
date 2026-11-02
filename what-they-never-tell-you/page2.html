@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>PRE-READING LEVEL TEST | DASSY DIGITAL LIBRARY</title>
+    <style>
+        :root {
+            --dark-burgundy: #2b0409;
+            --black-bg: #0d0203;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+            --bright-gold: #ffcf40;
+            --gold-gradient: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+        }
+        body { 
+            background: var(--black-bg); 
+            color: var(--light-gold); 
+            font-family: 'Pyidaungsu', sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            box-sizing: border-box; 
+            overflow-x: hidden; 
+            overflow-y: auto; 
+            -webkit-overflow-scrolling: touch; 
+        }
+        .quiz-container { 
+            width: 100%; 
+            max-width: 500px; 
+            background: rgba(43, 4, 9, 0.5); 
+            border: 1px solid var(--gold); 
+            border-radius: 12px; 
+            padding: 22px; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(43, 4, 9, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        .phase-label { 
+            font-size: 11px; 
+            color: var(--gold); 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            display: block; 
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .chapter-title {
+            font-size: 15px;
+            color: var(--bright-gold);
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 10px;
+        }
+        .notice-box {
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 3px solid var(--gold);
+            padding: 12px;
+            font-size: 12.5px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #eee;
+            text-align: justify;
+        }
+        .notice-title {
+            color: var(--bright-gold);
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .q-block {
+            margin-bottom: 25px;
+            border-bottom: 1px dashed rgba(212, 175, 55, 0.2);
+            padding-bottom: 20px;
+        }
+        .q-block:last-child {
+            border-bottom: none;
+        }
+        h3 { font-size: 14px; line-height: 1.5; margin: 10px 0 8px 0; color: #fff; text-align: left; font-weight: bold; }
+        
+        .option-label { 
+            display: flex; 
+            align-items: flex-start;
+            width: 100%; 
+            padding: 12px; 
+            margin: 8px 0; 
+            background: rgba(212, 175, 55, 0.04); 
+            border: 1px solid rgba(212, 175, 55, 0.25); 
+            color: #fff; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            text-align: left; 
+            transition: 0.3s; 
+            font-size: 13px; 
+            line-height: 1.5;
+            box-sizing: border-box;
+        }
+        .option-label:hover { 
+            background: linear-gradient(45deg, #520812, var(--dark-burgundy)); 
+            border-color: var(--gold); 
+        }
+        .option-label.selected {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+        }
+        .option-label input {
+            margin-top: 3px;
+            margin-right: 10px;
+            accent-color: var(--gold);
+            transform: scale(1.1);
+        }
+        
+        .submit-btn {
+            display: block; 
+            width: 100%; 
+            padding: 15px; 
+            margin-top: 10px;
+            background: var(--gold-gradient); 
+            color: #000; 
+            border: none; 
+            border-radius: 6px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            text-align: center; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+            letter-spacing: 2px; 
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(179,135,40,0.3);
+        }
+        .submit-btn:hover { 
+            opacity: 0.9;
+            box-shadow: 0 0 20px rgba(212,175,55,0.5); 
+        }
+
+        /* Result Box Styling */
+        #result-box { 
+            display: none; 
+            margin-top: 15px; 
+            padding: 20px; 
+            border: 1px solid var(--gold); 
+            background: rgba(43, 4, 9, 0.7); 
+            border-radius: 8px; 
+            animation: fadeInUp 0.5s ease-out; 
+            border-left: 5px solid var(--gold);
+        }
+        .res-level { 
+            font-size: 16px; 
+            font-weight: bold; 
+            color: var(--bright-gold); 
+            margin-bottom: 12px; 
+            display: block; 
+            text-align: left;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 8px;
+        }
+        .res-section { margin-bottom: 15px; font-size: 13px; line-height: 1.7; color: #fff; text-align: justify; }
+        .res-section strong { color: var(--gold); display: block; margin-bottom: 4px; }
+        
+        .next-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 14px; 
+            margin-top: 20px;
+            background: transparent; 
+            color: var(--gold); 
+            border: 1px solid var(--gold); 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-align: center; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+            letter-spacing: 2px; 
+            font-size: 13px;
+        }
+        .next-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(212,175,55,0.4); }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-flow">
+        <span class="phase-label">PAGE 2</span>
+        <div class="chapter-title">စာအုပ် မဖတ်မီ ကြိုတင် ဆန်းစစ်ချက်</div>
+        
+        <div class="notice-box">
+            <span class="notice-title">အရေးကြီးသော သတိပေးချက်</span>
+            ဤဆန်းစစ်ချက်သည် သင့်အား အမှတ်ကောင်းရစေရန် သို့မဟုတ် သာလွန်ကြောင်း ပြသရန် ဖြေဆိုရမည့် စာမေးပွဲ မဟုတ်ပါ။ သင့်စိတ်ထဲတွင် "ဖြစ်ချင်သည့် ပုံစံ" သို့မဟုတ် "ပြုလုပ်သင့်သည်ဟု ထင်သည့် အရာ" ကို မရွေးချယ်ပါနှင့်။ လွန်ခဲ့သော ရက်ပိုင်း သို့မဟုတ် ဆက်ဆံရေး ပဋိပက္ခများနှင့် ပြိုင်ဆိုင်မှုများတွင် သင် တကယ် ပြုမူခဲ့သော အခြေအနေမှန် ကိုသာ အမှန်ကန်ဆုံးနှင့် အရိုးသားဆုံး ရွေးချယ်ပါ။ သို့မှသာ သင့်စိတ္တဗေဒ၏ အဓိက ဟာကွက် ကို တိကျစွာ သိရှိပြီး စာအုပ်ပါ အဓိပတိ စိတ္တဗျူဟာများကို ထိရောက်စွာ အသုံးပြုနိုင်မည် ဖြစ်သည်။
+        </div>
+
+        <form id="level-test-form">
+            <!-- Question 1 -->
+            <div class="q-block">
+                <h3>မေးခွန်း (၁)</h3>
+                <p style="font-size: 13px; color: #ddd; margin-bottom: 10px;">အမျိုးသားတစ်ဦးနှင့် သဘောထားကွဲလွဲမှု သို့မဟုတ် အငြင်းပွားမှု ဖြစ်ပွားသည့်အခါ သင်၏ ပထမဆုံး တုံ့ပြန်မှုမှာ အများအားဖြင့် မည်သို့ ရှိတတ်သနည်း။</p>
+                
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q1" value="A" required>
+                    <span>(က) ဆက်ဆံရေး မပြိုကွဲစေရန်နှင့် တစ်ဖက်လူ စိတ်ကျေနပ်စေရန်အတွက် မိမိ၏ အလိုဆန္ဒကို ဖိနှိပ်ကာ ချက်ချင်း လက်နက်ချ လိုက်လျောပေးတတ်သည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q1" value="B">
+                    <span>(ခ) မိမိ၏ ခံစားချက်ကို ချက်ချင်း ဖော်ပြရန်အတွက် ငိုယိုခြင်း၊ စိတ်ဆိုးခြင်းနှင့် ပြင်းထန်သော စိတ်ဖိစီးမှု ဖိအားများကို အသုံးပြုတတ်သည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q1" value="C">
+                    <span>(ဂ) အခြားသော ပြင်ပသူငယ်ချင်း သို့မဟုတ် အခြားအမျိုးသားတစ်ဦး၏ အကြောင်းကို ထည့်သွင်းပြောဆိုကာ မနာလိုဖြစ်အောင် သို့မဟုတ် သတိထားမိအောင် ပြုလုပ်တတ်သည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q1" value="D">
+                    <span>(ဃ) အလွန်တရာ တည်ငြိမ်အေးဆေးစွာဖြင့် နားထောင်ကာ မိမိ၏ ကိုယ်ပိုင် နယ်နိမိတ်နှင့် ယုတ္တိတန်သော အမြင်ကို တည်ငြိမ်ပြတ်သားစွာ ရပ်တည်ပြသသည်။</span>
+                </label>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="q-block">
+                <h3>မေးခွန်း (၂)</h3>
+                <p style="font-size: 13px; color: #ddd; margin-bottom: 10px;">အမျိုးသားတစ်ဦးက သင့်အား အာရုံစိုက်မှု အနည်းငယ် လျှော့ချလာသည်ဟု ခံစားရသည့်အခါ သင် မည်သို့ ပြုမူတတ်သနည်း။</p>
+                
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q2" value="A" required>
+                    <span>(က) ၎င်း၏ အာရုံစိုက်မှုကို ပြန်လည်ရရှိရန်အတွက် အမြဲတမ်း အကြင်နာယုယပြခြင်း၊ ပိုမို ဂရုစိုက်ပေးခြင်းနှင့် အလိုလိုက်ခြင်းများကို ပိုမိုလုပ်ဆောင်ပေးသည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q2" value="B">
+                    <span>(ခ) အဘယ်ကြောင့် ဂရုမစိုက်တော့သည်ကို အပြစ်တင် မေးမြန်းခြင်း၊ စိတ်ကောက်ခြင်းနှင့် စိတ်ပိုင်းဆိုင်ရာ ဖိအားပေးမှုများ ပြုလုပ်သည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q2" value="C">
+                    <span>(ဂ) မိမိကိုယ်တိုင်လည်း တုံ့ပြန်သည့်အနေဖြင့် အခြားသော အာရုံစိုက်မှုများကို ရှာဖွေခြင်း သို့မဟုတ် အတိတ်က အကြောင်းအရာများကို ပြန်လည် ထုတ်ပြတတ်သည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q2" value="D">
+                    <span>(ဃ) မည်သည့် ဖိအားမှ မပေးဘဲ မိမိ၏ ကိုယ်ပိုင်ဘဝ၊ ဝါသနာနှင့် လုပ်ငန်းများကိုသာ အာရုံစိုက်ကာ တိတ်တဆိတ် ကိုယ်ပိုင်ဟန်ဖြင့် တင့်တယ်စွာ နေထိုင်သည်။</span>
+                </label>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="q-block">
+                <h3>မေးခွန်း (၃)</h3>
+                <p style="font-size: 13px; color: #ddd; margin-bottom: 10px;">အပြင်းအထန် စိတ်ဆိုးဒေါသထွက်စရာ သို့မဟုတ် စိတ်ဖိစီးမှု ကြုံတွေ့ရသည့် အခိုက်အတန့်တွင် သင်၏ အတွင်းစိတ် လှုပ်ရှားမှုကို မည်သို့ ထိန်းချုပ်လေ့ရှိသနည်း။</p>
+                
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q3" value="A" required>
+                    <span>(က) အတွင်းထဲတွင် အလွန်အမင်း ခံစားနေရသော်လည်း တစ်ဖက်လူ စိတ်မကောင်းဖြစ်မည်ကို စိုးရိမ်၍ အပြင်ပန်းတွင် အတင်းအကျပ် ပြုံးပြကာ အားလုံးကို လက်ခံပေးသည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q3" value="B">
+                    <span>(ခ) စိတ်ထဲရှိသည်များကို မထိန်းချုပ်နိုင်တော့ဘဲ ငိုယိုပေါက်ကွဲခြင်း၊ အော်ဟစ်ခြင်းနှင့် ချက်ချင်း တုံ့ပြန်ဖြေရှင်းရန် ဖိအားပေးသည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q3" value="C">
+                    <span>(ဂ) တစ်ဖက်လူ၏ အမှားများကို တစ်ခုပြီးတစ်ခု ထောက်ပြကာ အပြစ်တင်ခြင်းနှင့် စကားနိုင်လုခြင်းတို့ကို ပြုလုပ်သည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q3" value="D">
+                    <span>(ဃ) စိတ်လှုပ်ရှားမှုကို ခေတ္တရပ်တန့်ကာ စိတ်ခံစားမှုကို ထိန်းချုပ်ခြင်းဖြင့် တိတ်ဆိတ်ခြင်း၏ စွမ်းအားကို အသုံးပြု၍ တည်ငြိမ်မှုကို ဦးစွာ တည်ဆောက်သည်။</span>
+                </label>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="q-block">
+                <h3>မေးခွန်း (၄)</h3>
+                <p style="font-size: 13px; color: #ddd; margin-bottom: 10px;">သင်၏ ကိုယ်ပိုင် ဘဝ၊ ရည်မှန်းချက်နှင့် ပျော်ရွှင်မှုတို့သည် မည်သည့်အရာအပေါ်တွင် အဓိက အခြေခံနေသည်ဟု သင် ယူဆသနည်း။</p>
+                
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q4" value="A" required>
+                    <span>(က) မိမိချစ်ရသော အမျိုးသား၏ အသိအမှတ်ပြုမှု၊ ချစ်ခင်မှုနှင့် ဆက်ဆံရေး တည်ငြိမ်မှုအပေါ်တွင် အဓိက မှီခိုနေသည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q4" value="B">
+                    <span>(ခ) အမြဲတမ်း အပြန်အလှန် ဖြစ်ပျက်နေသော စိတ်ခံစားချက်များ၊ အပြိုင်အဆိုင် သဘောတရားများနှင့် ရှုပ်ထွေးဆန်သော အခြေအနေများအပေါ်တွင် မူတည်နေသည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q4" value="C">
+                    <span>(ဂ) ပြင်ပမှ လူမှုရေး အခြေအနေများ၊ အခြားသူများ၏ အမြင်များနှင့် နှိုင်းယှဉ်မှုများအပေါ်တွင် အခြေခံနေသည်။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q4" value="D">
+                    <span>(ဃ) မိမိ၏ အတွင်းစိတ် ခွန်အား၊ ကိုယ်ပိုင် ရည်မှန်းချက်များ၊ နယ်နိမိတ်များနှင့် ကိုယ်ပိုင်လွတ်လပ်မှုအပေါ်တွင်သာ အပြည့်အဝ အခြေခံသည်။</span>
+                </label>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="q-block">
+                <h3>မေးခွန်း (၅)</h3>
+                <p style="font-size: 13px; color: #ddd; margin-bottom: 10px;">ဆက်ဆံရေးတစ်ခုအတွင်း အမျိုးသားတစ်ဦး၏ မသိစိတ်က အဂ္ဂနေရာတွင် တန်ဖိုးထားရမည့် အမျိုးသမီးတစ်ဦး၏ အဓိက လက္ခဏာမှာ အဘယ်နည်းဟု သင် ယူဆသနည်း။</p>
+                
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q5" value="A" required>
+                    <span>(က) အရာရာတိုင်းကို ခေါင်းငုံ့ခံ လိုက်လျောပေးပြီး လုံးဝ အပြစ်မပြောတတ်ခြင်း။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q5" value="B">
+                    <span>(ခ) အမြဲတမ်း ငိုယိုတောင်းဆိုကာ မိမိ၏ လိုအပ်ချက်ကို ဖိအားပေး ဖြည့်ဆည်းခိုင်းခြင်း။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q5" value="C">
+                    <span>(ဂ) အပေါ်ယံ အလှအပများနှင့် အမြဲတမ်း အာရုံစိုက်ခံရလိုသော အပြုအမူများကို ပြသခြင်း။</span>
+                </label>
+                <label class="option-label" onclick="highlightOption(this)">
+                    <input type="radio" name="q5" value="D">
+                    <span>(ဃ) အလွန်တရာ တည်ငြိမ်နက်ရှိုင်းပြီး၊ ကိုယ်ပိုင် ရပ်တည်ချက်ခိုင်မာကာ၊ လိုအပ်သည့်အခါ မရှိမဖြစ် ကျောက်ဆူးတစ်ခုအဖြစ် ရပ်တည်နိုင်ခြင်း။</span>
+                </label>
+            </div>
+
+            <button type="button" onclick="calculateResult()" class="submit-btn">ရလဒ်ဆန်းစစ်ချက် ကြည့်ရှုမည် →</button>
+        </form>
+    </div>
+
+    <!-- RESULT EXPANSION SCREEN -->
+    <div id="result-box">
+        <div id="res-level-title" class="res-level"></div>
+        
+        <div class="res-section">
+            <strong>စိတ္တဗေဒ သုံးသပ်ချက်:</strong>
+            <p id="res-analysis" style="margin: 5px 0 0 0; color: #eee;"></p>
+        </div>
+        
+        <button onclick="completeQuiz()" class="next-btn">CONTINUE TO NEXT CHAPTER →</button>
+    </div>
+</div>
+
+<script>
+    function highlightOption(label) {
+        const container = label.closest('.q-block');
+        container.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+        label.classList.add('selected');
+        const radio = label.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+    }
+
+    function calculateResult() {
+        const form = document.getElementById('level-test-form');
+        const q1 = form.elements['q1'].value;
+        const q2 = form.elements['q2'].value;
+        const q3 = form.elements['q3'].value;
+        const q4 = form.elements['q4'].value;
+        const q5 = form.elements['q5'].value;
+
+        if (!q1 || !q2 || !q3 || !q4 || !q5) {
+            alert("ကျေးဇူးပြု၍ မေးခွန်းအားလုံးကို ဖြေဆိုပေးပါရန် မေတ္တာရပ်ခံအပ်ပါသည်။");
+            return;
+        }
+
+        let counts = { A: 0, B: 0, C: 0, D: 0 };
+        [q1, q2, q3, q4, q5].forEach(ans => {
+            if (counts[ans] !== undefined) counts[ans]++;
+        });
+
+        // Find max category
+        let maxKey = 'A';
+        let maxVal = counts.A;
+        for (let key in counts) {
+            if (counts[key] > maxVal) {
+                maxVal = counts[key];
+                maxKey = key;
+            }
+        }
+
+        let levelTitle = "";
+        let analysis = "";
+
+        if (maxKey === 'A') {
+            levelTitle = "အလိုလိုက်လွန်ကဲခြင်း (အကြွင်းမဲ့ လိုက်လျောခြင်း) အဆင့်";
+            analysis = "သင်သည် ချစ်ခင်မှုကို ရရှိရန်အတွက် မိမိ၏ တန်ဖိုးနှင့် နယ်နိမိတ်များကို အလွန်အမင်း စွန့်လွှတ်နေသူ ဖြစ်သည်။ အမျိုးသား၏ မသိစိတ်တွင် ဤအပြုအမူသည် လေးစားမှုကို ကျဆင်းစေပြီး နစ်နာရမည့် အန္တရာယ်ရှိနေကြောင်း ဤစာအုပ်က ပြုပြင်ပေးမည် ဖြစ်သည်။";
+        } else if (maxKey === 'B') {
+            levelTitle = "စိတ်ပိုင်းဆိုင်ရာ ဖိအားပေးခြင်း အဆင့်";
+            analysis = "သင်သည် စိတ်ပိုင်းဆိုင်ရာ ဖိအားပေးခြင်းနှင့် ငိုယိုခြင်းကို လက်နက်သဖွယ် အသုံးပြုနေမိတတ်သူ ဖြစ်သည်။ ဤလုပ်ရပ်သည် အမျိုးသားတို့၏ ဦးနှောက်ကို အကာအကွယ်ပေးသည့် တုံ့ပြန်မှုဆီသို့ တွန်းပို့ကာ အပြီးတိုင် စွန့်ခွာသွားစေနိုင်ကြောင်း ဤစာအုပ်တွင် နက်နက်ရှိုင်းရှိုင်း လေ့လာရမည် ဖြစ်သည်။";
+        } else if (maxKey === 'C') {
+            levelTitle = "သုံးပွင့်ဆိုင် ထောင်ချောက် အဆင့်";
+            analysis = "သင်သည် ဆက်ဆံရေးအတွင်း မလုံခြုံမှုများနှင့် သုံးပွင့်ဆိုင် ဆွဲခေါ်မှုများအတွင်းသို့ ကျရောက်လွယ်သူ ဖြစ်သည်။ စိတ်ပိုင်းဆိုင်ရာ လွတ်လပ်မှုကို တည်ဆောက်ရန် လိုအပ်နေသေးကြောင်း ဤစာအုပ်က လမ်းညွှန်ပြသပေးမည် ဖြစ်သည်။";
+        } else {
+            levelTitle = "အဓိပတိ အမျိုးသမီး၏ အစောပိုင်း အဆင့်";
+            analysis = "သင်သည် ကိုယ်ပိုင် နယ်နိမိတ်များ၊ တိတ်ဆိတ်ခြင်း၏ စွမ်းအားနှင့် စိတ်ပိုင်းဆိုင်ရာ တည်ငြိမ်မှုကို ကောင်းစွာ နားလည်ပြီးဖြစ်သူ ဖြစ်သည်။ ဤစာအုပ်သည် သင့်အား ထိုထက်ပိုမို နက်ရှိုင်းသော နူးညံ့သော စိုးမိုးမှုနှင့် အစားထိုးမရသော ကျောက်ဆူးတစ်ခုအဖြစ်သို့ အပြည့်အဝ တင်မြှင့်ပေးမည် ဖြစ်သည်။";
+        }
+
+        document.getElementById('quiz-flow').style.display = 'none';
+        document.getElementById('res-level-title').innerText = "ရလဒ် - " + levelTitle;
+        document.getElementById('res-analysis').innerText = analysis;
+        document.getElementById('result-box').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function completeQuiz() {
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: "quizCompleted", page: 2 }, "*");
+        }
+    }
+</script>
+
+</body>
+</html>
