@@ -160,21 +160,21 @@
             }
         });
 
-        // 🔧 ပြင်ဆင်ထားသော getBookSize Function (iPad & MacBook ဘေးဆွဲဆန့်မှု မဖြစ်အောင် ထိန်းပေးသည်)
+        /* 🔧 ပြင်ဆင်ထားသော getBookSize Function (မျက်နှာပြင်အပြည့် အမြင့်နှင့် အကျယ်ရရှိစေရန်) */
         function getBookSize() { 
-            const winWidth = window.innerWidth;
-            const winHeight = window.innerHeight;
-            const pageRatio = 0.7; // Portrait စာအုပ် Standard Aspect Ratio
+            let w = window.innerWidth;
+            let h = window.innerHeight;
 
-            let height = winHeight;
-            let width = height * pageRatio;
-
-            if (width > winWidth) {
-                width = winWidth;
-                height = width / pageRatio;
+            if (w < 768) {
+                // Mobile Screen အတွက် စခရင်အပြည့် အသုံးပြုမည်
+                w = window.innerWidth;
+                h = window.innerHeight;
+            } else {
+                // Computer Screen အတွက်
+                h = window.innerHeight * 0.95;
+                w = h * 0.62;
             }
-
-            return { width: Math.floor(width), height: Math.floor(height) }; 
+            return { width: Math.floor(w), height: Math.floor(h) }; 
         }
 
         function unlock() {
@@ -245,8 +245,8 @@
                     const fileName = (i === 2) ? "intro_quiz.html" : `page${i}.html`;
                     pageDiv.append(`<iframe src="${fileName}" style="width:100%; height:100%; border:none;" scrolling="no"></iframe>`);
                 } else if (i <= 57) {
-                    // 🔧 object-fit: contain သို့ ပြောင်းထားပါသည်
-                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:contain;" />').attr('src', `page${i}.jpg`));
+                    // 🔧 object-fit: fill သို့မဟုတ် အပြည့်ပေါ်စေရန် ပြင်ဆင်ခြင်း
+                    pageDiv.append($('<img style="width:100%; height:100%; object-fit:fill;" />').attr('src', `page${i}.jpg`));
                 } else {
                     pageDiv.append(`
                         <div style="width:100%; height:100%; background:#000; display: flex; justify-content: center; align-items: center; flex-direction: column;">
