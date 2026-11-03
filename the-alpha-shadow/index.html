@@ -39,16 +39,19 @@
         #lock button { padding: 14px 80px; background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728); color: #000; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; border-radius: 2px; }
         
         #book-container { display: none; width: 100vw; height: 100vh; position: relative; z-index: 10; opacity: 0; }
-        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        .watermark { position: fixed; bottom: 20px; width: 100%; text-align: center; font-size: 10px; color: var(--gold); opacity: 0.5; letter-spacing: 4px; z-index: 99; pointer-events: none; }
+        
+        /* 🔧 မျက်နှာပြင်အပေါ်ထိပ်သို့ ကပ်စေရန် align-items ကို flex-start သို့ ပြောင်းထားပါသည် */
+        #flipbook-wrapper { width: 100%; height: 100%; display: flex; justify-content: center; align-items: flex-start; }
+        
+        .watermark { position: fixed; bottom: 10px; width: 100%; text-align: center; font-size: 10px; color: var(--gold); opacity: 0.5; letter-spacing: 4px; z-index: 99; pointer-events: none; }
 
         /* Page 1 ပြန်သွားရန် ခလုတ်စတိုင် */
         .home-btn {
-            padding: 12px 30px;
+            padding: 10px 25px;
             background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728);
             color: #000;
             border: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 900;
             cursor: pointer;
             text-transform: uppercase;
@@ -62,7 +65,7 @@
         #floating-home-btn {
             display: none;
             position: fixed;
-            bottom: 60px;
+            bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 100;
@@ -239,7 +242,6 @@
             initDraggableButtons();
         });
 
-        /* 🔧 မျက်နှာပြင် အပြည့်အရှည်ရရှိစေမည့် getBookSize Function */
         function getBookSize() { 
             let w = window.innerWidth;
             let h = window.innerHeight;
@@ -359,7 +361,6 @@
             }, 100);
         }
 
-        /* 📌 DRAGGABLE LOGIC FOR BUTTONS (Touch & Mouse Support) */
         function initDraggableButtons() {
             const buttons = document.querySelectorAll('.draggable-btn');
 
